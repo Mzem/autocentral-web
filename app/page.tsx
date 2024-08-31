@@ -1,11 +1,15 @@
-import FullScreenImage from "./modules/FullScreenImage"
+import CarReg from './_components/CarReg'
+import Header from './_components/Header'
 
 export default function Home() {
-  const imageUrl = "cover.jpg" // Provide the URL of the image
-
   return (
     <div>
-      <FullScreenImage imageUrl={imageUrl} />
+      <Header />
+      <div className='pt-14'>
+        <CarReg />
+        {/* catagolgue marques avec logo Autotech */}
+        {/* <CarMakes /> */}
+      </div>
     </div>
   )
 }
