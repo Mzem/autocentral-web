@@ -9,8 +9,10 @@ export default async function Home() {
   return (
     <div>
       <Header />
-      <div className='pt-14'>
+      <div className='pt-16 lg:pt-20'>
         <CarReg />
+      </div>
+      <div className='mt-12 lg:mt-16'>
         <CarMakes carMakes={carMakes} />
       </div>
     </div>

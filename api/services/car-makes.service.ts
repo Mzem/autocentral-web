@@ -4,7 +4,7 @@ import { ApiError } from '../httpClient'
 export interface CarMake {
   id: string
   name: string
-  logoUrl: string
+  category: string
 }
 
 export async function getCarMakes(): Promise<CarMake[]> {

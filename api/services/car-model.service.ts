@@ -6,7 +6,7 @@ export interface CarModel {
   make: {
     id: string
     name: string
-    logoUrl: string
+    category: string
   }
   model: string
   years: string

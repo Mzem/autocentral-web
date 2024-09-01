@@ -28,11 +28,13 @@ const CarReg: React.FC = () => {
   }
 
   return (
-    <div className='flex-row w-80 mx-auto'>
+    <div className='flex flex-col w-80 mx-auto lg:w-3/4 lg:flex-row lg:space-x-4 items-center justify-center'>
       {/* Option Buttons */}
-      <p className='text-left'>Recherche par matricule</p>
+      <p className='text-left w-full lg:w-1/3 text-xl'>
+        Recherche par matricule
+      </p>
 
-      <div className='mt-2 border-2 border-red rounded-lg p-1 w-full text-center'>
+      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg p-1 w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
         {/* Left Input */}
         <input
           type='number'
@@ -40,9 +42,9 @@ const CarReg: React.FC = () => {
           onChange={handleLeftInputTNChange}
           maxLength={3}
           placeholder='***'
-          className='bg-black placeholder-red border-none text-center text-xl outline-none w-20 text-white'
+          className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
-        <span className='text-xl font-bold ml-2'>TU</span>
+        <span className='text-xl font-bold  w-1/4'>TU</span>
 
         {/* Right Input */}
         <input
@@ -51,26 +53,26 @@ const CarReg: React.FC = () => {
           onChange={handleRightInputTNChange}
           maxLength={4}
           placeholder='****'
-          className='bg-black placeholder-red border-none text-center text-xl outline-none w-24 text-white ml-2'
+          className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
 
-        <button>
-          <img src='/search.svg' className='h-5' />
+        <button className='w-10 mx-2 p-2 rounded bg-red'>
+          <img src='/search_white.svg' className='h-5 mx-auto' />
         </button>
       </div>
 
-      <div className='mt-2 border-2 border-red rounded-lg inline-block p-1 w-full text-center'>
-        <span className='text-xl font-bold ml-8'>RS</span>
+      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg p-1 w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
+        <span className='text-xl font-bold w-1/3'>RS</span>
         <input
           type='number'
           value={inputRS}
           onChange={handleInputRSChange}
           maxLength={6}
           placeholder='******'
-          className='bg-black placeholder-red border-none text-center text-xl outline-none max-w-28 text-white ml-7'
+          className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/3'
         />
-        <button className='ml-7'>
-          <img src='/search.svg' className='h-5' />
+        <button className='w-10 ml-7 p-2 bg-red rounded'>
+          <img src='/search_white.svg' className='h-5 mx-auto' />
         </button>
       </div>
     </div>
