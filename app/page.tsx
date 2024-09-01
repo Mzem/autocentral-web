@@ -1,14 +1,17 @@
+import { getCarMakes } from '../api/services/car-makes.service'
+import CarMakes from './_components/CarMakes'
 import CarReg from './_components/CarReg'
 import Header from './_components/Header'
 
-export default function Home() {
+export default async function Home() {
+  const carMakes = await getCarMakes()
+
   return (
     <div>
       <Header />
       <div className='pt-14'>
         <CarReg />
-        {/* catagolgue marques avec logo Autotech */}
-        {/* <CarMakes /> */}
+        <CarMakes carMakes={carMakes} />
       </div>
     </div>
   )
