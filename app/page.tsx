@@ -1,6 +1,7 @@
 import { getCarMakes } from '../api/services/car-makes.service'
 import CarMakes from './_components/CarMakes'
 import CarReg from './_components/CarReg'
+import Footer from './_components/Footer'
 import Header from './_components/Header'
 
 export default async function Home() {
@@ -15,6 +16,7 @@ export default async function Home() {
       <div className='mt-12 lg:mt-16'>
         <CarMakes carMakes={carMakes} />
       </div>
+      <Footer />
     </div>
   )
 }
