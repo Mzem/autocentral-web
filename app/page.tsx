@@ -4,7 +4,7 @@ import CarReg from './_components/CarReg'
 import Header from './_components/Header'
 
 export default async function Home() {
-  const carMakes = await getCarMakes()
+  const carMakes = await getCarMakes(true)
 
   return (
     <div>

@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 
 const CarReg: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<'TU' | 'RS'>('TU')
   const [leftInputTN, setLeftInputTN] = useState<string>('')
   const [rightInputTN, setRightInputTN] = useState<string>('')
   const [inputRS, setInputRS] = useState<string>('')
@@ -38,9 +37,9 @@ const CarReg: React.FC = () => {
         {/* Left Input */}
         <input
           type='number'
+          inputMode='numeric'
           value={leftInputTN}
           onChange={handleLeftInputTNChange}
-          maxLength={3}
           placeholder='***'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
@@ -49,9 +48,9 @@ const CarReg: React.FC = () => {
         {/* Right Input */}
         <input
           type='number'
+          inputMode='numeric'
           value={rightInputTN}
           onChange={handleRightInputTNChange}
-          maxLength={4}
           placeholder='****'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
@@ -65,9 +64,9 @@ const CarReg: React.FC = () => {
         <span className='text-xl font-bold w-1/3'>RS</span>
         <input
           type='number'
+          inputMode='numeric'
           value={inputRS}
           onChange={handleInputRSChange}
-          maxLength={6}
           placeholder='******'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/3'
         />
