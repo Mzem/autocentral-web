@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 :root {
+  --green: #105415;
+  --blue: #08085e;
+  --red2: #8d0018;
   --black: #000000;
   --titan: #5f5f5f;
+  --whiteopac: #ffffff2f;
   --white: #ffffff;
   --red: #6b0000;
 }

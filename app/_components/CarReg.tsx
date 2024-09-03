@@ -27,7 +27,7 @@ const CarReg: React.FC = () => {
   }
 
   return (
-    <div className='flex flex-col w-80 mx-auto lg:w-3/4 lg:flex-row lg:space-x-4 items-center justify-center'>
+    <div className='flex flex-col w-full lg:flex-row lg:space-x-4 items-center'>
       {/* Option Buttons */}
       <p className='text-left w-full lg:w-1/3 text-xl'>
         Recherche par matricule
@@ -55,7 +55,7 @@ const CarReg: React.FC = () => {
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
 
-        <button className='w-10 mx-2 p-2 rounded bg-red'>
+        <button className='w-10 mx-2 p-2 rounded bg-red hover:bg-black hover:border hover:border-white'>
           <img src='/search_white.svg' className='h-5 mx-auto' />
         </button>
       </div>
@@ -70,7 +70,7 @@ const CarReg: React.FC = () => {
           placeholder='******'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/3'
         />
-        <button className='w-10 ml-7 p-2 bg-red rounded'>
+        <button className='w-10 ml-7 p-2 bg-red rounded hover:bg-black hover:border hover:border-white'>
           <img src='/search_white.svg' className='h-5 mx-auto' />
         </button>
       </div>

@@ -26,33 +26,37 @@ function CarMakes({ carMakes }: CarMakesProps) {
   )
 
   return (
-    <>
+    <div className='mt-12 lg:mt-16'>
       {carMakes.length > 0 && (
-        <div className='w-3/4 mx-auto'>
+        <>
           <p className='text-left w-full text-xl lg:text-2xl'>
             Fiche technique & motorisation
           </p>
-          <p className='text-left w-full text-m lg:text-l'>
-            Par{' '}
+          <div className='flex space-x-1 items-center text-left w-full text-m lg:text-l'>
+            <span>Par</span>
             <a
               href='/autotech-reprog'
-              className='text-red font-extrabold italic underline underline-offset-2'
+              className='text-red font-extrabold italic underline underline-offset-2 hover:text-white hover:brightness-0 hover:invert flex items-center space-x-1'
             >
-              Autotech-Reprogrammation
+              <span>Autotech-Reprogrammation</span>
+              <img
+                src='/arrow_square_red.svg'
+                className='h-5 hover:text-red hover:brightness-0 hover:invert'
+              />
             </a>
-          </p>
+          </div>
           {common.length > 0 && (
             <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
               {common.map((carMake) => (
                 <Link
                   href={`/fiche-technique/${carMake.id}`}
                   key={carMake.id}
-                  className='block p-2'
+                  className='flex justify-center items-center p-2 h-full'
                 >
                   <img
-                    src={`car-makes/${carMake.id}.svg`}
+                    src={`/car-makes/${carMake.id}.svg`}
                     alt={carMake.name}
-                    className='w-20 h-20 object-contain hover:opacity-80 transition-opacity'
+                    className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                   />
                 </Link>
               ))}
@@ -68,12 +72,12 @@ function CarMakes({ carMakes }: CarMakesProps) {
                   <Link
                     href={`/fiche-technique/${carMake.id}`}
                     key={carMake.id}
-                    className='block p-2'
+                    className='flex justify-center items-center p-2 h-full'
                   >
                     <img
-                      src={`car-makes/${carMake.id}.svg`}
+                      src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain hover:opacity-80 transition-opacity'
+                      className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                     />
                   </Link>
                 ))}
@@ -88,21 +92,21 @@ function CarMakes({ carMakes }: CarMakesProps) {
                   <Link
                     href={`/fiche-technique/${carMake.id}`}
                     key={carMake.id}
-                    className='block p-2'
+                    className='flex justify-center items-center p-2 h-full'
                   >
                     <img
-                      src={`car-makes/${carMake.id}.svg`}
+                      src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain hover:opacity-80 transition-opacity'
+                      className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                     />
                   </Link>
                 ))}
               </div>
             </>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   )
 }
 

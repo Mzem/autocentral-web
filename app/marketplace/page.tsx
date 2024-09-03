@@ -1,11 +1,8 @@
-import Header from 'app/_components/Header'
-
-export default function Home() {
+export default function Marketplace() {
   return (
     <div>
-      <Header />
-      <div className='pt-20 text-center'>
-        <p>
+      <div>
+        <p className='text-center'>
           La première plateforme qui regroupe toutes les annonces automobile en
           Tunisie. Coming soon...
         </p>

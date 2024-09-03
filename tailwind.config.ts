@@ -7,7 +7,11 @@ const config: Config = {
       titan: '#5F5F5F',
       black: '#000000',
       red: '#6b0000',
-      white: '#ffffff'
+      white: '#ffffff',
+      whiteopac: '#ffffff2f',
+      green: '#105415',
+      blue: '#08085e',
+      red2: '#8d0018'
     }
   },
   plugins: [require('@tailwindcss/forms')]

@@ -17,7 +17,7 @@ function ImageWithModal({ src, alt }: { src: string; alt: string }) {
       <ProgressiveImage
         src={src}
         alt={alt}
-        placeholder='cake.svg'
+        placeholder='/loader.svg'
         onClick={openModal}
         className='h-4/6 w-full object-cover rounded-md cursor-pointer'
       />

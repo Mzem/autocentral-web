@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './_styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import Header from './_components/Header'
+import Footer from './_components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,8 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='fr'>
-      <body className={inter.className}>
-        {children}
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <Header />
+        <main className='flex-grow w-5/6 lg:w-3/5 mx-auto'>{children}</main>
+        <Footer />
         <Analytics />
         <SpeedInsights />
       </body>

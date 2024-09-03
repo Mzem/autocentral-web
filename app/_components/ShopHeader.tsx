@@ -20,9 +20,9 @@ function ShopHeader({
   insta
 }: ShopHeaderProps) {
   return (
-    <div className='flex flex-row flex-wrap mx-auto w-3/4 items-center justify-between'>
+    <div className='flex flex-row flex-wrap mx-auto items-center justify-between'>
       {/* Logo and Shop Name */}
-      <div className='flex flex-row items-center space-x-8 lg:space-x-24'>
+      <div className='flex flex-row items-center space-x-8 lg:space-x-20'>
         <img
           src={`${id}/logo.jpg`}
           className='h-20 w-20 rounded-full object-cover border-2 border-white'
@@ -34,7 +34,7 @@ function ShopHeader({
       <div className='mt-4 lg:mt-0 flex lg:flex-row items-center space-x-6 lg:space-x-16'>
         <a
           href={`tel:00216${phone.trim()}`}
-          className='flex flex-col items-center'
+          className='flex flex-col items-center hover:brightness-0 hover:invert'
         >
           <img src='/phone.svg' className='h-5' />
           <p className='text-sm mt-1'>
@@ -49,7 +49,10 @@ function ShopHeader({
 
         {/* Location Link */}
         {location && (
-          <a href={location} className='flex flex-col items-center'>
+          <a
+            href={location}
+            className='flex flex-col items-center hover:text-red hover:brightness-0 hover:invert'
+          >
             <img src='/location.svg' className='h-5' />
             <p className='text-l mt-1'>Localisation</p>
           </a>
@@ -60,12 +63,20 @@ function ShopHeader({
       <div className='flex flex-col items-center space-y-1 lg:space-y-2 mt-4 lg:mt-0'>
         {fb && (
           <a href={fb} target='_blank' rel='noopener noreferrer'>
-            <img src='/facebook.svg' alt='Facebook' className='h-5 w-5' />
+            <img
+              src='/facebook.svg'
+              alt='Facebook'
+              className='h-5 w-5 hover:text-white hover:brightness-0 hover:invert'
+            />
           </a>
         )}
         {insta && (
           <a href={insta} target='_blank' rel='noopener noreferrer'>
-            <img src='/instagram.svg' alt='Instagram' className='h-5 w-5' />
+            <img
+              src='/instagram.svg'
+              alt='Instagram'
+              className='h-5 w-5 hover:text-white hover:brightness-0 hover:invert'
+            />
           </a>
         )}
       </div>
