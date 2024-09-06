@@ -48,10 +48,10 @@ const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
       >
         <div className='flex items-center justify-between mb-4'>
           <h2 className='text-2xl'>{model.modelName}</h2>
-          <button onClick={onClose} className='text-white px-4 py-2 rounded'>
+          <button onClick={onClose} className='rounded'>
             <img
-              src='/arrow_prev_red.svg'
-              className='h-6 lg:h-8 border-2 border-red rounded hover:text-white hover:filter hover:brightness-0 hover:invert '
+              src='/close.svg'
+              className='h-6 lg:h-8 rounded hover:text-white hover:filter hover:brightness-0 hover:invert '
             />
           </button>
         </div>
@@ -67,16 +67,16 @@ const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
                       selectedYear === year.years ? null : year.years
                     )
                   }
-                  className='hover:text-red hover:underline flex w-full'
+                  className='hover:underline flex w-full font-bold'
                 >
                   {/* Year on the left */}
-                  <span className='font-bold items-left'>
+                  <span className='items-left'>
                     {year.years.replace('all', 'All')}
                   </span>
 
                   {/* Engine type (if exists) on the far right */}
                   {year.engines[0]?.type && (
-                    <span className='ml-auto text-red'>
+                    <span className='ml-auto text-vividred'>
                       {year.engines[0].type}
                     </span>
                   )}
@@ -85,8 +85,8 @@ const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
                 {selectedYear === year.years && (
                   <ul className='mt-2 ml-4'>
                     {Object.keys(groupedEngines).map((fuel) => (
-                      <li key={fuel} className='text-red'>
-                        <p className='font-bold text-white'>{fuel}</p>
+                      <li key={fuel} className='text-vividred font-bold'>
+                        <p className='text-white'>{fuel}</p>
                         <ul className='ml-4'>
                           {groupedEngines[fuel].map((engine: any) => (
                             <a

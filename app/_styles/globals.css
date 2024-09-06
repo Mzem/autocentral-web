@@ -5,12 +5,17 @@
 :root {
   --green: #105415;
   --blue: #08085e;
-  --red2: #8d0018;
+  --yellow: #b3ae14;
+  --orange: #b36b14;
   --black: #000000;
   --titan: #5f5f5f;
-  --whiteopac: #ffffff2f;
   --white: #ffffff;
+  --whiteopac: #ffffff2f;
+  --whiteopac2: #ffffff10;
   --red: #6b0000;
+  --vividred: #b31414;
+  --gold: #d4af37;
+  --rolexgold: #a37e2c;
 }
 
 body {

@@ -1,8 +1,10 @@
 'use client'
 
 import React from 'react'
-import { CarModel } from '../../api/services/car-model.service'
+import { CarModel, RelatedCarModel } from '../../api/services/car-model.service'
 import CarDimensions from './CarDimensions'
+import ShopHeader from './ShopHeader'
+import { sortByStringField } from '../utils'
 
 type FicheTechniqueProps = {
   carModel: CarModel
@@ -15,203 +17,198 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
     carModel.torque && carModel.torqueRemap
       ? carModel.torqueRemap - carModel.torque
       : null
-  const showReprog = hpGain || torqueGain
-
-  // Determine the curve bend based on power gain
-  const getBendValue = (gain: number) => {
-    if (gain < 20) return 30 // Less bend
-    if (gain >= 20 && gain < 35) return 25
-    if (gain >= 35 && gain < 50) return 20
-    return 15 // More bend for higher gains
-  }
-
-  const getColor = (gain: number) => {
-    if (gain < 20) return 'yellow'
-    if (gain >= 20 && gain < 35) return 'orange'
-    if (gain >= 35 && gain < 50) return 'darkorange'
-    return 'red'
-  }
+  const showReprog = hpGain && torqueGain
 
   return (
     <div>
       <div className='flex flex-row items-center justify-between space-x-8 lg:space-x-20'>
-        <img src={`/car-makes/${carModel.make.id}.svg`} className='h-20 w-20' />
-        <p className='text-xl lg:text-3xl flex-grow'>
+        <a href={`/fiche-technique/${carModel.make.id}`}>
+          <img
+            src={`/car-makes/${carModel.make.id}.svg`}
+            className='h-20 w-20'
+          />
+        </a>
+        <p className='text-xl lg:text-3xl flex-grow font-bold'>
           {carModel.make.name} {carModel.model}
         </p>
         <a href={`/fiche-technique/${carModel.make.id}`} className=''>
           <img
             src='/arrow_prev_red.svg'
-            className='h-8 lg:h-10 border-2 border-red rounded hover:text-white hover:filter hover:brightness-0 hover:invert '
+            className='h-8 lg:h-10 border-2 border-red rounded hover:text-white hover:filter hover:brightness-0 hover:invert'
           />
         </a>
       </div>
 
-      <div className='mt-6 text-lg'>
-        <div className='flex flex-row items-center space-x-3'>
+      <div className='mt-6 text-lg font-bold'>
+        <div className='flex flex-row items-center space-x-4'>
           <img src='/key.svg' className='h-5' />
           {carModel.type && <span>Type {carModel.type}</span>}
           {carModel.years !== 'all' && <span>{carModel.years}</span>}
         </div>
         {carModel.engineName && (
-          <p className='flex flex-row items-center space-x-3'>
+          <p className='flex flex-row items-center space-x-4'>
             <img src='/engine.svg' className='h-5' />
             <span>{carModel.engineName}</span>
             <span>{carModel.fuel}</span>
-            <span>{carModel.cylinder}</span>
+            <span className='text-vividred'>
+              {carModel.cylinder}
+              {carModel.hp ? ` ${carModel.hp} ch` : ''}
+            </span>
           </p>
         )}
       </div>
 
       {/* Engine Performance */}
-      {showReprog && (
-        <div className='mt-10'>
-          <h2 className='text-2xl font-semibold mb-4'>
-            Reprogrammation Stage 1
-          </h2>
+      <div className='mt-10'>
+        <h2 className='text-2xl font-semibold mb-4'>Reprogrammation Stage 1</h2>
 
-          {/* Horsepower Graphic */}
-          <div className='mb-6'>
-            {hpGain && (
-              <p className='mb-1 font-bold'>
-                Puissance{' '}
-                <span className='text-red text-strong'>+{hpGain} hp</span>
-              </p>
-            )}
-            {torqueGain && (
-              <p className='mb-1 font-bold'>
-                Couple{' '}
-                <span className='text-red text-strong'>+{torqueGain} Nm</span>
-              </p>
-            )}
+        {!showReprog && (
+          <p>
+            Le programme est en cours de développement, veuillez nous contacter
+            pour plus d'informations
+          </p>
+        )}
 
-            <div className=''>
-              {hpGain && (
-                <svg viewBox='0 0 100 50' className='w-full h-16 lg:h-24'>
-                  {/* Dynamic upward curve for the horsepower */}
-                  <path
-                    d={`M10,40 Q50,${getBendValue(hpGain)},90,20`}
-                    fill='transparent'
-                    stroke={getColor(hpGain)}
-                    strokeWidth='4'
-                  />
-                  <text x='-50' y='45' fill='white'>
-                    {carModel.hp} ch
-                  </text>
-                  <text x='150' y='25' fill='white' textAnchor='end'>
-                    {carModel.hpRemap} ch
-                  </text>
-                </svg>
-              )}
-              {torqueGain && (
-                <svg viewBox='0 0 100 50' className='w-full h-16 lg:h-24'>
-                  {/* Dynamic upward curve for the torque */}
-                  <path
-                    d={`M10,40 Q50,${getBendValue(torqueGain)},90,20`}
-                    fill='transparent'
-                    stroke={getColor(torqueGain)}
-                    strokeWidth='4'
-                  />
-                  <text x='-60' y='45' fill='white'>
-                    {carModel.torque} Nm
-                  </text>
-                  <text x='160' y='25' fill='white' textAnchor='end'>
-                    {carModel.torqueRemap} Nm
-                  </text>
-                </svg>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+        {showReprog && (
+          <table className='text-sm lg:text-l font-bold mt-6 text-center lg:w-3/4 mx-auto border-collapse overflow-hidden shadow-lg rounded-lg'>
+            <thead>
+              <tr className='bg-black text-white'>
+                <th className='p-3 lg:p-4'></th>
+                <th className='border-b-2 p-3 lg:p-4'>Origine</th>
+                <th className='border-b-2 p-3 lg:p-4 text-vividred'>Stage 1</th>
+                <th className='border-b-2 p-3 lg:p-4 text-gold'>Gain</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className='bg-gray-100 hover:bg-whiteopac transition-colors duration-200'>
+                <td className='border-b p-3 lg:p-4'>Puissance</td>
+                <td className='border-b p-3 lg:p-4 bg-whiteopac2'>
+                  {carModel.hp} ch
+                </td>
+                <td className='border-b p-3 lg:p-4 text-vividred'>
+                  {carModel.hpRemap} ch
+                </td>
+                <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
+                  + {hpGain} ch
+                </td>
+              </tr>
+              <tr className='hover:bg-whiteopac hover:bg-gray-200 transition-colors duration-200'>
+                <td className='border-b p-3 lg:p-4'>Couple</td>
+                <td className='border-b p-3 lg:p-4 bg-whiteopac2'>
+                  {carModel.torque} Nm
+                </td>
+                <td className='border-b p-3 lg:p-4 text-vividred'>
+                  {carModel.torqueRemap} Nm
+                </td>
+                <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
+                  + {torqueGain} Nm
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className='mt-10'>
+        <ShopHeader
+          id='autotech'
+          name='Autotech Reprogrammation Moteur'
+          phone='50 720 660'
+          phoneText='RDV'
+          location='https://www.google.com/maps/place/AutoTech+Reprogrammation+Moteur/@36.8799982,10.2991194,15z/data=!4m2!3m1!1s0x0:0x8e7d0ae9fd9aad0d?sa=X&ved=1t:2428&ictx=111'
+          fb='https://www.facebook.com/autotechreprogrammation'
+          insta='https://www.instagram.com/autotech_reprog'
+          small={true}
+        />
+      </div>
 
       {/* Related Models Section */}
       {carModel.relatedModels.length > 0 && (
-        <div className='mt-10 text-sm lg:text-lg'>
+        <div className='mt-12 lg:mt-16 text-sm lg:text-lg'>
           <h2 className='text-2xl font-semibold mb-2'>
-            Informations techniques
+            Modèles avec même motorisation
           </h2>
           <ul className='lg:pl-5'>
-            {carModel.relatedModels.map((relatedModel) => (
-              <li key={relatedModel.id} className='mt-6'>
-                <p className='font-bold flex flex-row items-center space-x-3'>
-                  <img src='/car.svg' className='h-7' />
-                  <span>{relatedModel.productionYears}</span>
-                  <span>{relatedModel.engineDetail}</span>
-                </p>
-                {relatedModel.body && (
-                  <p className='text-red font-bold flex flex-row items-center space-x-5'>
-                    <img src='/door.svg' className='h-5' />
-                    <span>{relatedModel.body}</span>
-                  </p>
-                )}
-                {(relatedModel.engineType || relatedModel.fuelSystem) && (
-                  <p className='flex flex-row items-center space-x-5'>
-                    <img src='/engine.svg' className='h-5' />
-
-                    {relatedModel.engineType && (
-                      <span>{relatedModel.engineType}</span>
+            {sortByStringField(carModel.relatedModels, 'productionYears').map(
+              (relatedModel) => (
+                <li
+                  key={relatedModel.id}
+                  className='mt-4 lg:flex lg:justify-between lg:items-center'
+                >
+                  <div>
+                    <p className='font-bold flex flex-row items-center space-x-3'>
+                      <img src='/car.svg' className='h-7' />
+                      <span>
+                        {startYear(relatedModel.productionYears)}
+                        {relatedModel.model
+                          ? ' ' + relatedModel.model.replace('doors', 'portes')
+                          : ''}
+                        {relatedModel.engineDetail
+                          ? ' ' + renameEngine(relatedModel.engineDetail)
+                          : ''}
+                      </span>
+                    </p>
+                    {relatedModel.body && (
+                      <p className='text-vividred font-bold flex flex-row items-center space-x-4'>
+                        <img src='/door.svg' className='mb-1 ml-1 h-5' />
+                        <span>{renamebody(relatedModel.body)}</span>
+                      </p>
                     )}
-                    {relatedModel.fuelSystem && (
-                      <span>{relatedModel.fuelSystem}</span>
+                    {displayEngine(relatedModel) && (
+                      <p className='flex flex-row items-center space-x-4'>
+                        <img src='/engine.svg' className='mb-1 ml-1 h-5' />
+                        <span>{displayEngine(relatedModel)}</span>
+                      </p>
                     )}
-                  </p>
-                )}
-                {(relatedModel.hp || relatedModel.torque) && (
-                  <p className='flex flex-row items-center space-x-5 text-red'>
-                    <img src='/speed2.svg' className='h-5' />
-                    {relatedModel.hp && <span>{relatedModel.hp} ch</span>}
-                    {relatedModel.torque && (
-                      <span>{relatedModel.torque} Nm</span>
+                    {displaySpeed(relatedModel) && (
+                      <p className='flex flex-row items-center space-x-4 text-vividred font-bold'>
+                        <img src='/chrono.svg' className='mb-1 ml-1 h-5' />
+                        <span>{displaySpeed(relatedModel)}</span>
+                      </p>
                     )}
-                  </p>
-                )}
-                {relatedModel.acceleration && (
-                  <p className='flex flex-row items-center space-x-5'>
-                    <img src='/chrono.svg' className='h-5' />
-                    <span>
-                      Acceleration 0-100 km/h : {relatedModel.acceleration}{' '}
-                      secondes
-                    </span>
-                  </p>
-                )}
-                {relatedModel.topSpeed && (
-                  <p className='flex flex-row items-center space-x-5'>
-                    <img src='/speed.svg' className='h-5' />
-                    <span>Vitesse max : {relatedModel.topSpeed} km/h</span>
-                  </p>
-                )}
-                {(relatedModel.gearbox || relatedModel.driveType) && (
-                  <p className='flex flex-row items-center space-x-5'>
-                    <img src='/gears.svg' className='h-5' />
-                    <span>
-                      {relatedModel.gearbox?.replace('manual', 'manuel') || ''}
-                    </span>
-                    <span>{relatedModel.driveType || ''}</span>
-                  </p>
-                )}
-                {relatedModel.fuelCombined && (
-                  <p className='flex flex-row items-center space-x-5'>
-                    <img src='/fuel.svg' className='h-5' />
-                    <span>
-                      {relatedModel.fuelCombined?.toLowerCase() || ''}{' '}
-                      {relatedModel.fuelHighway && relatedModel.fuelCombined
-                        ? `(${relatedModel.fuelUrban?.toLocaleLowerCase()} urbain, ${relatedModel.fuelHighway.toLowerCase()} extra-urbain)`
-                        : ''}
-                    </span>
-                  </p>
-                )}
-                {/* Center the CarDimensions component */}
-                <div className='flex justify-center mt-4'>
-                  <CarDimensions
-                    length={relatedModel.length}
-                    width={relatedModel.width}
-                    height={relatedModel.height}
-                    weight={relatedModel.weight}
-                  />
-                </div>
-              </li>
-            ))}
+                    {displayGearbox(relatedModel) && (
+                      <p className='flex flex-row items-center space-x-4'>
+                        <img src='/gears.svg' className='mb-1 ml-1 h-5' />
+                        <span>{displayGearbox(relatedModel)}</span>
+                      </p>
+                    )}
+                    {displayDrive(relatedModel) && (
+                      <p className='flex flex-row items-center space-x-4'>
+                        <img src='/wheel.svg' className='mb-1 ml-1 h-5' />
+                        <span>{displayDrive(relatedModel)}</span>
+                      </p>
+                    )}
+                    {relatedModel.fuelCombined && (
+                      <p className='flex flex-row items-center space-x-4'>
+                        <img src='/fuel.svg' className='mb-1 ml-1 h-5' />
+                        <span>
+                          {relatedModel.fuelCombined?.toLowerCase() || ''}{' '}
+                          {relatedModel.fuelHighway && relatedModel.fuelCombined
+                            ? `(${relatedModel.fuelUrban
+                                ?.toLocaleLowerCase()
+                                .replace(
+                                  'l/100km',
+                                  'urbain'
+                                )}, ${relatedModel.fuelHighway
+                                .toLowerCase()
+                                .replace('l/100km', 'extra')})`
+                            : ''}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                  {/* Center the CarDimensions component */}
+                  <div className='flex justify-center lg:mr-24'>
+                    <CarDimensions
+                      length={relatedModel.length}
+                      width={relatedModel.width}
+                      height={relatedModel.height}
+                      weight={relatedModel.weight}
+                    />
+                  </div>
+                </li>
+              )
+            )}
           </ul>
         </div>
       )}
@@ -220,3 +217,107 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
 }
 
 export default FicheTechnique
+
+function startYear(years?: string): string | undefined {
+  return years?.split(' ')[0]
+}
+
+function renameEngine(engine?: string): string | undefined {
+  if (engine) {
+    const newLength = engine.split(' ').length - (engine.includes('WD') ? 4 : 3)
+    return engine.split(' ').splice(0, newLength).join(' ')
+  }
+}
+
+function renamebody(body?: string): string | undefined {
+  if (body) {
+    return body
+      .replace(' (Spyder, Cabriolet)', '')
+      .replace(' (break, combi, touring)', '/Break')
+  }
+}
+
+function displayEngine(model: RelatedCarModel): string | undefined {
+  function renameEngine(engineType: string): string {
+    const isInline = engineType.charAt(0) === 'L' ? true : false
+    if (isInline) {
+      return `${engineType.charAt(1)} cylindres`
+    }
+    return engineType
+  }
+
+  let res = undefined
+
+  if (model.engineType) {
+    res = renameEngine(model.engineType)
+    if (model.cylinder) res += ` ${model.cylinder}`
+    if (model.hp) res += ` ${model.hp}ch`
+    if (model.torque) res += ` ${model.torque}Nm`
+  } else if (model.cylinder) {
+    res = model.cylinder
+    if (model.hp) res += ` ${model.hp}ch`
+    if (model.torque) res += ` ${model.torque}Nm`
+  } else if (model.hp) {
+    res = `${model.hp}ch`
+    if (model.torque) res += ` ${model.torque}Nm`
+  } else if (model.torque) {
+    res = `${model.torque}Nm`
+  }
+
+  return res
+}
+
+function displaySpeed(model: RelatedCarModel): string | undefined {
+  let res = undefined
+
+  if (model.acceleration) {
+    res = `0-100km/h ${model.acceleration}s`
+    if (model.topSpeed) {
+      res += ` - ${model.topSpeed}km/h`
+    }
+  } else if (model.topSpeed) {
+    res = `Vitesse Max ${model.topSpeed}km/h`
+  }
+
+  return res
+}
+
+function displayGearbox(model: RelatedCarModel): string | undefined {
+  function renameGearbox(gearbox: string): string {
+    let res = gearbox
+    if (gearbox && gearbox.includes('-speed')) {
+      res = gearbox.replace('-speed', '')
+      res = `Boite ${res}`
+    } else if (gearbox && gearbox.includes('speed')) {
+      res = gearbox.replace('speed', '')
+      res = `Boite ${res}`
+    }
+    return res
+      ?.replace('-automatic', ' automatique')
+      .replace('automatic', 'automatique')
+      .replace('-manual', ' manuelle')
+      .replace('manual', 'manuelle')
+      .replace('six', '6')
+      .replace('Six', '6')
+  }
+
+  let res = undefined
+  if (model.gearbox) {
+    res = renameGearbox(model.gearbox)
+  }
+  return res
+}
+
+function displayDrive(model: RelatedCarModel): string | undefined {
+  function renameDrive(drive: string): string {
+    return drive
+      .replace('RWD', 'Propulsion')
+      .replace('FWD', 'Traction')
+      .replace('AWD', 'Intégrale')
+  }
+  let res = undefined
+  if (model.driveType) {
+    res = renameDrive(model.driveType)
+  }
+  return res
+}

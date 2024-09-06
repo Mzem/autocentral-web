@@ -4,14 +4,19 @@ const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     colors: {
-      titan: '#5F5F5F',
-      black: '#000000',
-      red: '#6b0000',
-      white: '#ffffff',
-      whiteopac: '#ffffff2f',
       green: '#105415',
       blue: '#08085e',
-      red2: '#8d0018'
+      yellow: '#b3ae14',
+      orange: '#b36b14',
+      titan: '#5F5F5F',
+      black: '#000000',
+      white: '#ffffff',
+      whiteopac: '#ffffff2f',
+      whiteopac2: '#ffffff10',
+      red: '#6b0000',
+      vividred: '#B31414',
+      gold: '#d4af37',
+      rolexgold: '#A37E2C'
     }
   },
   plugins: [require('@tailwindcss/forms')]

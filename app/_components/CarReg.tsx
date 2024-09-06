@@ -1,16 +1,21 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 const CarReg: React.FC = () => {
   const [leftInputTN, setLeftInputTN] = useState<string>('')
   const [rightInputTN, setRightInputTN] = useState<string>('')
   const [inputRS, setInputRS] = useState<string>('')
+  const rightInputRef = useRef(null)
 
   const handleLeftInputTNChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value
     if (input.length <= 3) {
       setLeftInputTN(input)
+      if (input.length === 3) {
+        // @ts-ignore
+        rightInputRef.current.focus()
+      }
     }
   }
   const handleRightInputTNChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +38,7 @@ const CarReg: React.FC = () => {
         Recherche par matricule
       </p>
 
-      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg p-1 w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
+      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
         {/* Left Input */}
         <input
           type='number'
@@ -43,7 +48,7 @@ const CarReg: React.FC = () => {
           placeholder='***'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
         />
-        <span className='text-xl font-bold  w-1/4'>TU</span>
+        <span className='text-xl font-bold w-1/4'>TU</span>
 
         {/* Right Input */}
         <input
@@ -53,6 +58,7 @@ const CarReg: React.FC = () => {
           onChange={handleRightInputTNChange}
           placeholder='****'
           className='bg-black placeholder-red border-none text-center text-xl outline-none text-white w-1/4'
+          ref={rightInputRef}
         />
 
         <button className='w-10 mx-2 p-2 rounded bg-red hover:bg-black hover:border hover:border-white'>
@@ -60,7 +66,7 @@ const CarReg: React.FC = () => {
         </button>
       </div>
 
-      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg p-1 w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
+      <div className='mt-2 lg:mt-0 border-2 border-red rounded-lg w-full lg:w-1/3 text-center flex flex-row items-center justify-center'>
         <span className='text-xl font-bold w-1/3'>RS</span>
         <input
           type='number'

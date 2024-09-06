@@ -32,21 +32,14 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
   }
 
   return (
-    <div className='relative w-44 lg:w-52 h-auto'>
+    <div className='relative w-40 lg:w-52 text-xs text-center'>
       {/* Car SVG Image */}
       <div className='relative'>
-        <img
-          src='/car.svg'
-          alt='Dimensions'
-          className='w-full h-auto max-w-2xl mx-auto'
-        />
+        <img src='/car.svg' alt='Dimensions' className='max-w-2xl' />
 
-        {/* Length Arrow and Label */}
         {lengthValue && (
-          <div className='absolute top-1/3 w-full flex justify-between items-center'>
-            <div className='text-center text-xs bg-gray-100 p-1 rounded text-white'>
-              {lengthValue} mm
-            </div>
+          <div className='absolute top-1/3 flex justify-between items-center'>
+            <div className='p-1 rounded text-white'>{lengthValue} mm</div>
             <svg className='h-8 w-full'>
               <line
                 x1='10%'
@@ -54,7 +47,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                 x2='90%'
                 y2='50%'
                 stroke='white'
-                strokeWidth='2'
+                strokeWidth='1.5'
                 markerStart='url(#arrow)'
                 markerEnd='url(#arrow)'
               />
@@ -74,47 +67,47 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
           </div>
         )}
 
-        {/* Height Arrow and Label */}
         {heightValue && (
-          <div className='absolute left-0 top-0 h-full flex flex-col justify-between items-start'>
-            <svg className='h-full'>
+          <div className='absolute right-0 top-0 h-full flex flex-col justify-between items-end overflow-hidden'>
+            <svg
+              className='h-full'
+              viewBox='0 0 100 100'
+              preserveAspectRatio='xMidYMid meet'
+            >
               <line
                 x1='50%'
                 y1='35%'
                 x2='50%'
                 y2='90%'
                 stroke='white'
-                strokeWidth='2'
+                strokeWidth='1' // Reduced line thickness
                 markerStart='url(#arrowHeight)'
                 markerEnd='url(#arrowHeight)'
               />
               <defs>
                 <marker
                   id='arrowHeight'
-                  markerWidth='10'
-                  markerHeight='10'
-                  refX='5'
-                  refY='5'
+                  markerWidth='6' // Reduced marker size for better proportionality
+                  markerHeight='6'
+                  refX='3' // Adjusted to keep the arrow tip within bounds
+                  refY='3'
                   orient='auto'
                 >
-                  <path d='M0,0 L10,5 L0,10 Z' fill='white' />
+                  <path d='M0,0 L6,3 L0,6 Z' fill='white' /> // Adjusted size of
+                  the arrow path
                 </marker>
               </defs>
             </svg>
-            {weightValue && (
-              <div className='text-center text-xs p-1 rounded text-strong'>
-                Poids {weightValue} kg
-              </div>
-            )}
+
+            <div className='p-1 rounded text-white bg-black'>
+              Poids {weightValue + ' kg' ?? 'inconnu'}
+            </div>
           </div>
         )}
 
-        {/* Width Arrow and Label */}
         {widthValue && (
           <div className='absolute bottom-6 w-full flex justify-between items-center'>
-            <div className='text-center text-xs bg-gray-100 p-1 rounded'>
-              {widthValue} mm
-            </div>
+            <div className='bg-gray-100 p-1 rounded'>{widthValue} mm</div>
             <svg className='h-8 w-full'>
               <line
                 x1='10%'
@@ -122,7 +115,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                 x2='90%'
                 y2='50%'
                 stroke='darkred'
-                strokeWidth='2'
+                strokeWidth='1.5'
                 markerStart='url(#arrowWidth)'
                 markerEnd='url(#arrowWidth)'
               />
@@ -142,10 +135,9 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
           </div>
         )}
 
-        {/* Weight Label */}
         {heightValue && (
-          <div className='absolute right-0 top-0 p-6'>
-            <p className='text-xs p-1 rounded'>{heightValue} mm</p>
+          <div className='absolute right-0 top-0 p-6 mr-6'>
+            <p className='p-1 rounded'>{heightValue} mm</p>
           </div>
         )}
       </div>

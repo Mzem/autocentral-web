@@ -8,6 +8,7 @@ type ShopHeaderProps = {
   location?: string
   fb?: string
   insta?: string
+  small?: boolean
 }
 
 function ShopHeader({
@@ -17,15 +18,18 @@ function ShopHeader({
   phoneText,
   location,
   fb,
-  insta
+  insta,
+  small
 }: ShopHeaderProps) {
   return (
     <div className='flex flex-row flex-wrap mx-auto items-center justify-between'>
       {/* Logo and Shop Name */}
       <div className='flex flex-row items-center space-x-8 lg:space-x-20'>
         <img
-          src={`${id}/logo.jpg`}
-          className='h-20 w-20 rounded-full object-cover border-2 border-white'
+          src={`/${id}/logo.jpg`}
+          className={`rounded-full object-cover border-2  ${
+            small ? 'h-16 w-16 border-white' : 'h-20 w-20  border-white'
+          }`}
         />
         <p className='text-xl lg:text-3xl'>{name}</p>
       </div>
