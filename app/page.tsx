@@ -7,8 +7,9 @@ export default async function Home() {
 
   return (
     <>
-      <CarReg />
-      <CarMakes carMakes={carMakes} />
+      <p>Coming soon..</p>
+      {/* <CarReg />
+      <CarMakes carMakes={carMakes} /> */}
     </>
   )
 }
