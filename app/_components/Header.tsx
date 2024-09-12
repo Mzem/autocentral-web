@@ -52,7 +52,7 @@ export default function Header() {
           </Link>
 
           {/* Mobile Burger Menu Icon on the Left */}
-          {/* <div className='lg:hidden flex items-center'>
+          <div className='lg:hidden flex items-center'>
             {!isMenuOpen && (
               <button onClick={openMenu} className='text-white'>
                 <img src='/menu.svg' className='h-8' alt='Menu' />
@@ -63,10 +63,10 @@ export default function Header() {
                 <img src='/menu.svg' className='h-8' alt='Menu' />
               </button>
             )}
-          </div> */}
+          </div>
 
           {/* Desktop Menu Links */}
-          {/* <nav className='hidden lg:flex space-x-4'>
+          <nav className='hidden lg:flex space-x-4'>
             <Link
               href='/autotech-reprog'
               className='flex space-x-2 items-center hover:underline'
@@ -81,7 +81,7 @@ export default function Header() {
               <img src='/race_flag.svg' className='h-6' />
               <p className='text-l'>Blog</p>
             </Link>
-          </nav> */}
+          </nav>
         </header>
 
         {/* Red Bar Under Header */}
@@ -89,7 +89,7 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      {/* {isMenuOpen && (
+      {isMenuOpen && (
         <div
           ref={menuRef}
           className='lg:hidden fixed top-16 w-full bg-black text-white'
@@ -111,7 +111,7 @@ export default function Header() {
             <img src='/race_flag.svg' className='h-6 ml-2 mr-4' />
           </Link>
         </div>
-      )} */}
+      )}
 
       {/* Bottom Spacer to avoid content overlap */}
       <div className={`mt-20 lg:mt-24`}></div>
