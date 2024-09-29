@@ -12,10 +12,10 @@ type FicheTechniqueProps = {
 
 const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
   const hpGain =
-    carModel.hp && carModel.hpRemap ? carModel.hpRemap - carModel.hp : null
+    carModel.hp && carModel.hpStage1 ? carModel.hpStage1 - carModel.hp : null
   const torqueGain =
-    carModel.torque && carModel.torqueRemap
-      ? carModel.torqueRemap - carModel.torque
+    carModel.torque && carModel.torqueStage1
+      ? carModel.torqueStage1 - carModel.torque
       : null
   const showReprog = hpGain && torqueGain
 
@@ -43,7 +43,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
         <div className='flex flex-row items-center space-x-4'>
           <img src='/key.svg' className='h-5' />
           {carModel.type && <span>Type {carModel.type}</span>}
-          {carModel.years !== 'all' && <span>{carModel.years}</span>}
+          {carModel.fromYear && <span>{carModel.fromYear}</span>}
         </div>
         {carModel.engineName && (
           <p className='flex flex-row items-center space-x-4'>
@@ -86,7 +86,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
                   {carModel.hp} ch
                 </td>
                 <td className='border-b p-3 lg:p-4 text-vividred'>
-                  {carModel.hpRemap} ch
+                  {carModel.hpStage1} ch
                 </td>
                 <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
                   + {hpGain} ch
@@ -98,7 +98,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
                   {carModel.torque} Nm
                 </td>
                 <td className='border-b p-3 lg:p-4 text-vividred'>
-                  {carModel.torqueRemap} Nm
+                  {carModel.torqueStage1} Nm
                 </td>
                 <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
                   + {torqueGain} Nm

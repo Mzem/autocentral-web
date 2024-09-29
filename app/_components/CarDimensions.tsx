@@ -93,15 +93,16 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='3'
                   orient='auto'
                 >
-                  <path d='M0,0 L6,3 L0,6 Z' fill='white' /> // Adjusted size of
-                  the arrow path
+                  <path d='M0,0 L6,3 L0,6 Z' fill='white' />
                 </marker>
               </defs>
             </svg>
 
-            <div className='p-1 rounded text-white bg-black'>
-              Poids {weightValue + ' kg' ?? 'inconnu'}
-            </div>
+            {weightValue && (
+              <div className='p-1 rounded text-white bg-black'>
+                Poids {weightValue + ' kg'}
+              </div>
+            )}
           </div>
         )}
 

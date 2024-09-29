@@ -30,35 +30,38 @@ export interface CarModel {
   id: string
   make: CarMake
   model: string
-  years: string
+  fromYear: string
   relatedModels: RelatedCarModel[]
   type?: string
   engineName?: string
   cylinder?: string
   fuel?: string
   hp?: number
-  hpRemap?: number
+  hpStage1?: number
+  hpStage2?: number
   torque?: number
-  torqueRemap?: number
+  torqueStage1?: number
+  torqueStage2?: number
   urlSource?: string
 }
 
 interface Engine {
   id: string
   type?: string
+  year: string
   engineName?: string
   cylinder?: string
   fuel?: string
   hp?: number
 }
-interface ModelYearsListItem {
-  years: string
+interface ModelYearListItem {
+  year: string
   engines: Engine[]
 }
 
 export interface ModelListItem {
   modelName: string
-  modelYears: ModelYearsListItem[]
+  modelYears: ModelYearListItem[]
 }
 
 export interface CarModelsByMake {

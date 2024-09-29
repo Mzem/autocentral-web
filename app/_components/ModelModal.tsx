@@ -56,33 +56,31 @@ const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
           </button>
         </div>
         <ul>
-          {model.modelYears.map((year) => {
-            const groupedEngines = groupEnginesByFuel(year.engines)
+          {model.modelYears.map((modelYear) => {
+            const groupedEngines = groupEnginesByFuel(modelYear.engines)
 
             return (
-              <li key={year.years} className='mb-2'>
+              <li key={modelYear.year} className='mb-2'>
                 <button
                   onClick={() =>
                     setSelectedYear(
-                      selectedYear === year.years ? null : year.years
+                      selectedYear === modelYear.year ? null : modelYear.year
                     )
                   }
                   className='hover:underline flex w-full font-bold'
                 >
                   {/* Year on the left */}
-                  <span className='items-left'>
-                    {year.years.replace('all', 'All')}
-                  </span>
+                  <span className='items-left'>{modelYear.year}</span>
 
                   {/* Engine type (if exists) on the far right */}
-                  {year.engines[0]?.type && (
+                  {modelYear.engines[0]?.type && (
                     <span className='ml-auto text-vividred'>
-                      {year.engines[0].type}
+                      {modelYear.engines[0].type}
                     </span>
                   )}
                 </button>
 
-                {selectedYear === year.years && (
+                {selectedYear === modelYear.year && (
                   <ul className='mt-2 ml-4'>
                     {Object.keys(groupedEngines).map((fuel) => (
                       <li key={fuel} className='text-vividred font-bold'>

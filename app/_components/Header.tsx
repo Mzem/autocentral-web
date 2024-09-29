@@ -41,7 +41,7 @@ export default function Header() {
     <>
       {/* Header with fixed position */}
       <div className='w-full fixed bg-black z-10'>
-        <header className='flex flex-row w-5/6 lg:w-3/5 items-center justify-between mx-auto h-16'>
+        <header className='flex flex-row w-[90%] lg:w-3/5 items-center justify-between mx-auto h-16'>
           {/* Mobile Logo on the Right and Desktop Logo */}
           <Link href='/'>
             <img
@@ -92,7 +92,7 @@ export default function Header() {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className='lg:hidden fixed top-16 w-full bg-black text-white'
+          className='lg:hidden fixed top-16 w-full bg-black text-white z-50'
         >
           <Link
             href='/autotech-reprog'

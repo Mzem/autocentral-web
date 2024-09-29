@@ -33,8 +33,15 @@ body {
 input[type='radio']:focus {
   @apply ring-2 ring-red; /* Apply a red focus ring */
 }
+input[type='checkbox']:focus {
+  @apply ring-2 ring-red; /* Apply a red focus ring */
+}
 
 input[type='radio'] {
+  color: var(--red);
+}
+
+input[type='checkbox'] {
   color: var(--red);
 }
 
@@ -44,11 +51,21 @@ input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 input[type='number'] {
   -moz-appearance: textfield; /* Firefox */
 }
-
 input[type='number']:focus {
+  @apply ring-0 ring-red rounded;
+}
+input[type='text']::-webkit-outer-spin-button,
+input[type='text']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='text'] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type='text']:focus {
   @apply ring-0 ring-red rounded;
 }

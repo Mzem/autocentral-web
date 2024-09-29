@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang='fr'>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Header />
-        <main className='flex-grow w-5/6 lg:w-3/5 mx-auto'>{children}</main>
+        <main className='flex-grow w-[95%] lg:w-3/5 mx-auto'>{children}</main>
         <Footer />
         <Analytics />
         <SpeedInsights />
