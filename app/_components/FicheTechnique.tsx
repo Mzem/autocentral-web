@@ -34,7 +34,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
         <a href={`/fiche-technique/${carModel.make.id}`} className=''>
           <img
             src='/arrow_prev_red.svg'
-            className='h-8 lg:h-10 border-2 border-red rounded hover:text-white hover:filter hover:brightness-0 hover:invert'
+            className='h-8 lg:h-10 border-2 border-cream rounded hover:text-white hover:filter hover:brightness-0 hover:invert'
           />
         </a>
       </div>

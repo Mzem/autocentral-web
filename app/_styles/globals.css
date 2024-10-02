@@ -7,12 +7,15 @@
   --blue: #08085e;
   --yellow: #b3ae14;
   --orange: #b36b14;
-  --black: #000000;
-  --titan: #5f5f5f;
+  --black: #151515;
+  --pureblack: #000000;
   --white: #ffffff;
   --whiteopac: #ffffff2f;
   --whiteopac2: #ffffff10;
-  --red: #6b0000;
+  --whiteopac3: #ffffff05;
+  --titan: #cecdcd;
+  --cream: #ede7d1;
+  --red: #371211;
   --vividred: #b31414;
   --gold: #d4af37;
   --rolexgold: #a37e2c;
@@ -34,7 +37,7 @@ input[type='radio']:focus {
   @apply ring-2 ring-red; /* Apply a red focus ring */
 }
 input[type='checkbox']:focus {
-  @apply ring-2 ring-red; /* Apply a red focus ring */
+  @apply ring-2 ring-cream; /* Apply a red focus ring */
 }
 
 input[type='radio'] {
@@ -42,7 +45,10 @@ input[type='radio'] {
 }
 
 input[type='checkbox'] {
-  color: var(--red);
+  color: var(--cream);
+}
+input[type='checkbox']:checked {
+  color: var(--vividred);
 }
 
 /* Hide the spinner (arrows) in number input fields */

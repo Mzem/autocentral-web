@@ -3,11 +3,11 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <div className='mt-12 lg:mt-12'>
-      {/* <hr className='h-px border-0 bg-red'></hr> */}
+    <div className='bg-black'>
+      <hr className='h-px border-0 bg-whiteopac3'></hr>
       <footer className='flex flex-col justify-around items-center mt-2'>
-        <p className='text-l text-red'>Site en construction...</p>
-        <p className='text-l text-white'>TuniAutos 2024</p>
+        <p className='text-l text-vividred'>Site en construction...</p>
+        <p className='text-l text-white'>AutoCentral.tn 2024</p>
         <div className='flex flex-row space-x-2 mb-4'>
           <a
             href='https://www.instagram.com/tuniautos'

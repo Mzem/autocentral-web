@@ -115,7 +115,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                 y1='50%'
                 x2='90%'
                 y2='50%'
-                stroke='darkred'
+                stroke='red'
                 strokeWidth='1.5'
                 markerStart='url(#arrowWidth)'
                 markerEnd='url(#arrowWidth)'
@@ -129,7 +129,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='5'
                   orient='auto'
                 >
-                  <path d='M0,0 L10,5 L0,10 Z' fill='darkred' />
+                  <path d='M0,0 L10,5 L0,10 Z' fill='red' />
                 </marker>
               </defs>
             </svg>

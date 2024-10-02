@@ -75,7 +75,7 @@ const CarReg: React.FC = () => {
           className='w-10 mx-2 p-2 rounded bg-red hover:bg-black hover:border hover:border-white'
           onClick={handleSearchTN} // Attach the handler here
         >
-          <img src='/search_white.svg' className='h-5 mx-auto' />
+          <img src='/search_red.svg' className='h-5 mx-auto' />
         </button>
       </div>
 
@@ -93,7 +93,7 @@ const CarReg: React.FC = () => {
           className='w-10 ml-7 p-2 bg-red rounded hover:bg-black hover:border hover:border-white'
           onClick={handleSearchRS} // Attach the handler here
         >
-          <img src='/search_white.svg' className='h-5 mx-auto' />
+          <img src='/search_red.svg' className='h-5 mx-auto' />
         </button>
       </div>
     </div>
