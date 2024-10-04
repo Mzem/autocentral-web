@@ -5,12 +5,14 @@ import { CarModel, RelatedCarModel } from '../../api/services/car-model.service'
 import CarDimensions from './CarDimensions'
 import ShopHeader from './ShopHeader'
 import { sortByStringField } from '../utils'
+import { useRouter } from 'next/navigation'
 
 type FicheTechniqueProps = {
   carModel: CarModel
 }
 
 const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
+  const router = useRouter()
   const hpGain =
     carModel.hp && carModel.hpStage1 ? carModel.hpStage1 - carModel.hp : null
   const torqueGain =
@@ -22,21 +24,25 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
   return (
     <div>
       <div className='flex flex-row items-center justify-between space-x-8 lg:space-x-20'>
-        <a href={`/fiche-technique/${carModel.make.id}`}>
+        <button
+          onClick={() => router.push(`/fiche-technique/${carModel.make.id}`)}
+        >
           <img
             src={`/car-makes/${carModel.make.id}.svg`}
             className='h-20 w-20'
           />
-        </a>
+        </button>
         <p className='text-xl lg:text-3xl flex-grow font-bold'>
           {carModel.make.name} {carModel.model}
         </p>
-        <a href={`/fiche-technique/${carModel.make.id}`} className=''>
+        <button
+          onClick={() => router.push(`/fiche-technique/${carModel.make.id}`)}
+        >
           <img
             src='/arrow_prev_red.svg'
             className='h-8 lg:h-10 border-2 border-cream rounded hover:text-white hover:filter hover:brightness-0 hover:invert'
           />
-        </a>
+        </button>
       </div>
 
       <div className='mt-6 text-lg font-bold'>

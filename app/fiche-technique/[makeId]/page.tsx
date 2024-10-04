@@ -1,5 +1,5 @@
 import { getCarModelsByMake } from '../../../api/services/car-model.service'
-import FichesTechniques from '../../_components/FichesTechniques'
+import FichesTechniques from '../../_components/ModelList'
 
 export default async function FicheTechniqueMake({
   params

@@ -39,14 +39,14 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {lengthValue && (
           <div className='absolute top-1/3 flex justify-between items-center'>
-            <div className='p-1 rounded text-white'>{lengthValue} mm</div>
+            <div className='p-1 rounded text-gold'>{lengthValue} mm</div>
             <svg className='h-8 w-full'>
               <line
                 x1='10%'
                 y1='50%'
                 x2='90%'
                 y2='50%'
-                stroke='white'
+                stroke='gold'
                 strokeWidth='1.5'
                 markerStart='url(#arrow)'
                 markerEnd='url(#arrow)'
@@ -60,7 +60,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='5'
                   orient='auto'
                 >
-                  <path d='M0,0 L10,5 L0,10 Z' fill='white' />
+                  <path d='M0,0 L10,5 L0,10 Z' fill='gold' />
                 </marker>
               </defs>
             </svg>
@@ -108,7 +108,9 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {widthValue && (
           <div className='absolute bottom-6 w-full flex justify-between items-center'>
-            <div className='bg-gray-100 p-1 rounded'>{widthValue} mm</div>
+            <div className='bg-gray-100 p-1 rounded text-vividred'>
+              {widthValue} mm
+            </div>
             <svg className='h-8 w-full'>
               <line
                 x1='10%'

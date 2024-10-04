@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { ModelListItem } from '../../api/services/car-model.service'
+import { useRouter } from 'next/navigation'
 
 type ModelModalProps = {
   model: ModelListItem
@@ -9,6 +10,7 @@ type ModelModalProps = {
 }
 
 const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
+  const router = useRouter()
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
 
@@ -88,7 +90,11 @@ const ModelModal: React.FC<ModelModalProps> = ({ model, onClose }) => {
                         <ul className='ml-4'>
                           {groupedEngines[fuel].map((engine: any) => (
                             <a
-                              href={`/fiche-technique/reprog/${engine.id}`}
+                              onClick={() =>
+                                router.push(
+                                  `/fiche-technique/reprog/${engine.id}`
+                                )
+                              }
                               className='hover:text-white hover:underline'
                             >
                               <li

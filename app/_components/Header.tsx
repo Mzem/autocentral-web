@@ -51,13 +51,13 @@ export default function Header() {
       <div className='w-full fixed bg-red z-10'>
         <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-12 lg:h-16'>
           {/* Mobile Logo on the Right and Desktop Logo */}
-          <Link href='/'>
+          <button onClick={() => router.push('/')}>
             <img
               src='/logo.svg'
               alt='AutoCentral.tn'
               className='h-14 hover:text-white hover:filter hover:brightness-0 hover:invert'
             />
-          </Link>
+          </button>
 
           {/* Mobile Burger Menu Icon on the Left */}
           <button

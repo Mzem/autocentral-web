@@ -108,7 +108,7 @@ const CarPostsFeed: React.FC = () => {
         // setShowFilters(false)
         if (window.scrollY > lastScrollY.current) {
           // Hide the search bar only if scrolled down more than 25px
-          if (window.scrollY - lastScrollY.current > 25) {
+          if (window.scrollY - lastScrollY.current > 60) {
             setShowFixedSearchBar(false)
             setShowFiltersScoll(false)
           }
@@ -117,7 +117,7 @@ const CarPostsFeed: React.FC = () => {
           if (
             // !isSearchInputClicked &&
             lastScrollY.current - window.scrollY >
-            200
+            160
           ) {
             setShowFiltersScoll(false)
           }

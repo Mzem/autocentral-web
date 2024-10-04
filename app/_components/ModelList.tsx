@@ -6,14 +6,16 @@ import {
   ModelListItem
 } from '../../api/services/car-model.service'
 import ModelModal from './ModelModal'
+import { useRouter } from 'next/navigation'
 
-type FichesTechniquesClientProps = {
+type ModelListClientProps = {
   modelsByMake: CarModelsByMake
 }
 
-export default function FichesTechniquesClient({
+export default function ModelListClient({
   modelsByMake
-}: FichesTechniquesClientProps) {
+}: ModelListClientProps) {
+  const router = useRouter()
   const [selectedModel, setSelectedModel] = useState<ModelListItem | null>(null)
 
   return (
@@ -26,21 +28,26 @@ export default function FichesTechniquesClient({
         <p className='text-xl lg:text-3xl flex-grow'>
           {modelsByMake.make.name}
         </p>
-        <a href='/' className=''>
+        <button onClick={() => router.push(`/autotech-reprog`)}>
           <img
             src='/arrow_prev_red.svg'
             className='h-8 lg:h-10 border-2 border-cream rounded hover:text-white hover:filter hover:brightness-0 hover:invert '
           />
-        </a>
+        </button>
       </div>
 
       {/* The ul with wrapping horizontally */}
       <ul className='flex flex-col flex-wrap lg:max-h-[720px] mt-8 text-xl border-2 border-whiteopac rounded-lg p-3'>
-        {modelsByMake.models.map((model: ModelListItem) => (
-          <li key={model.modelName} className='px-1 pt-1'>
+        {modelsByMake.models.map((model: ModelListItem, index: number) => (
+          <li
+            key={model.modelName}
+            className={`px-1 pt-1 ${
+              index % 2 === 0 ? 'bg-whiteopac3' : 'bg-whiteopac2'
+            }`}
+          >
             <button
               onClick={() => setSelectedModel(model)}
-              className='text-white flex items-center hover:text-red'
+              className='text-white flex items-center hover:bg-whiteopac hover:rounded hover:text-cream w-full text-left'
             >
               <img src='/arrow_next_red.svg' className='h-4 mr-2' />
               {model.modelName}
