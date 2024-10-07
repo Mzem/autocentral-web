@@ -22,7 +22,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
   const showReprog = hpGain && torqueGain
 
   return (
-    <div>
+    <div className='text-black'>
       <div className='flex flex-row items-center justify-between space-x-8 lg:space-x-20'>
         <button
           onClick={() => router.push(`/fiche-technique/${carModel.make.id}`)}
@@ -39,8 +39,8 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
           onClick={() => router.push(`/fiche-technique/${carModel.make.id}`)}
         >
           <img
-            src='/arrow_prev_red.svg'
-            className='h-8 lg:h-10 border-2 border-cream rounded hover:text-white hover:filter hover:brightness-0 hover:invert'
+            src='/arrow_prev.svg'
+            className='h-8 lg:h-10 border bg-blackopac rounded hover:bg-titan'
           />
         </button>
       </div>
@@ -64,49 +64,44 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
         )}
       </div>
 
-      {/* Engine Performance */}
       <div className='mt-10'>
         <h2 className='text-2xl font-semibold mb-4'>Reprogrammation Stage 1</h2>
 
         {!showReprog && (
           <p>
             Le programme est en cours de développement, veuillez nous contacter
-            pour plus d'informations
+            pour plus d'informations..
           </p>
         )}
 
         {showReprog && (
           <table className='text-sm lg:text-l font-bold mt-6 text-center lg:w-3/4 mx-auto border-collapse overflow-hidden shadow-lg rounded-lg'>
             <thead>
-              <tr className='bg-black text-white'>
+              <tr className='bg-blackopac text-white text-base lg:text-lg'>
                 <th className='p-3 lg:p-4'></th>
-                <th className='border-b-2 p-3 lg:p-4'>Origine</th>
-                <th className='border-b-2 p-3 lg:p-4 text-vividred'>Stage 1</th>
-                <th className='border-b-2 p-3 lg:p-4 text-gold'>Gain</th>
+                <th className='border-b-4 p-3 lg:p-4'>Origine</th>
+                <th className='border-b-4 p-3 lg:p-4 text-vividred'>Stage 1</th>
+                <th className='border-b-4 p-3 lg:p-4 text-gold'>Gain</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className='bg-gray-100 hover:bg-whiteopac transition-colors duration-200'>
-                <td className='border-b p-3 lg:p-4'>Puissance</td>
-                <td className='border-b p-3 lg:p-4 bg-whiteopac2'>
-                  {carModel.hp} ch
-                </td>
-                <td className='border-b p-3 lg:p-4 text-vividred'>
+            <tbody className='lg:text-lg'>
+              <tr className='bg-whiteopac hover:bg-blackopac2 transition-colors duration-200'>
+                <td className='border-b-2 p-3 lg:p-4'>Puissance</td>
+                <td className='border-b-2 p-3 lg:p-4'>{carModel.hp} ch</td>
+                <td className='border-b-2 p-3 lg:p-4 text-vividred'>
                   {carModel.hpStage1} ch
                 </td>
-                <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
+                <td className='border-b-2 p-3 lg:p-4 text-gold'>
                   + {hpGain} ch
                 </td>
               </tr>
-              <tr className='hover:bg-whiteopac hover:bg-gray-200 transition-colors duration-200'>
-                <td className='border-b p-3 lg:p-4'>Couple</td>
-                <td className='border-b p-3 lg:p-4 bg-whiteopac2'>
-                  {carModel.torque} Nm
-                </td>
-                <td className='border-b p-3 lg:p-4 text-vividred'>
+              <tr className='bg-whiteBGDarker hover:bg-blackopac2 transition-colors duration-200'>
+                <td className='border-b-2 p-3 lg:p-4'>Couple</td>
+                <td className='border-b-2 p-3 lg:p-4'>{carModel.torque} Nm</td>
+                <td className='border-b-2 p-3 lg:p-4 text-vividred'>
                   {carModel.torqueStage1} Nm
                 </td>
-                <td className='bg-whiteopac2 border-b p-3 lg:p-4 text-gold'>
+                <td className='border-b-2 p-3 lg:p-4 text-gold'>
                   + {torqueGain} Nm
                 </td>
               </tr>
@@ -155,7 +150,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
                       </span>
                     </p>
                     {relatedModel.body && (
-                      <p className='text-vividred font-bold flex flex-row items-center space-x-4'>
+                      <p className='font-bold flex flex-row items-center space-x-4'>
                         <img src='/door.svg' className='mb-1 ml-1 h-5' />
                         <span>{renamebody(relatedModel.body)}</span>
                       </p>
@@ -174,7 +169,10 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
                     )}
                     {displayGearbox(relatedModel) && (
                       <p className='flex flex-row items-center space-x-4'>
-                        <img src='/gears.svg' className='mb-1 ml-1 h-5' />
+                        <img
+                          src='/gears.svg'
+                          className='mb-1 ml-1 h-5 invert'
+                        />
                         <span>{displayGearbox(relatedModel)}</span>
                       </p>
                     )}

@@ -38,7 +38,7 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
     )
 
   return (
-    <div className='relative carousel'>
+    <div className='relative carousel bg-blackopac rounded-lg'>
       <img
         src={images[currentIndex]}
         alt='Car image'
@@ -46,15 +46,15 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
       />
       <button
         onClick={prevImage}
-        className='absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-black bg-opacity-15 hover:bg-opacity-30 rounded-full'
+        className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-whiteopac2 hover:whiteopac rounded-full'
       >
-        <img src='/arrow_prev_red.svg' alt='Previous' className='h-6 w-6' />
+        <img src='/arrow_prev.svg' alt='Previous' className='h-6 w-6' />
       </button>
       <button
         onClick={nextImage}
-        className='absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-black bg-opacity-15 hover:bg-opacity-30 rounded-full'
+        className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-whiteopac2 hover:whiteopac rounded-full'
       >
-        <img src='/arrow_next_red.svg' alt='Next' className='h-6 w-6' />
+        <img src='/arrow_next.svg' alt='Next' className='h-6 w-6' />
       </button>
     </div>
   )
@@ -101,7 +101,7 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
       <div
         ref={modalRef}
-        className='bg-black p-8 border border-whiteopac rounded-lg w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
+        className='bg-whiteBG p-8 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
       >
         {!post && (
           <div className='text-center text-lg lg:text-xl'>
@@ -110,7 +110,7 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
         )}
 
         {post === 'error' && (
-          <div className='text-center text-red-500'>
+          <div className='text-center text-white'>
             <p>Impossible de récupérer les détails de l'annonce.</p>
           </div>
         )}
@@ -124,7 +124,7 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
               <button onClick={onClose} className='w-1/10'>
                 <img
                   src='/close.svg'
-                  className='h-6 lg:h-8 rounded hover:text-white hover:filter hover:brightness-0 hover:invert '
+                  className='h-6 lg:h-8 rounded hover:brightness-50'
                 />
               </button>
             </div>
@@ -177,7 +177,7 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
                 href={`tel:${post.phone}`}
                 className='w-full flex mx-auto mt-4'
               >
-                <button className='mx-auto bg-red text-white p-2 px-6 rounded-lg hover:bg-vividred transition duration-300 ease-in-out mb-3'>
+                <button className='mx-auto p-3 px-6 rounded-xl font-semibold hover:bg-titan text-white bg-blackopac transition duration-300 ease-in-out mb-3'>
                   Appeler le vendeur
                 </button>
               </a>

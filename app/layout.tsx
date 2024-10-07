@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: 'https://autocentral.tn',
     title: "AutoCentral.tn voitures d'occasion",
     siteName: "AutoCentral.tn voitures d'occasion",
-    images: '/logo_bg.svg'
+    images: '/logo_square.svg'
   },
   metadataBase: new URL('https://autocentral.tn'),
   icons: {
@@ -35,9 +35,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='fr'>
-      <body className={`${inter.className} flex flex-col min-h-screen bg-red`}>
+      <body
+        className={`${inter.className} flex flex-col min-h-screen bg-blackopac`}
+      >
         <Header />
-        <main className='flex-grow bg-black'>
+        <main className='flex-grow bg-whiteBG'>
           <div className='w-[95%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>
             {children}
           </div>

@@ -28,25 +28,22 @@ function CarMakes({ carMakes }: CarMakesProps) {
   )
 
   return (
-    <div className='mt-12 lg:mt-16'>
+    <div className='mt-12 lg:mt-16 text-black'>
       {carMakes.length > 0 && (
         <>
           <p className='text-left w-full text-xl lg:text-2xl'>
-            Fiche technique & motorisation
+            Fiches techniques & motorisations
           </p>
-          <div className='flex space-x-1 items-center text-left w-full text-m lg:text-l'>
+          {/* <div className='flex space-x-1 items-center text-left w-full text-m lg:text-l'>
             <span>Par</span>
             <button
               onClick={() => router.push('/autotech-reprog')}
-              className='text-cream font-extrabold italic underline underline-offset-2 hover:text-white hover:brightness-0 hover:invert flex items-center space-x-1'
+              className='font-extrabold italic underline-offset-2 hover:underline flex items-center space-x-1'
             >
               <span>Autotech-Reprogrammation</span>
-              <img
-                src='/arrow_square_red.svg'
-                className='h-5 hover:text-red hover:brightness-0 hover:invert'
-              />
+              <img src='/arrow_square.svg' className='h-5' />
             </button>
-          </div>
+          </div> */}
           {common.length > 0 && (
             <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
               {common.map((carMake) => (

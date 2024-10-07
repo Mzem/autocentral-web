@@ -8,8 +8,13 @@
   --yellow: #b3ae14;
   --orange: #b36b14;
   --black: #151515;
+  --blacklight: #2d2d2d;
+  --blackopac: #151515f5;
+  --blackopac2: #15151560;
   --pureblack: #000000;
   --white: #ffffff;
+  --whiteBG: #f5f5f7;
+  --whiteBGDarker: #e7e7e7e7;
   --whiteopac: #ffffff2f;
   --whiteopac2: #ffffff10;
   --whiteopac3: #ffffff05;
@@ -37,7 +42,7 @@ input[type='radio']:focus {
   @apply ring-2 ring-red; /* Apply a red focus ring */
 }
 input[type='checkbox']:focus {
-  @apply ring-2 ring-cream; /* Apply a red focus ring */
+  @apply ring-2 ring-white; /* Apply a red focus ring */
 }
 
 input[type='radio'] {
@@ -48,7 +53,7 @@ input[type='checkbox'] {
   color: var(--cream);
 }
 input[type='checkbox']:checked {
-  color: var(--vividred);
+  color: var(--whiteopac);
 }
 
 /* Hide the spinner (arrows) in number input fields */

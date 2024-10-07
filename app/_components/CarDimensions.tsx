@@ -38,15 +38,17 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
         <img src='/car.svg' alt='Dimensions' className='max-w-2xl' />
 
         {lengthValue && (
-          <div className='absolute top-1/3 flex justify-between items-center'>
-            <div className='p-1 rounded text-gold'>{lengthValue} mm</div>
+          <div className='absolute top-10 flex justify-between items-center'>
+            <div className='p-[1px] rounded text-white bg-blackopac2'>
+              Longeur {lengthValue} mm
+            </div>
             <svg className='h-8 w-full'>
               <line
                 x1='10%'
                 y1='50%'
                 x2='90%'
                 y2='50%'
-                stroke='gold'
+                stroke='black'
                 strokeWidth='1.5'
                 markerStart='url(#arrow)'
                 markerEnd='url(#arrow)'
@@ -60,7 +62,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='5'
                   orient='auto'
                 >
-                  <path d='M0,0 L10,5 L0,10 Z' fill='gold' />
+                  <path d='M0,0 L10,5 L0,10 Z' fill='black' />
                 </marker>
               </defs>
             </svg>
@@ -75,11 +77,11 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
               preserveAspectRatio='xMidYMid meet'
             >
               <line
-                x1='50%'
-                y1='35%'
-                x2='50%'
-                y2='90%'
-                stroke='white'
+                x1='80%'
+                y1='30%'
+                x2='80%'
+                y2='80%'
+                stroke='black'
                 strokeWidth='1' // Reduced line thickness
                 markerStart='url(#arrowHeight)'
                 markerEnd='url(#arrowHeight)'
@@ -93,13 +95,13 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='3'
                   orient='auto'
                 >
-                  <path d='M0,0 L6,3 L0,6 Z' fill='white' />
+                  <path d='M0,0 L6,3 L0,6 Z' fill='black' />
                 </marker>
               </defs>
             </svg>
 
             {weightValue && (
-              <div className='p-1 rounded text-white bg-black'>
+              <div className='p-[1px] rounded text-white bg-blackopac2'>
                 Poids {weightValue + ' kg'}
               </div>
             )}
@@ -108,8 +110,8 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {widthValue && (
           <div className='absolute bottom-6 w-full flex justify-between items-center'>
-            <div className='bg-gray-100 p-1 rounded text-vividred'>
-              {widthValue} mm
+            <div className='p-[1px] rounded text-white bg-blackopac2'>
+              Largeur {widthValue} mm
             </div>
             <svg className='h-8 w-full'>
               <line
@@ -117,7 +119,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                 y1='50%'
                 x2='90%'
                 y2='50%'
-                stroke='red'
+                stroke='black'
                 strokeWidth='1.5'
                 markerStart='url(#arrowWidth)'
                 markerEnd='url(#arrowWidth)'
@@ -131,7 +133,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
                   refY='5'
                   orient='auto'
                 >
-                  <path d='M0,0 L10,5 L0,10 Z' fill='red' />
+                  <path d='M0,0 L10,5 L0,10 Z' fill='black' />
                 </marker>
               </defs>
             </svg>
@@ -139,8 +141,10 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
         )}
 
         {heightValue && (
-          <div className='absolute right-0 top-0 p-6 mr-6'>
-            <p className='p-1 rounded'>{heightValue} mm</p>
+          <div className='absolute right-0 top-6'>
+            <p className='p-[1px] rounded bg-blackopac2 text-white'>
+              Hauteur {heightValue} mm
+            </p>
           </div>
         )}
       </div>
