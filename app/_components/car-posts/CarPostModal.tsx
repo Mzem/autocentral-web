@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { CarPost } from '../../api/services/car-posts.service'
+import { CarPost } from '../../../api/services/car-posts.service'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 

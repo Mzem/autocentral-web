@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
-const CarReg: React.FC = () => {
+const CarRegSearch: React.FC = () => {
   const router = useRouter()
 
   const [leftInputTN, setLeftInputTN] = useState<string>('')
@@ -100,4 +100,4 @@ const CarReg: React.FC = () => {
   )
 }
 
-export default CarReg
+export default CarRegSearch

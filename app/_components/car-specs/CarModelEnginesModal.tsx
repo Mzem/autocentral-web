@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { ModelListItem } from '../../api/services/car-model.service'
+import { ModelListItem } from '../../../api/services/car-model.service'
 import { useRouter } from 'next/navigation'
 
 type CarModelEnginesModalProps = {

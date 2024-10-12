@@ -1,5 +1,5 @@
 import { getCarMakes } from '../../api/services/car-makes.service'
-import CarMakes from '../_components/CarMakes'
+import CarMakes from '../_components/car-specs/CarMakes'
 import ShopHeader from '../_components/ShopHeader'
 
 export default async function Autotech() {

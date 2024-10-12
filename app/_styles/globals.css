@@ -50,7 +50,7 @@ input[type='radio'] {
 }
 
 input[type='checkbox'] {
-  color: var(--cream);
+  color: var(--white);
 }
 input[type='checkbox']:checked {
   color: var(--whiteopac);

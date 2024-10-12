@@ -1,17 +1,20 @@
 'use client'
 
 import React from 'react'
-import { CarModel, RelatedCarModel } from '../../api/services/car-model.service'
+import {
+  CarModel,
+  RelatedCarModel
+} from '../../../api/services/car-model.service'
 import CarDimensions from './CarDimensions'
-import ShopHeader from './ShopHeader'
-import { sortByStringField } from '../utils'
+import ShopHeader from '../ShopHeader'
+import { sortByStringField } from '../../utils'
 import { useRouter } from 'next/navigation'
 
-type FicheTechniqueProps = {
+type CarSpecsProps = {
   carModel: CarModel
 }
 
-const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
+const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
   const router = useRouter()
   const hpGain =
     carModel.hp && carModel.hpStage1 ? carModel.hpStage1 - carModel.hp : null
@@ -220,7 +223,7 @@ const FicheTechnique: React.FC<FicheTechniqueProps> = ({ carModel }) => {
   )
 }
 
-export default FicheTechnique
+export default CarSpecs
 
 function startYear(years?: string): string | undefined {
   return years?.split(' ')[0]

@@ -77,17 +77,8 @@ export default function Header() {
                 router.push('/')
               }}
             >
-              <img src='/logo_nav.svg' className='h-5' />
+              <img src='/flag_tn.svg' className='h-5' />
               <p className='text-sm'>Véhicules d'occasion</p>
-            </button>
-            <button
-              className='flex space-x-2 items-center hover:underline'
-              onClick={() => {
-                router.push('/vendeurs')
-              }}
-            >
-              <img src='/man.svg' className='h-5' />
-              <p className='text-sm'>Vendeurs professionnels</p>
             </button>
             <button
               className='flex space-x-2 items-center hover:underline'
@@ -97,6 +88,15 @@ export default function Header() {
             >
               <img src='/gears.svg' className='h-5' />
               <p className='text-sm'>Fiches techniques / Reprog</p>
+            </button>
+            <button
+              className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
+              // onClick={() => {
+              //   router.push('/vendeurs')
+              // }}
+            >
+              <img src='/man.svg' className='h-5' />
+              <p className='text-sm'>Vendeurs professionnels</p>
             </button>
             <button
               className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
@@ -134,20 +134,10 @@ export default function Header() {
             }}
           >
             Voitures d'occasion
-            <img src='/logo_nav.svg' className='h-6 ml-2 mr-1' />
+            <img src='/flag_tn.svg' className='h-6 ml-2 mr-1' />
           </button>
           <button
             className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
-            onClick={() => {
-              setIsMenuOpen(false)
-              router.push('/vendeurs')
-            }}
-          >
-            Vendeurs professionnels
-            <img src='/man.svg' className='h-6 ml-2 mr-1' />
-          </button>
-          <button
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
               router.push('/autotech-reprog')
@@ -155,6 +145,16 @@ export default function Header() {
           >
             Fiches techniques / Reprog
             <img src='/gears.svg' className='h-6 ml-2 mr-1' />
+          </button>
+          <button
+            className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            // onClick={() => {
+            //   setIsMenuOpen(false)
+            //   router.push('/vendeurs')
+            // }}
+          >
+            Vendeurs professionnels
+            <img src='/man.svg' className='h-6 ml-2 mr-1' />
           </button>
           <button
             className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac flex justify-end'

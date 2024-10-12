@@ -1,5 +1,5 @@
 import { getCarModel } from '../../../../api/services/car-model.service'
-import FicheTechnique from '../../../_components/FicheTechnique'
+import CarSpecs from '../../../_components/car-specs/CarSpecs'
 
 export default async function FicheTechniqueMake({
   params
@@ -8,5 +8,5 @@ export default async function FicheTechniqueMake({
 }) {
   const carModel = await getCarModel(params.engineId)
 
-  return <>{carModel && <FicheTechnique carModel={carModel} />}</>
+  return <>{carModel && <CarSpecs carModel={carModel} />}</>
 }
