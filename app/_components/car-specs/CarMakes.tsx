@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { CarMake } from '../../../api/services/car-makes.service'
-import { sortByStringField } from '../../utils'
+import { sortByStringField } from '../../helpers'
 
 type CarMakesProps = {
   carMakes: CarMake[]

@@ -16,7 +16,7 @@ const CarRegSearch: React.FC = () => {
     if (input.length <= 3) {
       setLeftInputTN(input)
       if (input.length === 3) {
-        // @ts-ignore
+        // @ts-expect-error
         rightInputRef.current.focus()
       }
     }

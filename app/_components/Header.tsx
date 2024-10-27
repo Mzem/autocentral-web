@@ -13,13 +13,13 @@ export default function Header() {
     setIsMenuOpen((prev) => !prev)
   }
 
-  // @ts-ignore
-  const handleClickOutside = (event) => {
+  // @@ts-expect-error
+  const handleClickOutside = (event: any) => {
     if (
       menuRef.current &&
-      // @ts-ignore
+      // @ts-expect-error
       !menuRef.current.contains(event.target) &&
-      // @ts-ignore
+      // @ts-expect-error
       !menuButtonRef.current.contains(event.target) // Ignore clicks on menu button
     ) {
       setIsMenuOpen(false)
@@ -77,7 +77,7 @@ export default function Header() {
               }}
             >
               <img src='/flag_tn.svg' className='h-5' />
-              <p className='text-sm'>Véhicules d'occasion</p>
+              <p className='text-sm'>Voitures d'occasion</p>
             </button>
             <button
               className='flex space-x-2 items-center hover:underline'

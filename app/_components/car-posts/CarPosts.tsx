@@ -7,7 +7,7 @@ import {
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
-import { regionsSelect } from '../../utils'
+import { regionsSelect } from '../../types'
 import { reactSelectFilterStyle } from '../customStyles'
 import CarPostModal from './CarPostModal'
 
@@ -205,7 +205,7 @@ export default function CarPostsFeed({
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
   const [page, setPage] = useState(initialFilters?.page || 1)
   const [loadingPosts, setLoadingPosts] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(initialPosts.length === API_PAGE_SIZE)
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
   // Relative search bar
@@ -302,11 +302,11 @@ export default function CarPostsFeed({
   }, [showFixedSearchBar, showFixedFilters])
 
   useEffect(() => {
-    // @ts-ignore
+    // @ts-expect-error
     const handleClickOutside = (event) => {
       if (
         fixedSearchBarRef.current &&
-        // @ts-ignore
+        // @ts-expect-error
         !fixedSearchBarRef.current.contains(event.target)
       ) {
         setShowFixedFilters(false)

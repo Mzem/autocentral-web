@@ -7,7 +7,7 @@ import {
 } from '../../../api/services/car-model.service'
 import CarDimensions from './CarDimensions'
 import ShopHeader from '../ShopHeader'
-import { sortByStringField } from '../../utils'
+import { sortByStringField } from '../../helpers'
 import { useRouter } from 'next/navigation'
 
 type CarSpecsProps = {

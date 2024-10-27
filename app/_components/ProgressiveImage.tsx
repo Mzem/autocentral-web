@@ -5,7 +5,7 @@ const ProgressiveImage = ({
   placeholder,
   alt,
   onClick,
-  className,
+  className
 }: {
   src: string
   placeholder: string

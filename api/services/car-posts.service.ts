@@ -3,6 +3,7 @@ import { Region } from './regions.service'
 import { MerchantListItem } from './merchants.service'
 import { CarModel } from './car-model.service'
 import { ApiError } from '../httpClient'
+import { Color, Fuel, InteriorType } from '../../app/types'
 
 export interface CarPostListItem {
   id: string
@@ -72,25 +73,59 @@ export interface CarPost {
 
 export interface GetCarPostsFilters {
   page: number
-  q?: string
+  merchantId?: string
+  make?: string
+  model?: string
+  regionIds?: string[]
+  fuel?: Fuel
+  color?: Color
+  interiorType?: InteriorType
+  maxPrice?: number
+  minPrice?: number
+  maxYear?: number
+  minYear?: number
+  maxCV?: number
+  minCV?: number
+  alarm?: boolean
+  keyless?: boolean
+  camera?: boolean
   isShop?: boolean
   isAuto?: boolean
   firstOwner?: boolean
   exchange?: boolean
   leasing?: boolean
-  regionIds?: string[]
+  q?: string
 }
 
 export function generateCarPostsQueryParams(
   filters: GetCarPostsFilters
 ): string {
   let qp = `?page=${filters.page}`
-  if (filters.q) qp += `&q=${filters.q}`
+  if (filters.merchantId) qp += `&merchantId=${filters.merchantId}`
+  if (filters.make) qp += `&make=${filters.make}`
+  if (filters.model) qp += `&model=${filters.model}`
+  if (filters.regionIds)
+    filters.regionIds.forEach((regionId) => {
+      qp += `&regionIds=${regionId}`
+    })
+  if (filters.fuel) qp += `&fuel=${filters.fuel}`
+  if (filters.color) qp += `&color=${filters.color}`
+  if (filters.interiorType) qp += `&interiorType=${filters.interiorType}`
+  if (filters.maxPrice) qp += `&maxPrice=${filters.maxPrice}`
+  if (filters.minPrice) qp += `&minPrice=${filters.minPrice}`
+  if (filters.maxYear) qp += `&maxYear=${filters.maxYear}`
+  if (filters.minYear) qp += `&minYear=${filters.minYear}`
+  if (filters.maxCV) qp += `&maxCV=${filters.maxCV}`
+  if (filters.minCV) qp += `&minCV=${filters.minCV}`
+  if (filters.alarm) qp += `&alarm=true`
+  if (filters.keyless) qp += `&keyless=true`
+  if (filters.camera) qp += `&camera=true`
   if (filters.isShop) qp += '&isShop=true'
   if (filters.isAuto) qp += '&isAuto=true'
   if (filters.firstOwner) qp += '&firstOwner=true'
   if (filters.exchange) qp += '&exchange=true'
   if (filters.leasing) qp += '&leasing=true'
+  if (filters.q) qp += `&q=${filters.q}`
 
   return qp
 }
