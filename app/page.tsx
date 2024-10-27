@@ -41,11 +41,7 @@ export default async function Home({
           nouvelles annonces par jour
         </p>
       </div>
-      <CarPostsFeed
-        withFixed={true}
-        initialPosts={posts}
-        initialFilters={filters}
-      />
+      <CarPostsFeed initialPosts={posts} initialFilters={filters} />
     </>
   )
 }

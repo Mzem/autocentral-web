@@ -44,7 +44,7 @@ export default function Header() {
     <div className='bg-whiteBG'>
       {/* Header with fixed position */}
       <div className='w-full fixed bg-blackopac z-10'>
-        <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-12 lg:h-16'>
+        <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-10 lg:h-16'>
           {/* Mobile Logo on the Right and Desktop Logo */}
           <button
             onClick={() => {
@@ -64,8 +64,8 @@ export default function Header() {
             ref={menuButtonRef}
             className='lg:hidden flex flex-col lg:flex-row-reverse items-center text-titan'
           >
-            <img src='/menu.svg' className='h-8 lg:h-12' alt='Menu' />
-            <span className='text-xs lg:text-base lg:mr-2'>Menu</span>
+            <img src='/menu.svg' className='h-7 lg:h-12' alt='Menu' />
+            <span className='text-xs lg:text-base lg:mr-2 -mt-1'>Menu</span>
           </button>
 
           {/* Desktop Menu Links */}
@@ -123,7 +123,7 @@ export default function Header() {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className='lg:hidden fixed bg-blackopac top-12 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
+          className='lg:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
         >
           <button
             className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
@@ -179,7 +179,7 @@ export default function Header() {
       )}
 
       {/* Bottom Spacer to avoid content overlap */}
-      <div className={`mt-12 lg:mt-16`}></div>
+      <div className={`mt-10 lg:mt-16`}></div>
     </div>
   )
 }

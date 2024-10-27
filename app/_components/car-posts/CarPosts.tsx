@@ -13,212 +13,36 @@ import CarPostModal from './CarPostModal'
 
 const API_PAGE_SIZE = 20
 
-const SearchBar = ({
-  isFixed,
-  showFilters,
-  setShowFilters,
-  showMoreFilters,
-  setShowMoreFilters,
-  fixedSearchBarRef,
-  showFixedSearchBar,
-  showFixedFilters,
-  setShowFixedFilters,
-  searchText,
-  isShop,
-  setIsShop,
-  isFirstOwner,
-  setFirstOwner,
-  isExchange,
-  setExchange,
-  isLeasing,
-  setLeasing,
-  isAuto,
-  setIsAuto,
-  regions,
-  setRegions,
-  handleSearchTextChange,
-  handleSearch
-}: {
-  isFixed: boolean
-  showFilters: any
-  setShowFilters: any
-  showMoreFilters: any
-  setShowMoreFilters: any
-  fixedSearchBarRef: any
-  showFixedSearchBar: any
-  showFixedFilters: any
-  setShowFixedFilters: any
-  searchText: any
-  isShop: any
-  setIsShop: any
-  isFirstOwner: any
-  setFirstOwner: any
-  isExchange: any
-  setExchange: any
-  isLeasing: any
-  setLeasing: any
-  isAuto: any
-  setIsAuto: any
-  regions: any[]
-  setRegions: any
-  handleSearchTextChange: any
-  handleSearch: any
-}) =>
-  (!isFixed || showFixedSearchBar) && (
-    <div
-      ref={isFixed ? fixedSearchBarRef : undefined}
-      className={`bg-blackopac ${
-        isFixed
-          ? 'fixed z-10 top-[2.96874988rem] lg:top-[4rem] w-full lg:w-4/6 left-0 lg:left-[16.7%] lg:rounded-b lg:p-1 border-b-2 lg:border-b-4 border-whiteopac2 lg:border-whiteopac text-center flex flex-col'
-          : 'w-full p-[2px] rounded-lg text-center flex flex-col'
-      }`}
-    >
-      <div className='flex flex-row items-center justify-between'>
-        <input
-          type='text'
-          value={searchText}
-          onClick={() => {
-            if (isFixed) setShowFixedFilters(true)
-            else setShowFilters(true)
-          }}
-          onChange={handleSearchTextChange}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder='Rechercher un véhicule...'
-          className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-5/6'
-        />
-
-        <div>
-          <button
-            className='w-10 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
-            onClick={handleSearch}
-          >
-            <img
-              src='/search.svg'
-              alt='Lancer la recherche'
-              className='h-4 lg:h-5 mx-auto'
-            />
-          </button>
-          <button
-            className='w-8 lg:w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          >
-            <img
-              src='/refresh.svg'
-              alt='Réinitialiser les filtres'
-              className='h-4 lg:h-5 mx-auto'
-            />
-          </button>
-        </div>
-      </div>
-      {((!isFixed && showFilters) || (isFixed && showFixedFilters)) && (
-        <div
-          className={`${
-            isFixed ? 'flex flex-col mt-2 mb-2' : 'flex flex-col my-1 lg:my-2'
-          }`}
-        >
-          <Select
-            isMulti
-            options={regionsSelect}
-            onChange={(selected) =>
-              setRegions(selected as Array<{ value: string; label: string }>)
-            }
-            unstyled
-            styles={reactSelectFilterStyle}
-            className='w-1/3 lg:w-1/6 ml-[11px] mb-1 bg-whiteopac2 rounded'
-            classNamePrefix='react-select'
-          />
-          <label className='flex items-center ml-3 cursor-pointer text-base'>
-            <input
-              type='checkbox'
-              checked={isShop}
-              onChange={() => setIsShop(!isShop)}
-              className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
-            />
-            <span className='text-xs lg:text-sm'>Vendeurs PRO</span>
-            <img src='/badge.svg' className='ml-1 h-3' />
-          </label>
-          <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-            <input
-              type='checkbox'
-              checked={isFirstOwner}
-              onChange={() => setFirstOwner(!isFirstOwner)}
-              className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-            />
-            <span className='text-xs lg:text-sm'>Première main</span>
-          </label>
-          <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-            <input
-              type='checkbox'
-              checked={isAuto}
-              onChange={() => setIsAuto(!isAuto)}
-              className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-            />
-            <span className='text-xs lg:text-sm'>Boîte automatique</span>
-          </label>
-          <button
-            onClick={() => setShowMoreFilters(!showMoreFilters)}
-            className='text-xs lg:text-sm mb-1 mt-3 hover:underline'
-          >
-            {`Voir ${showMoreFilters ? 'moins' : 'plus'} de filtres ${
-              showMoreFilters ? '-' : '+'
-            }`}
-          </button>
-          {showMoreFilters && (
-            <>
-              <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                <input
-                  type='checkbox'
-                  checked={isExchange}
-                  onChange={() => setExchange(!isExchange)}
-                  className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-                />
-                <span className='text-xs lg:text-sm'>Echange possible</span>
-              </label>
-              <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                <input
-                  type='checkbox'
-                  checked={isLeasing}
-                  onChange={() => setLeasing(!isLeasing)}
-                  className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-                />
-                <span className='text-xs lg:text-sm'>Leasing</span>
-              </label>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  )
-
 export default function CarPostsFeed({
-  withFixed,
   initialPosts,
   initialFilters
 }: {
-  withFixed: boolean
   initialPosts: CarPostListItem[]
   initialFilters?: GetCarPostsFilters
 }) {
   // Posts display & pagination
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
-  const [page, setPage] = useState(initialFilters?.page || 1)
   const [loadingPosts, setLoadingPosts] = useState(false)
   const [hasMore, setHasMore] = useState(initialPosts.length === API_PAGE_SIZE)
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
-  // Relative search bar
-  const [showFilters, setShowFilters] = useState(false)
-  const [showMoreFilters, setShowMoreFilters] = useState(false)
-
-  // Fixed search bar
-  const fixedSearchBarRef = useRef(null)
-  const [showFixedSearchBar, setShowFixedSearchBar] = useState(false)
-  const [showFixedFilters, setShowFixedFilters] = useState(false)
-
   // Filters
-  const [searchText, setSearchText] = useState<string>(initialFilters?.q || '')
+  const [page, setPage] = useState(initialFilters?.page || 1)
+  const [make, setMake] = useState(initialFilters?.make)
+  const [model, setModel] = useState(initialFilters?.model)
+  const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
+  const [fuel, setFuel] = useState(initialFilters?.fuel)
+  const [color, setColor] = useState(initialFilters?.color)
+  const [interiorType, setInteriorType] = useState(initialFilters?.interiorType)
+  const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice)
+  const [minPrice, setMinPrice] = useState(initialFilters?.minPrice)
+  const [maxYear, setMaxYear] = useState(initialFilters?.maxYear)
+  const [minYear, setMinYear] = useState(initialFilters?.minYear)
+  const [maxCV, setMaxCV] = useState(initialFilters?.maxCV)
+  const [minCV, setMinCV] = useState(initialFilters?.minCV)
+  const [alarm, setAlarm] = useState(initialFilters?.alarm || false)
+  const [keyless, setKeyless] = useState(initialFilters?.keyless || false)
+  const [camera, setCamera] = useState(initialFilters?.camera || false)
   const [isShop, setIsShop] = useState(initialFilters?.isShop || false)
   const [isAuto, setIsAuto] = useState(initialFilters?.isAuto || false)
   const [firstOwner, setFirstOwner] = useState(
@@ -226,20 +50,41 @@ export default function CarPostsFeed({
   )
   const [exchange, setExchange] = useState(initialFilters?.exchange || false)
   const [leasing, setLeasing] = useState(initialFilters?.leasing || false)
-  const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
+  const [searchText, setSearchText] = useState<string>(initialFilters?.q || '')
+
+  // Relative search bar
+  const [showFilters, setShowFilters] = useState(false)
+  const [showMoreFilters, setShowMoreFilters] = useState(
+    alarm || keyless || camera || leasing || exchange
+  )
 
   const searchDivRef = useRef<HTMLDivElement | null>(null)
+  const [showSearchButton, setShowSearchButton] = useState(false)
 
   function stateToFilters(page: number): GetCarPostsFilters {
     return {
       page,
-      q: searchText,
+      make,
+      model,
+      regionIds: regions.map((region) => region.value),
+      fuel,
+      color,
+      interiorType,
+      maxPrice,
+      minPrice,
+      maxCV,
+      minCV,
+      maxYear,
+      minYear,
+      alarm,
+      keyless,
+      camera,
       isShop,
       isAuto,
       firstOwner,
       exchange,
       leasing,
-      regionIds: regions.map((region) => region.value)
+      q: searchText
     }
   }
 
@@ -267,118 +112,176 @@ export default function CarPostsFeed({
       })
   }
 
-  // Fixed search bar & filters display control logic
-  const lastScrollY = useRef(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const targetDivPosition =
-        searchDivRef.current?.getBoundingClientRect().top ?? 0
-
-      // Ensure this logic is only triggered by scrolling, not by hover
-      if (window.scrollY > 9 && window.scrollY > targetDivPosition + 200) {
-        if (window.scrollY > lastScrollY.current) {
-          // Hide the search bar only if scrolled down more than 60px
-          if (window.scrollY - lastScrollY.current > 60) {
-            if (showFixedSearchBar) setShowFixedSearchBar(false)
-            if (showFixedFilters) setShowFixedFilters(false)
-          }
-        } else {
-          // Scrolling up: show the search bar
-          if (lastScrollY.current - window.scrollY > 170) {
-            if (showFixedSearchBar) setShowFixedFilters(false)
-          }
-          if (!showFixedSearchBar) setShowFixedSearchBar(true)
-        }
-      } else {
-        if (showFixedSearchBar) setShowFixedSearchBar(false)
-      }
-
-      lastScrollY.current = window.scrollY
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [showFixedSearchBar, showFixedFilters])
-
-  useEffect(() => {
-    // @ts-expect-error
-    const handleClickOutside = (event) => {
-      if (
-        fixedSearchBarRef.current &&
-        // @ts-expect-error
-        !fixedSearchBarRef.current.contains(event.target)
-      ) {
-        setShowFixedFilters(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
-
   function handleNewSearch() {
     window.location.href = '/' + generateCarPostsQueryParams(stateToFilters(1))
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (searchDivRef.current) {
+        const rect = searchDivRef.current.getBoundingClientRect()
+        setShowSearchButton(rect.top < -window.innerHeight / 2)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSearch = () => {
+    setShowFilters(true)
+    if (searchDivRef.current) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <>
-      <SearchBar
-        isFixed={false}
-        showFilters={showFilters}
-        setShowFilters={setShowFilters}
-        showMoreFilters={showMoreFilters}
-        setShowMoreFilters={setShowMoreFilters}
-        fixedSearchBarRef={fixedSearchBarRef}
-        showFixedSearchBar={showFixedSearchBar}
-        showFixedFilters={showFixedFilters}
-        setShowFixedFilters={setShowFixedFilters}
-        searchText={searchText}
-        isShop={isShop}
-        setIsShop={setIsShop}
-        isFirstOwner={firstOwner}
-        setFirstOwner={setFirstOwner}
-        isExchange={exchange}
-        setExchange={setExchange}
-        isLeasing={leasing}
-        setLeasing={setLeasing}
-        isAuto={isAuto}
-        setIsAuto={setIsAuto}
-        regions={regions}
-        setRegions={setRegions}
-        handleSearchTextChange={handleSearchTextChange}
-        handleSearch={handleNewSearch}
-      />
-      {withFixed && (
-        <SearchBar
-          isFixed={true}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-          showMoreFilters={showMoreFilters}
-          setShowMoreFilters={setShowMoreFilters}
-          fixedSearchBarRef={fixedSearchBarRef}
-          showFixedSearchBar={showFixedSearchBar}
-          showFixedFilters={showFixedFilters}
-          setShowFixedFilters={setShowFixedFilters}
-          searchText={searchText}
-          isShop={isShop}
-          setIsShop={setIsShop}
-          isFirstOwner={firstOwner}
-          setFirstOwner={setFirstOwner}
-          isExchange={exchange}
-          setExchange={setExchange}
-          isLeasing={leasing}
-          setLeasing={setLeasing}
-          isAuto={isAuto}
-          setIsAuto={setIsAuto}
-          regions={regions}
-          setRegions={setRegions}
-          handleSearchTextChange={handleSearchTextChange}
-          handleSearch={handleNewSearch}
-        />
-      )}
+      <div
+        ref={searchDivRef}
+        className='bg-blackopac w-full p-[2px] rounded-lg text-center flex flex-col'
+      >
+        <div className='flex flex-row items-center justify-between'>
+          <input
+            type='text'
+            value={searchText}
+            onClick={() => {
+              setShowFilters(true)
+            }}
+            onChange={handleSearchTextChange}
+            onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
+            placeholder='Rechercher un véhicule...'
+            className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-5/6'
+          />
+
+          <div>
+            <button
+              className='w-10 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
+              onClick={handleNewSearch}
+            >
+              <img
+                src='/search.svg'
+                alt='Lancer la recherche'
+                className='h-4 lg:h-5 mx-auto'
+              />
+            </button>
+            <button
+              className='w-8 lg:w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
+              onClick={() => {
+                window.location.href = '/'
+              }}
+            >
+              <img
+                src='/refresh.svg'
+                alt='Réinitialiser les filtres'
+                className='h-4 lg:h-5 mx-auto'
+              />
+            </button>
+          </div>
+        </div>
+        {showFilters && (
+          <div className={'flex flex-col my-1 lg:my-2'}>
+            {/* <Select
+              isMulti
+              options={regionsSelect}
+              onChange={(selected) =>
+                setRegions(selected as Array<{ value: string; label: string }>)
+              }
+              unstyled
+              styles={reactSelectFilterStyle}
+              className='w-1/3 lg:w-1/6 ml-[11px] mb-1 bg-whiteopac2 rounded'
+              classNamePrefix='react-select'
+            /> */}
+            <label className='flex items-center ml-3 cursor-pointer text-base'>
+              <input
+                type='checkbox'
+                checked={isShop}
+                onChange={() => setIsShop(!isShop)}
+                className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
+              />
+              <span className='text-xs lg:text-sm'>Vendeurs PRO</span>
+              <img src='/badge.svg' className='ml-1 h-3' />
+            </label>
+            <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+              <input
+                type='checkbox'
+                checked={firstOwner}
+                onChange={() => setFirstOwner(!firstOwner)}
+                className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+              />
+              <span className='text-xs lg:text-sm'>Première main</span>
+            </label>
+            <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+              <input
+                type='checkbox'
+                checked={isAuto}
+                onChange={() => setIsAuto(!isAuto)}
+                className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+              />
+              <span className='text-xs lg:text-sm'>Boîte automatique</span>
+            </label>
+            <button
+              onClick={() => setShowMoreFilters(true)}
+              className='text-xs lg:text-sm mb-1 mt-3 hover:underline'
+            >
+              {`${
+                showMoreFilters ? 'Plus de filtres' : 'Voir plus de filtres +'
+              }`}
+            </button>
+            {showMoreFilters && (
+              <>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={alarm}
+                    onChange={() => setAlarm(!alarm)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-sm'>Alarme anti-vol</span>
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={keyless}
+                    onChange={() => setKeyless(!keyless)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-sm'>Démarrage sans clé</span>
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={camera}
+                    onChange={() => setCamera(!camera)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-sm'>
+                    Caméra de stationnement
+                  </span>
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={exchange}
+                    onChange={() => setExchange(!exchange)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-sm'>Echange possible</span>
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={leasing}
+                    onChange={() => setLeasing(!leasing)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-sm'>Leasing</span>
+                </label>
+              </>
+            )}
+          </div>
+        )}
+      </div>
 
       <div
         ref={searchDivRef}
@@ -466,6 +369,20 @@ export default function CarPostsFeed({
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +
+          </button>
+        )}
+
+        {/* Fixed Scroll Button */}
+        {showSearchButton && (
+          <button
+            onClick={scrollToSearch}
+            className='fixed bottom-[1%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blue-700 transition'
+          >
+            <img
+              src='/search.svg'
+              alt='Lancer la recherche'
+              className='h-4 lg:h-5 mx-auto'
+            />
           </button>
         )}
 
