@@ -9,15 +9,15 @@ import Footer from './_components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "AutoCentral.tn voitures d'occasion",
-  description: "AutoCentral.tn voitures d'occasion",
-  applicationName: 'AutoCentral.tn',
+  title: "Voitures d'occasion en Tunisie",
+  description: "autocentral.tn voitures d'occasion",
+  applicationName: 'autocentral.tn',
   keywords: ['tunis', 'tunisie', 'voiture', 'occasion', 'tayara', 'automobile'],
   openGraph: {
     type: 'website',
     url: 'https://autocentral.tn',
-    title: "AutoCentral.tn voitures d'occasion",
-    siteName: "AutoCentral.tn voitures d'occasion",
+    title: "autocentral.tn voitures d'occasion",
+    siteName: "autocentral.tn voitures d'occasion",
     images: '/logo_square.svg'
   },
   metadataBase: new URL('https://autocentral.tn'),

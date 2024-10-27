@@ -10,7 +10,7 @@ const config: Config = {
       orange: '#b36b14',
       black: '#151515',
       blacklight: '#2d2d2d',
-      blackopac: '#151515f5',
+      blackopac: '#151515f1',
       blackopac2: '#15151560',
       pureblack: '#000000',
       white: '#ffffff',
@@ -22,7 +22,7 @@ const config: Config = {
       titan: '#cecdcd',
       cream: '#ede7d1',
       red: '#371211',
-      vividred: '#B31414',
+      vividred: '#B31414ee',
       gold: '#d4af37'
     }
   },

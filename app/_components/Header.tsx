@@ -1,9 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
-import React from 'react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Header() {
   const router = useRouter()
@@ -43,18 +41,19 @@ export default function Header() {
   }, [])
 
   return (
-    <>
-      {/* Bottom Spacer to avoid content overlap */}
-      <div className={`mt-12 lg:mt-16`}></div>
-
+    <div className='bg-whiteBG'>
       {/* Header with fixed position */}
       <div className='w-full fixed bg-blackopac z-10'>
         <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-12 lg:h-16'>
           {/* Mobile Logo on the Right and Desktop Logo */}
-          <button onClick={() => router.push('/')}>
+          <button
+            onClick={() => {
+              window.location.href = '/'
+            }}
+          >
             <img
               src='/logo.svg'
-              alt='AutoCentral.tn'
+              alt='autocentral.tn'
               className='h-20 hover:text-white hover:filter hover:brightness-50'
             />
           </button>
@@ -178,6 +177,9 @@ export default function Header() {
           </button>
         </div>
       )}
-    </>
+
+      {/* Bottom Spacer to avoid content overlap */}
+      <div className={`mt-12 lg:mt-16`}></div>
+    </div>
   )
 }

@@ -70,23 +70,36 @@ export interface CarPost {
   firstOwner: boolean | undefined
 }
 
+export interface GetCarPostsFilters {
+  page: number
+  q?: string
+  isShop?: boolean
+  isAuto?: boolean
+  firstOwner?: boolean
+  exchange?: boolean
+  leasing?: boolean
+  regionIds?: string[]
+}
+
+export function generateCarPostsQueryParams(
+  filters: GetCarPostsFilters
+): string {
+  let qp = `?page=${filters.page}`
+  if (filters.q) qp += `&q=${filters.q}`
+  if (filters.isShop) qp += '&isShop=true'
+  if (filters.isAuto) qp += '&isAuto=true'
+  if (filters.firstOwner) qp += '&firstOwner=true'
+  if (filters.exchange) qp += '&exchange=true'
+  if (filters.leasing) qp += '&leasing=true'
+
+  return qp
+}
+
 export async function getCarPosts(
-  page: number,
-  options: {
-    searchText?: string
-    isShop?: boolean
-    isFirstOwner?: boolean
-    isExchange?: boolean
-    isLeasing?: boolean
-  }
+  filters: GetCarPostsFilters
 ): Promise<CarPostListItem[]> {
   try {
-    let url = `car-posts/?page=${page}`
-    if (options.searchText) url += `&q=${options.searchText}`
-    if (options.isShop) url += '&isShop=true'
-    if (options.isFirstOwner) url += '&firstOwner=true'
-    if (options.isExchange) url += '&exchange=true'
-    if (options.isLeasing) url += '&leasing=true'
+    const url = 'car-posts/' + generateCarPostsQueryParams(filters)
     const { content } = await apiGet<CarPostListItem[]>(url)
     return content
   } catch (e) {

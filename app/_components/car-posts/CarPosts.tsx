@@ -1,70 +1,402 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { CarPostListItem } from '../../../api/services/car-posts.service'
+import React, { useEffect, useRef, useState } from 'react'
+import Select from 'react-select'
+import {
+  CarPostListItem,
+  generateCarPostsQueryParams,
+  GetCarPostsFilters
+} from '../../../api/services/car-posts.service'
+import { regionsSelect } from '../../utils'
+import { reactSelectFilterStyle } from '../customStyles'
 import CarPostModal from './CarPostModal'
-import CarPostsSearchBars from './CarPostsSearchBars'
 
-const CarPostsFeed: React.FC = () => {
-  const [posts, setPosts] = useState<CarPostListItem[]>([])
-  const [page, setPage] = useState(1)
+const API_PAGE_SIZE = 20
+
+const SearchBar = ({
+  isFixed,
+  showFilters,
+  setShowFilters,
+  showMoreFilters,
+  setShowMoreFilters,
+  fixedSearchBarRef,
+  showFixedSearchBar,
+  showFixedFilters,
+  setShowFixedFilters,
+  searchText,
+  isShop,
+  setIsShop,
+  isFirstOwner,
+  setFirstOwner,
+  isExchange,
+  setExchange,
+  isLeasing,
+  setLeasing,
+  isAuto,
+  setIsAuto,
+  regions,
+  setRegions,
+  handleSearchTextChange,
+  handleSearch
+}: {
+  isFixed: boolean
+  showFilters: any
+  setShowFilters: any
+  showMoreFilters: any
+  setShowMoreFilters: any
+  fixedSearchBarRef: any
+  showFixedSearchBar: any
+  showFixedFilters: any
+  setShowFixedFilters: any
+  searchText: any
+  isShop: any
+  setIsShop: any
+  isFirstOwner: any
+  setFirstOwner: any
+  isExchange: any
+  setExchange: any
+  isLeasing: any
+  setLeasing: any
+  isAuto: any
+  setIsAuto: any
+  regions: any[]
+  setRegions: any
+  handleSearchTextChange: any
+  handleSearch: any
+}) =>
+  (!isFixed || showFixedSearchBar) && (
+    <div
+      ref={isFixed ? fixedSearchBarRef : undefined}
+      className={`bg-blackopac ${
+        isFixed
+          ? 'fixed z-10 top-[2.96874988rem] lg:top-[4rem] w-full lg:w-4/6 left-0 lg:left-[16.7%] lg:rounded-b lg:p-1 border-b-2 lg:border-b-4 border-whiteopac2 lg:border-whiteopac text-center flex flex-col'
+          : 'w-full p-[2px] rounded-lg text-center flex flex-col'
+      }`}
+    >
+      <div className='flex flex-row items-center justify-between'>
+        <input
+          type='text'
+          value={searchText}
+          onClick={() => {
+            if (isFixed) setShowFixedFilters(true)
+            else setShowFilters(true)
+          }}
+          onChange={handleSearchTextChange}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          placeholder='Rechercher un véhicule...'
+          className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-5/6'
+        />
+
+        <div>
+          <button
+            className='w-10 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
+            onClick={handleSearch}
+          >
+            <img
+              src='/search.svg'
+              alt='Lancer la recherche'
+              className='h-4 lg:h-5 mx-auto'
+            />
+          </button>
+          <button
+            className='w-8 lg:w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
+            onClick={() => {
+              window.location.href = '/'
+            }}
+          >
+            <img
+              src='/refresh.svg'
+              alt='Réinitialiser les filtres'
+              className='h-4 lg:h-5 mx-auto'
+            />
+          </button>
+        </div>
+      </div>
+      {((!isFixed && showFilters) || (isFixed && showFixedFilters)) && (
+        <div
+          className={`${
+            isFixed ? 'flex flex-col mt-2 mb-2' : 'flex flex-col my-1 lg:my-2'
+          }`}
+        >
+          <Select
+            isMulti
+            options={regionsSelect}
+            onChange={(selected) =>
+              setRegions(selected as Array<{ value: string; label: string }>)
+            }
+            unstyled
+            styles={reactSelectFilterStyle}
+            className='w-1/3 lg:w-1/6 ml-[11px] mb-1 bg-whiteopac2 rounded'
+            classNamePrefix='react-select'
+          />
+          <label className='flex items-center ml-3 cursor-pointer text-base'>
+            <input
+              type='checkbox'
+              checked={isShop}
+              onChange={() => setIsShop(!isShop)}
+              className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
+            />
+            <span className='text-xs lg:text-sm'>Vendeurs PRO</span>
+            <img src='/badge.svg' className='ml-1 h-3' />
+          </label>
+          <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+            <input
+              type='checkbox'
+              checked={isFirstOwner}
+              onChange={() => setFirstOwner(!isFirstOwner)}
+              className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+            />
+            <span className='text-xs lg:text-sm'>Première main</span>
+          </label>
+          <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+            <input
+              type='checkbox'
+              checked={isAuto}
+              onChange={() => setIsAuto(!isAuto)}
+              className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+            />
+            <span className='text-xs lg:text-sm'>Boîte automatique</span>
+          </label>
+          <button
+            onClick={() => setShowMoreFilters(!showMoreFilters)}
+            className='text-xs lg:text-sm mb-1 mt-3 hover:underline'
+          >
+            {`Voir ${showMoreFilters ? 'moins' : 'plus'} de filtres ${
+              showMoreFilters ? '-' : '+'
+            }`}
+          </button>
+          {showMoreFilters && (
+            <>
+              <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                <input
+                  type='checkbox'
+                  checked={isExchange}
+                  onChange={() => setExchange(!isExchange)}
+                  className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                />
+                <span className='text-xs lg:text-sm'>Echange possible</span>
+              </label>
+              <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                <input
+                  type='checkbox'
+                  checked={isLeasing}
+                  onChange={() => setLeasing(!isLeasing)}
+                  className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                />
+                <span className='text-xs lg:text-sm'>Leasing</span>
+              </label>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  )
+
+export default function CarPostsFeed({
+  withFixed,
+  initialPosts,
+  initialFilters
+}: {
+  withFixed: boolean
+  initialPosts: CarPostListItem[]
+  initialFilters?: GetCarPostsFilters
+}) {
+  // Posts display & pagination
+  const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
+  const [page, setPage] = useState(initialFilters?.page || 1)
   const [loadingPosts, setLoadingPosts] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
-  const lastPostRef = useRef<HTMLDivElement | null>(null)
+  // Relative search bar
+  const [showFilters, setShowFilters] = useState(false)
+  const [showMoreFilters, setShowMoreFilters] = useState(false)
+
+  // Fixed search bar
+  const fixedSearchBarRef = useRef(null)
+  const [showFixedSearchBar, setShowFixedSearchBar] = useState(false)
+  const [showFixedFilters, setShowFixedFilters] = useState(false)
+
+  // Filters
+  const [searchText, setSearchText] = useState<string>(initialFilters?.q || '')
+  const [isShop, setIsShop] = useState(initialFilters?.isShop || false)
+  const [isAuto, setIsAuto] = useState(initialFilters?.isAuto || false)
+  const [firstOwner, setFirstOwner] = useState(
+    initialFilters?.firstOwner || false
+  )
+  const [exchange, setExchange] = useState(initialFilters?.exchange || false)
+  const [leasing, setLeasing] = useState(initialFilters?.leasing || false)
+  const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
+
   const searchDivRef = useRef<HTMLDivElement | null>(null)
+
+  function stateToFilters(page: number): GetCarPostsFilters {
+    return {
+      page,
+      q: searchText,
+      isShop,
+      isAuto,
+      firstOwner,
+      exchange,
+      leasing,
+      regionIds: regions.map((region) => region.value)
+    }
+  }
+
+  const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value
+    if (input.length <= 30) {
+      setSearchText(input)
+    }
+  }
+
+  function fetchPosts(page: number) {
+    setPage(page)
+    setLoadingPosts(true)
+
+    const url =
+      '/api/car-posts/' + generateCarPostsQueryParams(stateToFilters(page))
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((newPosts) => {
+        if (page === 1) setPosts(newPosts)
+        else setPosts([...posts, ...newPosts])
+        setHasMore(newPosts.length === API_PAGE_SIZE)
+        setLoadingPosts(false)
+      })
+  }
+
+  // Fixed search bar & filters display control logic
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const targetDivPosition =
+        searchDivRef.current?.getBoundingClientRect().top ?? 0
+
+      // Ensure this logic is only triggered by scrolling, not by hover
+      if (window.scrollY > 9 && window.scrollY > targetDivPosition + 200) {
+        if (window.scrollY > lastScrollY.current) {
+          // Hide the search bar only if scrolled down more than 60px
+          if (window.scrollY - lastScrollY.current > 60) {
+            if (showFixedSearchBar) setShowFixedSearchBar(false)
+            if (showFixedFilters) setShowFixedFilters(false)
+          }
+        } else {
+          // Scrolling up: show the search bar
+          if (lastScrollY.current - window.scrollY > 170) {
+            if (showFixedSearchBar) setShowFixedFilters(false)
+          }
+          if (!showFixedSearchBar) setShowFixedSearchBar(true)
+        }
+      } else {
+        if (showFixedSearchBar) setShowFixedSearchBar(false)
+      }
+
+      lastScrollY.current = window.scrollY
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [showFixedSearchBar, showFixedFilters])
+
+  useEffect(() => {
+    // @ts-ignore
+    const handleClickOutside = (event) => {
+      if (
+        fixedSearchBarRef.current &&
+        // @ts-ignore
+        !fixedSearchBarRef.current.contains(event.target)
+      ) {
+        setShowFixedFilters(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  function handleNewSearch() {
+    window.location.href = '/' + generateCarPostsQueryParams(stateToFilters(1))
+  }
 
   return (
     <>
-      <div className='text-center text-base lg:text-2xl mt-8 lg:mt-16 text-black'>
-        <p className='mx-2'>
-          Découvrez le premier moteur de recherche de véhicules d'occasion en{' '}
-          <span className='font-semibold text-red'>Tunisie</span>
-        </p>
-        <p>
-          <span className='mt-3 font-semibold text-red'>+100 </span>
-          nouvelles annonces par jour
-        </p>
-      </div>
-
-      <CarPostsSearchBars
-        page={page}
-        setPage={setPage}
-        loadingPosts={loadingPosts}
-        setLoadingPosts={setLoadingPosts}
-        hasMore={hasMore}
-        setHasMore={setHasMore}
-        actualPosts={posts}
-        setPosts={setPosts}
-        withFixed={true}
-        lastPostRef={lastPostRef}
-        searchDivRef={searchDivRef}
+      <SearchBar
+        isFixed={false}
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
+        showMoreFilters={showMoreFilters}
+        setShowMoreFilters={setShowMoreFilters}
+        fixedSearchBarRef={fixedSearchBarRef}
+        showFixedSearchBar={showFixedSearchBar}
+        showFixedFilters={showFixedFilters}
+        setShowFixedFilters={setShowFixedFilters}
+        searchText={searchText}
+        isShop={isShop}
+        setIsShop={setIsShop}
+        isFirstOwner={firstOwner}
+        setFirstOwner={setFirstOwner}
+        isExchange={exchange}
+        setExchange={setExchange}
+        isLeasing={leasing}
+        setLeasing={setLeasing}
+        isAuto={isAuto}
+        setIsAuto={setIsAuto}
+        regions={regions}
+        setRegions={setRegions}
+        handleSearchTextChange={handleSearchTextChange}
+        handleSearch={handleNewSearch}
       />
+      {withFixed && (
+        <SearchBar
+          isFixed={true}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          showMoreFilters={showMoreFilters}
+          setShowMoreFilters={setShowMoreFilters}
+          fixedSearchBarRef={fixedSearchBarRef}
+          showFixedSearchBar={showFixedSearchBar}
+          showFixedFilters={showFixedFilters}
+          setShowFixedFilters={setShowFixedFilters}
+          searchText={searchText}
+          isShop={isShop}
+          setIsShop={setIsShop}
+          isFirstOwner={firstOwner}
+          setFirstOwner={setFirstOwner}
+          isExchange={exchange}
+          setExchange={setExchange}
+          isLeasing={leasing}
+          setLeasing={setLeasing}
+          isAuto={isAuto}
+          setIsAuto={setIsAuto}
+          regions={regions}
+          setRegions={setRegions}
+          handleSearchTextChange={handleSearchTextChange}
+          handleSearch={handleNewSearch}
+        />
+      )}
 
       <div
         ref={searchDivRef}
         className='w-full mx-auto mt-1 lg:mt-6 text-black'
       >
-        {loadingPosts && (
-          <p className='text-center text-lg lg:text-xl'>
-            Chargement des annonces...
-          </p>
-        )}
-
         {posts.map((post) => (
           <div
             key={post.id}
-            className='justify-between w-full flex items-center mt-1 p-1 bg-whiteBGDarker border-b border-blackopac2 rounded hover:bg-whiteBG text-xs lg:text-sm text-blacklight'
+            className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
           >
             <button
               onClick={() => setSelectedPostId(post.id)}
-              className='flex flex-row w-4/5 space-x-1 lg:space-x-4'
+              className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
             >
               <img
                 src={post.image}
                 alt={post.title}
-                className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded'
+                className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded flex-shrink-0'
               />
               <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
                 {post.title && (
@@ -82,7 +414,7 @@ const CarPostsFeed: React.FC = () => {
                   {post.fuel}
                 </span>
                 {post.gearbox && <span>{post.gearbox}</span>}
-                <span className='font-bold mt-auto text-pureblack'>
+                <span className='font-bold mt-auto text-pureblack mb-[1px]'>
                   {post.price ? post.price + ' TND' : 'Prix inconnu'}
                 </span>
               </div>
@@ -118,11 +450,23 @@ const CarPostsFeed: React.FC = () => {
           </div>
         ))}
 
-        <div ref={lastPostRef} />
+        {loadingPosts && (
+          <p className='text-center mt-12 text-lg lg:text-xl'>
+            Chargement des annonces...
+          </p>
+        )}
         {!hasMore && !loadingPosts && (
-          <p className='text-center mt-6 text-lg lg:text-xl'>
+          <p className='text-center mt-12 text-lg lg:text-xl'>
             Fin des résultats.
           </p>
+        )}
+        {hasMore && !loadingPosts && (
+          <button
+            className='text-whiteBG bg-blackopac shadow-lg p-1 rounded-lg hover:bg-titan hover:text-white transition duration-300 ease-in-out w-full text-center mt-10 lg:text-lg'
+            onClick={() => fetchPosts(page + 1)}
+          >
+            Charger plus d'annonces +
+          </button>
         )}
 
         {selectedPostId && (
@@ -135,5 +479,3 @@ const CarPostsFeed: React.FC = () => {
     </>
   )
 }
-
-export default CarPostsFeed
