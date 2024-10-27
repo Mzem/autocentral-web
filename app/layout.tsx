@@ -40,7 +40,7 @@ export default function RootLayout({
           type='application/ld+json'
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'http://schema.org',
+              '@context': 'https://schema.org',
               '@type': 'BreadcrumbList',
               itemListElement: [
                 {
