@@ -35,6 +35,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='fr'>
+      <head>
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'http://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: "Voitures d'occasion en Tunisie",
+                  item: 'https://autocentral.tn'
+                }
+                // {
+                //   '@type': 'ListItem',
+                //   position: 2,
+                //   name: 'Fiche technique',
+                //   item: 'https://autocentral.tn/fiche-technique'
+                // }
+              ]
+            })
+          }}
+        />
+      </head>
       <body
         className={`${inter.className} flex flex-col min-h-screen bg-blackopac`}
       >

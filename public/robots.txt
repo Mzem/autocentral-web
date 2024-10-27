@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://autocentral.tn/sitemap.xml
