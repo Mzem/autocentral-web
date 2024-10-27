@@ -1,3 +1,5 @@
+import { GetCarPostsFilters } from '../api/services/car-posts.service'
+
 export const regionsSelect = [
   {
     value: 'ariana',
@@ -127,4 +129,32 @@ export function sortByStringField<T extends Record<string, any>>(
     }
     return 0
   })
+}
+
+export function fromQueryParamsToGetCarPostsFilters(
+  searchParamsRecord?: Record<string, string | string[] | undefined>,
+  searchParamsURL?: URLSearchParams
+): GetCarPostsFilters {
+  return {
+    page: Number(searchParamsRecord?.page ?? searchParamsURL?.get('page')) || 1,
+    q:
+      searchParamsRecord?.q && typeof searchParamsRecord.q === 'string'
+        ? searchParamsRecord.q
+        : searchParamsURL?.get('q') || '',
+    isShop:
+      searchParamsRecord?.isShop === 'true' ||
+      searchParamsURL?.get('isShop') === 'true',
+    isAuto:
+      searchParamsRecord?.isAuto === 'true' ||
+      searchParamsURL?.get('isAuto') === 'true',
+    firstOwner:
+      searchParamsRecord?.firstOwner === 'true' ||
+      searchParamsURL?.get('firstOwner') === 'true',
+    exchange:
+      searchParamsRecord?.exchange === 'true' ||
+      searchParamsURL?.get('exchange') === 'true',
+    leasing:
+      searchParamsRecord?.exchange === 'true' ||
+      searchParamsURL?.get('exchange') === 'true'
+  }
 }

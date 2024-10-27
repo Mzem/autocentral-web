@@ -4,7 +4,9 @@ import {
 } from '../api/services/car-posts.service'
 import CarPostsFeed from './_components/car-posts/CarPosts'
 import Head from 'next/head'
-import { fromQueryParamsToGetCarPostsFilters } from './api/car-posts/route'
+import { fromQueryParamsToGetCarPostsFilters } from './utils'
+
+
 
 export default async function Home({
   searchParams
