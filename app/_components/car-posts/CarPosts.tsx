@@ -83,6 +83,8 @@ export default function CarPostsFeed({
       interiorType: interiorTypes,
       maxPrice,
       minPrice,
+      maxKm,
+      minKm,
       maxCV,
       minCV,
       maxYear,
@@ -308,6 +310,22 @@ export default function CarPostsFeed({
                   />
                   <span className='text-xs lg:text-sm'>Leasing</span>
                 </label>
+                <MinMaxSelector
+                  min={minYear}
+                  max={maxYear}
+                  setMin={setMinYear}
+                  setMax={setMaxYear}
+                  label={'Année'}
+                  maxValue={2050}
+                />
+                <MinMaxSelector
+                  min={minCV}
+                  max={maxCV}
+                  setMin={setMinCV}
+                  setMax={setMaxCV}
+                  label={'CV'}
+                  maxValue={99}
+                />
                 <MultiSelectList
                   label='Intérieur'
                   items={Object.values(InteriorType)}

@@ -31,9 +31,11 @@ export default function MinMaxSelector({
         onChange={(e) => {
           const input = Number(e.target.value)
           if (!input) setMin(undefined)
-          if (input >= minValue) setMin(input)
+          if (input >= minValue && input <= maxValue) setMin(input)
         }}
-        className='rounded w-20 h-4 text-black mr-1'
+        className={`rounded w-${
+          maxValue < 10000 ? (maxValue < 1000 ? '10' : '16') : '20'
+        } h-4 text-black mr-1 p-1 text-right`}
       />
       <span
         className={`text-xs lg:text-sm text-whiteBG ${
@@ -49,9 +51,11 @@ export default function MinMaxSelector({
         onChange={(e) => {
           const input = Number(e.target.value)
           if (!input) setMax(undefined)
-          if (input <= maxValue) setMax(input)
+          if (input >= minValue && input <= maxValue) setMax(input)
         }}
-        className='rounded w-24 h-4 text-black'
+        className={`rounded w-${
+          maxValue < 10000 ? (maxValue < 1000 ? '10' : '16') : '20'
+        } h-4 text-black p-1 text-right`}
       />
     </div>
   )
