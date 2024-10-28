@@ -82,6 +82,8 @@ export interface GetCarPostsFilters {
   interiorType?: InteriorType[]
   maxPrice?: number
   minPrice?: number
+  maxKm?: number
+  minKm?: number
   maxYear?: number
   minYear?: number
   maxCV?: number
@@ -122,6 +124,8 @@ export function generateCarPostsQueryParams(
     })
   if (filters.maxPrice) qp += `&maxPrice=${filters.maxPrice}`
   if (filters.minPrice) qp += `&minPrice=${filters.minPrice}`
+  if (filters.maxKm) qp += `&maxKm=${filters.maxKm}`
+  if (filters.minKm) qp += `&minKm=${filters.minKm}`
   if (filters.maxYear) qp += `&maxYear=${filters.maxYear}`
   if (filters.minYear) qp += `&minYear=${filters.minYear}`
   if (filters.maxCV) qp += `&maxCV=${filters.maxCV}`

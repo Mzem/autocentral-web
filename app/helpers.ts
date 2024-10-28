@@ -74,6 +74,8 @@ export function fromQueryParamsToGetCarPostsFilters(
     interiorType: getParamValueStringArray('interiorType') as InteriorType[],
     maxPrice: getParamValueNumber('maxPrice'),
     minPrice: getParamValueNumber('minPrice'),
+    maxKm: getParamValueNumber('maxKm'),
+    minKm: getParamValueNumber('minKm'),
     maxYear: getParamValueNumber('maxYear'),
     minYear: getParamValueNumber('minYear'),
     maxCV: getParamValueNumber('maxCV'),

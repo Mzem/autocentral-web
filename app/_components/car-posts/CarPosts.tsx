@@ -10,6 +10,7 @@ import { Fuel, InteriorType } from '../../types'
 import ColorSelector from '../ColorSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
+import MinMaxSelector from '../MinMaxSelector'
 
 const API_PAGE_SIZE = 20
 
@@ -38,6 +39,8 @@ export default function CarPostsFeed({
   )
   const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice)
   const [minPrice, setMinPrice] = useState(initialFilters?.minPrice)
+  const [maxKm, setMaxKm] = useState(initialFilters?.maxKm)
+  const [minKm, setMinKm] = useState(initialFilters?.minKm)
   const [maxYear, setMaxYear] = useState(initialFilters?.maxYear)
   const [minYear, setMinYear] = useState(initialFilters?.minYear)
   const [maxCV, setMaxCV] = useState(initialFilters?.maxCV)
@@ -200,6 +203,7 @@ export default function CarPostsFeed({
               className='w-1/3 lg:w-1/6 ml-[11px] mb-1 bg-whiteopac2 rounded'
               classNamePrefix='react-select'
             /> */}
+
             <label className='flex items-center ml-3 cursor-pointer text-base'>
               <input
                 type='checkbox'
@@ -232,6 +236,20 @@ export default function CarPostsFeed({
               items={Object.values(Fuel)}
               selectedItems={fuel}
               setSelectedItems={setFuel}
+            />
+            <MinMaxSelector
+              min={minPrice}
+              max={maxPrice}
+              setMin={setMinPrice}
+              setMax={setMaxPrice}
+              label={'Prix'}
+            />
+            <MinMaxSelector
+              min={minKm}
+              max={maxKm}
+              setMin={setMinKm}
+              setMax={setMaxKm}
+              label={'Km'}
             />
             <button
               onClick={() => setShowMoreFilters(true)}
