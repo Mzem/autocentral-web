@@ -1,10 +1,11 @@
 export default function Footer() {
   return (
     <div className='bg-blackopac'>
-      <footer className='flex flex-col justify-around items-center mt-2'>
-        <p className='text-l text-titan'>Site en construction...</p>
-        <p className='text-l text-white'>autocentral.tn 2024</p>
-        <div className='flex flex-row space-x-2 mb-4'>
+      <footer className='flex flex-col justify-around items-center mt-1 lg:mt-2'>
+        <p className='text-sm lg:text-base text-white'>
+          2024 - Site en construction..
+        </p>
+        <div className='flex flex-row space-x-2 mb-2 lg:mb-4'>
           <a
             href='https://www.instagram.com/tuniautos'
             target='_blank'

@@ -77,9 +77,9 @@ export interface GetCarPostsFilters {
   make?: string
   model?: string
   regionIds?: string[]
-  fuel?: Fuel
-  color?: Color
-  interiorType?: InteriorType
+  fuel?: Fuel[]
+  color?: Color[]
+  interiorType?: InteriorType[]
   maxPrice?: number
   minPrice?: number
   maxYear?: number
@@ -108,9 +108,18 @@ export function generateCarPostsQueryParams(
     filters.regionIds.forEach((regionId) => {
       qp += `&regionIds=${regionId}`
     })
-  if (filters.fuel) qp += `&fuel=${filters.fuel}`
-  if (filters.color) qp += `&color=${filters.color}`
-  if (filters.interiorType) qp += `&interiorType=${filters.interiorType}`
+  if (filters.fuel)
+    filters.fuel.forEach((fuel) => {
+      qp += `&fuel=${fuel}`
+    })
+  if (filters.color)
+    filters.color.forEach((color) => {
+      qp += `&color=${color}`
+    })
+  if (filters.interiorType)
+    filters.interiorType.forEach((interiorType) => {
+      qp += `&interiorType=${interiorType}`
+    })
   if (filters.maxPrice) qp += `&maxPrice=${filters.maxPrice}`
   if (filters.minPrice) qp += `&minPrice=${filters.minPrice}`
   if (filters.maxYear) qp += `&maxYear=${filters.maxYear}`

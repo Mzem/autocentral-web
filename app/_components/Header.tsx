@@ -44,7 +44,7 @@ export default function Header() {
     <div className='bg-whiteBG'>
       {/* Header with fixed position */}
       <div className='w-full fixed bg-blackopac z-10'>
-        <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-10 lg:h-16'>
+        <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-10 lg:h-12'>
           {/* Mobile Logo on the Right and Desktop Logo */}
           <button
             onClick={() => {
@@ -179,7 +179,7 @@ export default function Header() {
       )}
 
       {/* Bottom Spacer to avoid content overlap */}
-      <div className={`mt-10 lg:mt-16`}></div>
+      <div className={`mt-10 lg:mt-12`}></div>
     </div>
   )
 }

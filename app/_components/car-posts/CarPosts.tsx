@@ -10,6 +10,7 @@ import {
 import { regionsSelect } from '../../types'
 import { reactSelectFilterStyle } from '../customStyles'
 import CarPostModal from './CarPostModal'
+import ColorSelector from '../ColorSelector'
 
 const API_PAGE_SIZE = 20
 
@@ -32,7 +33,7 @@ export default function CarPostsFeed({
   const [model, setModel] = useState(initialFilters?.model)
   const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
   const [fuel, setFuel] = useState(initialFilters?.fuel)
-  const [color, setColor] = useState(initialFilters?.color)
+  const [colors, setColors] = useState(initialFilters?.color || [])
   const [interiorType, setInteriorType] = useState(initialFilters?.interiorType)
   const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice)
   const [minPrice, setMinPrice] = useState(initialFilters?.minPrice)
@@ -55,7 +56,7 @@ export default function CarPostsFeed({
   // Relative search bar
   const [showFilters, setShowFilters] = useState(false)
   const [showMoreFilters, setShowMoreFilters] = useState(
-    alarm || keyless || camera || leasing || exchange
+    alarm || keyless || camera || leasing || exchange || colors
   )
 
   const searchDivRef = useRef<HTMLDivElement | null>(null)
@@ -68,7 +69,7 @@ export default function CarPostsFeed({
       model,
       regionIds: regions.map((region) => region.value),
       fuel,
-      color,
+      color: colors,
       interiorType,
       maxPrice,
       minPrice,
@@ -277,6 +278,10 @@ export default function CarPostsFeed({
                   />
                   <span className='text-xs lg:text-sm'>Leasing</span>
                 </label>
+                <ColorSelector
+                  selectedColors={colors}
+                  setSelectedColors={setColors}
+                />
               </>
             )}
           </div>
@@ -376,12 +381,12 @@ export default function CarPostsFeed({
         {showSearchButton && (
           <button
             onClick={scrollToSearch}
-            className='fixed bottom-[1%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blue-700 transition'
+            className='fixed bottom-[1%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
           >
             <img
               src='/search.svg'
               alt='Lancer la recherche'
-              className='h-4 lg:h-5 mx-auto'
+              className='h-5 lg:h-6 mx-auto'
             />
           </button>
         )}

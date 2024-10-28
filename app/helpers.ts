@@ -50,10 +50,13 @@ export function fromQueryParamsToGetCarPostsFilters(
       undefined
     )
   }
-  function getParamValueStringArray(key: string): string[] | undefined {
+  function getParamValueStringArray(key: string): string[] {
     return searchParamsRecord?.[key] && Array.isArray(searchParamsRecord[key])
       ? searchParamsRecord[key]
-      : searchParamsURL?.getAll(key) || undefined
+      : searchParamsURL?.getAll(key) ||
+          [getParamValueString(key)]
+            .filter((e) => e !== undefined)
+            .filter((e) => e)
   }
   function getParamValueBoolean(key: string): boolean {
     return (
@@ -66,9 +69,9 @@ export function fromQueryParamsToGetCarPostsFilters(
     make: getParamValueString('make'),
     model: getParamValueString('model'),
     regionIds: getParamValueStringArray('regionIds'),
-    fuel: getParamValueString('fuel') as Fuel,
-    color: getParamValueString('color') as Color,
-    interiorType: getParamValueString('interiorType') as InteriorType,
+    fuel: getParamValueStringArray('fuel') as Fuel[],
+    color: getParamValueStringArray('color') as Color[],
+    interiorType: getParamValueStringArray('interiorType') as InteriorType[],
     maxPrice: getParamValueNumber('maxPrice'),
     minPrice: getParamValueNumber('minPrice'),
     maxYear: getParamValueNumber('maxYear'),
