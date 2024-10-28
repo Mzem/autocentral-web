@@ -1,16 +1,15 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import Select from 'react-select'
 import {
   CarPostListItem,
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
-import { regionsSelect } from '../../types'
-import { reactSelectFilterStyle } from '../customStyles'
-import CarPostModal from './CarPostModal'
+import { Fuel, InteriorType } from '../../types'
 import ColorSelector from '../ColorSelector'
+import MultiSelectList from '../MultiSelector'
+import CarPostModal from './CarPostModal'
 
 const API_PAGE_SIZE = 20
 
@@ -32,9 +31,11 @@ export default function CarPostsFeed({
   const [make, setMake] = useState(initialFilters?.make)
   const [model, setModel] = useState(initialFilters?.model)
   const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
-  const [fuel, setFuel] = useState(initialFilters?.fuel)
+  const [fuel, setFuel] = useState(initialFilters?.fuel || [])
   const [colors, setColors] = useState(initialFilters?.color || [])
-  const [interiorType, setInteriorType] = useState(initialFilters?.interiorType)
+  const [interiorTypes, setInteriorTypes] = useState(
+    initialFilters?.interiorType || []
+  )
   const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice)
   const [minPrice, setMinPrice] = useState(initialFilters?.minPrice)
   const [maxYear, setMaxYear] = useState(initialFilters?.maxYear)
@@ -56,7 +57,13 @@ export default function CarPostsFeed({
   // Relative search bar
   const [showFilters, setShowFilters] = useState(false)
   const [showMoreFilters, setShowMoreFilters] = useState(
-    alarm || keyless || camera || leasing || exchange || colors
+    alarm ||
+      keyless ||
+      camera ||
+      leasing ||
+      exchange ||
+      colors.length > 0 ||
+      interiorTypes.length > 0
   )
 
   const searchDivRef = useRef<HTMLDivElement | null>(null)
@@ -70,7 +77,7 @@ export default function CarPostsFeed({
       regionIds: regions.map((region) => region.value),
       fuel,
       color: colors,
-      interiorType,
+      interiorType: interiorTypes,
       maxPrice,
       minPrice,
       maxCV,
@@ -221,6 +228,11 @@ export default function CarPostsFeed({
               />
               <span className='text-xs lg:text-sm'>Boîte automatique</span>
             </label>
+            <MultiSelectList
+              items={Object.values(Fuel)}
+              selectedItems={fuel}
+              setSelectedItems={setFuel}
+            />
             <button
               onClick={() => setShowMoreFilters(true)}
               className='text-xs lg:text-sm mb-1 mt-3 hover:underline'
@@ -278,6 +290,12 @@ export default function CarPostsFeed({
                   />
                   <span className='text-xs lg:text-sm'>Leasing</span>
                 </label>
+                <MultiSelectList
+                  label='Intérieur'
+                  items={Object.values(InteriorType)}
+                  selectedItems={interiorTypes}
+                  setSelectedItems={setInteriorTypes}
+                />
                 <ColorSelector
                   selectedColors={colors}
                   setSelectedColors={setColors}

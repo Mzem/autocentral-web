@@ -100,8 +100,7 @@ export const regionsSelect = [
 export enum Fuel {
   ESSENCE = 'Essence',
   DIESEL = 'Diesel',
-  HYBRID = 'Hybrid',
-  ELECTRIQUE = 'Electrique'
+  HYBRID = 'Hybrid'
 }
 
 export enum Color {
@@ -121,6 +120,5 @@ export enum Color {
 export enum InteriorType {
   LEATHER = 'Cuir',
   LEATHERETTE = 'Similicuir',
-  FABRIC = 'Tissu',
   ALCANTARA = 'Alcantara'
 }

@@ -32,8 +32,8 @@ export default function ColorSelector({
   }
 
   return (
-    <div className='mt-2 ml-3 flex space-x-[3px] items-center'>
-      <span className='text-xs lg:text-sm text-whiteBG'>Couleurs</span>
+    <div className='mt-1 ml-3 flex space-x-[3px] items-center'>
+      <span className='text-xs lg:text-sm text-whiteBG mr-1'>Couleur</span>
       {Object.entries(colorHexMap).map(([colorKey, hex]) => (
         <div
           key={colorKey}
