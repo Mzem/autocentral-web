@@ -86,7 +86,7 @@ export default function Header() {
               }}
             >
               <img src='/gears.svg' className='h-5' />
-              <p className='text-sm'>Fiches techniques / Reprog</p>
+              <p className='text-sm'>Fiches techniques</p>
             </button>
             <button
               className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'

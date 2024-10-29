@@ -25,7 +25,7 @@ export default function MultiSelectList({
   return (
     <div className='mt-1 ml-3 flex space-x-[3px] items-center'>
       {label && (
-        <span className='text-xs lg:text-sm text-whiteBG mr-1'>{label}</span>
+        <span className='text-xs lg:text-base text-whiteBG mr-1'>{label}</span>
       )}
       {items.map((item) => (
         <label key={item} className='flex items-center cursor-pointer'>
@@ -35,7 +35,7 @@ export default function MultiSelectList({
             onChange={() => toggleItemSelection(item)}
             className='rounded cursor-pointer mr-[1px]'
           />
-          <span className='text-xs lg:text-sm mr-1'>
+          <span className='text-xs lg:text-base mr-1'>
             {item === Fuel.HYBRID ? 'Hybride/Electrique' : item}
           </span>
         </label>

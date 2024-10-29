@@ -173,7 +173,7 @@ export default function CarPostsFeed({
             onChange={handleSearchTextChange}
             onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
             placeholder='Rechercher un véhicule...'
-            className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-5/6'
+            className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-[75%]'
           />
 
           <div>
@@ -202,151 +202,173 @@ export default function CarPostsFeed({
           </div>
         </div>
         {showFilters && (
-          <div className={'flex flex-col my-1 lg:my-2'}>
-            <label className='flex items-center ml-3 cursor-pointer text-base'>
-              <input
-                type='checkbox'
-                checked={isShop}
-                onChange={() => setIsShop(!isShop)}
-                className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
-              />
-              <span className='text-xs lg:text-sm'>Vendeurs PRO</span>
-              <img src='/badge.svg' className='ml-1 h-3' />
-            </label>
-            <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-              <input
-                type='checkbox'
-                checked={firstOwner}
-                onChange={() => setFirstOwner(!firstOwner)}
-                className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-              />
-              <span className='text-xs lg:text-sm'>Première main</span>
-            </label>
-            <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-              <input
-                type='checkbox'
-                checked={isAuto}
-                onChange={() => setIsAuto(!isAuto)}
-                className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-              />
-              <span className='text-xs lg:text-sm'>Boîte automatique</span>
-            </label>
-            <MultiSelectList
-              items={Object.values(Fuel)}
-              selectedItems={fuel}
-              setSelectedItems={setFuel}
-            />
-            <MinMaxSelector
-              min={minPrice}
-              max={maxPrice}
-              setMin={setMinPrice}
-              setMax={setMaxPrice}
-              label={'Prix'}
-            />
-            <MinMaxSelector
-              min={minKm}
-              max={maxKm}
-              setMin={setMinKm}
-              setMax={setMaxKm}
-              label={'Km'}
-            />
-            <Select
-              isMulti
-              placeholder={'Région...'}
-              options={regionsSelect}
-              value={regions}
-              onChange={(selected) =>
-                setRegions(selected as Array<{ value: string; label: string }>)
-              }
-              unstyled
-              styles={reactSelectFilterStyle}
-              className='w-[95%] lg:w-[30%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
-              classNamePrefix='react-select'
-            />
+          <div className='flex flex-col my-1 lg:my-2'>
+            <div className='lg:flex lg:space-x-8'>
+              <div>
+                <label className='flex items-center ml-3 cursor-pointer text-base'>
+                  <input
+                    type='checkbox'
+                    checked={isShop}
+                    onChange={() => setIsShop(!isShop)}
+                    className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
+                  />
+                  <span className='text-xs lg:text-base'>Vendeurs PRO</span>
+                  <img src='/badge.svg' className='ml-1 h-3' />
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={firstOwner}
+                    onChange={() => setFirstOwner(!firstOwner)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-base'>Première main</span>
+                </label>
+                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={isAuto}
+                    onChange={() => setIsAuto(!isAuto)}
+                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  />
+                  <span className='text-xs lg:text-base'>
+                    Boîte automatique
+                  </span>
+                </label>
+                <MultiSelectList
+                  items={Object.values(Fuel)}
+                  selectedItems={fuel}
+                  setSelectedItems={setFuel}
+                />
+              </div>
+              <div>
+                <MinMaxSelector
+                  min={minPrice}
+                  max={maxPrice}
+                  setMin={setMinPrice}
+                  setMax={setMaxPrice}
+                  label={'Prix'}
+                />
+                <MinMaxSelector
+                  min={minKm}
+                  max={maxKm}
+                  setMin={setMinKm}
+                  setMax={setMaxKm}
+                  label={'Km'}
+                />
+                <Select
+                  isMulti
+                  placeholder={'Région...'}
+                  options={regionsSelect}
+                  value={regions}
+                  onChange={(selected) =>
+                    setRegions(
+                      selected as Array<{ value: string; label: string }>
+                    )
+                  }
+                  unstyled
+                  styles={reactSelectFilterStyle}
+                  className='w-[95%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
+                  classNamePrefix='react-select'
+                />
+              </div>
+            </div>
             <button
               onClick={() => setShowMoreFilters(true)}
-              className='text-xs lg:text-sm mb-1 mt-3 hover:underline'
+              className={`text-xs lg:text-base mb-1 mt-3 hover:underline ${
+                showMoreFilters ? 'underline cursor-default' : ''
+              }`}
             >
               {`${
                 showMoreFilters ? 'Plus de filtres' : 'Voir plus de filtres +'
               }`}
             </button>
             {showMoreFilters && (
-              <>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={alarm}
-                    onChange={() => setAlarm(!alarm)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+              <div className='lg:flex lg:space-x-8'>
+                <div>
+                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={alarm}
+                      onChange={() => setAlarm(!alarm)}
+                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    />
+                    <span className='text-xs lg:text-base'>
+                      Alarme anti-vol
+                    </span>
+                  </label>
+                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={keyless}
+                      onChange={() => setKeyless(!keyless)}
+                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    />
+                    <span className='text-xs lg:text-base'>
+                      Démarrage sans clé
+                    </span>
+                  </label>
+                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={camera}
+                      onChange={() => setCamera(!camera)}
+                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    />
+                    <span className='text-xs lg:text-base'>
+                      Caméra de stationnement
+                    </span>
+                  </label>
+                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={exchange}
+                      onChange={() => setExchange(!exchange)}
+                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    />
+                    <span className='text-xs lg:text-base'>
+                      Echange possible
+                    </span>
+                  </label>
+                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={leasing}
+                      onChange={() => setLeasing(!leasing)}
+                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    />
+                    <span className='text-xs lg:text-base'>Leasing</span>
+                  </label>
+                </div>
+                <div>
+                  <MinMaxSelector
+                    min={minYear}
+                    max={maxYear}
+                    setMin={setMinYear}
+                    setMax={setMaxYear}
+                    label={'Année'}
+                    maxLimit={2050}
                   />
-                  <span className='text-xs lg:text-sm'>Alarme anti-vol</span>
-                </label>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={keyless}
-                    onChange={() => setKeyless(!keyless)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  <MinMaxSelector
+                    min={minCV}
+                    max={maxCV}
+                    setMin={setMinCV}
+                    setMax={setMaxCV}
+                    label={'CV'}
+                    maxLimit={99}
                   />
-                  <span className='text-xs lg:text-sm'>Démarrage sans clé</span>
-                </label>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={camera}
-                    onChange={() => setCamera(!camera)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  <MultiSelectList
+                    label='Intérieur'
+                    items={Object.values(InteriorType)}
+                    selectedItems={interiorTypes}
+                    setSelectedItems={setInteriorTypes}
                   />
-                  <span className='text-xs lg:text-sm'>
-                    Caméra de stationnement
-                  </span>
-                </label>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={exchange}
-                    onChange={() => setExchange(!exchange)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                  <ColorSelector
+                    selectedColors={colors}
+                    setSelectedColors={setColors}
                   />
-                  <span className='text-xs lg:text-sm'>Echange possible</span>
-                </label>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={leasing}
-                    onChange={() => setLeasing(!leasing)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
-                  />
-                  <span className='text-xs lg:text-sm'>Leasing</span>
-                </label>
-                <MinMaxSelector
-                  min={minYear}
-                  max={maxYear}
-                  setMin={setMinYear}
-                  setMax={setMaxYear}
-                  label={'Année'}
-                  maxValue={2050}
-                />
-                <MinMaxSelector
-                  min={minCV}
-                  max={maxCV}
-                  setMin={setMinCV}
-                  setMax={setMaxCV}
-                  label={'CV'}
-                  maxValue={99}
-                />
-                <MultiSelectList
-                  label='Intérieur'
-                  items={Object.values(InteriorType)}
-                  selectedItems={interiorTypes}
-                  setSelectedItems={setInteriorTypes}
-                />
-                <ColorSelector
-                  selectedColors={colors}
-                  setSelectedColors={setColors}
-                />
-              </>
+                </div>
+              </div>
             )}
           </div>
         )}
@@ -372,7 +394,7 @@ export default function CarPostsFeed({
               />
               <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
                 {post.title && (
-                  <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-full'>
+                  <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
                     {post.title}
                   </span>
                 )}

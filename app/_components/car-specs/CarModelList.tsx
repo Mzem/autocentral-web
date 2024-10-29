@@ -35,7 +35,7 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
       </div>
 
       {/* The ul with wrapping horizontally */}
-      <ul className='flex flex-col flex-wrap lg:max-h-[720px] mt-8 text-xl border-2 border-whiteopac rounded-lg p-3 bg-blackopac'>
+      <ul className='flex flex-col flex-wrap lg:max-h-[79%] mt-8 text-xl border-2 border-whiteopac rounded-lg p-3 bg-blackopac'>
         {modelsByMake.models.map((model: ModelListItem, index: number) => (
           <li
             key={model.modelName}
