@@ -6,11 +6,13 @@ import {
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
-import { Fuel, InteriorType } from '../../types'
+import { Fuel, InteriorType, regionsSelect } from '../../types'
 import ColorSelector from '../ColorSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
 import MinMaxSelector from '../MinMaxSelector'
+import Select from 'react-select'
+import { reactSelectFilterStyle } from '../customStyles'
 
 const API_PAGE_SIZE = 20
 
@@ -31,7 +33,14 @@ export default function CarPostsFeed({
   const [page, setPage] = useState(initialFilters?.page || 1)
   const [make, setMake] = useState(initialFilters?.make)
   const [model, setModel] = useState(initialFilters?.model)
-  const [regions, setRegions] = useState<{ value: string; label: string }[]>([])
+  const [regions, setRegions] = useState<{ value: string; label: string }[]>(
+    initialFilters?.regionIds?.map((regionId) => ({
+      value: regionId,
+      label:
+        regionsSelect.find((region) => region.value === regionId)?.label ||
+        regionId
+    })) || []
+  )
   const [fuel, setFuel] = useState(initialFilters?.fuel || [])
   const [colors, setColors] = useState(initialFilters?.color || [])
   const [interiorTypes, setInteriorTypes] = useState(
@@ -194,18 +203,6 @@ export default function CarPostsFeed({
         </div>
         {showFilters && (
           <div className={'flex flex-col my-1 lg:my-2'}>
-            {/* <Select
-              isMulti
-              options={regionsSelect}
-              onChange={(selected) =>
-                setRegions(selected as Array<{ value: string; label: string }>)
-              }
-              unstyled
-              styles={reactSelectFilterStyle}
-              className='w-1/3 lg:w-1/6 ml-[11px] mb-1 bg-whiteopac2 rounded'
-              classNamePrefix='react-select'
-            /> */}
-
             <label className='flex items-center ml-3 cursor-pointer text-base'>
               <input
                 type='checkbox'
@@ -252,6 +249,19 @@ export default function CarPostsFeed({
               setMin={setMinKm}
               setMax={setMaxKm}
               label={'Km'}
+            />
+            <Select
+              isMulti
+              placeholder={'Région...'}
+              options={regionsSelect}
+              value={regions}
+              onChange={(selected) =>
+                setRegions(selected as Array<{ value: string; label: string }>)
+              }
+              unstyled
+              styles={reactSelectFilterStyle}
+              className='w-[95%] lg:w-[30%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
+              classNamePrefix='react-select'
             />
             <button
               onClick={() => setShowMoreFilters(true)}
@@ -439,7 +449,7 @@ export default function CarPostsFeed({
           >
             <img
               src='/search.svg'
-              alt='Lancer la recherche'
+              alt='Rechercher'
               className='h-5 lg:h-6 mx-auto'
             />
           </button>

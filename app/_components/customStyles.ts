@@ -3,7 +3,7 @@ export const reactSelectFilterStyle = {
     ...base,
     minHeight: '25px', // Make the control smaller
     padding: '0px', // Adjust padding to make it compact
-    fontSize: '12px', // Smaller font for dropdown options
+    fontSize: '16px', // Smaller font for dropdown options
     '@media (min-width: 1024px)': {
       fontSize: '16px' // Larger font size for screens >= 1024px (like Tailwind's lg:)
     }
@@ -29,7 +29,7 @@ export const reactSelectFilterStyle = {
     ...base,
     background: '#151515',
     padding: '4px 10px', // Adjust the padding for options
-    fontSize: '12px', // Smaller font for dropdown options
+    fontSize: '16px', // Smaller font for dropdown options
     '@media (min-width: 1024px)': {
       fontSize: '16px' // Larger font size for screens >= 1024px (like Tailwind's lg:)
     }
