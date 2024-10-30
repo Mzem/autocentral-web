@@ -152,10 +152,15 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
 
 type PostModalProps = {
   postId: string
-  onClose: () => void
+  isFull?: boolean
+  onClose?: () => void
 }
 
-const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
+const CarPostModal: React.FC<PostModalProps> = ({
+  postId,
+  onClose,
+  isFull
+}) => {
   const [post, setPost] = useState<CarPost | null | 'error'>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
 
@@ -178,7 +183,7 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        onClose()
+        if (onClose) onClose()
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -187,12 +192,9 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
     }
   }, [onClose])
 
-  return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
-      <div
-        ref={modalRef}
-        className='bg-whiteBG p-8 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
-      >
+  const PostDetails = () => {
+    return (
+      <>
         {!post && (
           <div className='text-center text-lg lg:text-xl'>
             Chargement de l'annonce...
@@ -211,13 +213,15 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
               <h2 className='text-sm lg:text-xl font-bold w-full'>
                 {post.title}
               </h2>
-              <button onClick={onClose} className='w-1/10'>
-                <img
-                  src='/close.svg'
-                  alt='Fermer'
-                  className='h-6 lg:h-8 rounded hover:brightness-50'
-                />
-              </button>
+              {!isFull && (
+                <button onClick={onClose} className='w-1/10'>
+                  <img
+                    src='/close.svg'
+                    alt='Fermer'
+                    className='h-6 lg:h-8 rounded hover:brightness-50'
+                  />
+                </button>
+              )}
             </div>
 
             <Carousel images={post.images} />
@@ -275,7 +279,23 @@ const CarPostModal: React.FC<PostModalProps> = ({ postId, onClose }) => {
             )}
           </div>
         )}
-      </div>
+      </>
+    )
+  }
+
+  return (
+    <div className='text-black'>
+      {!isFull && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
+          <div
+            ref={modalRef}
+            className='bg-whiteBG p-8 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
+          >
+            <PostDetails />
+          </div>
+        </div>
+      )}
+      {isFull && <PostDetails />}
     </div>
   )
 }

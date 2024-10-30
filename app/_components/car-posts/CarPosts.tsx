@@ -1,6 +1,8 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
+import Select from 'react-select'
 import {
   CarPostListItem,
   generateCarPostsQueryParams,
@@ -8,11 +10,10 @@ import {
 } from '../../../api/services/car-posts.service'
 import { Fuel, InteriorType, regionsSelect } from '../../types'
 import ColorSelector from '../ColorSelector'
+import { reactSelectFilterStyle } from '../customStyles'
+import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
-import MinMaxSelector from '../MinMaxSelector'
-import Select from 'react-select'
-import { reactSelectFilterStyle } from '../customStyles'
 
 const API_PAGE_SIZE = 20
 
@@ -23,6 +24,9 @@ export default function CarPostsFeed({
   initialPosts: CarPostListItem[]
   initialFilters?: GetCarPostsFilters
 }) {
+  const pathname = usePathname() // Get path, e.g., "/annonces/123"
+  const id = pathname.split('/')[2] // Assuming "/annonces/[id]" structure
+
   // Posts display & pagination
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
   const [loadingPosts, setLoadingPosts] = useState(false)
@@ -156,6 +160,13 @@ export default function CarPostsFeed({
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
+
+  // Open modal if URL includes an 'id'
+  useEffect(() => {
+    if (id) {
+      setSelectedPostId(id)
+    }
+  }, [id, initialPosts])
 
   return (
     <>
@@ -384,7 +395,10 @@ export default function CarPostsFeed({
             className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
           >
             <button
-              onClick={() => setSelectedPostId(post.id)}
+              onClick={() => {
+                setSelectedPostId(post.id)
+                window.history.pushState(null, '', `/annonces/${post.id}`)
+              }}
               className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
             >
               <img
@@ -480,7 +494,10 @@ export default function CarPostsFeed({
         {selectedPostId && (
           <CarPostModal
             postId={selectedPostId}
-            onClose={() => setSelectedPostId(null)}
+            onClose={() => {
+              setSelectedPostId(null)
+              window.history.replaceState(null, '', '/')
+            }}
           />
         )}
       </div>
