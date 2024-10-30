@@ -142,7 +142,7 @@ export default function Header() {
               router.push('/autotech-reprog')
             }}
           >
-            Fiches techniques / Reprog
+            Fiches techniques
             <img src='/gears.svg' className='h-6 ml-2 mr-1' />
           </button>
           <button
