@@ -45,13 +45,18 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
     const handleClickOutside = (event: any) => {
       if (
         overlayRef.current &&
-        !overlayRef.current.contains(event.target as Node) &&
-        // @ts-expect-error
-        !prevButtonRef.current.contains(event.target) &&
-        // @ts-expect-error
-        !nextButtonRef.current.contains(event.target)
+        !overlayRef.current.contains(event.target as Node)
       ) {
-        setFullScreenImage(false)
+        if (images.length === 1) {
+          setFullScreenImage(false)
+        } else if (
+          // @ts-expect-error
+          !prevButtonRef.current.contains(event.target) &&
+          // @ts-expect-error
+          !nextButtonRef.current.contains(event.target)
+        ) {
+          setFullScreenImage(false)
+        }
       }
     }
     if (fullScreenImage) {
@@ -72,24 +77,36 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
         alt='Car image'
         className='mx-auto h-64 object-contain cursor-pointer'
       />
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          prevImage()
-        }}
-        className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
-      >
-        <img src='/arrow_prev.svg' alt='Image précédente' className='h-6 w-6' />
-      </button>
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          nextImage()
-        }}
-        className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
-      >
-        <img src='/arrow_next.svg' alt='Image suivante' className='h-6 w-6' />
-      </button>
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              prevImage()
+            }}
+            className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
+          >
+            <img
+              src='/arrow_prev.svg'
+              alt='Image précédente'
+              className='h-6 w-6'
+            />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              nextImage()
+            }}
+            className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
+          >
+            <img
+              src='/arrow_next.svg'
+              alt='Image suivante'
+              className='h-6 w-6'
+            />
+          </button>
+        </>
+      )}
 
       {fullScreenImage && (
         <div
@@ -116,34 +133,38 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
               className='object-contain max-h-[100dvh] max-w-full'
             />
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              prevImage()
-            }}
-            ref={prevButtonRef}
-            className='absolute left-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
-          >
-            <img
-              src='/arrow_prev.svg'
-              alt='Image précédente'
-              className='h-8 w-8'
-            />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              nextImage()
-            }}
-            ref={nextButtonRef}
-            className='absolute right-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
-          >
-            <img
-              src='/arrow_next.svg'
-              alt='Image suivante'
-              className='h-8 w-8'
-            />
-          </button>
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  prevImage()
+                }}
+                ref={prevButtonRef}
+                className='absolute left-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
+              >
+                <img
+                  src='/arrow_prev.svg'
+                  alt='Image précédente'
+                  className='h-8 w-8'
+                />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  nextImage()
+                }}
+                ref={nextButtonRef}
+                className='absolute right-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
+              >
+                <img
+                  src='/arrow_next.svg'
+                  alt='Image suivante'
+                  className='h-8 w-8'
+                />
+              </button>{' '}
+            </>
+          )}
         </div>
       )}
     </div>
@@ -244,7 +265,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
                     <img
                       src='/phone.svg'
-                      className='h-3 h-3 lg:h-4'
+                      className='h-3 h-3 lg:h-4 invert'
                       alt='Appeler'
                     />
                     <span>Appeler</span>
@@ -259,7 +280,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 onClick={() => setShowIA(true)}
               >
                 Voir les informations générées par autocentral.tn
-                <img src='/ai.svg' className='h-3 h-3 lg:h-4' alt='IA' />
+                <img
+                  src='/search.svg'
+                  className='ml-1 h-4 lg:h-5 invert'
+                  alt='IA'
+                />
               </button>
               {showIA && (
                 <ul className='mt-3 text-sm lg:text-base'>
@@ -324,7 +349,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   <span className='font-semibold'>
                     Description du vendeur :
                   </span>
-                  <p className='text-sm lg:text-base'>
+                  <p className='text-sm lg:text-base lg:max-w-[600px]'>
                     {post.description.split('\n').map((line, index) => (
                       <span key={index}>
                         <Linkify
@@ -353,7 +378,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
               {post.phone && (
                 <a href={`tel:${post.phone}`} className=''>
                   <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
-                    <img src='/phone.svg' className='h-3 h-3 lg:h-4' />
+                    <img src='/phone.svg' className='h-3 h-3 lg:h-4 invert' />
                     <span>Appeler</span>
                   </button>
                 </a>
