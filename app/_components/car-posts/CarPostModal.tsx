@@ -162,6 +162,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
   isFull
 }) => {
   const [post, setPost] = useState<CarPost | null | 'error'>(null)
+  const [showIA, setShowIA] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -226,57 +227,138 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             <Carousel images={post.images} />
 
-            {post.description && (
-              <p className='mt-4 text-sm lg:text-base'>
-                {post.description.split('\n').map((line, index) => (
-                  <span key={index}>
-                    <Linkify
-                      text={line.charAt(0).toUpperCase() + line.slice(1)}
-                    />
-                    <br />
+            <div className='flex justify-center space-x-4 items-center mt-4'>
+              {post.merchant && (
+                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out mb-3'>
+                  <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
+                  <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
+                    {post.merchant.name}
                   </span>
-                ))}
-              </p>
-            )}
-            <ul className='mt-4 text-sm lg:text-base'>
-              <li>
-                <strong>Modèle :</strong> {post.make} {post.model}
-              </li>
-              <li>
-                <strong>Année :</strong> {post.year}
-              </li>
-              <li>
-                <strong>Prix :</strong> {post.price ?? '-'} TND
-              </li>
-              <li>
-                <strong>Kilométrage :</strong> {post.km ?? '-'} km
-              </li>
-              <li>
-                <strong>Carburant:</strong> {post.fuel ?? '-'}
-              </li>
-              <li>
-                <strong>Boite :</strong> {post.gearbox ?? '-'}
-              </li>
-              <li>
-                <strong>Transmission :</strong> {post.transmission ?? '-'}
-              </li>
-              <li>
-                <strong>Région :</strong> {post.region.name}
-              </li>
-              <li>
-                <strong>Vendeur :</strong> {post.merchant.name}
-              </li>
-            </ul>
-            {post.phone && (
-              <a
-                href={`tel:${post.phone}`}
-                className='w-full flex mx-auto mt-4'
-              >
-                <button className='mx-auto p-3 px-6 rounded-xl font-semibold hover:bg-titan text-white bg-blackopac transition duration-300 ease-in-out mb-3'>
-                  Appeler le vendeur
+                  {post.merchant.isShop && (
+                    <img src='/badge.svg' className='h-3 h-3 lg:h-4' />
+                  )}
                 </button>
-              </a>
-            )}
+              )}
+              {post.phone && (
+                <a href={`tel:${post.phone}`} className=''>
+                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
+                    <img
+                      src='/phone.svg'
+                      className='h-3 h-3 lg:h-4'
+                      alt='Appeler'
+                    />
+                    <span>Appeler</span>
+                  </button>
+                </a>
+              )}
+            </div>
+
+            <div className='flex flex-col space-x-4 items-center'>
+              <button
+                className='text-sm lg:text-base hover:underline items-center flex'
+                onClick={() => setShowIA(true)}
+              >
+                Voir les informations générées par autocentral.tn
+                <img src='/ai.svg' className='h-3 h-3 lg:h-4' alt='IA' />
+              </button>
+              {showIA && (
+                <ul className='mt-3 text-sm lg:text-base'>
+                  <li>
+                    <strong>Modèle :</strong> {post.carEngine?.make.name}{' '}
+                    {post.carEngine?.model}
+                  </li>
+                  <li>
+                    <strong>Production :</strong> {post.carEngine?.fromYear}
+                  </li>
+                  <li>
+                    {post.carEngine?.engineName} {post.carEngine?.fuel}
+                    {post.carEngine?.hp ? ' ' + post.carEngine?.hp + ' HP' : ''}
+                    {post.carEngine?.torque
+                      ? ' ' + post.carEngine?.torque + ' Nm'
+                      : ''}
+                  </li>
+                  <li>
+                    <strong>Fiabilité :</strong> données à venir...
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className='shadow-xl rounded p-2 lg:p-8 lg:flex lg:justify-around'>
+              <ul className='mt-1 text-sm lg:text-base'>
+                <li>
+                  <strong>Modèle :</strong> {post.make} {post.model}
+                </li>
+                <li>
+                  <strong>Année :</strong> {post.year}
+                </li>
+                <li>
+                  <strong>Prix :</strong>{' '}
+                  {post.price ? post.price + 'TND' : 'inconnu'}
+                </li>
+                <li>
+                  <strong>Kilométrage :</strong> {post.km ?? '-'} km
+                </li>
+                <li>
+                  <strong>Carburant :</strong> {post.fuel ?? '-'}
+                </li>
+                <li>
+                  <strong>Boite :</strong> {post.gearbox ?? '-'}
+                </li>
+                <li>
+                  <strong>Motorisation :</strong>{' '}
+                  {post.engine ? post.engine + ' ' : ''}
+                  {post.cv ? post.cv + 'cv' : ''}
+                </li>
+                <li>
+                  <strong>Région :</strong> {post.region.name}
+                </li>
+                <li>
+                  <strong>Source :</strong> {post.source} -{' '}
+                  {post.publishedAtText}
+                </li>
+              </ul>
+
+              {post.description && (
+                <div className='mt-2 lg:mt-0'>
+                  <span className='font-semibold'>
+                    Description du vendeur :
+                  </span>
+                  <p className='text-sm lg:text-base'>
+                    {post.description.split('\n').map((line, index) => (
+                      <span key={index}>
+                        <Linkify
+                          text={line.charAt(0).toUpperCase() + line.slice(1)}
+                        />
+                        <br />
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className='flex justify-center space-x-4 items-center mt-4'>
+              {post.merchant && (
+                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out mb-3'>
+                  <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
+                  <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
+                    {post.merchant.name}
+                  </span>
+                  {post.merchant.isShop && (
+                    <img src='/badge.svg' className='h-3 h-3 lg:h-4' />
+                  )}
+                </button>
+              )}
+              {post.phone && (
+                <a href={`tel:${post.phone}`} className=''>
+                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
+                    <img src='/phone.svg' className='h-3 h-3 lg:h-4' />
+                    <span>Appeler</span>
+                  </button>
+                </a>
+              )}
+            </div>
           </div>
         )}
       </>
@@ -289,7 +371,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-whiteBG p-8 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
+            className='bg-whiteBG p-2 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
           >
             <PostDetails />
           </div>
