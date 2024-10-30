@@ -1478,7 +1478,7 @@ __metadata:
     dotvault: "npm:^0.0.9"
     eslint: "npm:^7.32.0"
     eslint-config-prettier: "npm:^9.1.0"
-    eslint-plugin-chai-friendly: "npm:^0.7.4"
+    eslint-plugin-chai-friendly: "npm:^1.0.0"
     eslint-plugin-mocha: "npm:^10.4.3"
     eslint-plugin-prettier: "npm:^4.2.1"
     luxon: "npm:3.5.0"
@@ -2429,12 +2429,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-chai-friendly@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "eslint-plugin-chai-friendly@npm:0.7.4"
+"eslint-plugin-chai-friendly@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "eslint-plugin-chai-friendly@npm:1.0.1"
   peerDependencies:
     eslint: ">=3.0.0"
-  checksum: 10c0/b161e4796de4db304042ea8da1bd467d63d22e89f74e85134c2a6755c49c53021ac2e48003af06d41b7a1b1b5e8cceacca6dc18ffaee02afd79a1c243728b8a7
+  checksum: 10c0/5940a2cf02cf5ee217856b17778464773be79e0b1f4cc4278c4d3a06cf26f160187732c33c7fcf6ea502f23ee95178bdda900c8c21585ccc569e160c5aab9804
   languageName: node
   linkType: hard
 
