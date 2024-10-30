@@ -69,7 +69,7 @@ export default function Header() {
           </button>
 
           {/* Desktop Menu Links */}
-          <nav className='hidden lg:flex space-x-4'>
+          <nav className='hidden lg:flex space-x-10'>
             <button
               className='flex space-x-2 items-center hover:underline'
               onClick={() => {
@@ -82,7 +82,7 @@ export default function Header() {
             <button
               className='flex space-x-2 items-center hover:underline'
               onClick={() => {
-                router.push('/autotech-reprog')
+                router.push('/fiche-technique')
               }}
             >
               <img src='/gears.svg' className='h-5' />
@@ -97,7 +97,7 @@ export default function Header() {
               <img src='/man.svg' className='h-5' />
               <p className='text-sm'>Vendeurs professionnels</p>
             </button>
-            <button
+            {/* <button
               className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
               // onClick={() => {
               //   router.push('/recherche-matricule')
@@ -114,7 +114,7 @@ export default function Header() {
             >
               <img src='/race_flag.svg' className='h-5' />
               <p className='text-sm'>Blog</p>
-            </button>
+            </button> */}
           </nav>
         </header>
       </div>
@@ -139,7 +139,7 @@ export default function Header() {
             className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
-              router.push('/autotech-reprog')
+              router.push('/fiche-technique')
             }}
           >
             Fiches techniques
@@ -155,7 +155,7 @@ export default function Header() {
             Vendeurs professionnels
             <img src='/man.svg' className='h-6 ml-2 mr-1' />
           </button>
-          <button
+          {/* <button
             className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac flex justify-end'
             // onClick={() => {
             //   setIsMenuOpen(false)
@@ -174,7 +174,7 @@ export default function Header() {
           >
             Blog
             <img src='/race_flag.svg' className='h-6 ml-2 mr-1' />
-          </button>
+          </button> */}
         </div>
       )}
 

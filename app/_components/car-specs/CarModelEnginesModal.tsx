@@ -105,7 +105,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                                 <a
                                   onClick={() =>
                                     router.push(
-                                      `/fiche-technique/reprog/${engine.id}`
+                                      `/fiche-technique/motorisation/${engine.id}`
                                     )
                                   }
                                   className='hover:underline cursor-pointer rounded'

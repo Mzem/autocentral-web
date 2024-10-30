@@ -26,7 +26,7 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         <p className='text-xl lg:text-3xl flex-grow'>
           {modelsByMake.make.name}
         </p>
-        <button onClick={() => router.push(`/autotech-reprog`)}>
+        <button onClick={() => router.push(`/fiche-technique`)}>
           <img
             src='/arrow_prev.svg'
             className='h-8 lg:h-10 border bg-blackopac rounded hover:bg-titan'

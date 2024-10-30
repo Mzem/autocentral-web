@@ -470,7 +470,7 @@ export default function CarPostsFeed({
         )}
         {hasMore && !loadingPosts && (
           <button
-            className='text-whiteBG bg-blackopac shadow-lg p-1 rounded-lg hover:bg-titan hover:text-white transition duration-300 ease-in-out w-full text-center mt-10 lg:text-lg'
+            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg hover:bg-titan hover:text-white transition duration-300 ease-in-out w-full text-center mt-10 lg:text-lg'
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +
@@ -481,12 +481,12 @@ export default function CarPostsFeed({
         {showSearchButton && (
           <button
             onClick={scrollToSearch}
-            className='fixed bottom-[1%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
+            className='fixed bottom-[3%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
           >
             <img
               src='/search.svg'
               alt='Rechercher'
-              className='h-5 lg:h-6 mx-auto'
+              className='h-7 lg:h-8 mx-auto'
             />
           </button>
         )}

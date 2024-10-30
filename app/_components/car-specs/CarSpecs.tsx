@@ -68,7 +68,8 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
       </div>
 
       <div className='mt-10'>
-        <h2 className='text-2xl font-semibold mb-4'>Reprogrammation Stage 1</h2>
+        <h2 className='text-2xl font-semibold'>Potentiel du moteur</h2>
+        <p>Une marge plus grande est un indicateur de fiabilité du moteur.</p>
 
         {!showReprog && (
           <p>
@@ -83,8 +84,10 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
               <tr className='bg-blackopac text-white text-base lg:text-lg'>
                 <th className='p-3 lg:p-4'></th>
                 <th className='border-b-4 p-3 lg:p-4'>Origine</th>
-                <th className='border-b-4 p-3 lg:p-4 text-vividred'>Stage 1</th>
-                <th className='border-b-4 p-3 lg:p-4 text-gold'>Gain</th>
+                <th className='border-b-4 p-3 lg:p-4 text-vividred'>
+                  Puissance MAX
+                </th>
+                <th className='border-b-4 p-3 lg:p-4 text-gold'>Marge</th>
               </tr>
             </thead>
             <tbody className='lg:text-lg'>
@@ -113,7 +116,8 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
         )}
       </div>
 
-      <div className='mt-10'>
+      <div className='mt-32'>
+        <h2 className='text-2xl font-semibold mb-6'>Notre garage partenaire</h2>
         <ShopHeader
           id='autotech'
           name='Autotech Reprogrammation Moteur'

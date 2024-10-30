@@ -8,9 +8,9 @@ const config: Config = {
       blue: '#08085e',
       yellow: '#b3ae14',
       orange: '#b36b14',
-      black: '#151515',
+      black: '#000000',
       blacklight: '#2d2d2d',
-      blackopac: '#151515f1',
+      blackopac: '#151515ee',
       blackopac2: '#15151560',
       pureblack: '#000000',
       white: '#ffffff',
@@ -23,7 +23,8 @@ const config: Config = {
       cream: '#ede7d1',
       red: '#371211',
       vividred: '#B31414ee',
-      gold: '#d4af37'
+      gold: '#d4af37',
+      rolexgold: '#a37e2c'
     }
   },
   plugins: [require('@tailwindcss/forms')]

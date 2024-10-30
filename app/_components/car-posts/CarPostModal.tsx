@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -183,8 +185,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
   isFull
 }) => {
   const [post, setPost] = useState<CarPost | null | 'error'>(null)
-  const [showIA, setShowIA] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
+
+  const router = useRouter()
 
   useEffect(() => {
     try {
@@ -215,6 +218,58 @@ const CarPostModal: React.FC<PostModalProps> = ({
   }, [onClose])
 
   const PostDetails = () => {
+    const [showIA, setShowIA] = useState(false)
+
+    const Infos = ({ post }: { post: CarPost }) => {
+      return (
+        <>
+          <div className='flex justify-center space-x-4 items-center mt-4 mb-4'>
+            {post.merchant && (
+              <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'>
+                <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
+                <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
+                  {post.merchant.name}
+                </span>
+                {post.merchant.isShop && (
+                  <img src='/badge.svg' className='h-3 lg:h-4' />
+                )}
+              </button>
+            )}
+            {post.phone && (
+              <a href={`tel:${post.phone}`} className=''>
+                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                  <img
+                    src='/phone.svg'
+                    className='h-3 lg:h-4 invert'
+                    alt='Appeler'
+                  />
+                  <span>Appeler</span>
+                </button>
+              </a>
+            )}
+            {post.phone && (
+              <a
+                href={`https://wa.me/${post.phone
+                  .toString()
+                  .replace(
+                    '+',
+                    ''
+                  )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
+                  post.id
+                }`}
+              >
+                <img
+                  src='/whatsapp.svg'
+                  className='h-[2.4rem] lg:h-[2.9rem]'
+                  alt='Whatsapp'
+                />
+              </a>
+            )}
+          </div>
+        </>
+      )
+    }
+
     return (
       <>
         {!post && (
@@ -247,79 +302,65 @@ const CarPostModal: React.FC<PostModalProps> = ({
             </div>
 
             <Carousel images={post.images} />
-
-            <div className='flex justify-center space-x-4 items-center mt-4'>
-              {post.merchant && (
-                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out mb-3'>
-                  <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                  <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
-                    {post.merchant.name}
-                  </span>
-                  {post.merchant.isShop && (
-                    <img src='/badge.svg' className='h-3 h-3 lg:h-4' />
-                  )}
-                </button>
-              )}
-              {post.phone && (
-                <a href={`tel:${post.phone}`} className=''>
-                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
-                    <img
-                      src='/phone.svg'
-                      className='h-3 h-3 lg:h-4 invert'
-                      alt='Appeler'
-                    />
-                    <span>Appeler</span>
-                  </button>
-                </a>
-              )}
+            <Infos post={post} />
+            <div className='mt-4 lg:mt-6 mb-4 flex mx-auto w-full text-center items-center justify-around text-2xl font-bold'>
+              <p>{post.price ? post.price + ' TND' : 'Prix inconnu'}</p>
             </div>
 
-            <div className='flex flex-col space-x-4 items-center'>
+            {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base hover:underline items-center flex'
+                className='text-sm lg:text-base px-4 py-1 lg:py-2 flex space-x-1 items-center rounded-xl mx-auto bg-blackopac2 bg-opacity-90 text-white font-bold lg:my-6'
                 onClick={() => setShowIA(true)}
               >
-                Voir les informations générées par autocentral.tn
-                <img
-                  src='/search.svg'
-                  className='ml-1 h-4 lg:h-5 invert'
-                  alt='IA'
-                />
+                <span>Voir le rapport autocentral.tn</span>
+                <img src='/gears.svg' className='h-4' alt='Rapport technique' />
               </button>
-              {showIA && (
-                <ul className='mt-3 text-sm lg:text-base'>
-                  <li>
-                    <strong>Modèle :</strong> {post.carEngine?.make.name}{' '}
-                    {post.carEngine?.model}
+            )}
+            {showIA && (
+              <ul className='text-sm lg:text-base p-2 lg:p-6 '>
+                <li>
+                  <strong>Modèle :</strong> {post.carEngine?.make.name}{' '}
+                  {post.carEngine?.model}
+                </li>
+                <li>
+                  <strong>Début de production :</strong>{' '}
+                  {post.carEngine?.fromYear}
+                </li>
+                <li>
+                  {post.carEngine?.engineName} {post.carEngine?.fuel}
+                  {post.carEngine?.hp ? ' ' + post.carEngine?.hp + ' HP' : ''}
+                  {post.carEngine?.torque
+                    ? ' ' + post.carEngine?.torque + ' Nm'
+                    : ''}
+                </li>
+                {post.carEngine?.id && (
+                  <li
+                    className='underline mb-2 cursor-pointer'
+                    onClick={() =>
+                      router.replace(
+                        '/fiche-technique/motorisation/' + post.carEngine?.id
+                      )
+                    }
+                  >
+                    Voir la fiche technique détaillée
                   </li>
-                  <li>
-                    <strong>Production :</strong> {post.carEngine?.fromYear}
-                  </li>
-                  <li>
-                    {post.carEngine?.engineName} {post.carEngine?.fuel}
-                    {post.carEngine?.hp ? ' ' + post.carEngine?.hp + ' HP' : ''}
-                    {post.carEngine?.torque
-                      ? ' ' + post.carEngine?.torque + ' Nm'
-                      : ''}
-                  </li>
-                  <li>
-                    <strong>Fiabilité :</strong> données à venir...
-                  </li>
-                </ul>
-              )}
-            </div>
+                )}
+                <li>
+                  <strong>Fiabilité :</strong> données à venir...
+                </li>
+                <li>
+                  <hr className='text-titan' />
+                </li>
+              </ul>
+            )}
 
-            <div className='shadow-xl rounded p-2 lg:p-8 lg:flex lg:justify-around'>
+            <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               <ul className='mt-1 text-sm lg:text-base'>
                 <li>
                   <strong>Modèle :</strong> {post.make} {post.model}
                 </li>
                 <li>
                   <strong>Année :</strong> {post.year}
-                </li>
-                <li>
-                  <strong>Prix :</strong>{' '}
-                  {post.price ? post.price + 'TND' : 'inconnu'}
                 </li>
                 <li>
                   <strong>Kilométrage :</strong> {post.km ?? '-'} km
@@ -338,9 +379,15 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 <li>
                   <strong>Région :</strong> {post.region.name}
                 </li>
-                <li>
-                  <strong>Source :</strong> {post.source} -{' '}
-                  {post.publishedAtText}
+                <li className='underline'>
+                  <a
+                    href={post.urlSource}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <strong>Source :</strong> {post.source} -{' '}
+                    {post.publishedAtText}
+                  </a>
                 </li>
               </ul>
 
@@ -363,27 +410,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
               )}
             </div>
 
-            <div className='flex justify-center space-x-4 items-center mt-4'>
-              {post.merchant && (
-                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out mb-3'>
-                  <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                  <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
-                    {post.merchant.name}
-                  </span>
-                  {post.merchant.isShop && (
-                    <img src='/badge.svg' className='h-3 h-3 lg:h-4' />
-                  )}
-                </button>
-              )}
-              {post.phone && (
-                <a href={`tel:${post.phone}`} className=''>
-                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out mb-3'>
-                    <img src='/phone.svg' className='h-3 h-3 lg:h-4 invert' />
-                    <span>Appeler</span>
-                  </button>
-                </a>
-              )}
-            </div>
+            <Infos post={post} />
           </div>
         )}
       </>
@@ -396,7 +423,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-whiteBG p-2 border border-whiteopac rounded w-[98%] lg:w-5/12 h-[76%] overflow-y-scroll'
+            className='bg-whiteBG p-2 lg:p-4 border border-whiteopac rounded w-[98%] lg:w-7/12 h-[76%] overflow-y-scroll'
           >
             <PostDetails />
           </div>

@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className='bg-blackopac'>
+    <div className=''>
       <footer className='flex flex-col justify-around items-center mt-1 lg:mt-2'>
         <p className='text-xs lg:text-base text-white'>
           Site en construction - 2024
