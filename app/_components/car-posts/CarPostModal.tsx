@@ -191,7 +191,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
   useEffect(() => {
     try {
-      fetch(`/api/car-post?postId=${postId}`)
+      fetch(`/api/car-post?postId=${postId}`, { next: { revalidate: 3600 } })
         .then((res) => res.json())
         .then((post) => {
           setPost(post)
@@ -306,8 +306,16 @@ const CarPostModal: React.FC<PostModalProps> = ({
             <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
               <span>{post.price ? post.price + ' DT' : 'Prix inconnu'}</span>
               {post.estimatedPrice && (
-                <span className='font-normal text-blackopac2 text-sm lg:text-lg'>
-                  {post.estimatedPrice} DT estimé
+                <span
+                  className={`font-normal text-blackopac2 text-sm lg:text-lg ${
+                    post.estimatedPrice.color === 'GREEN'
+                      ? 'text-green'
+                      : post.estimatedPrice.color === 'RED'
+                      ? 'text-vividred'
+                      : ''
+                  }`}
+                >
+                  {post.estimatedPrice.text}
                 </span>
               )}
             </div>

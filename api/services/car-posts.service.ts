@@ -16,7 +16,7 @@ export interface CarPostListItem {
   title: string
   image: string
   price: number | undefined
-  estimatedPrice: number | undefined
+  estimatedPrice: { color: string; text: string } | undefined
   make: string
   model: string
   year: number
@@ -44,7 +44,7 @@ export interface CarPost {
   description: string | undefined
   images: string[]
   price: number | undefined
-  estimatedPrice: number | undefined
+  estimatedPrice: { color: string; text: string } | undefined
   make: string | undefined
   model: string | undefined
   body: string | undefined
@@ -150,7 +150,7 @@ export async function getCarPosts(
 ): Promise<CarPostListItem[]> {
   try {
     const url = 'car-posts/' + generateCarPostsQueryParams(filters)
-    const { content } = await apiGet<CarPostListItem[]>(url)
+    const { content } = await apiGet<CarPostListItem[]>(url, 60)
     return content
   } catch (e) {
     console.error('GET car posts error')

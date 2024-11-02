@@ -128,7 +128,7 @@ export default function CarPostsFeed({
     const url =
       '/api/car-posts/' + generateCarPostsQueryParams(stateToFilters(page))
 
-    fetch(url)
+    fetch(url, { next: { revalidate: 60 } })
       .then((res) => res.json())
       .then((newPosts) => {
         if (page === 1) setPosts(newPosts)
@@ -427,8 +427,16 @@ export default function CarPostsFeed({
                     {post.price ? post.price + ' DT' : 'Prix inconnu'}
                   </span>
                   {post.estimatedPrice && (
-                    <span className='text-blackopac2 font-normal'>
-                      {post.estimatedPrice} estimé{' '}
+                    <span
+                      className={`font-normal text-blackopac2 ${
+                        post.estimatedPrice.color === 'GREEN'
+                          ? 'text-green'
+                          : post.estimatedPrice.color === 'RED'
+                          ? 'text-vividred'
+                          : ''
+                      }`}
+                    >
+                      {post.estimatedPrice.text}
                     </span>
                   )}
                 </div>

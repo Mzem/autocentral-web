@@ -4,14 +4,17 @@ const apiURL = process.env.API_URL!
 const apiKey = process.env.API_KEY!
 
 export async function apiGet<T>(
-  path: string
+  path: string,
+  cacheInSeconds: number = 3600
 ): Promise<{ content: T; headers: Headers }> {
   const headers = new Headers({
     'X-API-KEY': apiKey
   })
-
   return fetchJson(`${apiURL}/${path}`, {
-    headers
+    headers,
+    next: {
+      revalidate: cacheInSeconds
+    }
   })
 }
 
