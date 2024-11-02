@@ -110,9 +110,6 @@ export enum Color {
   GREEN = 'Vert',
   BLUE = 'Bleu',
   YELLOW = 'Jaune',
-  ORANGE = 'Orange',
-  PURPLE = 'Violet',
-  PINK = 'Rose',
   BROWN = 'Marron',
   GREY = 'Gris'
 }

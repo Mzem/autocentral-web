@@ -7,9 +7,6 @@ const colorHexMap: Record<Color, string> = {
   [Color.GREEN]: '#077007',
   [Color.BLUE]: '#1b1bbf',
   [Color.YELLOW]: '#d9d91c',
-  [Color.ORANGE]: '#FFA500',
-  [Color.PURPLE]: '#800080',
-  [Color.PINK]: '#f0a8c9',
   [Color.BROWN]: '#965824',
   [Color.GREY]: '#9c9797'
 }
@@ -55,9 +52,7 @@ export default function ColorSelector({
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
               fill={`${
-                [Color.WHITE, Color.YELLOW, Color.PINK, Color.ORANGE].includes(
-                  colorKey as Color
-                )
+                [Color.WHITE, Color.YELLOW].includes(colorKey as Color)
                   ? 'black'
                   : 'white'
               }`}

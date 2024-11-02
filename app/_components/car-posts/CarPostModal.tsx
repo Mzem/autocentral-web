@@ -303,8 +303,13 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             <Carousel images={post.images} />
             <Infos post={post} />
-            <div className='mt-4 lg:mt-6 mb-4 flex mx-auto w-full text-center items-center justify-around text-2xl font-bold'>
-              <p>{post.price ? post.price + ' TND' : 'Prix inconnu'}</p>
+            <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
+              <span>{post.price ? post.price + ' DT' : 'Prix inconnu'}</span>
+              {post.estimatedPrice && (
+                <span className='font-normal text-blackopac2 text-sm lg:text-lg'>
+                  {post.estimatedPrice} DT estimé
+                </span>
+              )}
             </div>
 
             {!showIA && post.carEngine && (

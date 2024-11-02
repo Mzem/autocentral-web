@@ -422,9 +422,16 @@ export default function CarPostsFeed({
                   {post.fuel}
                 </span>
                 {post.gearbox && <span>{post.gearbox}</span>}
-                <span className='font-bold mt-auto text-pureblack mb-[1px]'>
-                  {post.price ? post.price + ' TND' : 'Prix inconnu'}
-                </span>
+                <div className='font-bold mt-auto text-pureblack mb-[1px] flex flex-col text-left'>
+                  <span className={`${post.price ? 'text-vividred' : ''}`}>
+                    {post.price ? post.price + ' DT' : 'Prix inconnu'}
+                  </span>
+                  {post.estimatedPrice && (
+                    <span className='text-blackopac2 font-normal'>
+                      {post.estimatedPrice} estimé{' '}
+                    </span>
+                  )}
+                </div>
               </div>
             </button>
 
