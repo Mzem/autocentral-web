@@ -16,7 +16,7 @@ export interface CarPostListItem {
   title: string
   image: string
   price: number | undefined
-  estimatedPrice: { color: string; text: string } | undefined
+  estimatedPrice: { color: string; text: string; price: number } | undefined
   make: string
   model: string
   year: number
@@ -44,7 +44,7 @@ export interface CarPost {
   description: string | undefined
   images: string[]
   price: number | undefined
-  estimatedPrice: { color: string; text: string } | undefined
+  estimatedPrice: { color: string; text: string; value: number } | undefined
   make: string | undefined
   model: string | undefined
   body: string | undefined

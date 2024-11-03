@@ -65,7 +65,7 @@ export default function RootLayout({
       >
         <Header />
         <main className='flex-grow bg-whiteBG'>
-          <div className='w-[95%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>
+          <div className='w-[98%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>
             {children}
           </div>
         </main>

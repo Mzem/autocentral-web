@@ -223,11 +223,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
     const Infos = ({ post }: { post: CarPost }) => {
       return (
         <>
-          <div className='flex justify-center space-x-4 items-center mt-4 mb-4'>
+          <div className='flex justify-center space-x-4 items-center mt-4 mb-4 text-sm lg:text-base'>
             {post.merchant && (
               <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'>
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                <span className='truncate max-w-[12rem] lg:max-w-[20rem]'>
+                <span className='truncate max-w-[8rem] lg:max-w-[20rem]'>
                   {post.merchant.name}
                 </span>
                 {post.merchant.isShop && (
@@ -260,7 +260,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
               >
                 <img
                   src='/whatsapp.svg'
-                  className='h-[2.4rem] lg:h-[2.9rem]'
+                  className='h-[2.2rem] lg:h-[2.9rem]'
                   alt='Whatsapp'
                 />
               </a>
@@ -304,15 +304,15 @@ const CarPostModal: React.FC<PostModalProps> = ({
             <Carousel images={post.images} />
             <Infos post={post} />
             <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
-              <span>{post.price ? post.price + ' DT' : 'Prix inconnu'}</span>
+              <span>{post.price ? post.price + ' DT' : 'Prix N.C.'}</span>
               {post.estimatedPrice && (
                 <span
-                  className={`font-normal text-blackopac2 text-sm lg:text-lg ${
+                  className={`font-normal text-sm lg:text-lg ${
                     post.estimatedPrice.color === 'GREEN'
                       ? 'text-green'
                       : post.estimatedPrice.color === 'RED'
-                      ? 'text-vividred'
-                      : ''
+                      ? 'text-rolexgold'
+                      : 'text-blackopac2'
                   }`}
                 >
                   {post.estimatedPrice.text}

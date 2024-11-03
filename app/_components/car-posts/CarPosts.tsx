@@ -422,22 +422,35 @@ export default function CarPostsFeed({
                   {post.fuel}
                 </span>
                 {post.gearbox && <span>{post.gearbox}</span>}
-                <div className='font-bold mt-auto text-pureblack mb-[1px] flex flex-col text-left'>
-                  <span className={`${post.price ? 'text-vividred' : ''}`}>
-                    {post.price ? post.price + ' DT' : 'Prix inconnu'}
+                <div className='mt-auto mb-[1px] flex flex-col lg:flex-row lg:space-x-4 text-left'>
+                  <span className='font-bold text-pureblack'>
+                    {post.price ? post.price + ' DT' : 'Prix N.C.'}
                   </span>
                   {post.estimatedPrice && (
-                    <span
-                      className={`font-normal text-blackopac2 ${
-                        post.estimatedPrice.color === 'GREEN'
-                          ? 'text-green'
-                          : post.estimatedPrice.color === 'RED'
-                          ? 'text-vividred'
-                          : ''
-                      }`}
-                    >
-                      {post.estimatedPrice.text}
-                    </span>
+                    <div className='flex items-center space-x-1'>
+                      {post.estimatedPrice.color !== 'NORMAL' && (
+                        <div
+                          className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
+                            post.estimatedPrice.color === 'GREEN'
+                              ? 'bg-green'
+                              : post.estimatedPrice.color === 'RED'
+                              ? 'bg-rolexgold'
+                              : 'bg-blackopac2'
+                          }`}
+                        />
+                      )}
+                      <span
+                        className={`font-normal italic ${
+                          post.estimatedPrice.color === 'GREEN'
+                            ? 'text-green'
+                            : post.estimatedPrice.color === 'RED'
+                            ? 'text-rolexgold'
+                            : 'text-blackopac2'
+                        }`}
+                      >
+                        {post.estimatedPrice.text}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>

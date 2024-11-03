@@ -33,7 +33,9 @@ export default async function Home({
     <>
       <div className='text-center text-base lg:text-2xl mt-10 lg:mt-24 text-black mb-8 lg:mb-16 '>
         <p className='mx-2'>
-          Découvrez le premier moteur de recherche de véhicules d'occasion en{' '}
+          Découvrez le premier moteur de recherche
+          <br />
+          de véhicules d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
         <p className='mt-1'>
