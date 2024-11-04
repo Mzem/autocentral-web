@@ -1,4 +1,4 @@
-import { apiGet } from 'api/apiClient'
+import { apiGet, apiPatch } from 'api/apiClient'
 import { Region } from './regions.service'
 import { MerchantListItem } from './merchants.service'
 import { CarModel } from './car-model.service'
@@ -165,6 +165,32 @@ export async function getCarPost(id: string): Promise<CarPost | undefined> {
   } catch (e) {
     if (e instanceof ApiError) return undefined
     console.error('GET car post error')
+    throw e
+  }
+}
+
+export async function updateCarPost(
+  id: string,
+  authKey: string,
+  km?: number,
+  year?: number,
+  price?: number,
+  estimation?: number,
+  make?: string,
+  model?: string
+): Promise<void> {
+  try {
+    await apiPatch(`car-posts/${id}`, {
+      authKey,
+      km,
+      year,
+      price,
+      estimation,
+      make,
+      model
+    })
+  } catch (e) {
+    console.error('PATCH car post error')
     throw e
   }
 }

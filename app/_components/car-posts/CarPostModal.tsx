@@ -1,9 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import CarPostUpdateModal from './CarPostUpdateModal'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -185,7 +185,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
   isFull
 }) => {
   const [post, setPost] = useState<CarPost | null | 'error'>(null)
+  const [showModalUpdate, setShowModalUpdate] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
+  const updateModalRef = useRef<HTMLDivElement | null>(null)
 
   const router = useRouter()
 
@@ -206,7 +208,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (
         modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
+        !modalRef.current.contains(event.target as Node) &&
+        (!updateModalRef.current ||
+          !updateModalRef.current.contains(event.target as Node)) // Ignore clicks inside nested modal
       ) {
         if (onClose) onClose()
       }
@@ -287,6 +291,14 @@ const CarPostModal: React.FC<PostModalProps> = ({
         {post && post !== 'error' && (
           <div>
             <div className='flex justify-between mb-4 items-start'>
+              <button
+                className='text-whiteBG cursor-none'
+                onClick={() => {
+                  setShowModalUpdate(true)
+                }}
+              >
+                |
+              </button>
               <h2 className='text-sm lg:text-xl font-bold w-full'>
                 {post.title}
               </h2>
@@ -306,17 +318,28 @@ const CarPostModal: React.FC<PostModalProps> = ({
             <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
               <span>{post.price ? post.price + ' DT' : 'Prix N.C.'}</span>
               {post.estimatedPrice && (
-                <span
-                  className={`font-normal text-sm lg:text-lg ${
-                    post.estimatedPrice.color === 'GREEN'
-                      ? 'text-green'
-                      : post.estimatedPrice.color === 'RED'
-                      ? 'text-rolexgold'
-                      : 'text-blackopac2'
-                  }`}
-                >
-                  {post.estimatedPrice.text}
-                </span>
+                <div className='flex items-center space-x-1'>
+                  <div
+                    className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
+                      post.estimatedPrice.color === 'GREEN'
+                        ? 'bg-greenopac'
+                        : post.estimatedPrice.color === 'RED'
+                        ? 'bg-rolexgoldopac'
+                        : 'bg-titanopac'
+                    }`}
+                  />
+                  <span
+                    className={`font-normal text-sm lg:text-lg italic ${
+                      post.estimatedPrice.color === 'GREEN'
+                        ? 'text-green'
+                        : post.estimatedPrice.color === 'RED'
+                        ? 'text-rolexgold'
+                        : 'text-blackopac2'
+                    }`}
+                  >
+                    {post.estimatedPrice.text}
+                  </span>
+                </div>
               )}
             </div>
 
@@ -443,6 +466,21 @@ const CarPostModal: React.FC<PostModalProps> = ({
         </div>
       )}
       {isFull && <PostDetails />}
+      {showModalUpdate && post !== 'error' && (
+        <CarPostUpdateModal
+          ref={updateModalRef}
+          onClose={setShowModalUpdate}
+          carData={{
+            id: post?.id,
+            km: post?.km,
+            year: post?.year,
+            price: post?.price,
+            estimation: post?.estimatedPrice?.value,
+            make: post?.make,
+            model: post?.model
+          }}
+        />
+      )}
     </div>
   )
 }

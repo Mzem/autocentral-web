@@ -270,6 +270,7 @@ export default function CarPostsFeed({
                 <Select
                   isMulti
                   placeholder={'Région...'}
+                  noOptionsMessage={() => '...'}
                   options={regionsSelect}
                   value={regions}
                   onChange={(selected) =>
@@ -422,25 +423,14 @@ export default function CarPostsFeed({
                   {post.fuel}
                 </span>
                 {post.gearbox && <span>{post.gearbox}</span>}
-                <div className='mt-auto mb-[1px] flex flex-col lg:flex-row lg:space-x-4 text-left'>
+                <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left'>
                   <span className='font-bold text-pureblack'>
                     {post.price ? post.price + ' DT' : 'Prix N.C.'}
                   </span>
                   {post.estimatedPrice && (
                     <div className='flex items-center space-x-1'>
-                      {post.estimatedPrice.color !== 'NORMAL' && (
-                        <div
-                          className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
-                            post.estimatedPrice.color === 'GREEN'
-                              ? 'bg-green'
-                              : post.estimatedPrice.color === 'RED'
-                              ? 'bg-rolexgold'
-                              : 'bg-blackopac2'
-                          }`}
-                        />
-                      )}
                       <span
-                        className={`font-normal italic ${
+                        className={`font-normal italic text-[0.6rem] lg:text-xs ${
                           post.estimatedPrice.color === 'GREEN'
                             ? 'text-green'
                             : post.estimatedPrice.color === 'RED'
@@ -498,7 +488,7 @@ export default function CarPostsFeed({
         )}
         {hasMore && !loadingPosts && (
           <button
-            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg hover:bg-titan hover:text-white transition duration-300 ease-in-out w-full text-center mt-10 lg:text-lg'
+            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg hover:bg-titan w-full text-center mt-10 lg:text-lg'
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +

@@ -5,6 +5,7 @@ const config: Config = {
   theme: {
     colors: {
       green: '#105415',
+      greenopac: '#105415aa',
       blue: '#08085e',
       yellow: '#b3ae14',
       orange: '#b36b14',
@@ -20,11 +21,13 @@ const config: Config = {
       whiteopac2: '#ffffff10',
       whiteopac3: '#ffffff05',
       titan: '#cecdcd',
+      titanopac: '#cecdcdaa',
       cream: '#ede7d1',
       red: '#371211',
       vividred: '#B31414ee',
       gold: '#d4af37',
-      rolexgold: '#a37e2c'
+      rolexgold: '#a37e2c',
+      rolexgoldopac: '#a37e2caa'
     }
   },
   plugins: [require('@tailwindcss/forms')]
