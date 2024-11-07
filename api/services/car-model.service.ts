@@ -2,37 +2,20 @@ import { apiGet } from 'api/apiClient'
 import { ApiError } from '../httpClient'
 import { CarMake } from './car-makes.service'
 
-export interface RelatedCarModel {
-  id: string
-  model: string
-  productionYears?: string
-  engineDetail?: string
-  engineType?: string
-  cylinder?: string
-  body?: string
-  hp?: string
-  torque?: string
-  acceleration?: number
-  topSpeed?: number
-  driveType?: string
-  gearbox?: string
-  weight?: string
-  height?: string
-  width?: string
-  length?: string
-  fuelSystem?: string
-  fuelHighway?: string
-  fuelUrban?: string
-  fuelCombined?: string
-}
-
 export interface CarModel {
   id: string
   make: CarMake
   model: string
   fromYear: string
-  relatedModels: RelatedCarModel[]
   type?: string
+  vmax?: number
+  acceleration?: string
+  cv?: number
+  pbs?: string
+  note?: number
+  nbCylinder?: number
+  urban?: number
+  highway?: number
   engineName?: string
   cylinder?: string
   fuel?: string

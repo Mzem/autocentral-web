@@ -5,7 +5,7 @@ import { fromQueryParamsToGetCarPostsFilters } from './helpers'
 
 function getDailyCount(): number {
   const now = new Date()
-  const hours = now.getHours()
+  const hours = (now.getHours() + 2) % 24
   const minutes = now.getMinutes()
 
   // Calculate the progress of the day as a fraction (0 at midnight, 1 at 23:59)

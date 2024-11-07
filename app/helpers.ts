@@ -91,3 +91,8 @@ export function fromQueryParamsToGetCarPostsFilters(
     q: getParamValueString('q') || ''
   }
 }
+
+export function dotNumber(nb?: number | null): string | undefined {
+  if (!nb) return
+  if (nb >= 10000) return nb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}

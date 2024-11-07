@@ -1,8 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
+import { dotNumber } from '../../helpers'
+import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
@@ -189,8 +190,6 @@ const CarPostModal: React.FC<PostModalProps> = ({
   const modalRef = useRef<HTMLDivElement | null>(null)
   const updateModalRef = useRef<HTMLDivElement | null>(null)
 
-  const router = useRouter()
-
   useEffect(() => {
     try {
       fetch(`/api/car-post?postId=${postId}`, { next: { revalidate: 3600 } })
@@ -316,7 +315,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
             <Carousel images={post.images} />
             <Infos post={post} />
             <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
-              <span>{post.price ? post.price + ' DT' : 'Prix N.C.'}</span>
+              <span>
+                {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
+              </span>
               {post.estimatedPrice && (
                 <div className='flex items-center space-x-1'>
                   <div
@@ -345,50 +346,14 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base px-4 py-1 lg:py-2 flex space-x-1 items-center rounded-xl mx-auto bg-blackopac2 bg-opacity-90 text-white font-bold lg:my-6'
+                className='text-sm lg:text-base px-4 py-1 lg:py-2 flex space-x-1 items-center rounded-xl mx-auto bg-[#57b9ff] bg-opacity-90 text-white font-bold lg:my-6'
                 onClick={() => setShowIA(true)}
               >
                 <span>Voir le rapport autocentral.tn</span>
                 <img src='/gears.svg' className='h-4' alt='Rapport technique' />
               </button>
             )}
-            {showIA && (
-              <ul className='text-sm lg:text-base p-2 lg:p-6 '>
-                <li>
-                  <strong>Modèle :</strong> {post.carEngine?.make.name}{' '}
-                  {post.carEngine?.model}
-                </li>
-                <li>
-                  <strong>Début de production :</strong>{' '}
-                  {post.carEngine?.fromYear}
-                </li>
-                <li>
-                  {post.carEngine?.engineName} {post.carEngine?.fuel}
-                  {post.carEngine?.hp ? ' ' + post.carEngine?.hp + ' HP' : ''}
-                  {post.carEngine?.torque
-                    ? ' ' + post.carEngine?.torque + ' Nm'
-                    : ''}
-                </li>
-                {post.carEngine?.id && (
-                  <li
-                    className='underline mb-2 cursor-pointer'
-                    onClick={() =>
-                      router.replace(
-                        '/fiche-technique/motorisation/' + post.carEngine?.id
-                      )
-                    }
-                  >
-                    Voir la fiche technique détaillée
-                  </li>
-                )}
-                <li>
-                  <strong>Fiabilité :</strong> données à venir...
-                </li>
-                <li>
-                  <hr className='text-titan' />
-                </li>
-              </ul>
-            )}
+            {showIA && <SpecList engine={post.carEngine!} tax={post.cvTax} />}
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               <ul className='mt-1 text-sm lg:text-base'>
@@ -399,7 +364,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   <strong>Année :</strong> {post.year}
                 </li>
                 <li>
-                  <strong>Kilométrage :</strong> {post.km ?? '-'} km
+                  <strong>Kilométrage :</strong> {dotNumber(post.km) ?? '-'} km
                 </li>
                 <li>
                   <strong>Carburant :</strong> {post.fuel ?? '-'}

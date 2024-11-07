@@ -1,14 +1,9 @@
 'use client'
 
-import React from 'react'
-import {
-  CarModel,
-  RelatedCarModel
-} from '../../../api/services/car-model.service'
-import CarDimensions from './CarDimensions'
-import ShopHeader from '../ShopHeader'
-import { sortByStringField } from '../../helpers'
 import { useRouter } from 'next/navigation'
+import React from 'react'
+import { CarModel } from '../../../api/services/car-model.service'
+import ShopHeader from '../ShopHeader'
 
 type CarSpecsProps = {
   carModel: CarModel
@@ -131,7 +126,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
       </div>
 
       {/* Related Models Section */}
-      {carModel.relatedModels.length > 0 && (
+      {/* {carModel.relatedModels.length > 0 && (
         <div className='mt-12 lg:mt-16 text-sm lg:text-lg'>
           <h2 className='text-2xl font-semibold mb-2'>
             Modèles avec même motorisation
@@ -208,7 +203,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
                       </p>
                     )}
                   </div>
-                  {/* Center the CarDimensions component */}
+
                   <div className='flex justify-center lg:mr-24'>
                     <CarDimensions
                       length={relatedModel.length}
@@ -222,113 +217,9 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
             )}
           </ul>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
 
 export default CarSpecs
-
-function startYear(years?: string): string | undefined {
-  return years?.split(' ')[0]
-}
-
-function renameEngine(engine?: string): string | undefined {
-  if (engine) {
-    const newLength = engine.split(' ').length - (engine.includes('WD') ? 4 : 3)
-    return engine.split(' ').splice(0, newLength).join(' ')
-  }
-}
-
-function renamebody(body?: string): string | undefined {
-  if (body) {
-    return body
-      .replace(' (Spyder, Cabriolet)', '')
-      .replace(' (break, combi, touring)', '/Break')
-  }
-}
-
-function displayEngine(model: RelatedCarModel): string | undefined {
-  function renameEngine(engineType: string): string {
-    const isInline = engineType.charAt(0) === 'L' ? true : false
-    if (isInline) {
-      return `${engineType.charAt(1)} cylindres`
-    }
-    return engineType
-  }
-
-  let res = undefined
-
-  if (model.engineType) {
-    res = renameEngine(model.engineType)
-    if (model.cylinder) res += ` ${model.cylinder}`
-    if (model.hp) res += ` ${model.hp}ch`
-    if (model.torque) res += ` ${model.torque}Nm`
-  } else if (model.cylinder) {
-    res = model.cylinder
-    if (model.hp) res += ` ${model.hp}ch`
-    if (model.torque) res += ` ${model.torque}Nm`
-  } else if (model.hp) {
-    res = `${model.hp}ch`
-    if (model.torque) res += ` ${model.torque}Nm`
-  } else if (model.torque) {
-    res = `${model.torque}Nm`
-  }
-
-  return res
-}
-
-function displaySpeed(model: RelatedCarModel): string | undefined {
-  let res = undefined
-
-  if (model.acceleration) {
-    res = `0-100km/h ${model.acceleration}s`
-    if (model.topSpeed) {
-      res += ` - ${model.topSpeed}km/h`
-    }
-  } else if (model.topSpeed) {
-    res = `Vitesse Max ${model.topSpeed}km/h`
-  }
-
-  return res
-}
-
-function displayGearbox(model: RelatedCarModel): string | undefined {
-  function renameGearbox(gearbox: string): string {
-    let res = gearbox
-    if (gearbox && gearbox.includes('-speed')) {
-      res = gearbox.replace('-speed', '')
-      res = `Boite ${res}`
-    } else if (gearbox && gearbox.includes('speed')) {
-      res = gearbox.replace('speed', '')
-      res = `Boite ${res}`
-    }
-    return res
-      ?.replace('-automatic', ' automatique')
-      .replace('automatic', 'automatique')
-      .replace('-manual', ' manuelle')
-      .replace('manual', 'manuelle')
-      .replace('six', '6')
-      .replace('Six', '6')
-  }
-
-  let res = undefined
-  if (model.gearbox) {
-    res = renameGearbox(model.gearbox)
-  }
-  return res
-}
-
-function displayDrive(model: RelatedCarModel): string | undefined {
-  function renameDrive(drive: string): string {
-    return drive
-      .replace('RWD', 'Propulsion')
-      .replace('FWD', 'Traction')
-      .replace('AWD', 'Intégrale')
-  }
-  let res = undefined
-  if (model.driveType) {
-    res = renameDrive(model.driveType)
-  }
-  return res
-}

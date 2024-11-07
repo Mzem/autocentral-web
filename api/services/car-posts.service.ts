@@ -52,6 +52,7 @@ export interface CarPost {
   km: number | undefined
   fuel: string | undefined
   cv: number | undefined
+  cvTax: string | undefined
   engine: string | undefined
   gearbox: string | undefined
   interiorType: string | undefined

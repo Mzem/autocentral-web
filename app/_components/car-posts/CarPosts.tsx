@@ -8,6 +8,7 @@ import {
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
+import { dotNumber } from '../../helpers'
 import { Fuel, InteriorType, regionsSelect } from '../../types'
 import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
@@ -190,7 +191,10 @@ export default function CarPostsFeed({
           <div>
             <button
               className='w-10 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
-              onClick={handleNewSearch}
+              onClick={() => {
+                if (!showFilters) setShowFilters(true)
+                else handleNewSearch()
+              }}
             >
               <img
                 src='/search.svg'
@@ -223,7 +227,9 @@ export default function CarPostsFeed({
                     onChange={() => setIsShop(!isShop)}
                     className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
                   />
-                  <span className='text-xs lg:text-base'>Vendeurs PRO</span>
+                  <span className='text-xs lg:text-base'>
+                    Showroom / Vendeur PRO
+                  </span>
                   <img src='/badge.svg' className='ml-1 h-3' />
                 </label>
                 <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
@@ -417,7 +423,9 @@ export default function CarPostsFeed({
                   {post.year ? post.year + ' ' : ''}
                   {post.make} {post.model}
                 </span>
-                {post.km && <span className='font-bold'>{post.km} km</span>}
+                {post.km && (
+                  <span className='font-bold'>{dotNumber(post.km)} km</span>
+                )}
                 <span>
                   {post.cv ? post.cv + 'cv ' : ''}
                   {post.fuel}
@@ -425,7 +433,7 @@ export default function CarPostsFeed({
                 {post.gearbox && <span>{post.gearbox}</span>}
                 <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left'>
                   <span className='font-bold text-pureblack'>
-                    {post.price ? post.price + ' DT' : 'Prix N.C.'}
+                    {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
                   </span>
                   {post.estimatedPrice && (
                     <div className='flex items-center space-x-1'>
