@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -88,33 +89,13 @@ export default function Header() {
               <img src='/gears.svg' className='h-5' />
               <p className='text-sm'>Fiches techniques</p>
             </button>
-            <button
-              className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
-              // onClick={() => {
-              //   router.push('/vendeurs')
-              // }}
+            <Link
+              className='flex space-x-2 items-center hover:underline'
+              href='/vendeurs'
             >
               <img src='/man.svg' className='h-5' />
               <p className='text-sm'>Vendeurs professionnels</p>
-            </button>
-            {/* <button
-              className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
-              // onClick={() => {
-              //   router.push('/recherche-matricule')
-              // }}
-            >
-              <img src='/search.svg' className='h-5' />
-              <p className='text-sm'>Recherche par matricule</p>
-            </button>
-            <button
-              className='cursor-not-allowed opacity-40 flex space-x-2 items-center hover:underline'
-              // onClick={() => {
-              //   router.push('/blog')
-              // }}
-            >
-              <img src='/race_flag.svg' className='h-5' />
-              <p className='text-sm'>Blog</p>
-            </button> */}
+            </Link>
           </nav>
         </header>
       </div>
@@ -145,36 +126,13 @@ export default function Header() {
             Fiches techniques
             <img src='/gears.svg' className='h-6 ml-2 mr-1' />
           </button>
-          <button
-            className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
-            // onClick={() => {
-            //   setIsMenuOpen(false)
-            //   router.push('/vendeurs')
-            // }}
+          <Link
+            href='/vendeurs'
+            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
           >
             Vendeurs professionnels
             <img src='/man.svg' className='h-6 ml-2 mr-1' />
-          </button>
-          {/* <button
-            className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac flex justify-end'
-            // onClick={() => {
-            //   setIsMenuOpen(false)
-            //   router.push('/recherche-matricule')
-            // }}
-          >
-            Recherche par matricule
-            <img src='/search.svg' className='h-6 ml-2 mr-1' />
-          </button>
-          <button
-            className='cursor-not-allowed opacity-40 w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-titan flex justify-end'
-            // onClick={() => {
-            //   setIsMenuOpen(false)
-            //   router.push('/blog')
-            // }}
-          >
-            Blog
-            <img src='/race_flag.svg' className='h-6 ml-2 mr-1' />
-          </button> */}
+          </Link>
         </div>
       )}
 

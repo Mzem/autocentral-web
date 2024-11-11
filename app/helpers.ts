@@ -66,6 +66,7 @@ export function fromQueryParamsToGetCarPostsFilters(
   }
   return {
     page: Number(searchParamsRecord?.page ?? searchParamsURL?.get('page')) || 1,
+    merchantId: getParamValueString('merchantId'),
     make: getParamValueString('make'),
     model: getParamValueString('model'),
     regionIds: getParamValueStringArray('regionIds'),
@@ -93,6 +94,8 @@ export function fromQueryParamsToGetCarPostsFilters(
 }
 
 export function dotNumber(nb?: number | null): string | undefined {
+  if (nb === 0) return nb.toString()
   if (!nb) return
-  if (nb >= 10000) return nb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  if (nb >= 10000) return nb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  return nb.toString()
 }

@@ -112,7 +112,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
       </div>
 
       <div className='mt-32'>
-        <h2 className='text-2xl font-semibold mb-6'>Notre garage partenaire</h2>
+        <h2 className='text-2xl font-semibold mb-6'>Nos partenaires</h2>
         <ShopHeader
           id='autotech'
           name='Autotech Reprogrammation Moteur'
@@ -122,6 +122,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
           fb='https://www.facebook.com/autotechreprogrammation'
           insta='https://www.instagram.com/autotech_reprog'
           small={true}
+          hasLogo={true}
         />
       </div>
 

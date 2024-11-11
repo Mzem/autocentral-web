@@ -26,7 +26,11 @@ export default function CarPostsFeed({
   initialFilters?: GetCarPostsFilters
 }) {
   const pathname = usePathname() // Get path, e.g., "/annonces/123"
-  const id = pathname.split('/')[2] // Assuming "/annonces/[id]" structure
+  const pathnameSplit = pathname.split('/')
+  const id =
+    pathnameSplit[1] === 'annonces' && pathnameSplit[2]
+      ? pathnameSplit[2]
+      : undefined // Assuming "/annonces/[id]" structure
 
   // Posts display & pagination
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
@@ -36,6 +40,7 @@ export default function CarPostsFeed({
 
   // Filters
   const [page, setPage] = useState(initialFilters?.page || 1)
+  const [merchantId, setMerchantId] = useState(initialFilters?.merchantId)
   const [make, setMake] = useState(initialFilters?.make)
   const [model, setModel] = useState(initialFilters?.model)
   const [regions, setRegions] = useState<{ value: string; label: string }[]>(
@@ -89,6 +94,7 @@ export default function CarPostsFeed({
   function stateToFilters(page: number): GetCarPostsFilters {
     return {
       page,
+      merchantId,
       make,
       model,
       regionIds: regions.map((region) => region.value),
@@ -421,9 +427,9 @@ export default function CarPostsFeed({
                 )}
                 <span className='truncate max-w-[7.5rem] lg:max-w-full'>
                   {post.year ? post.year + ' ' : ''}
-                  {post.make} {post.model}
+                  {post.make !== 'Autres' ? post.make + ' ' + post.model : ''}
                 </span>
-                {post.km && (
+                {post.km !== undefined && post.km !== null && (
                   <span className='font-bold'>{dotNumber(post.km)} km</span>
                 )}
                 <span>
@@ -522,7 +528,9 @@ export default function CarPostsFeed({
             postId={selectedPostId}
             onClose={() => {
               setSelectedPostId(null)
-              window.history.replaceState(null, '', '/')
+              if (merchantId)
+                window.history.replaceState(null, '', `/vendeurs/${merchantId}`)
+              else window.history.replaceState(null, '', '/')
             }}
           />
         )}

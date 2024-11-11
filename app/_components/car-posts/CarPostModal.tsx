@@ -5,6 +5,7 @@ import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
+import Link from 'next/link'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -228,7 +229,10 @@ const CarPostModal: React.FC<PostModalProps> = ({
         <>
           <div className='flex justify-center space-x-4 items-center mt-4 mb-4 text-sm lg:text-base'>
             {post.merchant && (
-              <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'>
+              <Link
+                href={`/vendeurs/${post.merchant.id}`}
+                className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+              >
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
                 <span className='truncate max-w-[8rem] lg:max-w-[20rem]'>
                   {post.merchant.name}
@@ -236,7 +240,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 {post.merchant.isShop && (
                   <img src='/badge.svg' className='h-3 lg:h-4' />
                 )}
-              </button>
+              </Link>
             )}
             {post.phone && (
               <a href={`tel:${post.phone}`} className=''>
@@ -357,9 +361,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               <ul className='mt-1 text-sm lg:text-base'>
-                <li>
-                  <strong>Modèle :</strong> {post.make} {post.model}
-                </li>
+                {post.make !== 'Autres' && (
+                  <li>
+                    <strong>Modèle :</strong> {post.make} {post.model}
+                  </li>
+                )}
                 <li>
                   <strong>Année :</strong> {post.year}
                 </li>

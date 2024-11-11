@@ -2,10 +2,11 @@ import type { Metadata } from 'next'
 import { getCarPosts } from '../api/services/car-posts.service'
 import CarPostsFeed from './_components/car-posts/CarPosts'
 import { fromQueryParamsToGetCarPostsFilters } from './helpers'
+import { DateTime } from 'luxon'
 
 function getDailyCount(): number {
-  const now = new Date()
-  const hours = (now.getHours() + 2) % 24
+  const now = DateTime.local().toJSDate()
+  const hours = now.getHours()
   const minutes = now.getMinutes()
 
   // Calculate the progress of the day as a fraction (0 at midnight, 1 at 23:59)
@@ -48,8 +49,7 @@ export default async function Home({
     <>
       <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
         <p className='mx-2'>
-          Découvrez le premier moteur de recherche
-          <br className='lg:hidden' />
+          Découvrez le premier moteur de recherche <br className='lg:hidden' />
           de véhicules d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
