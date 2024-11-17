@@ -1,8 +1,8 @@
-import { getCarPosts } from '../../../api/services/car-posts.service'
-import { getMerchant } from '../../../api/services/merchants.service'
-import CarPostsFeed from '../../_components/car-posts/CarPosts'
-import ShopHeader from '../../_components/ShopHeader'
-import { fromQueryParamsToGetCarPostsFilters } from '../../helpers'
+import { getCarPosts } from '../../api/services/car-posts.service'
+import { getMerchant } from '../../api/services/merchants.service'
+import CarPostsFeed from '../_components/car-posts/CarPosts'
+import ShopHeader from '../_components/ShopHeader'
+import { fromQueryParamsToGetCarPostsFilters } from '../helpers'
 
 export default async function MerchantPage({
   searchParams,

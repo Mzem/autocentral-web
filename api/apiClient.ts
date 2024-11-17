@@ -5,7 +5,7 @@ const apiKey = process.env.API_KEY!
 
 export async function apiGet<T>(
   path: string,
-  cacheInSeconds: number = 3600
+  cacheInSeconds: number = 600
 ): Promise<{ content: T; headers: Headers }> {
   const headers = new Headers({
     'X-API-KEY': apiKey

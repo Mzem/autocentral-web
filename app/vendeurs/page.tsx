@@ -15,7 +15,7 @@ export default async function Merchants() {
         {merchants.map((merchant) => (
           <Link
             key={merchant.id}
-            href={`/vendeurs/${merchant.id}`}
+            href={`/${merchant.id}`}
             className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
           >
             <div className='flex flex-row space-x-2 lg:space-x-4 items-center'>

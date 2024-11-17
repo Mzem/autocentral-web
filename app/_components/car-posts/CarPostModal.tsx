@@ -230,7 +230,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
           <div className='flex justify-center space-x-4 items-center mt-4 mb-4 text-sm lg:text-base'>
             {post.merchant && (
               <Link
-                href={`/vendeurs/${post.merchant.id}`}
+                href={`/${post.merchant.id}`}
                 className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
               >
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />

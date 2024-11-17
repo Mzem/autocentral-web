@@ -10,7 +10,7 @@ export interface CarMake {
 
 export async function getCarMakes(remap?: boolean): Promise<CarMake[]> {
   try {
-    const { content } = await apiGet<CarMake[]>(`car-makes`)
+    const { content } = await apiGet<CarMake[]>(`car-makes`, 3600)
     const carMakes = content
     if (remap) return carMakes.filter((make) => make.remap === remap)
     return carMakes

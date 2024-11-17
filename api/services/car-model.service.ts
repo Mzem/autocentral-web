@@ -54,7 +54,7 @@ export interface CarModelsByMake {
 
 export async function getCarModel(id: string): Promise<CarModel | undefined> {
   try {
-    const { content } = await apiGet<CarModel>(`car-models/models/${id}`)
+    const { content } = await apiGet<CarModel>(`car-models/models/${id}`, 3600)
     return content
   } catch (e) {
     if (e instanceof ApiError) return undefined
@@ -67,7 +67,8 @@ export async function getCarModelsByMake(
 ): Promise<CarModelsByMake | undefined> {
   try {
     const { content } = await apiGet<CarModelsByMake>(
-      `car-models/makes/${makeId}/models`
+      `car-models/makes/${makeId}/models`,
+      3600
     )
     return content
   } catch (e) {

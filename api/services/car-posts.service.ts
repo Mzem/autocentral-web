@@ -1,6 +1,6 @@
 import { apiGet, apiPatch } from 'api/apiClient'
-import { Region } from './regions.service'
 import { MerchantListItem } from './merchants.service'
+import { Region } from './regions.service'
 import { CarModel } from './car-model.service'
 import { ApiError } from '../httpClient'
 import { Color, Fuel, InteriorType } from '../../app/types'

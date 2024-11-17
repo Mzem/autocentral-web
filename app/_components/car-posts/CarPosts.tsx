@@ -529,7 +529,7 @@ export default function CarPostsFeed({
             onClose={() => {
               setSelectedPostId(null)
               if (merchantId)
-                window.history.replaceState(null, '', `/vendeurs/${merchantId}`)
+                window.history.replaceState(null, '', `/${merchantId}`)
               else window.history.replaceState(null, '', '/')
             }}
           />
