@@ -129,6 +129,7 @@ export default function Header() {
           <Link
             href='/vendeurs'
             className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            onClick={() => setIsMenuOpen(false)}
           >
             Vendeurs professionnels
             <img src='/man.svg' className='h-6 ml-2 mr-1' />

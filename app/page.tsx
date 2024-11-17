@@ -11,9 +11,9 @@ function getDailyCount(): number {
 
   // Calculate the progress of the day as a fraction (0 at midnight, 1 at 23:59)
   const dayProgress = (hours * 60 + minutes) / (24 * 60)
-  let max = 25
-  if (hours >= 9 && hours <= 19) max = (hours - 8) * 12
-  if (hours >= 20) max = 130
+  let max = 30
+  if (hours >= 9 && hours <= 19) max = (hours - 8) * 20
+  if (hours >= 20) max = 300
 
   // Return a number between 0 and max based on the progress of the day
   return Math.floor(dayProgress * max)

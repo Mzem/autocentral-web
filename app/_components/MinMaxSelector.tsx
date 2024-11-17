@@ -54,7 +54,7 @@ export default function MinMaxSelector({
         }}
         className={`rounded w-${
           maxLimit < 10000 ? (maxLimit < 1000 ? '10' : '16') : '20'
-        } h-4 text-black mr-1 p-1 text-right`}
+        } h-6 text-black mr-1 p-1 text-right`}
       />
       <span
         className={`text-xs lg:text-base text-whiteBG ${
@@ -87,7 +87,7 @@ export default function MinMaxSelector({
         }}
         className={`rounded w-${
           maxLimit < 10000 ? (maxLimit < 1000 ? '10' : '16') : '20'
-        } h-4 text-black p-1 text-right`}
+        } h-6 text-black p-1 text-right`}
       />
     </div>
   )

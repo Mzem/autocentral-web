@@ -1,5 +1,7 @@
 'use client'
 
+import { dotNumber } from '../helpers'
+
 type ShopHeaderProps = {
   id: string
   name: string
@@ -33,18 +35,18 @@ function ShopHeader({
           src={`${
             avatar ? avatar : hasLogo ? '/' + id + '/logo.jpg' : '/man.svg'
           }`}
-          className={`rounded-full object-cover border-2  ${
-            small ? 'h-16 w-16 border-blackopac' : 'h-20 w-20  border-blackopac'
+          className={`max-w-28 w-28 lg:max-w-32 lg:w-32 max-h-[5rem] lg:max-h-[9rem] rounded object-cover flex-shrink-0  ${
+            small ? 'h-16 w-16 border-blackopac' : ''
           } ${!avatar && !hasLogo ? 'invert' : ''}`}
         />
         <p className='text-xl lg:text-3xl'>{name}</p>
       </div>
 
       {/* Contact Information */}
-      <div className='mt-4 lg:mt-0 flex lg:flex-row items-center space-x-8 lg:space-x-16'>
+      <div className='mt-4 lg:mt-0 flex lg:flex-row items-center space-x-4 lg:space-x-16'>
         {phone && (
           <a
-            href={`tel:00216${phone.trim()}`}
+            href={`tel:${phone.trim()}`}
             className='flex flex-col items-center hover:underline'
           >
             <img src='/phone.svg' className='h-5' />
@@ -55,7 +57,9 @@ function ShopHeader({
                 ? 'Passer une commande'
                 : 'Appeler'}
             </p>
-            <p className='text-sm font-bold'>{phone}</p>
+            <p className='text-sm font-bold'>
+              {dotNumber(phone.replace('+216', ''))}
+            </p>
           </a>
         )}
 

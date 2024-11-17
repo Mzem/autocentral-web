@@ -93,9 +93,29 @@ export function fromQueryParamsToGetCarPostsFilters(
   }
 }
 
-export function dotNumber(nb?: number | null): string | undefined {
+export function dotNumber(
+  nbOrString?: number | null | string
+): string | undefined {
+  let nb: number | null | undefined
+  if (typeof nbOrString === 'string') {
+    nb = Number(nbOrString)
+  } else {
+    nb = nbOrString
+  }
+
   if (nb === 0) return nb.toString()
   if (!nb) return
   if (nb >= 10000) return nb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
   return nb.toString()
+}
+
+export function fromNameToId(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics (accents)
+    .replace(/[^\w\s]/g, '') // Remove non alphanumeric
+    .replace(/\s+/g, ' ') // Remove multiple whitespaces
+    .toLowerCase()
+    .trim()
+    .replace(/ /g, '-')
 }

@@ -8,8 +8,8 @@ import {
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
-import { dotNumber } from '../../helpers'
-import { Fuel, InteriorType, regionsSelect } from '../../types'
+import { dotNumber, fromNameToId } from '../../helpers'
+import { Fuel, InteriorType, makesWithLogos, regionsSelect } from '../../types'
 import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
@@ -32,15 +32,20 @@ export default function CarPostsFeed({
       ? pathnameSplit[2]
       : undefined // Assuming "/annonces/[id]" structure
 
+  const [merchantId, setMerchantId] = useState(initialFilters?.merchantId)
+  const groupByMake = Boolean(merchantId)
+
   // Posts display & pagination
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
   const [loadingPosts, setLoadingPosts] = useState(false)
-  const [hasMore, setHasMore] = useState(initialPosts.length === API_PAGE_SIZE)
+  const [hasMore, setHasMore] = useState(
+    initialPosts.length === API_PAGE_SIZE && !merchantId
+  )
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
   // Filters
   const [page, setPage] = useState(initialFilters?.page || 1)
-  const [merchantId, setMerchantId] = useState(initialFilters?.merchantId)
+
   const [make, setMake] = useState(initialFilters?.make)
   const [model, setModel] = useState(initialFilters?.model)
   const [regions, setRegions] = useState<{ value: string; label: string }[]>(
@@ -211,7 +216,7 @@ export default function CarPostsFeed({
             <button
               className='w-8 lg:w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
-                window.location.href = '/'
+                window.location.href = merchantId ? `/${merchantId}` : '/'
               }}
             >
               <img
@@ -226,18 +231,20 @@ export default function CarPostsFeed({
           <div className='flex flex-col my-1 lg:my-2'>
             <div className='lg:flex lg:space-x-8'>
               <div>
-                <label className='flex items-center ml-3 cursor-pointer text-base'>
-                  <input
-                    type='checkbox'
-                    checked={isShop}
-                    onChange={() => setIsShop(!isShop)}
-                    className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
-                  />
-                  <span className='text-xs lg:text-base'>
-                    Showroom / Vendeur PRO
-                  </span>
-                  <img src='/badge.svg' className='ml-1 h-3' />
-                </label>
+                {!merchantId && (
+                  <label className='flex items-center ml-3 cursor-pointer text-base'>
+                    <input
+                      type='checkbox'
+                      checked={isShop}
+                      onChange={() => setIsShop(!isShop)}
+                      className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
+                    />
+                    <span className='text-xs lg:text-base'>
+                      Showroom / Vendeur PRO
+                    </span>
+                    <img src='/badge.svg' className='ml-1 h-3' />
+                  </label>
+                )}
                 <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
                   <input
                     type='checkbox'
@@ -279,22 +286,24 @@ export default function CarPostsFeed({
                   setMax={setMaxKm}
                   label={'Km'}
                 />
-                <Select
-                  isMulti
-                  placeholder={'Région...'}
-                  noOptionsMessage={() => '...'}
-                  options={regionsSelect}
-                  value={regions}
-                  onChange={(selected) =>
-                    setRegions(
-                      selected as Array<{ value: string; label: string }>
-                    )
-                  }
-                  unstyled
-                  styles={reactSelectFilterStyle}
-                  className='w-[95%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
-                  classNamePrefix='react-select'
-                />
+                {!merchantId && (
+                  <Select
+                    isMulti
+                    placeholder={'Région...'}
+                    noOptionsMessage={() => '...'}
+                    options={regionsSelect}
+                    value={regions}
+                    onChange={(selected) =>
+                      setRegions(
+                        selected as Array<{ value: string; label: string }>
+                      )
+                    }
+                    unstyled
+                    styles={reactSelectFilterStyle}
+                    className='w-[95%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
+                    classNamePrefix='react-select'
+                  />
+                )}
               </div>
             </div>
             <button
@@ -402,93 +411,230 @@ export default function CarPostsFeed({
         ref={searchDivRef}
         className='w-full mx-auto mt-1 lg:mt-6 text-black'
       >
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
-          >
-            <button
-              onClick={() => {
-                setSelectedPostId(post.id)
-                window.history.pushState(null, '', `/annonces/${post.id}`)
-              }}
-              className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
+        {!groupByMake &&
+          posts.map((post) => (
+            <div
+              key={post.id}
+              className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
             >
-              <img
-                src={post.image}
-                alt={post.title}
-                className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded flex-shrink-0'
-              />
-              <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
-                {post.title && (
-                  <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
-                    {post.title}
-                  </span>
-                )}
-                <span className='truncate max-w-[7.5rem] lg:max-w-full'>
-                  {post.year ? post.year + ' ' : ''}
-                  {post.make !== 'Autres' ? post.make + ' ' + post.model : ''}
-                </span>
-                {post.km !== undefined && post.km !== null && (
-                  <span className='font-bold'>{dotNumber(post.km)} km</span>
-                )}
-                <span>
-                  {post.cv ? post.cv + 'cv ' : ''}
-                  {post.fuel}
-                </span>
-                {post.gearbox && <span>{post.gearbox}</span>}
-                <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left'>
-                  <span className='font-bold text-pureblack'>
-                    {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
-                  </span>
-                  {post.estimatedPrice && (
-                    <div className='flex items-center space-x-1'>
-                      <span
-                        className={`font-normal italic text-[0.6rem] lg:text-xs ${
-                          post.estimatedPrice.color === 'GREEN'
-                            ? 'text-green'
-                            : post.estimatedPrice.color === 'RED'
-                            ? 'text-rolexgold'
-                            : 'text-blackopac2'
-                        }`}
-                      >
-                        {post.estimatedPrice.text}
-                      </span>
-                    </div>
+              <button
+                onClick={() => {
+                  setSelectedPostId(post.id)
+                  window.history.pushState(null, '', `/annonces/${post.id}`)
+                }}
+                className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
+              >
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded flex-shrink-0'
+                />
+                <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
+                  {post.title && (
+                    <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
+                      {post.title}
+                    </span>
                   )}
+                  <span className='truncate max-w-[7.5rem] lg:max-w-full'>
+                    {post.year ? post.year + ' ' : ''}
+                    {post.make !== 'Autres' ? post.make + ' ' + post.model : ''}
+                  </span>
+                  {post.km !== undefined && post.km !== null && (
+                    <span className='font-bold'>{dotNumber(post.km)} km</span>
+                  )}
+                  <span>
+                    {post.cv ? post.cv + 'cv ' : ''}
+                    {post.fuel}
+                  </span>
+                  {post.gearbox && <span>{post.gearbox}</span>}
+                  <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left'>
+                    <span className='font-bold text-pureblack'>
+                      {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
+                    </span>
+                    {post.estimatedPrice && (
+                      <div className='flex items-center space-x-1'>
+                        <span
+                          className={`font-normal italic text-[0.6rem] lg:text-xs ${
+                            post.estimatedPrice.color === 'GREEN'
+                              ? 'text-green'
+                              : post.estimatedPrice.color === 'RED'
+                              ? 'text-rolexgold'
+                              : 'text-blackopac2'
+                          }`}
+                        >
+                          {post.estimatedPrice.text}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </button>
+
+              <div className='flex flex-col items-center mr-1'>
+                {post.publishedAtText && (
+                  <span className='text-xs mb-2 truncate max-w-[6rem]'>
+                    {post.publishedAtText}
+                  </span>
+                )}
+
+                {post.phone && (
+                  <a href={`tel:${post.phone}`} className='w-full'>
+                    <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
+                      Appeler
+                    </button>
+                  </a>
+                )}
+                <div className='flex flex-row items-center mb-1'>
+                  {post.merchant.isShop && (
+                    <img src='/badge.svg' className='h-3' />
+                  )}
+                  <span className='text-xs text-black truncate max-w-[5.7rem] lg:max-w-[6rem]'>
+                    {post.merchant.name}
+                  </span>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <img src='/location.svg' className='h-3 lg:h-4' />
+                  <span>{post.region.name}</span>
                 </div>
               </div>
-            </button>
-
-            <div className='flex flex-col items-center mr-1'>
-              {post.publishedAtText && (
-                <span className='text-xs mb-2 truncate max-w-[6rem]'>
-                  {post.publishedAtText}
-                </span>
-              )}
-
-              {post.phone && (
-                <a href={`tel:${post.phone}`} className='w-full'>
-                  <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
-                    Appeler
-                  </button>
-                </a>
-              )}
-              <div className='flex flex-row items-center mb-1'>
-                {post.merchant.isShop && (
-                  <img src='/badge.svg' className='h-3' />
-                )}
-                <span className='text-xs text-black truncate max-w-[5.7rem] lg:max-w-[6rem]'>
-                  {post.merchant.name}
-                </span>
-              </div>
-              <div className='flex flex-row items-center'>
-                <img src='/location.svg' className='h-3 lg:h-4' />
-                <span>{post.region.name}</span>
-              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        {groupByMake &&
+          posts
+            .reduce(
+              (
+                acc: Array<{ make: string; posts: CarPostListItem[] }>,
+                post: CarPostListItem
+              ) => {
+                const existingMake = acc.find(
+                  (group) => group.make === post.make
+                )
+
+                if (existingMake) {
+                  existingMake.posts.push(post)
+                } else {
+                  acc.push({
+                    make: post.make,
+                    posts: [post]
+                  })
+                }
+
+                return acc
+              },
+              []
+            )
+            .map((postsByMake) => (
+              <div key={postsByMake.make}>
+                <div className='mt-8 flex space-x-1 lg:space-x-2 items-center'>
+                  {makesWithLogos.includes(fromNameToId(postsByMake.make)) && (
+                    <img
+                      src={`/car-makes/${fromNameToId(postsByMake.make)}.svg`}
+                      alt={postsByMake.make}
+                      className='h-8'
+                    />
+                  )}
+                  <h2>{postsByMake.make}</h2>
+                </div>
+
+                {postsByMake.posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
+                  >
+                    <button
+                      onClick={() => {
+                        setSelectedPostId(post.id)
+                        window.history.pushState(
+                          null,
+                          '',
+                          `/annonces/${post.id}`
+                        )
+                      }}
+                      className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
+                    >
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded flex-shrink-0'
+                      />
+                      <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
+                        {post.title && (
+                          <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
+                            {post.title}
+                          </span>
+                        )}
+                        <span className='truncate max-w-[7.5rem] lg:max-w-full'>
+                          {post.year ? post.year + ' ' : ''}
+                          {post.make !== 'Autres'
+                            ? post.make + ' ' + post.model
+                            : ''}
+                        </span>
+                        {post.km !== undefined && post.km !== null && (
+                          <span className='font-bold'>
+                            {dotNumber(post.km)} km
+                          </span>
+                        )}
+                        <span>
+                          {post.cv ? post.cv + 'cv ' : ''}
+                          {post.fuel}
+                        </span>
+                        {post.gearbox && <span>{post.gearbox}</span>}
+                        <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left'>
+                          <span className='font-bold text-pureblack'>
+                            {post.price
+                              ? dotNumber(post.price) + ' DT'
+                              : 'Prix N.C.'}
+                          </span>
+                          {post.estimatedPrice && (
+                            <div className='flex items-center space-x-1'>
+                              <span
+                                className={`font-normal italic text-[0.6rem] lg:text-xs ${
+                                  post.estimatedPrice.color === 'GREEN'
+                                    ? 'text-green'
+                                    : post.estimatedPrice.color === 'RED'
+                                    ? 'text-rolexgold'
+                                    : 'text-blackopac2'
+                                }`}
+                              >
+                                {post.estimatedPrice.text}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+
+                    <div className='flex flex-col items-center mr-1'>
+                      {post.publishedAtText && (
+                        <span className='text-xs mb-2 truncate max-w-[6rem]'>
+                          {post.publishedAtText}
+                        </span>
+                      )}
+
+                      {post.phone && (
+                        <a href={`tel:${post.phone}`} className='w-full'>
+                          <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
+                            Appeler
+                          </button>
+                        </a>
+                      )}
+                      <div className='flex flex-row items-center mb-1'>
+                        {post.merchant.isShop && (
+                          <img src='/badge.svg' className='h-3' />
+                        )}
+                        <span className='text-xs text-black truncate max-w-[5.7rem] lg:max-w-[6rem]'>
+                          {post.merchant.name}
+                        </span>
+                      </div>
+                      <div className='flex flex-row items-center'>
+                        <img src='/location.svg' className='h-3 lg:h-4' />
+                        <span>{post.region.name}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
 
         {loadingPosts && (
           <p className='text-center mt-12 text-lg lg:text-xl'>

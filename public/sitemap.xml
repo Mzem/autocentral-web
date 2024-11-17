@@ -10,4 +10,14 @@
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
   </url>
+  <url>
+        <loc>https://autocentrale.tn</loc>
+        <changefreq>always</changefreq>
+        <priority>1</priority>
+  </url>
+  <url>
+        <loc>https://autocentrale.tn/fiche-technique</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+  </url>
 </urlset>
