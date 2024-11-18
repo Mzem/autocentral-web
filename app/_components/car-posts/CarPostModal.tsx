@@ -1,11 +1,11 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
-import Link from 'next/link'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -361,7 +361,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               <ul className='mt-1 text-sm lg:text-base'>
-                {post.make !== 'Autres' && (
+                {post.make && post.make !== 'Autres' && (
                   <li>
                     <strong>Modèle :</strong> {post.make} {post.model}
                   </li>

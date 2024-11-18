@@ -37,7 +37,7 @@ export async function apiPost<T = void>(
   return fetchJson(`${apiURL}/${path}`, reqInit)
 }
 
-export async function apiPostFile(
+export async function apiPostFormData(
   path: string,
   payload: FormData
 ): Promise<unknown> {

@@ -1,5 +1,14 @@
 import Link from 'next/link'
 import { getMerchants } from '../../api/services/merchants.service'
+import { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    alternates: {
+      canonical: 'https://autocentral.tn/vendeurs'
+    }
+  }
+}
 
 export default async function Merchants() {
   const merchants = await getMerchants(true)

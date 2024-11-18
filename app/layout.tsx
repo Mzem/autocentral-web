@@ -10,15 +10,22 @@ export const metadata: Metadata = {
   title: "Voitures d'occasion en Tunisie",
   description: "Voitures d'occasion en Tunisie",
   applicationName: 'autocentral.tn',
-  keywords: ['tunis', 'tunisie', 'voiture', 'occasion', 'tayara', 'automobile'],
+  keywords: [
+    'tunis',
+    'tunisie',
+    'voiture',
+    'occasion',
+    'tayara',
+    'automobile',
+    'autocentral'
+  ],
   openGraph: {
     type: 'website',
     url: 'https://autocentral.tn',
     title: "Voitures d'occasion en Tunisie",
     siteName: "Voitures d'occasion en Tunisie",
     images: '/logo_square.svg'
-  },
-  metadataBase: new URL('https://autocentral.tn')
+  }
 }
 
 export default function RootLayout({

@@ -24,15 +24,12 @@ export async function generateMetadata({
 }: {
   searchParams: Record<string, string | string[] | undefined>
 }): Promise<Metadata> {
-  const q = typeof searchParams.q === 'string' ? searchParams.q : ''
-  const canonicalUrl = `${
-    process.env.NEXT_PUBLIC_SITE_URL
-  }/?q=${encodeURIComponent(q)}`
+  const q = typeof searchParams.q === 'string' ? searchParams.q : undefined
 
   return {
-    title: "Voitures d'occasion en Tunisie",
     alternates: {
-      canonical: canonicalUrl
+      canonical:
+        'https://autocentral.tn' + (q ? `/?q=${encodeURIComponent(q)}` : '')
     }
   }
 }
@@ -49,7 +46,7 @@ export default async function Home({
     <>
       <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
         <p className='mx-2'>
-          Découvrez le premier moteur de recherche <br className='lg:hidden' />
+          Le premier moteur de recherche <br className='lg:hidden' />
           de véhicules d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>

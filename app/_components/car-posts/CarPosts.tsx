@@ -437,7 +437,9 @@ export default function CarPostsFeed({
                   )}
                   <span className='truncate max-w-[7.5rem] lg:max-w-full'>
                     {post.year ? post.year + ' ' : ''}
-                    {post.make !== 'Autres' ? post.make + ' ' + post.model : ''}
+                    {post.make && post.make !== 'Autres'
+                      ? post.make + ' ' + post.model
+                      : ''}
                   </span>
                   {post.km !== undefined && post.km !== null && (
                     <span className='font-bold'>{dotNumber(post.km)} km</span>
@@ -533,7 +535,7 @@ export default function CarPostsFeed({
                       className='h-8'
                     />
                   )}
-                  <h2>{postsByMake.make}</h2>
+                  <h2>{postsByMake.make ?? ''}</h2>
                 </div>
 
                 {postsByMake.posts.map((post) => (
@@ -565,7 +567,7 @@ export default function CarPostsFeed({
                         )}
                         <span className='truncate max-w-[7.5rem] lg:max-w-full'>
                           {post.year ? post.year + ' ' : ''}
-                          {post.make !== 'Autres'
+                          {post.make && post.make !== 'Autres'
                             ? post.make + ' ' + post.model
                             : ''}
                         </span>
