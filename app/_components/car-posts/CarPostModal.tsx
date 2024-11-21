@@ -381,7 +381,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 <li>
                   <strong>Motorisation :</strong>{' '}
                   {post.engine ? post.engine + ' ' : ''}
-                  {post.cv ? post.cv + 'cv' : ''}
+                  {post.cv ? post.cv + ' cv' : ''}
                 </li>
                 <li>
                   <strong>Région :</strong> {post.region.name}

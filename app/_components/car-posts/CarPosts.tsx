@@ -438,14 +438,14 @@ export default function CarPostsFeed({
                   <span className='truncate max-w-[7.5rem] lg:max-w-full'>
                     {post.year ? post.year + ' ' : ''}
                     {post.make && post.make !== 'Autres'
-                      ? post.make + ' ' + post.model
+                      ? post.make + ' ' + (post.model ?? '')
                       : ''}
                   </span>
                   {post.km !== undefined && post.km !== null && (
                     <span className='font-bold'>{dotNumber(post.km)} km</span>
                   )}
                   <span>
-                    {post.cv ? post.cv + 'cv ' : ''}
+                    {post.cv ? post.cv + ' cv ' : ''}
                     {post.fuel}
                   </span>
                   {post.gearbox && <span>{post.gearbox}</span>}
@@ -577,7 +577,7 @@ export default function CarPostsFeed({
                           </span>
                         )}
                         <span>
-                          {post.cv ? post.cv + 'cv ' : ''}
+                          {post.cv ? post.cv + ' cv ' : ''}
                           {post.fuel}
                         </span>
                         {post.gearbox && <span>{post.gearbox}</span>}
