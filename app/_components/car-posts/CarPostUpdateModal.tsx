@@ -16,6 +16,8 @@ function CarPostUpdateModal(
       estimation?: number
       make?: string
       model?: string
+      cylinder?: string
+      fuel?: string
     }
   },
   ref: any
@@ -28,7 +30,9 @@ function CarPostUpdateModal(
     price: carData.price || '',
     estimation: carData.estimation || '',
     make: carData.make || '',
-    model: carData.model || ''
+    model: carData.model || '',
+    cylinder: carData.cylinder || '',
+    fuel: carData.fuel || ''
   })
 
   // Handle form data changes
@@ -55,7 +59,9 @@ function CarPostUpdateModal(
           price: formData.price || undefined,
           estimation: formData.estimation || undefined,
           make: formData.make || undefined,
-          model: formData.model || undefined
+          model: formData.model || undefined,
+          fuel: formData.fuel || undefined,
+          cylinder: formData.cylinder || undefined
         })
       }).then((res) => {
         if (res.ok) {
@@ -133,6 +139,26 @@ function CarPostUpdateModal(
               type='text'
               name='model'
               value={formData.model}
+              onChange={handleChange}
+              className='w-full px-3 py-1 border border-black rounded focus:outline-none focus:ring focus:ring-red'
+            />
+          </div>
+          <div>
+            <label className='block text-titan'>Cylindrée</label>
+            <input
+              type='text'
+              name='cylinder'
+              value={formData.cylinder}
+              onChange={handleChange}
+              className='w-full px-3 py-1 border border-black rounded focus:outline-none focus:ring focus:ring-red'
+            />
+          </div>
+          <div>
+            <label className='block text-titan'>Carburant</label>
+            <input
+              type='text'
+              name='fuel'
+              value={formData.fuel}
               onChange={handleChange}
               className='w-full px-3 py-1 border border-black rounded focus:outline-none focus:ring focus:ring-red'
             />

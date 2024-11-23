@@ -94,7 +94,6 @@ export default function CarPostsFeed({
   )
 
   const searchDivRef = useRef<HTMLDivElement | null>(null)
-  const [showSearchButton, setShowSearchButton] = useState(false)
 
   function stateToFilters(page: number): GetCarPostsFilters {
     return {
@@ -151,20 +150,10 @@ export default function CarPostsFeed({
   }
 
   function handleNewSearch() {
-    window.location.href = '/' + generateCarPostsQueryParams(stateToFilters(1))
+    const actualPage = merchantId ? '/' + merchantId : '/'
+    window.location.href =
+      actualPage + generateCarPostsQueryParams(stateToFilters(1))
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (searchDivRef.current) {
-        const rect = searchDivRef.current.getBoundingClientRect()
-        setShowSearchButton(rect.top < -window.innerHeight / 2)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const scrollToSearch = () => {
     setShowFilters(true)
@@ -188,20 +177,25 @@ export default function CarPostsFeed({
       >
         <div className='flex flex-row items-center justify-between'>
           <input
+            readOnly={!showFilters}
             type='text'
             value={searchText}
-            onClick={() => {
+            onClick={(e) => {
+              // @ts-expect-error
+              if (!showFilters) e.target.blur()
               setShowFilters(true)
             }}
             onChange={handleSearchTextChange}
             onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
-            placeholder='Rechercher un véhicule...'
-            className='ml-1 py-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[75%] lg:w-[75%]'
+            placeholder={
+              showFilters ? 'Taper un mot clé...' : 'Rechercher un véhicule...'
+            }
+            className='ml-1 py-1 xs:px-1 my-1 bg-whiteopac2 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[70%] lg:w-[75%] xs:w-[69%]'
           />
 
           <div>
             <button
-              className='w-10 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-10 w-12 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 if (!showFilters) setShowFilters(true)
                 else handleNewSearch()
@@ -214,7 +208,7 @@ export default function CarPostsFeed({
               />
             </button>
             <button
-              className='w-8 lg:w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-8 w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 window.location.href = merchantId ? `/${merchantId}` : '/'
               }}
@@ -239,9 +233,7 @@ export default function CarPostsFeed({
                       onChange={() => setIsShop(!isShop)}
                       className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
                     />
-                    <span className='text-xs lg:text-base'>
-                      Showroom / Vendeur PRO
-                    </span>
+                    <span className='text-xs lg:text-base'>Vendeurs PRO</span>
                     <img src='/badge.svg' className='ml-1 h-3' />
                   </label>
                 )}
@@ -271,7 +263,15 @@ export default function CarPostsFeed({
                   setSelectedItems={setFuel}
                 />
               </div>
-              <div>
+              <div className='w-full'>
+                <MinMaxSelector
+                  min={minYear}
+                  max={maxYear}
+                  setMin={setMinYear}
+                  setMax={setMaxYear}
+                  label={'Année'}
+                  maxLimit={2050}
+                />
                 <MinMaxSelector
                   min={minPrice}
                   max={maxPrice}
@@ -289,7 +289,7 @@ export default function CarPostsFeed({
                 {!merchantId && (
                   <Select
                     isMulti
-                    placeholder={'Région...'}
+                    placeholder={'Gouvernorat...'}
                     noOptionsMessage={() => '...'}
                     options={regionsSelect}
                     value={regions}
@@ -375,14 +375,6 @@ export default function CarPostsFeed({
                 </div>
                 <div>
                   <MinMaxSelector
-                    min={minYear}
-                    max={maxYear}
-                    setMin={setMinYear}
-                    setMax={setMaxYear}
-                    label={'Année'}
-                    maxLimit={2050}
-                  />
-                  <MinMaxSelector
                     min={minCV}
                     max={maxCV}
                     setMin={setMinCV}
@@ -415,7 +407,7 @@ export default function CarPostsFeed({
           posts.map((post) => (
             <div
               key={post.id}
-              className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
+              className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm xs:text-[0.7rem] text-blacklight'
             >
               <button
                 onClick={() => {
@@ -431,11 +423,11 @@ export default function CarPostsFeed({
                 />
                 <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
                   {post.title && (
-                    <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
+                    <span className='text-xs lg:text-base font-bold truncate xs:max-w-[7rem] max-w-[8.5rem] lg:max-w-[20rem]'>
                       {post.title}
                     </span>
                   )}
-                  <span className='truncate max-w-[7.5rem] lg:max-w-full'>
+                  <span className='truncate xs:max-w-[6rem] max-w-[7.5rem] lg:max-w-full'>
                     {post.year ? post.year + ' ' : ''}
                     {post.make && post.make !== 'Autres'
                       ? post.make + ' ' + (post.model ?? '')
@@ -445,7 +437,7 @@ export default function CarPostsFeed({
                     <span className='font-bold'>{dotNumber(post.km)} km</span>
                   )}
                   <span>
-                    {post.cv ? post.cv + ' cv ' : ''}
+                    {post.cv ? post.cv + 'cv ' : ''}
                     {post.fuel}
                   </span>
                   {post.gearbox && <span>{post.gearbox}</span>}
@@ -474,14 +466,14 @@ export default function CarPostsFeed({
 
               <div className='flex flex-col items-center mr-1'>
                 {post.publishedAtText && (
-                  <span className='text-xs mb-2 truncate max-w-[6rem]'>
+                  <span className='text-xs mb-2 truncate max-w-[6rem] xs:max-w-[4rem] xs:text-[0.6rem]'>
                     {post.publishedAtText}
                   </span>
                 )}
 
                 {post.phone && (
                   <a href={`tel:${post.phone}`} className='w-full'>
-                    <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
+                    <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 xs:px-3 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
                       Appeler
                     </button>
                   </a>
@@ -490,11 +482,11 @@ export default function CarPostsFeed({
                   {post.merchant.isShop && (
                     <img src='/badge.svg' className='h-3' />
                   )}
-                  <span className='text-xs text-black truncate max-w-[5.7rem] lg:max-w-[6rem]'>
+                  <span className='text-xs text-black truncate xs:max-w-[4rem] max-w-[5.7rem] lg:max-w-[6rem] xs:text-[0.7rem]'>
                     {post.merchant.name}
                   </span>
                 </div>
-                <div className='flex flex-row items-center'>
+                <div className='flex flex-row items-center xs:text-[0.6rem] truncate xs:max-w-[4rem]'>
                   <img src='/location.svg' className='h-3 lg:h-4' />
                   <span>{post.region.name}</span>
                 </div>
@@ -541,7 +533,7 @@ export default function CarPostsFeed({
                 {postsByMake.posts.map((post) => (
                   <div
                     key={post.id}
-                    className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
+                    className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm xs:text-[0.7rem] text-blacklight'
                   >
                     <button
                       onClick={() => {
@@ -561,11 +553,11 @@ export default function CarPostsFeed({
                       />
                       <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
                         {post.title && (
-                          <span className='text-xs lg:text-base font-bold truncate max-w-[8.5rem] lg:max-w-[20rem]'>
+                          <span className='text-xs lg:text-base font-bold truncate xs:max-w-[7rem] max-w-[8.5rem] lg:max-w-[20rem]'>
                             {post.title}
                           </span>
                         )}
-                        <span className='truncate max-w-[7.5rem] lg:max-w-full'>
+                        <span className='truncate xs:max-w-[6rem] max-w-[7.5rem] lg:max-w-full'>
                           {post.year ? post.year + ' ' : ''}
                           {post.make && post.make !== 'Autres'
                             ? post.make + ' ' + post.model
@@ -577,7 +569,7 @@ export default function CarPostsFeed({
                           </span>
                         )}
                         <span>
-                          {post.cv ? post.cv + ' cv ' : ''}
+                          {post.cv ? post.cv + 'cv ' : ''}
                           {post.fuel}
                         </span>
                         {post.gearbox && <span>{post.gearbox}</span>}
@@ -608,14 +600,14 @@ export default function CarPostsFeed({
 
                     <div className='flex flex-col items-center mr-1'>
                       {post.publishedAtText && (
-                        <span className='text-xs mb-2 truncate max-w-[6rem]'>
+                        <span className='text-xs mb-2 truncate max-w-[6rem] xs:max-w-[4rem] xs:text-[0.6rem]'>
                           {post.publishedAtText}
                         </span>
                       )}
 
                       {post.phone && (
                         <a href={`tel:${post.phone}`} className='w-full'>
-                          <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
+                          <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 xs:px-3 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
                             Appeler
                           </button>
                         </a>
@@ -624,11 +616,11 @@ export default function CarPostsFeed({
                         {post.merchant.isShop && (
                           <img src='/badge.svg' className='h-3' />
                         )}
-                        <span className='text-xs text-black truncate max-w-[5.7rem] lg:max-w-[6rem]'>
+                        <span className='text-xs text-black truncate xs:max-w-[4rem] max-w-[5.7rem] lg:max-w-[6rem] xs:text-[0.7rem]'>
                           {post.merchant.name}
                         </span>
                       </div>
-                      <div className='flex flex-row items-center'>
+                      <div className='flex flex-row items-center xs:text-[0.6rem] truncate xs:max-w-[4rem]'>
                         <img src='/location.svg' className='h-3 lg:h-4' />
                         <span>{post.region.name}</span>
                       </div>
@@ -639,37 +631,34 @@ export default function CarPostsFeed({
             ))}
 
         {loadingPosts && (
-          <p className='text-center mt-12 text-lg lg:text-xl'>
+          <button className='text-white bg-blackopac2 font-medium shadow-lg p-1 rounded-lg w-full text-center mt-10 lg:text-lg'>
             Chargement des annonces...
-          </p>
+          </button>
         )}
         {!hasMore && !loadingPosts && (
           <p className='text-center mt-12 text-lg lg:text-xl'>
-            Fin des résultats.
+            {posts.length > 0 ? 'Fin des résultats.' : 'Aucun résultat.'}
           </p>
         )}
         {hasMore && !loadingPosts && (
           <button
-            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg hover:bg-titan w-full text-center mt-10 lg:text-lg'
+            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg w-full text-center mt-10 lg:text-lg'
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +
           </button>
         )}
 
-        {/* Fixed Scroll Button */}
-        {showSearchButton && (
-          <button
-            onClick={scrollToSearch}
-            className='fixed bottom-[3%] right-[3%] lg:bottom-[85%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
-          >
-            <img
-              src='/search.svg'
-              alt='Rechercher'
-              className='h-7 lg:h-8 mx-auto'
-            />
-          </button>
-        )}
+        <button
+          onClick={scrollToSearch}
+          className='fixed bottom-[3%] right-[3%] lg:bottom-[80%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
+        >
+          <img
+            src='/search.svg'
+            alt='Rechercher'
+            className='h-7 lg:h-8 mx-auto'
+          />
+        </button>
 
         {selectedPostId && (
           <CarPostModal

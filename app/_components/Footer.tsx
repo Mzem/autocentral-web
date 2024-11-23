@@ -7,7 +7,7 @@ export default function Footer() {
         </p>
         <div className='flex flex-row space-x-2 mb-2 lg:mb-4'>
           <a
-            href='https://www.instagram.com/tuniautos'
+            href='https://www.instagram.com/autocentral.tn'
             target='_blank'
             rel='noopener noreferrer'
           >
@@ -18,7 +18,7 @@ export default function Footer() {
             />
           </a>
           <a
-            href='https://www.facebook.com/tuniautos'
+            href='https://www.facebook.com/autocentral.tn'
             target='_blank'
             rel='noopener noreferrer'
           >

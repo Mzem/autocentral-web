@@ -5,7 +5,7 @@ import { fromQueryParamsToGetCarPostsFilters } from './helpers'
 import { DateTime } from 'luxon'
 
 function getDailyCount(): number {
-  const now = DateTime.local().toJSDate()
+  const now = DateTime.local({ zone: 'UTC+1' }).toJSDate()
   const hours = now.getHours()
   const minutes = now.getMinutes()
 
@@ -44,9 +44,9 @@ export default async function Home({
 
   return (
     <>
-      <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
+      <div className='text-center xs:text-base text-lg lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
         <p className='mx-2'>
-          Le premier moteur de recherche <br className='lg:hidden' />
+          Premier moteur de recherche <br className='lg:hidden' />
           de véhicules d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
@@ -56,6 +56,24 @@ export default async function Home({
           </span>
           nouvelles annonces aujourd'hui
         </p>
+        <div className='w-[20%] md:w-[5%] mx-auto justify-around flex items-center space-x-1 text-[0.7rem]'>
+          <img src='/tayara.jpg' alt='tayara.tn' className='h-4 rounded-full' />
+          <img
+            src='/automobiletn.png'
+            alt='automobile.tn'
+            className='h-4 rounded-full'
+          />
+          <img
+            src='/facebook.svg'
+            alt='facebook.com'
+            className='h-4 rounded-full'
+          />
+          <img
+            src='/instagram.svg'
+            alt='instagram.com'
+            className='h-4 rounded-full'
+          />
+        </div>
       </div>
       <CarPostsFeed initialPosts={posts} initialFilters={filters} />
     </>

@@ -7,12 +7,22 @@ import {
 export async function GET(req: NextRequest) {
   const postId = req.nextUrl.searchParams.get('postId')!
   const post = await getCarPost(postId)
-
+  if (!post) return Response.json({})
   return Response.json(post)
 }
 export async function PATCH(req: NextRequest) {
-  const { postId, authKey, km, year, price, estimation, make, model } =
-    await req.json()
+  const {
+    postId,
+    authKey,
+    km,
+    year,
+    price,
+    estimation,
+    make,
+    model,
+    cylinder,
+    fuel
+  } = await req.json()
 
   await updateCarPost(
     postId,
@@ -22,7 +32,9 @@ export async function PATCH(req: NextRequest) {
     Number(price),
     Number(estimation),
     make,
-    model
+    model,
+    cylinder,
+    fuel
   )
   return Response.json({ message: 'ok' }, { status: 200 })
 }

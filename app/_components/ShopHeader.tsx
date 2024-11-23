@@ -28,14 +28,14 @@ function ShopHeader({
   avatar
 }: ShopHeaderProps) {
   return (
-    <div className='flex flex-row flex-wrap mx-auto items-center justify-between text-black'>
+    <div className='flex flex-col lg:flex-row flex-wrap mx-auto lg:items-center justify-between text-black'>
       {/* Logo and Shop Name */}
-      <div className='flex flex-row items-center space-x-8 lg:space-x-20'>
+      <div className='flex flex-row items-center space-x-4 lg:space-x-20'>
         <img
           src={`${
             avatar ? avatar : hasLogo ? '/' + id + '/logo.jpg' : '/man.svg'
           }`}
-          className={`max-w-28 w-28 lg:max-w-32 lg:w-32 max-h-[5rem] lg:max-h-[9rem] rounded object-cover flex-shrink-0  ${
+          className={`max-w-28 w-28 lg:max-w-32 lg:w-32 max-h-[5rem] lg:max-h-[9rem] rounded-lg object-cover flex-shrink-0  ${
             small ? 'h-16 w-16 border-blackopac' : ''
           } ${!avatar && !hasLogo ? 'invert' : ''}`}
         />

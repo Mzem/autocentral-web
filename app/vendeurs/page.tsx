@@ -15,10 +15,17 @@ export default async function Merchants() {
 
   return (
     <>
-      <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16 flex items-center space-x-2'>
-        <p>Showrooms & Vendeurs professionnels</p>
+      <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px]'>
+        <p>Showrooms & Vendeurs PRO</p>
         <img src='/badge.svg' className='h-4 lg:h-5' />
       </div>
+      <a
+        href={`https://wa.me/21624660559?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+        className='w-auto mt-2 rounded-lg bg-blackopac2 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
+      >
+        <p>Pour créer votre espace, veuillez nous contacter</p>
+        <img src='/whatsapp_white.svg' className='h-[1rem]' alt='Whatsapp' />
+      </a>
 
       <div className='w-full mx-auto text-black'>
         {merchants.map((merchant) => (

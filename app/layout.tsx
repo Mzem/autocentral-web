@@ -144,8 +144,14 @@ export default function RootLayout({
                 },
                 {
                   '@type': 'ListItem',
-                  position: 2,
-                  name: 'Fiche technique',
+                  position: 1,
+                  name: 'Vendeurs voitures occasion Tunisie',
+                  item: 'https://autocentral.tn/vendeurs'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: 'Fiche technique Tunisie',
                   item: 'https://autocentral.tn/fiche-technique'
                 }
               ]

@@ -59,18 +59,41 @@ export default function Header() {
             />
           </button>
 
+          <a
+            href={`https://wa.me/21624660559?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+            className='xl:hidden rounded-lg bg-whiteopac2 flex items-center space-x-1 text-sm lg:text-base py-[2px] px-[4px] md:ml-80 lg:ml-48'
+          >
+            <p>Annonce +</p>
+            <img
+              src='/whatsapp_white.svg'
+              className='xs:hidden h-[1rem]'
+              alt='Whatsapp'
+            />
+          </a>
+
           {/* Mobile Burger Menu Icon on the Left */}
           <button
             onClick={switchMenu}
             ref={menuButtonRef}
-            className='lg:hidden flex flex-col lg:flex-row-reverse items-center text-titan'
+            className='xl:hidden flex flex-col lg:flex-row-reverse items-center text-titan'
           >
             <img src='/menu.svg' className='h-7 lg:h-12' alt='Menu' />
             <span className='text-xs lg:text-base lg:mr-2 -mt-1'>Menu</span>
           </button>
 
           {/* Desktop Menu Links */}
-          <nav className='hidden lg:flex space-x-10'>
+          <nav className='hidden xl:flex space-x-5'>
+            <a
+              href={`https://wa.me/21624660559?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+              className='rounded-lg bg-whiteopac2 flex text-sm items-center space-x-1 py-[2px] px-[6px]'
+            >
+              <p>Déposer une annonce</p>
+              <img
+                src='/whatsapp_white.svg'
+                className='h-[1rem]'
+                alt='Whatsapp'
+              />
+            </a>
             <button
               className='flex space-x-2 items-center hover:underline'
               onClick={() => {
@@ -104,7 +127,7 @@ export default function Header() {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className='lg:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
+          className='xl:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
         >
           <button
             className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'

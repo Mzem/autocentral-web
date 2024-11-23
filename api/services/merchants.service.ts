@@ -1,4 +1,5 @@
 import { apiGet } from 'api/apiClient'
+import { ApiError } from '../httpClient'
 
 export interface MerchantListItem {
   id: string
@@ -37,11 +38,12 @@ export async function getMerchants(isShop: boolean): Promise<Merchant[]> {
   }
 }
 
-export async function getMerchant(id: string): Promise<Merchant> {
+export async function getMerchant(id: string): Promise<Merchant | undefined> {
   try {
     const { content } = await apiGet<Merchant>(`merchants/${id}`)
     return content
   } catch (e) {
+    if (e instanceof ApiError) return undefined
     console.error('GET merchant error')
     throw e
   }

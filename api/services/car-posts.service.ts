@@ -54,6 +54,7 @@ export interface CarPost {
   cv: number | undefined
   cvTax: string | undefined
   engine: string | undefined
+  cylinder: string | undefined
   gearbox: string | undefined
   interiorType: string | undefined
   interiorColor: string | undefined
@@ -178,7 +179,9 @@ export async function updateCarPost(
   price?: number,
   estimation?: number,
   make?: string,
-  model?: string
+  model?: string,
+  cylinder?: string,
+  fuel?: string
 ): Promise<void> {
   try {
     await apiPatch(`car-posts/${id}`, {
@@ -188,7 +191,9 @@ export async function updateCarPost(
       price,
       estimation,
       make,
-      model
+      model,
+      cylinder,
+      fuel
     })
   } catch (e) {
     console.error('PATCH car post error')

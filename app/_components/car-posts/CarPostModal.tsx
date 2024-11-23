@@ -31,7 +31,10 @@ const Linkify: React.FC<{ text: string }> = ({ text }) => {
   return <>{parts}</>
 }
 
-const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
+const Carousel: React.FC<{ images: string[]; setIsFullImage: any }> = ({
+  images,
+  setIsFullImage
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [fullScreenImage, setFullScreenImage] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -53,6 +56,7 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
       ) {
         if (images.length === 1) {
           setFullScreenImage(false)
+          setIsFullImage(false)
         } else if (
           // @ts-expect-error
           !prevButtonRef.current.contains(event.target) &&
@@ -60,6 +64,7 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
           !nextButtonRef.current.contains(event.target)
         ) {
           setFullScreenImage(false)
+          setIsFullImage(false)
         }
       }
     }
@@ -74,7 +79,10 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
   return (
     <div
       className='relative carousel rounded-lg'
-      onClick={() => setFullScreenImage(true)}
+      onClick={() => {
+        setFullScreenImage(true)
+        setIsFullImage(true)
+      }}
     >
       <img
         src={images[currentIndex]}
@@ -114,8 +122,11 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
 
       {fullScreenImage && (
         <div
-          className='fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-40'
-          onClick={() => setFullScreenImage(false)}
+          className='fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-51'
+          onClick={() => {
+            setFullScreenImage(false)
+            setIsFullImage(false)
+          }}
         >
           <div
             className='relative'
@@ -126,6 +137,7 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
               onClick={(e) => {
                 e.stopPropagation()
                 setFullScreenImage(false)
+                setIsFullImage(false)
               }}
               className='absolute top-1 right-1 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
             >
@@ -135,6 +147,7 @@ const Carousel: React.FC<{ images: string[] }> = ({ images }) => {
               src={images[currentIndex]}
               alt='Car image'
               className='object-contain max-h-[100dvh] max-w-full'
+              onClick={() => nextImage()}
             />
           </div>
           {images.length > 1 && (
@@ -186,7 +199,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
   onClose,
   isFull
 }) => {
-  const [post, setPost] = useState<CarPost | null | 'error'>(null)
+  const [post, setPost] = useState<CarPost | null | 'error' | 'not found'>(null)
   const [showModalUpdate, setShowModalUpdate] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
   const updateModalRef = useRef<HTMLDivElement | null>(null)
@@ -196,7 +209,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
       fetch(`/api/car-post?postId=${postId}`, { next: { revalidate: 3600 } })
         .then((res) => res.json())
         .then((post) => {
-          setPost(post)
+          if (post.id) setPost(post)
+          else setPost('not found')
+        })
+        .catch((e) => {
+          setPost('error')
         })
     } catch (e) {
       setPost('error')
@@ -223,6 +240,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
   const PostDetails = () => {
     const [showIA, setShowIA] = useState(false)
+    const [isFullImage, setIsFullImage] = useState(false)
 
     const Infos = ({ post }: { post: CarPost }) => {
       return (
@@ -234,7 +252,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
               >
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                <span className='truncate max-w-[8rem] lg:max-w-[20rem]'>
+                <span className='truncate max-w-[7rem] lg:max-w-[20rem]'>
                   {post.merchant.name}
                 </span>
                 {post.merchant.isShop && (
@@ -279,21 +297,42 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
     return (
       <>
+        {!isFull && !isFullImage && (
+          <button
+            onClick={onClose}
+            className={`w-1/10 fixed right-[4%] lg:right-[23%] rounded-full bg-blackopac2 p-1 z-50`}
+          >
+            <img
+              src='/close.svg'
+              alt='Fermer'
+              className='h-6 lg:h-8 rounded hover:brightness-50 invert'
+            />
+          </button>
+        )}
         {!post && (
-          <div className='text-center text-lg lg:text-xl'>
-            Chargement de l'annonce...
-          </div>
+          <>
+            <div className='text-center text-lg lg:text-xl'>
+              Chargement de l'annonce...
+            </div>
+          </>
+        )}
+        {post === 'not found' && (
+          <>
+            <div className='text-center text-lg lg:text-xl'>
+              Annonce expirée
+            </div>
+          </>
         )}
 
         {post === 'error' && (
-          <div className='text-center text-white'>
-            <p>Impossible de récupérer les détails de l'annonce.</p>
+          <div className='text-center'>
+            <p>Impossible de récupérer les détails de l'annonce</p>
           </div>
         )}
 
-        {post && post !== 'error' && (
+        {post && post !== 'error' && post !== 'not found' && (
           <div>
-            <div className='flex justify-between mb-4 items-start'>
+            <div className={`flex justify-between mb-4 items-start `}>
               <button
                 className='text-whiteBG cursor-none'
                 onClick={() => {
@@ -302,23 +341,18 @@ const CarPostModal: React.FC<PostModalProps> = ({
               >
                 |
               </button>
-              <h2 className='text-sm lg:text-xl font-bold w-full'>
+              <h2
+                className={`text-sm lg:text-xl font-bold w-full ${
+                  isFull ? '' : 'mr-[10%]'
+                }`}
+              >
                 {post.title}
               </h2>
-              {!isFull && (
-                <button onClick={onClose} className='w-1/10'>
-                  <img
-                    src='/close.svg'
-                    alt='Fermer'
-                    className='h-6 lg:h-8 rounded hover:brightness-50'
-                  />
-                </button>
-              )}
             </div>
 
-            <Carousel images={post.images} />
+            <Carousel images={post.images} setIsFullImage={setIsFullImage} />
             <Infos post={post} />
-            <div className='mt-4 lg:mt-6 mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
+            <div className='mt-4 lg:mt-6 mb-3 lg:mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
               <span>
                 {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
               </span>
@@ -350,7 +384,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base px-4 py-1 lg:py-2 flex space-x-1 items-center rounded-xl mx-auto bg-[#57b9ff] bg-opacity-90 text-white font-bold lg:my-6'
+                className='text-sm lg:text-base px-2 flex space-x-1 items-center rounded-xl mx-auto bg-vividred text-white font-medium italic lg:my-6'
                 onClick={() => setShowIA(true)}
               >
                 <span>Voir le rapport autocentral.tn</span>
@@ -380,8 +414,8 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 </li>
                 <li>
                   <strong>Motorisation :</strong>{' '}
-                  {post.engine ? post.engine + ' ' : ''}
-                  {post.cv ? post.cv + ' cv' : ''}
+                  {post.cylinder ? post.cylinder + ' ' : ''}
+                  {post.cv ? post.cv + 'cv' : ''}
                 </li>
                 <li>
                   <strong>Région :</strong> {post.region.name}
@@ -437,7 +471,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
         </div>
       )}
       {isFull && <PostDetails />}
-      {showModalUpdate && post !== 'error' && (
+      {showModalUpdate && post !== 'error' && post !== 'not found' && (
         <CarPostUpdateModal
           ref={updateModalRef}
           onClose={setShowModalUpdate}
@@ -448,7 +482,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
             price: post?.price,
             estimation: post?.estimatedPrice?.value,
             make: post?.make,
-            model: post?.model
+            model: post?.model,
+            cylinder: post?.cylinder,
+            fuel: post?.fuel
           }}
         />
       )}

@@ -27,7 +27,19 @@ const config: Config = {
       vividred: '#B31414ee',
       gold: '#d4af37',
       rolexgold: '#a37e2c',
-      rolexgoldopac: '#a37e2caa'
+      rolexgoldopac: '#a37e2caa',
+      whatsapp: '#25d366'
+    },
+    screens: {
+      sm: '480px', // For small mobile screens
+      md: '768px', // Tablets
+      lg: '1024px', // Desktops
+      xl: '1380px' // Large screens
+    },
+    extend: {
+      screens: {
+        xs: { max: '350px' }
+      }
     }
   },
   plugins: [require('@tailwindcss/forms')]

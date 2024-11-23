@@ -1,9 +1,13 @@
 import { Metadata } from 'next'
-import { getCarPosts } from '../../api/services/car-posts.service'
+import {
+  CarPostListItem,
+  getCarPosts
+} from '../../api/services/car-posts.service'
 import { getMerchant } from '../../api/services/merchants.service'
 import CarPostsFeed from '../_components/car-posts/CarPosts'
 import ShopHeader from '../_components/ShopHeader'
 import { fromQueryParamsToGetCarPostsFilters } from '../helpers'
+import MerchantHeader from '../_components/MerchantHeader'
 
 export async function generateMetadata({
   params
@@ -27,23 +31,29 @@ export default async function MerchantPage({
   params: { merchantId: string }
 }) {
   const merchant = await getMerchant(params.merchantId)
-  const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
-  filters.merchantId = merchant.id
-  const posts = await getCarPosts(filters)
-
+  let posts: CarPostListItem[] = []
+  let filters
+  if (merchant) {
+    filters = fromQueryParamsToGetCarPostsFilters(searchParams)
+    filters.merchantId = merchant.id
+    posts = await getCarPosts(filters)
+  }
   return (
     <>
-      <ShopHeader
-        id={merchant.id}
-        name={merchant.name}
-        phone={merchant.phone}
-        location={merchant.gmapsLink}
-        fb={merchant.fb}
-        insta={merchant.insta}
-        avatar={merchant.avatar}
-      />
-      <div className='mb-8' />
-      <CarPostsFeed initialPosts={posts} initialFilters={filters} />
+      {!merchant && (
+        <div className='text-black mx-auto w-full flex flex-col items-center justify-around text-xl lg:text-2xl mt-36'>
+          <img src='/lost.svg' alt='Non trouvé(e)' className='max-h-96' />
+          <p>Non trouvé(e)</p>
+        </div>
+      )}
+
+      {merchant && (
+        <>
+          <MerchantHeader merchant={merchant} />
+          <div className='mb-8' />
+          <CarPostsFeed initialPosts={posts} initialFilters={filters} />
+        </>
+      )}
     </>
   )
 }
