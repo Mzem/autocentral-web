@@ -27,7 +27,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
   )
 
   return (
-    <div className='mt-12 lg:mt-16 text-black'>
+    <div className='mt-8 lg:mt-16 text-black'>
       {carMakes.length > 0 && (
         <>
           <p className='text-left w-full text-xl lg:text-2xl'>

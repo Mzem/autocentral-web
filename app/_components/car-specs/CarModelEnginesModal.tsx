@@ -46,7 +46,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
   }
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
+    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center invert'>
       <div
         ref={modalRef}
         className='bg-black p-8 border border-whiteopac rounded-lg w-5/6 lg:w-1/3 h-3/4 overflow-y-scroll text-white'

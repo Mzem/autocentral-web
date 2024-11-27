@@ -22,12 +22,11 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           <p className='text-xl lg:text-3xl'>{merchant.name}</p>
         </div>
         <div className='hidden md:flex md:flex-row items-center space-x-16'>
-          {merchant.count && (
-            <div className='flex flex-col items-center'>
-              <img src='/speed.svg' alt='Annonces' className='h-5' />
-              <p className=''>{merchant.count} annonces</p>
-            </div>
-          )}
+          <div className='flex flex-col items-center'>
+            <img src='/speed.svg' alt='Annonces' className='h-5' />
+            <p className=''>{merchant.count} annonces</p>
+          </div>
+
           {(merchant.fb || merchant.insta) && (
             <div className='flex flex-col items-center space-y-2 mt-4'>
               {merchant.fb && (
@@ -80,12 +79,11 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
         </div>
       </div>
       <div className='md:hidden flex flex-row items-center justify-around'>
-        {merchant.count && (
-          <div className='flex flex-col items-center'>
-            <img src='/speed.svg' alt='Annonces' className='h-5' />
-            <p className='xs:text-xs'>{merchant.count} annonces</p>
-          </div>
-        )}
+        <div className='flex flex-col items-center'>
+          <img src='/speed.svg' alt='Annonces' className='h-5' />
+          <p className='xs:text-xs'>{merchant.count} annonces</p>
+        </div>
+
         {(merchant.fb || merchant.insta) && (
           <div className='flex flex-col items-center space-y-2 mt-4'>
             {merchant.fb && (

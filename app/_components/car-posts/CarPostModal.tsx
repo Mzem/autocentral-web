@@ -6,6 +6,7 @@ import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
+import { InfoCard } from '../InfoCard'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -87,8 +88,11 @@ const Carousel: React.FC<{ images: string[]; setIsFullImage: any }> = ({
       <img
         src={images[currentIndex]}
         alt='Car image'
-        className='mx-auto h-64 object-contain cursor-pointer'
+        className='mx-auto h-64 object-contain cursor-pointer rounded-lg'
       />
+      <span className='text-[0.7rem] italic text-blackopac2 mx-auto w-full flex justify-around mt-[2px]'>
+        Cliquer sur l'image pour l'agrandir
+      </span>
       {images.length > 1 && (
         <>
           <button
@@ -122,7 +126,7 @@ const Carousel: React.FC<{ images: string[]; setIsFullImage: any }> = ({
 
       {fullScreenImage && (
         <div
-          className='fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-51'
+          className='fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50'
           onClick={() => {
             setFullScreenImage(false)
             setIsFullImage(false)
@@ -192,12 +196,14 @@ type PostModalProps = {
   postId: string
   isFull?: boolean
   onClose?: () => void
+  isMerchant?: boolean
 }
 
 const CarPostModal: React.FC<PostModalProps> = ({
   postId,
   onClose,
-  isFull
+  isFull,
+  isMerchant
 }) => {
   const [post, setPost] = useState<CarPost | null | 'error' | 'not found'>(null)
   const [showModalUpdate, setShowModalUpdate] = useState(false)
@@ -250,6 +256,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
               <Link
                 href={`/${post.merchant.id}`}
                 className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+                onClick={() => {
+                  if (onClose !== undefined && isMerchant) onClose()
+                }}
               >
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
                 <span className='truncate max-w-[7rem] lg:max-w-[20rem]'>
@@ -353,10 +362,37 @@ const CarPostModal: React.FC<PostModalProps> = ({
             <Carousel images={post.images} setIsFullImage={setIsFullImage} />
             <Infos post={post} />
             <div className='mt-4 lg:mt-6 mb-3 lg:mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
-              <span>
-                {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
-              </span>
-              {post.estimatedPrice && (
+              <div className='flex items-center space-x-1'>
+                <span
+                  className={`${
+                    post.price && post.estimatedPrice
+                      ? `ml-2 lg:ml-4 ${
+                          post.estimatedPrice.color === 'GREEN'
+                            ? 'text-green'
+                            : post.estimatedPrice.color === 'RED'
+                            ? 'text-rolexgold'
+                            : ''
+                        }`
+                      : ''
+                  }`}
+                >
+                  {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
+                </span>
+                {post.price && post.estimatedPrice && (
+                  <img
+                    className='h-6 lg:h-8'
+                    alt='estimation'
+                    src={
+                      post.estimatedPrice.color === 'GREEN'
+                        ? '/estim_down.svg'
+                        : post.estimatedPrice.color === 'RED'
+                        ? '/estim_up.svg'
+                        : '/estim_ok.svg'
+                    }
+                  />
+                )}
+              </div>
+              {!post.price && post.estimatedPrice && (
                 <div className='flex items-center space-x-1'>
                   <div
                     className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
@@ -384,69 +420,120 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base px-2 flex space-x-1 items-center rounded-xl mx-auto bg-vividred text-white font-medium italic lg:my-6'
+                className='text-sm lg:text-base px-3 py-[0.5rem] flex space-x-2 items-center rounded-lg mx-auto shadow-md shadow-titan bg-white border-vividred font-medium lg:my-6'
                 onClick={() => setShowIA(true)}
               >
-                <span>Voir le rapport autocentral.tn</span>
-                <img src='/gears.svg' className='h-4' alt='Rapport technique' />
+                <span className='text-black font-semibold'>
+                  Voir le rapport
+                </span>
+                <img
+                  src='/search_red.svg'
+                  className='h-4'
+                  alt='Rapport technique'
+                />
               </button>
             )}
-            {showIA && <SpecList engine={post.carEngine!} tax={post.cvTax} />}
+            {showIA && (
+              <div className='max-w-[720px] mx-auto'>
+                <SpecList
+                  engine={post.carEngine!}
+                  tax={post.cvTax}
+                  isCarPost={true}
+                />
+              </div>
+            )}
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
-              <ul className='mt-1 text-sm lg:text-base'>
+              <ul className='mt-1 text-sm lg:text-base space-y-1'>
                 {post.make && post.make !== 'Autres' && (
-                  <li>
-                    <strong>Modèle :</strong> {post.make} {post.model}
+                  <li className='flex space-x-1'>
+                    <InfoCard
+                      title='Modèle'
+                      value={`${post.make} ${post.model}`}
+                    />
+                    <InfoCard img='/key.svg' value={`${post.year}`} />
                   </li>
                 )}
                 <li>
-                  <strong>Année :</strong> {post.year}
+                  <InfoCard
+                    title='Kilométrage'
+                    value={`${dotNumber(post.km) ?? '-'} km`}
+                  />
                 </li>
                 <li>
-                  <strong>Kilométrage :</strong> {dotNumber(post.km) ?? '-'} km
+                  <InfoCard
+                    title='Carburant'
+                    img='/fuel.svg'
+                    value={`${post.fuel ?? '-'}`}
+                  />
                 </li>
                 <li>
-                  <strong>Carburant :</strong> {post.fuel ?? '-'}
+                  <InfoCard
+                    title='Boite'
+                    img='/gears_red.svg'
+                    value={`${post.gearbox ?? '-'}`}
+                  />
                 </li>
                 <li>
-                  <strong>Boite :</strong> {post.gearbox ?? '-'}
+                  <InfoCard
+                    title='Motorisation'
+                    img='/engine.svg'
+                    value={`${post.cylinder ? post.cylinder + ' ' : ''}
+                  ${post.cv ? post.cv + 'cv' : ''}`}
+                  />
                 </li>
                 <li>
-                  <strong>Motorisation :</strong>{' '}
-                  {post.cylinder ? post.cylinder + ' ' : ''}
-                  {post.cv ? post.cv + 'cv' : ''}
+                  <InfoCard img='/location.svg' value={post.region.name} />
                 </li>
-                <li>
-                  <strong>Région :</strong> {post.region.name}
-                </li>
-                <li className='underline'>
+                <li className=''>
                   <a
                     href={post.urlSource}
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <strong>Source :</strong> {post.source} -{' '}
-                    {post.publishedAtText}
+                    <InfoCard
+                      img='/external.svg'
+                      title='Source'
+                      value={`${post.source} - ${post.publishedAtText}`}
+                    />
                   </a>
                 </li>
               </ul>
 
-              {post.description && (
-                <div className='mt-2 lg:mt-0'>
-                  <span className='font-semibold'>
-                    Description du vendeur :
-                  </span>
-                  <p className='text-sm lg:text-base lg:max-w-[600px]'>
-                    {post.description.split('\n').map((line, index) => (
-                      <span key={index}>
-                        <Linkify
-                          text={line.charAt(0).toUpperCase() + line.slice(1)}
-                        />
-                        <br />
-                      </span>
-                    ))}
-                  </p>
+              {(post.description ||
+                (post.options && post.options.length > 0)) && (
+                <div className='flex flex-col space-y-6'>
+                  {post.description && (
+                    <div className='mt-4 lg:mt-0 bg-whiteBG rounded-lg shadow p-2'>
+                      <p className='mt-2 text-sm lg:text-base lg:max-w-[600px]'>
+                        {post.description.split('\n').map((line, index) => (
+                          <span key={index}>
+                            <Linkify
+                              text={
+                                line.charAt(0).toUpperCase() + line.slice(1)
+                              }
+                            />
+                            <br />
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  )}
+
+                  {post.options && post.options.length > 1 && (
+                    <div className='flex flex-col space-y-1'>
+                      <span className='font-bold'>Options</span>
+                      {post.options.map((option, index) => (
+                        <span
+                          className={`${
+                            index % 2 === 0 ? 'bg-whiteBGDarker' : 'bg-white'
+                          } rounded py-1 px-2`}
+                        >
+                          {option}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

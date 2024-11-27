@@ -14,7 +14,7 @@
   --blackopac2: #15151560;
   --pureblack: #000000;
   --white: #ffffff;
-  --whiteBG: #f5f5f7;
+  --whiteBG: #f9f9fa;
   --whiteBGDarker: #e7e7e7e7;
   --whiteopac: #ffffff2f;
   --whiteopac2: #ffffff10;
@@ -28,6 +28,10 @@
   --rolexgold: #a37e2c;
   --rolexgoldopac: #a37e2caa;
   --whatsapp: #25d366;
+}
+
+html {
+  font-family: theme('fontFamily.sans');
 }
 
 body {

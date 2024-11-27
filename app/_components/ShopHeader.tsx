@@ -28,7 +28,7 @@ function ShopHeader({
   avatar
 }: ShopHeaderProps) {
   return (
-    <div className='flex flex-col lg:flex-row flex-wrap mx-auto lg:items-center justify-between text-black'>
+    <div className='flex flex-row flex-wrap mx-auto lg:items-center justify-between text-black'>
       {/* Logo and Shop Name */}
       <div className='flex flex-row items-center space-x-4 lg:space-x-20'>
         <img

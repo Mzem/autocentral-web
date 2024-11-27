@@ -73,6 +73,7 @@ export interface CarPost {
   exchange: boolean | undefined
   leasing: boolean | undefined
   firstOwner: boolean | undefined
+  options: string[] | undefined
 }
 
 export interface GetCarPostsFilters {

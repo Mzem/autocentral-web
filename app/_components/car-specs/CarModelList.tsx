@@ -29,28 +29,27 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         <button onClick={() => router.push(`/fiche-technique`)}>
           <img
             src='/arrow_prev.svg'
-            className='h-8 lg:h-10 border bg-blackopac rounded hover:bg-titan'
+            className='h-8 lg:h-10 bg-blackopac rounded hover:bg-titan'
           />
         </button>
       </div>
 
       {/* The ul with wrapping horizontally */}
-      <ul className='flex flex-col flex-wrap lg:max-h-[79%] mt-8 text-xl border-2 border-whiteopac rounded-lg p-3 bg-blackopac'>
+      <ul className='flex flex-col flex-wrap lg:max-h-[79%] mt-8 text-xl shadow rounded-lg p-3 bg-white'>
         {modelsByMake.models.map((model: ModelListItem, index: number) => (
           <li
             key={model.modelName}
-            className={`px-1 pt-1 ${
-              index % 2 === 0 ? 'bg-whiteopac3' : 'bg-whiteopac2'
+            className={`px-1 pt-1 m-[3px] rounded-lg hover:bg-titanopac ${
+              index % 2 === 0 ? 'bg-whiteBGDarker' : 'bg-whiteBG'
             }`}
           >
             <button
               onClick={() => setSelectedModel(model)}
-              className='text-white flex items-center hover:bg-whiteopac hover:rounded hover:text-white w-full text-left'
+              className='text-pureblack flex items-center w-full text-left'
             >
-              <img src='/arrow_next.svg' className='h-4 mr-2' />
+              <img src='/arrow_next.svg' className='h-4 mr-2 invert' />
               {model.modelName}
             </button>
-            <hr className='mt-1 border-t border-dashed border-whiteopac' />
           </li>
         ))}
       </ul>

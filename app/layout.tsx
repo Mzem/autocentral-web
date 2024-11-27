@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Footer from './_components/Footer'
 import Header from './_components/Header'
 import './_styles/globals.css'
+import { Open_Sans } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'], // Specify the font weights you need
+  variable: '--font-open-sans' // Define a CSS variable for Tailwind integration
+})
 
 export const metadata: Metadata = {
   title: "Voitures d'occasion en Tunisie",
@@ -34,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='fr'>
+    <html lang='fr' className={openSans.variable}>
       <head>
         <link
           rel='apple-touch-icon-precomposed'
@@ -159,9 +163,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${inter.className} flex flex-col min-h-screen bg-blackopac`}
-      >
+      <body className={`flex flex-col min-h-screen bg-blackopac`}>
         <Header />
         <main className='flex-grow bg-whiteBG'>
           <div className='w-[98%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>

@@ -94,24 +94,20 @@ export default function Header() {
                 alt='Whatsapp'
               />
             </a>
-            <button
+            <Link
               className='flex space-x-2 items-center hover:underline'
-              onClick={() => {
-                router.push('/')
-              }}
+              href='/'
             >
               <img src='/flag_tn.svg' className='h-5' />
               <p className='text-sm'>Voitures d'occasion</p>
-            </button>
-            <button
+            </Link>
+            <Link
               className='flex space-x-2 items-center hover:underline'
-              onClick={() => {
-                router.push('/fiche-technique')
-              }}
+              href='/fiche-technique'
             >
               <img src='/gears.svg' className='h-5' />
               <p className='text-sm'>Fiches techniques</p>
-            </button>
+            </Link>
             <Link
               className='flex space-x-2 items-center hover:underline'
               href='/vendeurs'
@@ -129,26 +125,26 @@ export default function Header() {
           ref={menuRef}
           className='xl:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
         >
-          <button
+          <Link
             className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
-              router.push('/')
             }}
+            href='/'
           >
             Voitures d'occasion
             <img src='/flag_tn.svg' className='h-6 ml-2 mr-1' />
-          </button>
-          <button
+          </Link>
+          <Link
             className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
-              router.push('/fiche-technique')
             }}
+            href='/fiche-technique'
           >
             Fiches techniques
             <img src='/gears.svg' className='h-6 ml-2 mr-1' />
-          </button>
+          </Link>
           <Link
             href='/vendeurs'
             className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
@@ -156,6 +152,14 @@ export default function Header() {
           >
             Vendeurs professionnels
             <img src='/man.svg' className='h-6 ml-2 mr-1' />
+          </Link>
+          <Link
+            href='/boutique'
+            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Boutique & produits dérivés
+            <img src='/race_flag.svg' className='h-6 ml-2 mr-1' />
           </Link>
         </div>
       )}

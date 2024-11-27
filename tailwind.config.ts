@@ -15,7 +15,7 @@ const config: Config = {
       blackopac2: '#15151560',
       pureblack: '#000000',
       white: '#ffffff',
-      whiteBG: '#f5f5f7',
+      whiteBG: '#f9f9fa',
       whiteBGDarker: '#e7e7e7e7',
       whiteopac: '#ffffff2f',
       whiteopac2: '#ffffff10',
@@ -39,6 +39,9 @@ const config: Config = {
     extend: {
       screens: {
         xs: { max: '350px' }
+      },
+      fontFamily: {
+        sans: ['var(--font-open-sans)', 'sans-serif'] // Reference the CSS variable
       }
     }
   },

@@ -3,7 +3,7 @@ export default function Footer() {
     <div className=''>
       <footer className='flex flex-col justify-around items-center mt-1 lg:mt-2'>
         <p className='text-xs lg:text-base text-white'>
-          Site en construction - 2024
+          Site web Open Source à but non lucratif - 2024
         </p>
         <div className='flex flex-row space-x-2 mb-2 lg:mb-4'>
           <a

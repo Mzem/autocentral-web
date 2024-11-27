@@ -17,6 +17,7 @@
     "test:ci": "nyc --reporter=lcovonly mocha 'test/**/*.test.ts' --exit"
   },
   "dependencies": {
+    "@next/font": "^14.2.15",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
     "dotenv": "^16.4.5",
@@ -25,6 +26,7 @@
     "next-logger": "5.0.0",
     "next-themes": "0.3.0",
     "nextjs-toploader": "1.6.12",
+    "npm": "^10.9.1",
     "pino": "9.5.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
