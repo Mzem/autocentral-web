@@ -23,7 +23,7 @@
     "dotenv": "^16.4.5",
     "luxon": "3.5.0",
     "next": "14.2.5",
-    "next-logger": "5.0.0",
+    "next-logger": "5.0.1",
     "next-themes": "0.3.0",
     "nextjs-toploader": "1.6.12",
     "npm": "^10.9.1",
