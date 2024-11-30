@@ -38,7 +38,8 @@ const config: Config = {
     },
     extend: {
       screens: {
-        xs: { max: '352px' }
+        xs: { max: '352px' },
+        xxl: { min: '1600px' }
       },
       fontFamily: {
         sans: ['var(--font-open-sans)', 'sans-serif'] // Reference the CSS variable

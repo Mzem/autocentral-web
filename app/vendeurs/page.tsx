@@ -19,13 +19,13 @@ export default async function Merchants() {
         <p>Showrooms & Vendeurs PRO</p>
         <img src='/badge.svg' className='h-4 lg:h-5' />
       </div>
-      {/* <a
-        href={`https://wa.me/216XXXXXXXX?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+      <a
+        href={`https://m.me/autocentral.tn?text=Je%20suis%20un%20vendeur%20PRO%20et%20je%20veux%20avoir%20une%20page%20web%20sur%20autocentral`}
         className='w-auto mt-2 rounded-lg bg-blackopac2 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
       >
-        <p>Pour créer votre espace, veuillez nous contacter</p>
+        <p>Pour créer votre page, veuillez nous contacter</p>
         <img src='/whatsapp_white.svg' className='h-[1rem]' alt='Whatsapp' />
-      </a> */}
+      </a>
 
       <div className='w-full mx-auto text-black'>
         {merchants.map((merchant) => (

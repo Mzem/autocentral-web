@@ -56,7 +56,7 @@ export default async function Home({
           </span>
           nouvelles annonces aujourd'hui
         </p>
-        <div className='w-[20%] md:w-[5%] mx-auto justify-around flex items-center space-x-1 text-[0.7rem]'>
+        {/* <div className='w-[20%] md:w-[5%] mx-auto justify-around flex items-center space-x-1 text-[0.7rem]'>
           <img src='/tayara.jpg' alt='tayara.tn' className='h-4 rounded-full' />
           <img
             src='/automobiletn.png'
@@ -73,7 +73,10 @@ export default async function Home({
             alt='instagram.com'
             className='h-4 rounded-full'
           />
-        </div>
+        </div> */}
+        <p className='text-[0.6rem] italic text-blackopac2'>
+          Site web non-commercial 100% gratuit
+        </p>
       </div>
       <CarPostsFeed initialPosts={posts} initialFilters={filters} />
     </>

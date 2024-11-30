@@ -43,7 +43,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
             </button>
           </div> */}
           {common.length > 0 && (
-            <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
+            <div className='mt-4 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4'>
               {common.map((carMake) => (
                 <Link
                   href={`/fiche-technique/${carMake.id}`}
@@ -61,10 +61,10 @@ function CarMakes({ carMakes }: CarMakesProps) {
           )}
           {performance.length > 0 && (
             <>
-              <p className='mt-10 text-left w-full text-l lg:text-xl'>
+              <p className='mt-10 text-left w-full text-lg lg:text-xl'>
                 Performance
               </p>
-              <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
+              <div className='mt-4 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4'>
                 {performance.map((carMake) => (
                   <Link
                     href={`/fiche-technique/${carMake.id}`}
@@ -83,8 +83,8 @@ function CarMakes({ carMakes }: CarMakesProps) {
           )}
           {other.length > 0 && (
             <>
-              <p className='mt-10 text-left w-full text-l lg:text-xl'>Autre</p>
-              <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
+              <p className='mt-10 text-left w-full text-lg lg:text-xl'>Autre</p>
+              <div className='mt-4 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4'>
                 {other.map((carMake) => (
                   <Link
                     href={`/fiche-technique/${carMake.id}`}

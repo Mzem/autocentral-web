@@ -57,8 +57,8 @@ export default function Header() {
             />
           </button>
 
-          {/* <a
-            href={`https://wa.me/216XXXXXXXX?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+          <a
+            href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
             className='xl:hidden rounded-lg bg-whiteopac2 flex items-center space-x-1 text-sm lg:text-base py-[2px] px-[4px] md:ml-80 lg:ml-48'
           >
             <p className='sm:hidden'>Annonce +</p>
@@ -68,7 +68,7 @@ export default function Header() {
               className='xs:hidden h-[1rem]'
               alt='Whatsapp'
             />
-          </a> */}
+          </a>
 
           {/* Mobile Burger Menu Icon on the Left */}
           <button
@@ -82,8 +82,8 @@ export default function Header() {
 
           {/* Desktop Menu Links */}
           <nav className='hidden xl:flex space-x-5'>
-            {/* <a
-              href={`https://wa.me/216XXXXXXXX?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+            <a
+              href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
               className='rounded-lg bg-whiteopac2 flex text-sm items-center space-x-1 py-[2px] px-[6px]'
             >
               <p>Déposer une annonce</p>
@@ -92,7 +92,7 @@ export default function Header() {
                 className='h-[1rem]'
                 alt='Whatsapp'
               />
-            </a> */}
+            </a>
             <Link
               className='flex space-x-2 items-center hover:underline'
               href='/'
