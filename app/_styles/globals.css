@@ -88,3 +88,21 @@ input[type='text'] {
 input[type='text']:focus {
   @apply ring-0 ring-red rounded;
 }
+
+.loader {
+  border: 4px solid rgba(184, 105, 105, 0.2); /* Light red for the outer part */
+  border-top: 4px solid rgb(119, 9, 9); /* Solid red for the spinning part */
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
