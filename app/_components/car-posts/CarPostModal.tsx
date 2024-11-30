@@ -252,28 +252,28 @@ const CarPostModal: React.FC<PostModalProps> = ({
     const Infos = ({ post }: { post: CarPost }) => {
       return (
         <>
-          <div className='flex justify-around lg:justify-center lg:space-x-6 items-center mt-4 mb-4 text-sm lg:text-base'>
+          <div className='flex justify-around sm:justify-center sm:space-x-4 items-center mt-4 mb-4 text-sm md:text-base'>
             {post.merchant && (
               <Link
                 href={`/${post.merchant.id}`}
-                className='flex items-center space-x-1 p-2 lg:p-3 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+                className='flex items-center space-x-1 p-2 lg:p-3 px-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
                 onClick={() => {
                   if (onClose !== undefined && isMerchant) onClose()
                 }}
               >
-                <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                <span className='truncate xs:max-w-[5rem] max-w-[7rem] lg:max-w-[20rem]'>
+                <img src='/man.svg' alt='Vendeur' className='h-3 md:h-4' />
+                <span className='truncate xs:max-w-[4.5rem] max-w-[6.5rem] md:max-w-[15rem]'>
                   {post.merchant.name}
                 </span>
                 {post.merchant.isShop && (
-                  <img src='/badge.svg' className='h-3 lg:h-4' />
+                  <img src='/badge.svg' className='h-3 md:h-4' />
                 )}
               </Link>
             )}
             {post.phone &&
               (!post.merchant.phone || post.phone === post.merchant.phone) && (
                 <a href={`tel:${post.phone}`} className=''>
-                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                  <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                     <img
                       src='/phone.svg'
                       className='h-3 lg:h-4 invert'
@@ -330,7 +330,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
               >
                 <img
                   src='/whatsapp.svg'
-                  className='xs:h-[2rem] h-[2.2rem] lg:h-[2.9rem]'
+                  className='xs:h-[2rem] h-[2.2rem] md:h-[2.5rem] lg:h-[2.9rem]'
                   alt='Whatsapp'
                 />
               </a>

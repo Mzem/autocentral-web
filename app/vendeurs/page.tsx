@@ -15,7 +15,7 @@ export default async function Merchants() {
 
   return (
     <>
-      <div className='text-center text-base lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px]'>
+      <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px]'>
         <p>Showrooms & Vendeurs PRO</p>
         <img src='/badge.svg' className='h-4 lg:h-5' />
       </div>

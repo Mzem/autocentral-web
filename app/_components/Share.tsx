@@ -12,7 +12,7 @@ export default function ShareButton() {
       try {
         await navigator.share({
           title: document.title,
-          text: 'Occasion autocentral.tn',
+          text: "J'ai trouvé cette annonce ",
           url: currentUrl
         })
       } catch (error) {

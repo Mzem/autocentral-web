@@ -44,7 +44,7 @@ export default async function Home({
 
   return (
     <>
-      <div className='text-center xs:text-base text-lg lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
+      <div className='text-center xs:text-sm text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
         <p className='mx-2'>
           Premier moteur de recherche <br className='lg:hidden' />
           de véhicules d'occasion en{' '}

@@ -173,7 +173,7 @@ export default function CarPostsFeed({
     return (
       <div
         key={post.id}
-        className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-sm lg:text-base xs:text-[0.7rem] text-blacklight'
+        className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem]'
       >
         <button
           onClick={() => {
@@ -185,15 +185,15 @@ export default function CarPostsFeed({
           <img
             src={post.image}
             alt={post.title}
-            className='w-28 lg:w-40 h-[7.7rem] lg:h-[10rem] object-cover rounded flex-shrink-0'
+            className='w-28 lg:w-40 object-cover rounded flex-shrink-0 h-[8rem] lg:h-[10rem]'
           />
-          <div className='flex flex-col justify-between items-start h-[7.9rem] xs:h-[7.5rem] lg:h-[10rem]'>
+          <div className='flex flex-col justify-between items-start h-[8rem] lg:h-[10rem] w-full'>
             {post.title && (
-              <span className='font-bold truncate xs:max-w-[7rem] max-w-[8.5rem] sm:max-w-[10.5rem] lg:max-w-[20rem]'>
+              <span className='font-bold text-left xs:w-[8rem] w-[9rem] sm:w-[12rem] truncate text-[0.8rem] lg:w-[20rem] lg:text-base xs:text-[0.7rem]'>
                 {post.title}
               </span>
             )}
-            <span className='truncate xs:max-w-[6rem] max-w-[7.5rem] lg:max-w-full text-xs lg:text-base xs:text-[0.7rem]'>
+            <span className='text-left xs:w-[8rem] w-[9rem] sm:w-[12rem] lg:w-[20rem] truncate'>
               {post.year ? post.year + ' ' : ''}
               {post.make && post.make !== 'Autres'
                 ? post.make + ' ' + (post.model ?? '')
@@ -202,18 +202,14 @@ export default function CarPostsFeed({
             {post.km !== undefined && post.km !== null && (
               <span className='font-bold'>{dotNumber(post.km)} km</span>
             )}
-            <span className='text-xs lg:text-base xs:text-[0.7rem]'>
+            <span>
               {post.cv ? post.cv + 'cv ' : ''}
               {post.fuel}
             </span>
-            {post.gearbox && (
-              <span className='text-xs lg:text-base xs:text-[0.7rem]'>
-                {post.gearbox}
-              </span>
-            )}
+            {post.gearbox && <span>{post.gearbox}</span>}
             <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left items-center'>
               <span
-                className={`font-bold mt-1 text-base xs:text-sm ${
+                className={`font-bold mt-1 text-[0.8rem] lg:text-base xs:text-[0.7rem] ${
                   post.price && post.estimatedPrice
                     ? post.estimatedPrice.color === 'GREEN'
                       ? 'text-green'
@@ -257,29 +253,25 @@ export default function CarPostsFeed({
           </div>
         </button>
 
-        <div className='flex flex-col items-center mr-1'>
+        <div className='flex flex-col items-center mr-2 text-center h-full justify-center space-y-2 text-xs xs:text-[0.6rem] xs:max-w-[4rem] max-w-[5rem] sm:max-w-[5.5rem] md:max-w-[6.5rem] h-[8rem] lg:h-[10rem]'>
           {post.publishedAtText && (
-            <span className='text-xs mb-2 truncate max-w-[5.1rem] sm:max-w-[6rem] xs:max-w-[4rem] xs:text-[0.6rem]'>
-              {post.publishedAtText}
-            </span>
+            <span className='w-full truncate'>{post.publishedAtText}</span>
           )}
 
           {post.phone && (
             <a href={`tel:${post.phone}`} className='w-full'>
-              <button className='text-white bg-blackopac border border-whiteopac p-2 sm:px-6 px-4 xs:px-3 rounded-xl hover:bg-titan transition duration-300 ease-in-out mb-3'>
+              <button className='text-white bg-blackopac border border-whiteopac p-1 md:p-2 md:px-4 px-3 rounded-xl hover:bg-titan transition duration-300 ease-in-out'>
                 Appeler
               </button>
             </a>
           )}
-          <div className='flex flex-row items-center mb-1 max-w-[5.1rem] sm:max-w-[6rem] xs:max-w-[4rem]'>
+          <div className='flex flex-row items-center w-full truncate xs:w-[3rem] w-[4rem] sm:w-[5rem] lg:w-[6rem]'>
             {post.merchant.isShop && <img src='/badge.svg' className='h-3' />}
-            <span className='text-xs text-black truncate xs:text-[0.7rem] sm:text-sm'>
-              {post.merchant.name}
-            </span>
+            <span className='w-full truncate'>{post.merchant.name}</span>
           </div>
-          <div className='flex flex-row items-center text-xs xs:text-[0.6rem] max-w-[5.1rem] sm:max-w-[6rem] truncate xs:max-w-[4rem]'>
+          <div className='flex flex-row items-center'>
             <img src='/location.svg' className='h-3 lg:h-4' />
-            <span className='truncate sm:text-sm'>{post.region.name}</span>
+            <span className='w-full truncate'>{post.region.name}</span>
           </div>
         </div>
       </div>
@@ -290,7 +282,7 @@ export default function CarPostsFeed({
     <>
       <div
         ref={searchDivRef}
-        className='bg-black bg-opacity-80 w-full p-[2px] rounded-lg text-center flex flex-col'
+        className='bg-black bg-opacity-85 w-full p-[2px] rounded-lg text-center flex flex-col'
       >
         <div className='flex flex-row items-center justify-between'>
           <input
@@ -512,7 +504,7 @@ export default function CarPostsFeed({
         <img src='estim_down.svg' alt='estimation haute' className='h-6' />
         <img src='estim_ok.svg' alt='estimation haute' className='h-6' />
         <img src='estim_up.svg' alt='estimation haute' className='h-6' />
-        <span className='text-black text-opacity-50 italic lg:text-base text-sm xs:text-xs'>
+        <span className='text-black text-opacity-50 italic lg:text-base text-xs'>
           Prix du véhicule par rapport à la moyenne
         </span>
       </div>

@@ -1,24 +1,29 @@
 import { apiGet } from 'api/apiClient'
 import { ApiError } from '../httpClient'
 
-export interface MerchListItem {
-  id: string
-  title: string
-  image: string
-  price?: number
-}
-
 export interface MerchItem {
   id: string
   title: string
   description?: string
-  image: string
+  images: string[]
   price?: number
+  urlSource?: string
+  publishedAtText: string
+  category: string
+  inStock: boolean
+  merchant: {
+    id: string
+    name: string
+    regionName?: string
+    phone?: string
+    avatar?: string
+    isShop: boolean
+  }
 }
 
-export async function getMerchItems(): Promise<MerchListItem[]> {
+export async function getMerchItems(): Promise<MerchItem[]> {
   try {
-    const { content } = await apiGet<MerchListItem[]>(`merch-items`)
+    const { content } = await apiGet<MerchItem[]>(`merch-items`)
     return content
   } catch (e) {
     console.error('GET merch items error')
