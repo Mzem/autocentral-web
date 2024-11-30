@@ -1,8 +1,8 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { ModelListItem } from '../../../api/services/car-model.service'
+import Link from 'next/link'
 
 type CarModelEnginesModalProps = {
   model: ModelListItem
@@ -13,7 +13,6 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
   model,
   onClose
 }) => {
-  const router = useRouter()
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
 
@@ -100,26 +99,20 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                         <li key={fuel} className='text-whiteBG font-bold'>
                           <p className='text-orange'>{fuel}</p>
                           <ul className='mb-1 text-sm'>
-                            {groupedEngines[fuel].map(
-                              (engine: any, index: number) => (
-                                <a
-                                  onClick={() =>
-                                    router.push(
-                                      `/fiche-technique/motorisation/${engine.id}`
-                                    )
-                                  }
-                                  className='hover:underline cursor-pointer rounded'
+                            {groupedEngines[fuel].map((engine: any) => (
+                              <Link
+                                href={`/fiche-technique/motorisation/${engine.id}`}
+                                className='hover:underline cursor-pointer rounded'
+                              >
+                                <li
+                                  key={engine.id}
+                                  className='mt-1 flex justify-between w-[94%] bg-blackopac rounded'
                                 >
-                                  <li
-                                    key={engine.id}
-                                    className='mt-1 flex justify-between w-[94%] bg-blackopac rounded'
-                                  >
-                                    <span>{engine.engineName}</span>
-                                    <span>{engine.hp} ch</span>
-                                  </li>
-                                </a>
-                              )
-                            )}
+                                  <span>{engine.engineName}</span>
+                                  <span>{engine.hp} ch</span>
+                                </li>
+                              </Link>
+                            ))}
                           </ul>
                         </li>
                       ))}

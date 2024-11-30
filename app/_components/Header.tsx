@@ -1,11 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 export default function Header() {
-  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const menuButtonRef = useRef(null)
@@ -59,17 +57,18 @@ export default function Header() {
             />
           </button>
 
-          <a
-            href={`https://wa.me/21624660559?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+          {/* <a
+            href={`https://wa.me/216XXXXXXXX?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
             className='xl:hidden rounded-lg bg-whiteopac2 flex items-center space-x-1 text-sm lg:text-base py-[2px] px-[4px] md:ml-80 lg:ml-48'
           >
-            <p>Annonce +</p>
+            <p className='sm:hidden'>Annonce +</p>
+            <p className='hidden sm:block'>Déposer annonce</p>
             <img
               src='/whatsapp_white.svg'
               className='xs:hidden h-[1rem]'
               alt='Whatsapp'
             />
-          </a>
+          </a> */}
 
           {/* Mobile Burger Menu Icon on the Left */}
           <button
@@ -83,8 +82,8 @@ export default function Header() {
 
           {/* Desktop Menu Links */}
           <nav className='hidden xl:flex space-x-5'>
-            <a
-              href={`https://wa.me/21624660559?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
+            {/* <a
+              href={`https://wa.me/216XXXXXXXX?text=Pour%20d%C3%A9poser%20une%20annonce%3A%20Mod%C3%A8le%2C%20Ann%C3%A9e%2C%20Kilom%C3%A9trage%2C%20Prix%2C%20Photos`}
               className='rounded-lg bg-whiteopac2 flex text-sm items-center space-x-1 py-[2px] px-[6px]'
             >
               <p>Déposer une annonce</p>
@@ -93,7 +92,7 @@ export default function Header() {
                 className='h-[1rem]'
                 alt='Whatsapp'
               />
-            </a>
+            </a> */}
             <Link
               className='flex space-x-2 items-center hover:underline'
               href='/'
@@ -114,6 +113,13 @@ export default function Header() {
             >
               <img src='/man.svg' className='h-5' />
               <p className='text-sm'>Vendeurs professionnels</p>
+            </Link>
+            <Link
+              className='flex space-x-2 items-center hover:underline'
+              href='/produits'
+            >
+              <img src='/race_flag.svg' className='h-5' />
+              <p className='text-sm'>Boutique</p>
             </Link>
           </nav>
         </header>
@@ -136,7 +142,7 @@ export default function Header() {
             <img src='/flag_tn.svg' className='h-6 ml-2 mr-1' />
           </Link>
           <Link
-            className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
+            className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
             }}
@@ -154,8 +160,8 @@ export default function Header() {
             <img src='/man.svg' className='h-6 ml-2 mr-1' />
           </Link>
           <Link
-            href='/boutique'
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            href='/produits'
+            className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
             onClick={() => setIsMenuOpen(false)}
           >
             Boutique & produits dérivés

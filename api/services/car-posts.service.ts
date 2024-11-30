@@ -12,7 +12,7 @@ export interface CarPostListItem {
   publishedAtText: string
   region: Region
   merchant: MerchantListItem
-  phone: number
+  phone: string
   title: string
   image: string
   price: number | undefined
@@ -39,10 +39,12 @@ export interface CarPost {
   region: Region
   merchant: MerchantListItem
   carEngine: CarModel | undefined
-  phone: number | undefined
+  phone: string | undefined
+  phones: string[] | undefined
   title: string | undefined
   description: string | undefined
   images: string[]
+  thumbnail: string | undefined
   price: number | undefined
   estimatedPrice: { color: string; text: string; value: number } | undefined
   make: string | undefined

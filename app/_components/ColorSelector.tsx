@@ -30,15 +30,15 @@ export default function ColorSelector({
 
   return (
     <div className='mt-1 ml-3 flex space-x-[3px] items-center'>
-      <span className='text-xs lg:text-base text-whiteBG mr-1'>Couleur</span>
+      <span className='text-sm lg:text-base text-whiteBG mr-1'>Couleur</span>
       {Object.entries(colorHexMap).map(([colorKey, hex]) => (
         <div
           key={colorKey}
           onClick={() => toggleColorSelection(colorKey as Color)}
           style={{
             backgroundColor: hex,
-            width: '16px',
-            height: '16px',
+            width: '20px',
+            height: '20px',
             borderRadius: '10%',
             display: 'flex',
             alignItems: 'center',
@@ -56,7 +56,7 @@ export default function ColorSelector({
                   ? 'black'
                   : 'white'
               }`}
-              className='w-5 h-5 absolute'
+              className='w-7 h-7 absolute'
             >
               <path d='M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4L9 16.2z' />
             </svg>

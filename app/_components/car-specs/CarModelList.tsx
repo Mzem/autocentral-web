@@ -1,19 +1,18 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import {
   CarModelsByMake,
   ModelListItem
 } from '../../../api/services/car-model.service'
 import CarModelEnginesModal from './CarModelEnginesModal'
-import { useRouter } from 'next/navigation'
 
 type CarModelListProps = {
   modelsByMake: CarModelsByMake
 }
 
 export default function CarModelList({ modelsByMake }: CarModelListProps) {
-  const router = useRouter()
   const [selectedModel, setSelectedModel] = useState<ModelListItem | null>(null)
 
   return (
@@ -26,12 +25,12 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         <p className='text-xl lg:text-3xl flex-grow'>
           {modelsByMake.make.name}
         </p>
-        <button onClick={() => router.push(`/fiche-technique`)}>
+        <Link href='/fiche-technique'>
           <img
             src='/arrow_prev.svg'
             className='h-8 lg:h-10 bg-blackopac rounded hover:bg-titan'
           />
-        </button>
+        </Link>
       </div>
 
       {/* The ul with wrapping horizontally */}

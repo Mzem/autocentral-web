@@ -7,6 +7,7 @@ import { dotNumber } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
 import { InfoCard } from '../InfoCard'
+import ShareButton from '../Share'
 
 const urlRegex = /(https?:\/\/[^\s]+)/g
 
@@ -251,17 +252,17 @@ const CarPostModal: React.FC<PostModalProps> = ({
     const Infos = ({ post }: { post: CarPost }) => {
       return (
         <>
-          <div className='flex justify-center space-x-4 items-center mt-4 mb-4 text-sm lg:text-base'>
+          <div className='flex justify-around lg:justify-center lg:space-x-6 items-center mt-4 mb-4 text-sm lg:text-base'>
             {post.merchant && (
               <Link
                 href={`/${post.merchant.id}`}
-                className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+                className='flex items-center space-x-1 p-2 lg:p-3 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
                 onClick={() => {
                   if (onClose !== undefined && isMerchant) onClose()
                 }}
               >
                 <img src='/man.svg' alt='Vendeur' className='h-3 lg:h-4' />
-                <span className='truncate max-w-[7rem] lg:max-w-[20rem]'>
+                <span className='truncate xs:max-w-[5rem] max-w-[7rem] lg:max-w-[20rem]'>
                   {post.merchant.name}
                 </span>
                 {post.merchant.isShop && (
@@ -269,18 +270,53 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 )}
               </Link>
             )}
-            {post.phone && (
-              <a href={`tel:${post.phone}`} className=''>
-                <button className='flex items-center space-x-1 p-2 lg:p-3 px-4 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
-                  <img
-                    src='/phone.svg'
-                    className='h-3 lg:h-4 invert'
-                    alt='Appeler'
-                  />
-                  <span>Appeler</span>
-                </button>
-              </a>
-            )}
+            {post.phone &&
+              (!post.merchant.phone || post.phone === post.merchant.phone) && (
+                <a href={`tel:${post.phone}`} className=''>
+                  <button className='flex items-center space-x-1 p-2 lg:p-3 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                    <img
+                      src='/phone.svg'
+                      className='h-3 lg:h-4 invert'
+                      alt='Appeler'
+                    />
+                    <span>
+                      {dotNumber(post.phone.toString().replace('+216', ''))}
+                    </span>
+                  </button>
+                </a>
+              )}
+            {post.phone &&
+              post.merchant.phone &&
+              post.phone !== post.merchant.phone && (
+                <div className=''>
+                  <a href={`tel:${post.phone}`} className=''>
+                    <button className='flex items-center space-x-1 mb-[2px] px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                      <img
+                        src='/phone.svg'
+                        className='h-3 lg:h-4 invert'
+                        alt='Appeler'
+                      />
+                      <span>
+                        {dotNumber(post.phone.toString().replace('+216', ''))}
+                      </span>
+                    </button>
+                  </a>
+                  <a href={`tel:${post.merchant.phone}`} className=''>
+                    <button className='flex items-center space-x-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                      <img
+                        src='/phone.svg'
+                        className='h-3 lg:h-4 invert'
+                        alt='Appeler'
+                      />
+                      <span>
+                        {dotNumber(
+                          post.merchant.phone.toString().replace('+216', '')
+                        )}
+                      </span>
+                    </button>
+                  </a>
+                </div>
+              )}
             {post.phone && (
               <a
                 href={`https://wa.me/${post.phone
@@ -294,11 +330,12 @@ const CarPostModal: React.FC<PostModalProps> = ({
               >
                 <img
                   src='/whatsapp.svg'
-                  className='h-[2.2rem] lg:h-[2.9rem]'
+                  className='xs:h-[2rem] h-[2.2rem] lg:h-[2.9rem]'
                   alt='Whatsapp'
                 />
               </a>
             )}
+            <ShareButton />
           </div>
         </>
       )
@@ -505,7 +542,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 <div className='flex flex-col space-y-6'>
                   {post.description && (
                     <div className='mt-4 lg:mt-0 bg-whiteBG rounded-lg shadow p-2'>
-                      <p className='mt-2 text-sm lg:text-base lg:max-w-[600px]'>
+                      <p className='text-sm lg:text-base lg:max-w-[600px]'>
                         {post.description.split('\n').map((line, index) => (
                           <span key={index}>
                             <Linkify

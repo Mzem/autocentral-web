@@ -114,35 +114,75 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           <a
             href={merchant.gmapsLink ?? undefined}
             target='_blank'
-            className='flex flex-col items-center'
+            className={`flex flex-col items-center ${
+              merchant.gmapsLink ? 'cursor-pointer' : ''
+            }`}
           >
             <img src='/location.svg' className='h-5' />
             <p className='text-l mt-1'>{merchant.regionName}</p>
             {merchant.gmapsLink && <p className='text-xs underline'>GPS</p>}
           </a>
         )}
-        {merchant.phone && (
-          <a
-            href={`tel:${merchant.phone.trim()}`}
-            className='flex flex-col items-center hover:underline'
-          >
-            <img src='/phone.svg' className='h-5' />
-            <p className='text-sm mt-1'>Appeler</p>
-            <p className='text-sm font-bold'>
-              {dotNumber(merchant.phone.replace('+216', ''))}
-            </p>
-          </a>
+        {merchant.phones && merchant.phones.length === 1 && (
+          <div className='text-sm xs:text-xs'>
+            <a href={`tel:${merchant.phones[0]}`} className=''>
+              <button className='flex items-center space-x-1 py-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <img
+                  src='/phone.svg'
+                  className='h-3 lg:h-4 invert'
+                  alt='Appeler'
+                />
+                <span>
+                  {dotNumber(merchant.phones[0].toString().replace('+216', ''))}
+                </span>
+              </button>
+            </a>
+          </div>
+        )}
+        {merchant.phones && merchant.phones.length >= 2 && (
+          <div className='text-sm xs:text-xs'>
+            <a href={`tel:${merchant.phones[0]}`} className=''>
+              <button className='flex items-center space-x-1 mb-[2px] px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <img
+                  src='/phone.svg'
+                  className='h-3 lg:h-4 invert'
+                  alt='Appeler'
+                />
+                <span>
+                  {dotNumber(merchant.phones[0].toString().replace('+216', ''))}
+                </span>
+              </button>
+            </a>
+            <a href={`tel:${merchant.phones[1]}`} className=''>
+              <button className='flex items-center space-x-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <img
+                  src='/phone.svg'
+                  className='h-3 lg:h-4 invert'
+                  alt='Appeler'
+                />
+                <span>
+                  {dotNumber(merchant.phones[1].toString().replace('+216', ''))}
+                </span>
+              </button>
+            </a>
+          </div>
         )}
       </div>
       {merchant.description && merchant.address !== merchant.description && (
         <div className='text-sm xs:text-xs'>{merchant.description}</div>
       )}
       {(merchant.address || merchant.regionDetail) && (
-        <div className='text-xs flex'>
+        <a
+          className={`text-xs flex ${
+            merchant.gmapsLink ? 'cursor-pointer' : ''
+          }`}
+          href={merchant.gmapsLink ?? undefined}
+          target='_blank'
+        >
           <img src='/location.svg' alt='Adresse' className='h-3 mt-[2px]' />
           {merchant.regionDetail ? merchant.regionDetail + ' ' : ''}
           {merchant.address ? merchant.address + ' ' : ''}
-        </div>
+        </a>
       )}
     </div>
   )

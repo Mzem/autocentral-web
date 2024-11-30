@@ -2,9 +2,14 @@ export default function Footer() {
   return (
     <div className=''>
       <footer className='flex flex-col justify-around items-center mt-1 lg:mt-2'>
-        <p className='text-xs lg:text-base text-white'>
-          Site web Open Source à but non lucratif - 2024
-        </p>
+        <p className='text-xs lg:text-base text-white'>Service gratuit</p>
+        <a
+          className='text-xs lg:text-base text-white my-2'
+          href='https://github.com/Mzem/autocentral-web'
+          target='_blank'
+        >
+          Site Web <span className='underline'>Open Source</span>
+        </a>
         <div className='flex flex-row space-x-2 mb-2 lg:mb-4'>
           <a
             href='https://www.instagram.com/autocentral.tn'

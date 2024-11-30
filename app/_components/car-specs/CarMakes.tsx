@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { CarMake } from '../../../api/services/car-makes.service'
 import { sortByStringField } from '../../helpers'
 
@@ -9,7 +9,6 @@ type CarMakesProps = {
 }
 
 function CarMakes({ carMakes }: CarMakesProps) {
-  const router = useRouter()
   const common = sortByStringField(
     carMakes.filter((carMake) => carMake.category === 'common'),
     'name'
@@ -46,8 +45,8 @@ function CarMakes({ carMakes }: CarMakesProps) {
           {common.length > 0 && (
             <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
               {common.map((carMake) => (
-                <button
-                  onClick={() => router.push(`/fiche-technique/${carMake.id}`)}
+                <Link
+                  href={`/fiche-technique/${carMake.id}`}
                   key={carMake.id}
                   className='flex justify-center items-center p-2 h-full'
                 >
@@ -56,7 +55,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                     alt={carMake.name}
                     className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                   />
-                </button>
+                </Link>
               ))}
             </div>
           )}
@@ -67,10 +66,8 @@ function CarMakes({ carMakes }: CarMakesProps) {
               </p>
               <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
                 {performance.map((carMake) => (
-                  <button
-                    onClick={() =>
-                      router.push(`/fiche-technique/${carMake.id}`)
-                    }
+                  <Link
+                    href={`/fiche-technique/${carMake.id}`}
                     key={carMake.id}
                     className='flex justify-center items-center p-2 h-full'
                   >
@@ -79,7 +76,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                       alt={carMake.name}
                       className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                     />
-                  </button>
+                  </Link>
                 ))}
               </div>
             </>
@@ -89,10 +86,8 @@ function CarMakes({ carMakes }: CarMakesProps) {
               <p className='mt-10 text-left w-full text-l lg:text-xl'>Autre</p>
               <div className='mt-4 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4'>
                 {other.map((carMake) => (
-                  <button
-                    onClick={() =>
-                      router.push(`/fiche-technique/${carMake.id}`)
-                    }
+                  <Link
+                    href={`/fiche-technique/${carMake.id}`}
                     key={carMake.id}
                     className='flex justify-center items-center p-2 h-full'
                   >
@@ -101,7 +96,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                       alt={carMake.name}
                       className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
                     />
-                  </button>
+                  </Link>
                 ))}
               </div>
             </>

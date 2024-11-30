@@ -6,6 +6,7 @@ export interface MerchantListItem {
   name: string
   avatar?: string
   isShop: boolean
+  phone?: string
 }
 
 export interface Merchant {
@@ -16,6 +17,7 @@ export interface Merchant {
   avatar?: string
   description?: string
   phone?: string
+  phones?: string[]
   insta?: string
   fb?: string
   website?: string

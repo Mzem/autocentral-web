@@ -173,7 +173,7 @@ export default function CarPostsFeed({
     return (
       <div
         key={post.id}
-        className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm xs:text-[0.7rem] text-blacklight'
+        className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-sm lg:text-base xs:text-[0.7rem] text-blacklight'
       >
         <button
           onClick={() => {
@@ -185,15 +185,15 @@ export default function CarPostsFeed({
           <img
             src={post.image}
             alt={post.title}
-            className='w-28 lg:w-40 h-[7.5rem] lg:h-[8.5rem] object-cover rounded flex-shrink-0'
+            className='w-28 lg:w-40 h-[7.7rem] lg:h-[10rem] object-cover rounded flex-shrink-0'
           />
-          <div className='flex flex-col justify-between items-start h-[7.5rem] lg:h-[8.5rem]'>
+          <div className='flex flex-col justify-between items-start h-[7.9rem] xs:h-[7.5rem] lg:h-[10rem]'>
             {post.title && (
-              <span className='text-xs lg:text-base font-bold truncate xs:max-w-[7rem] max-w-[8.5rem] lg:max-w-[20rem]'>
+              <span className='font-bold truncate xs:max-w-[7rem] max-w-[8.5rem] sm:max-w-[10.5rem] lg:max-w-[20rem]'>
                 {post.title}
               </span>
             )}
-            <span className='truncate xs:max-w-[6rem] max-w-[7.5rem] lg:max-w-full'>
+            <span className='truncate xs:max-w-[6rem] max-w-[7.5rem] lg:max-w-full text-xs lg:text-base xs:text-[0.7rem]'>
               {post.year ? post.year + ' ' : ''}
               {post.make && post.make !== 'Autres'
                 ? post.make + ' ' + (post.model ?? '')
@@ -202,14 +202,18 @@ export default function CarPostsFeed({
             {post.km !== undefined && post.km !== null && (
               <span className='font-bold'>{dotNumber(post.km)} km</span>
             )}
-            <span>
+            <span className='text-xs lg:text-base xs:text-[0.7rem]'>
               {post.cv ? post.cv + 'cv ' : ''}
               {post.fuel}
             </span>
-            {post.gearbox && <span>{post.gearbox}</span>}
+            {post.gearbox && (
+              <span className='text-xs lg:text-base xs:text-[0.7rem]'>
+                {post.gearbox}
+              </span>
+            )}
             <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left items-center'>
               <span
-                className={`font-bold mt-1 ${
+                className={`font-bold mt-1 text-base xs:text-sm ${
                   post.price && post.estimatedPrice
                     ? post.estimatedPrice.color === 'GREEN'
                       ? 'text-green'
@@ -235,9 +239,9 @@ export default function CarPostsFeed({
                 />
               )}
               {!post.price && post.estimatedPrice && (
-                <div className='flex items-center space-x-1'>
+                <div className='flex items-center space-x-1 mt-2'>
                   <span
-                    className={`font-normal italic text-[0.6rem] lg:text-xs ${
+                    className={`font-normal italic text-[0.6rem] xs:text-[0.5rem] lg:text-xs ${
                       post.estimatedPrice.color === 'GREEN'
                         ? 'text-green'
                         : post.estimatedPrice.color === 'RED'
@@ -255,27 +259,27 @@ export default function CarPostsFeed({
 
         <div className='flex flex-col items-center mr-1'>
           {post.publishedAtText && (
-            <span className='text-xs mb-2 truncate max-w-[6rem] xs:max-w-[4rem] xs:text-[0.6rem]'>
+            <span className='text-xs mb-2 truncate max-w-[5.1rem] sm:max-w-[6rem] xs:max-w-[4rem] xs:text-[0.6rem]'>
               {post.publishedAtText}
             </span>
           )}
 
           {post.phone && (
             <a href={`tel:${post.phone}`} className='w-full'>
-              <button className='text-white bg-blackopac border border-whiteopac p-2 px-6 xs:px-3 rounded-lg hover:bg-titan transition duration-300 ease-in-out mb-3'>
+              <button className='text-white bg-blackopac border border-whiteopac p-2 sm:px-6 px-4 xs:px-3 rounded-xl hover:bg-titan transition duration-300 ease-in-out mb-3'>
                 Appeler
               </button>
             </a>
           )}
-          <div className='flex flex-row items-center mb-1'>
+          <div className='flex flex-row items-center mb-1 max-w-[5.1rem] sm:max-w-[6rem] xs:max-w-[4rem]'>
             {post.merchant.isShop && <img src='/badge.svg' className='h-3' />}
-            <span className='text-xs text-black truncate xs:max-w-[4rem] max-w-[5.7rem] lg:max-w-[6rem] xs:text-[0.7rem]'>
+            <span className='text-xs text-black truncate xs:text-[0.7rem] sm:text-sm'>
               {post.merchant.name}
             </span>
           </div>
-          <div className='flex flex-row items-center xs:text-[0.6rem] truncate xs:max-w-[4rem]'>
+          <div className='flex flex-row items-center text-xs xs:text-[0.6rem] max-w-[5.1rem] sm:max-w-[6rem] truncate xs:max-w-[4rem]'>
             <img src='/location.svg' className='h-3 lg:h-4' />
-            <span>{post.region.name}</span>
+            <span className='truncate sm:text-sm'>{post.region.name}</span>
           </div>
         </div>
       </div>
@@ -286,7 +290,7 @@ export default function CarPostsFeed({
     <>
       <div
         ref={searchDivRef}
-        className='bg-blackopac w-full p-[2px] rounded-lg text-center flex flex-col'
+        className='bg-black bg-opacity-80 w-full p-[2px] rounded-lg text-center flex flex-col'
       >
         <div className='flex flex-row items-center justify-between'>
           <input
@@ -303,14 +307,14 @@ export default function CarPostsFeed({
             placeholder={
               showFilters ? 'Taper un mot clé...' : 'Rechercher un véhicule...'
             }
-            className={`ml-1 py-1 xs:px-1 my-1 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[70%] lg:w-[75%] xs:w-[69%] ${
+            className={`ml-1 py-1 xs:px-1 my-1 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[65%] lg:w-[75%] ${
               showFilters ? 'bg-whiteopac' : 'bg-whiteopac2'
             }`}
           />
 
           <div>
             <button
-              className='xs:w-10 w-12 lg:w-14 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-12 w-14 sm:w-16 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 if (!showFilters) setShowFilters(true)
                 else handleNewSearch()
@@ -319,11 +323,11 @@ export default function CarPostsFeed({
               <img
                 src='/search.svg'
                 alt='Lancer la recherche'
-                className='h-4 lg:h-5 mx-auto'
+                className='xs:h-4 h-5 mx-auto'
               />
             </button>
             <button
-              className='xs:w-8 w-10 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-10 w-12 sm:w-14 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 window.location.href = merchantId ? `/${merchantId}` : '/'
               }}
@@ -331,46 +335,44 @@ export default function CarPostsFeed({
               <img
                 src='/refresh.svg'
                 alt='Réinitialiser les filtres'
-                className='h-4 lg:h-5 mx-auto'
+                className='xs:h-4 h-5 mx-auto'
               />
             </button>
           </div>
         </div>
         {showFilters && (
-          <div className='flex flex-col my-1 lg:my-2'>
+          <div className='flex flex-col my-1 lg:my-2 text-sm lg:text-base'>
             <div className='lg:flex lg:space-x-8'>
               <div>
                 {!merchantId && (
-                  <label className='flex items-center ml-3 cursor-pointer text-base'>
+                  <label className='flex items-center ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={isShop}
                       onChange={() => setIsShop(!isShop)}
-                      className='mr-2 h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer checked:bg-vividred'
+                      className='mr-2 mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred'
                     />
-                    <span className='text-xs lg:text-base'>Vendeurs PRO</span>
+                    <span className=''>Vendeurs PRO</span>
                     <img src='/badge.svg' className='ml-1 h-3' />
                   </label>
                 )}
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                   <input
                     type='checkbox'
                     checked={firstOwner}
                     onChange={() => setFirstOwner(!firstOwner)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                   />
-                  <span className='text-xs lg:text-base'>Première main</span>
+                  <span className=''>Première main</span>
                 </label>
-                <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                   <input
                     type='checkbox'
                     checked={isAuto}
                     onChange={() => setIsAuto(!isAuto)}
-                    className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                    className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                   />
-                  <span className='text-xs lg:text-base'>
-                    Boîte automatique
-                  </span>
+                  <span className=''>Boîte automatique</span>
                 </label>
                 <MultiSelectList
                   items={Object.values(Fuel)}
@@ -423,7 +425,7 @@ export default function CarPostsFeed({
             </div>
             <button
               onClick={() => setShowMoreFilters(true)}
-              className={`text-xs lg:text-base mb-1 mt-3 hover:underline ${
+              className={`bg-whiteopac w-[50%] mx-auto rounded-xl mb-1 mt-3 hover:underline ${
                 showMoreFilters ? 'underline cursor-default' : ''
               }`}
             >
@@ -434,58 +436,50 @@ export default function CarPostsFeed({
             {showMoreFilters && (
               <div className='lg:flex lg:space-x-8'>
                 <div>
-                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={alarm}
                       onChange={() => setAlarm(!alarm)}
-                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                     />
-                    <span className='text-xs lg:text-base'>
-                      Alarme anti-vol
-                    </span>
+                    <span className=''>Alarme anti-vol</span>
                   </label>
-                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={keyless}
                       onChange={() => setKeyless(!keyless)}
-                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                     />
-                    <span className='text-xs lg:text-base'>
-                      Démarrage sans clé
-                    </span>
+                    <span className=''>Démarrage sans clé</span>
                   </label>
-                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={camera}
                       onChange={() => setCamera(!camera)}
-                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                     />
-                    <span className='text-xs lg:text-base'>
-                      Caméra de stationnement
-                    </span>
+                    <span className=''>Caméra de stationnement</span>
                   </label>
-                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={exchange}
                       onChange={() => setExchange(!exchange)}
-                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                     />
-                    <span className='text-xs lg:text-base'>
-                      Echange possible
-                    </span>
+                    <span className=''>Echange possible</span>
                   </label>
-                  <label className='flex items-center space-x-2 ml-3 mt-1 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
                       checked={leasing}
                       onChange={() => setLeasing(!leasing)}
-                      className='h-4 w-4 lg:h-5 lg:w-5 rounded cursor-pointer'
+                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
                     />
-                    <span className='text-xs lg:text-base'>Leasing</span>
+                    <span className=''>Leasing</span>
                   </label>
                 </div>
                 <div>
@@ -514,10 +508,15 @@ export default function CarPostsFeed({
         )}
       </div>
 
-      <div
-        ref={searchDivRef}
-        className='w-full mx-auto mt-1 lg:mt-6 text-black'
-      >
+      <div className='flex my-1 lg:my-4 items-center'>
+        <img src='estim_down.svg' alt='estimation haute' className='h-6' />
+        <img src='estim_ok.svg' alt='estimation haute' className='h-6' />
+        <img src='estim_up.svg' alt='estimation haute' className='h-6' />
+        <span className='text-black text-opacity-50 italic lg:text-base text-sm xs:text-xs'>
+          Prix du véhicule par rapport à la moyenne
+        </span>
+      </div>
+      <div ref={searchDivRef} className='w-full mx-auto text-black'>
         {!groupByMake && posts.map((post) => <PostCard post={post} />)}
         {groupByMake &&
           posts
@@ -545,7 +544,7 @@ export default function CarPostsFeed({
             )
             .map((postsByMake) => (
               <div key={postsByMake.make}>
-                <div className='mt-8 flex space-x-1 lg:space-x-2 items-center'>
+                <div className='mt-6 flex space-x-1 lg:space-x-2 items-center'>
                   {makesWithLogos.includes(fromNameToId(postsByMake.make)) && (
                     <img
                       src={`/car-makes/${fromNameToId(postsByMake.make)}.svg`}

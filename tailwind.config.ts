@@ -31,14 +31,14 @@ const config: Config = {
       whatsapp: '#25d366'
     },
     screens: {
-      sm: '480px', // For small mobile screens
+      sm: '390px', // For small mobile screens
       md: '768px', // Tablets
       lg: '1024px', // Desktops
-      xl: '1380px' // Large screens
+      xl: '1289px' // Large screens
     },
     extend: {
       screens: {
-        xs: { max: '350px' }
+        xs: { max: '352px' }
       },
       fontFamily: {
         sans: ['var(--font-open-sans)', 'sans-serif'] // Reference the CSS variable

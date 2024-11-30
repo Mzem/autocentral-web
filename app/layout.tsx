@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     url: 'https://autocentral.tn',
     title: "Voitures d'occasion en Tunisie",
     siteName: "Voitures d'occasion en Tunisie",
-    images: '/logo_square.svg'
+    images: '/logo_rect.jpg'
   }
 }
 
