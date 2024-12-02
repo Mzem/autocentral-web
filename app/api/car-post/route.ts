@@ -21,6 +21,8 @@ export async function PATCH(req: NextRequest) {
     make,
     model,
     cylinder,
+    title,
+    gearbox,
     fuel
   } = await req.json()
 
@@ -34,6 +36,8 @@ export async function PATCH(req: NextRequest) {
     make,
     model,
     cylinder,
+    title,
+    gearbox,
     fuel
   )
   return Response.json({ message: 'ok' }, { status: 200 })

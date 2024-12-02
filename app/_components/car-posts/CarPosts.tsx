@@ -9,7 +9,13 @@ import {
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
 import { dotNumber, fromNameToId } from '../../helpers'
-import { Fuel, InteriorType, makesWithLogos, regionsSelect } from '../../types'
+import {
+  carModels,
+  Fuel,
+  InteriorType,
+  makesWithLogos,
+  regionsSelect
+} from '../../types'
 import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
@@ -46,8 +52,20 @@ export default function CarPostsFeed({
   // Filters
   const [page, setPage] = useState(initialFilters?.page || 1)
 
-  const [make, setMake] = useState(initialFilters?.make)
-  const [model, setModel] = useState(initialFilters?.model)
+  const [make, setMake] = useState<
+    { value: string; label: string } | undefined
+  >(
+    initialFilters?.make
+      ? { value: initialFilters.make, label: initialFilters.make }
+      : undefined
+  )
+  const [model, setModel] = useState<
+    { value: string; label: string } | undefined
+  >(
+    initialFilters?.model
+      ? { value: initialFilters.model, label: initialFilters.model }
+      : undefined
+  )
   const [regions, setRegions] = useState<{ value: string; label: string }[]>(
     initialFilters?.regionIds?.map((regionId) => ({
       value: regionId,
@@ -99,8 +117,8 @@ export default function CarPostsFeed({
     return {
       page,
       merchantId,
-      make,
-      model,
+      make: make?.value,
+      model: model?.value,
       regionIds: regions.map((region) => region.value),
       fuel,
       color: colors,
@@ -265,7 +283,7 @@ export default function CarPostsFeed({
               </button>
             </a>
           )}
-          <div className='flex flex-row items-center w-full truncate xs:w-[3rem] w-[4rem] sm:w-[5rem] lg:w-[6rem]'>
+          <div className='flex flex-row items-center'>
             {post.merchant.isShop && <img src='/badge.svg' className='h-3' />}
             <span className='w-full truncate'>{post.merchant.name}</span>
           </div>
@@ -336,6 +354,52 @@ export default function CarPostsFeed({
           <div className='flex flex-col my-1 lg:my-2 text-sm lg:text-base'>
             <div className='lg:flex lg:space-x-8'>
               <div>
+                <div className='flex mb-3'>
+                  <Select
+                    placeholder={'Marque'}
+                    noOptionsMessage={() => '...'}
+                    options={carModels.map((car) => ({
+                      value: car.make,
+                      label: car.make
+                    }))}
+                    value={make}
+                    onChange={(selected) => {
+                      if (selected?.value) setSearchText(selected.value)
+                      setMake(selected ?? undefined)
+                    }}
+                    unstyled
+                    styles={reactSelectFilterStyle}
+                    className={`w-[95%] ml-[4px] bg-whiteopac2 rounded mt-1`}
+                    classNamePrefix='react-select'
+                  />
+                  {make && (
+                    <Select
+                      placeholder={'Modèle'}
+                      noOptionsMessage={() => '...'}
+                      options={carModels
+                        .find((models) => models.make === make.value)
+                        ?.models.map((model) => ({
+                          value: model,
+                          label: model
+                        }))}
+                      value={model}
+                      onChange={(selected) => {
+                        if (selected?.value) {
+                          let searchedModel = selected.value
+                          if (searchedModel.length <= 2) {
+                            searchedModel = `${make.value} ${searchedModel}`
+                          }
+                          setSearchText(searchedModel)
+                        }
+                        setModel(selected ?? undefined)
+                      }}
+                      unstyled
+                      styles={reactSelectFilterStyle}
+                      className='w-[95%] ml-[4px] bg-whiteopac2 rounded mt-1 mr-[2px]'
+                      classNamePrefix='react-select'
+                    />
+                  )}
+                </div>
                 {!merchantId && (
                   <label className='flex items-center ml-3 cursor-pointer'>
                     <input
@@ -409,7 +473,7 @@ export default function CarPostsFeed({
                     }
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className='w-[95%] ml-[11px] mb-1 bg-whiteopac2 rounded mt-2'
+                    className='w-[95%] ml-[7px] mb-1 bg-whiteopac2 rounded mt-2'
                     classNamePrefix='react-select'
                   />
                 )}

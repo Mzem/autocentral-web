@@ -184,6 +184,8 @@ export async function updateCarPost(
   make?: string,
   model?: string,
   cylinder?: string,
+  title?: string,
+  gearbox?: string,
   fuel?: string
 ): Promise<void> {
   try {
@@ -196,6 +198,8 @@ export async function updateCarPost(
       make,
       model,
       cylinder,
+      title,
+      gearbox,
       fuel
     })
   } catch (e) {

@@ -162,8 +162,29 @@ export default function RootLayout({
             })
           }}
         />
+        {/* Google Analytics Script */}
+        <script
+          async
+          src='https://www.googletagmanager.com/gtag/js?id=G-NP3EXHPXDR'
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-NP3EXHPXDR');
+            `
+          }}
+        />
+        <script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6991672787454088'
+          crossOrigin='anonymous'
+        ></script>
       </head>
-      <body className={`flex flex-col min-h-screen bg-blackopac`}>
+
+      <body className='flex flex-col min-h-screen bg-blackopac'>
         <Header />
         <main className='flex-grow bg-whiteBG'>
           <div className='w-[98%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>

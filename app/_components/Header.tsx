@@ -61,11 +61,10 @@ export default function Header() {
             href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
             className='xl:hidden rounded-lg bg-whiteopac2 flex items-center space-x-1 text-sm lg:text-base py-[2px] px-[4px] md:ml-80 lg:ml-48'
           >
-            <p className='sm:hidden'>Annonce +</p>
-            <p className='hidden sm:block'>Déposer annonce</p>
+            <p className=''>Contact</p>
             <img
               src='/whatsapp_white.svg'
-              className='xs:hidden h-[1rem]'
+              className='h-[1rem] xs:h-[0.7rem]'
               alt='Whatsapp'
             />
           </a>
@@ -86,7 +85,7 @@ export default function Header() {
               href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
               className='rounded-lg bg-whiteopac2 flex text-sm items-center space-x-1 py-[2px] px-[6px]'
             >
-              <p>Déposer une annonce</p>
+              <p>Contactez-nous</p>
               <img
                 src='/whatsapp_white.svg'
                 className='h-[1rem]'

@@ -12,8 +12,9 @@ function getDailyCount(): number {
   // Calculate the progress of the day as a fraction (0 at midnight, 1 at 23:59)
   const dayProgress = (hours * 60 + minutes) / (24 * 60)
   let max = 30
-  if (hours >= 9 && hours <= 19) max = (hours - 8) * 20
-  if (hours >= 20) max = 300
+  if (hours >= 8) max = 50
+  if (hours >= 10) max = 250
+  if (hours >= 17) max = 500
 
   // Return a number between 0 and max based on the progress of the day
   return Math.floor(dayProgress * max)
@@ -46,7 +47,7 @@ export default async function Home({
     <>
       <div className='text-center xs:text-sm text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
         <p className='mx-2'>
-          Premier moteur de recherche <br className='lg:hidden' />
+          1er moteur de recherche <br className='lg:hidden' />
           de véhicules d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
