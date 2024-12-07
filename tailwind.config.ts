@@ -11,8 +11,10 @@ const config: Config = {
       orange: '#b36b14',
       black: '#000000',
       blacklight: '#2d2d2d',
+      blacknotopac: '#151515',
       blackopac: '#151515ee',
       blackopac2: '#15151560',
+      blackopac3: '#131313',
       pureblack: '#000000',
       white: '#ffffff',
       whiteBG: '#f9f9fa',
@@ -39,6 +41,7 @@ const config: Config = {
     extend: {
       screens: {
         xs: { max: '352px' },
+        mdm: { max: '768px' },
         xxl: { min: '1600px' }
       },
       fontFamily: {

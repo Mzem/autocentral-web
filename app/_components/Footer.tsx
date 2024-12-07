@@ -29,6 +29,32 @@ export default function Footer() {
           </a>
         </div>
       </footer>
+      {/* <footer className='md:hidden fixed bottom-0 w-full flex justify-center items-center bg-blacknotopac'>
+        <Link
+          href='/'
+          className='bg-blacknotopac w-[14%] border-r border-titanopac'
+        >
+          <img src='car_white.svg' className='h-9 mx-auto p-1' />
+        </Link>
+        <Link href='/' className='bg-blacknotopac w-[14%] flex items-center'>
+          <img src='man.svg' className='h-9 mx-auto p-1' />
+          <img src='badge.svg' className='h-3 mx-auto -ml-3' />
+        </Link>
+        <Link href='/' className='w-[16%]'>
+          <span className='h-9 mx-auto bg-vividred text-white flex items-center justify-center w-full font-semibold text-[2.2rem] rounded-full'>
+            +
+          </span>
+        </Link>
+        <Link
+          href='/'
+          className='bg-blacknotopac w-[14%] border-r border-titanopac'
+        >
+          <img src='mechanic.svg' className='h-9 mx-auto p-1' />
+        </Link>
+        <Link href='/' className='bg-blacknotopac w-[14%]'>
+          <img src='shirt.svg' className='h-9 mx-auto p-1' />
+        </Link>
+      </footer> */}
     </div>
   )
 }

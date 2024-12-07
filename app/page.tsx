@@ -13,7 +13,7 @@ function getDailyCount(): number {
   const dayProgress = (hours * 60 + minutes) / (24 * 60)
   let max = 30
   if (hours >= 8) max = 50
-  if (hours >= 10) max = 250
+  if (hours >= 10) max = 300
   if (hours >= 17) max = 500
 
   // Return a number between 0 and max based on the progress of the day
@@ -45,10 +45,10 @@ export default async function Home({
 
   return (
     <>
-      <div className='text-center xs:text-sm text-base lg:text-2xl mt-9 lg:mt-20 text-black mb-7 lg:mb-16'>
+      <div className='text-center xs:text-sm text-base lg:text-2xl mt-7 lg:mt-20 text-black mb-3 lg:mb-10'>
         <p className='mx-2'>
           1er moteur de recherche <br className='lg:hidden' />
-          de véhicules d'occasion en{' '}
+          de voitures d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
         <p className='mt-4 lg:mt-6'>
@@ -75,7 +75,7 @@ export default async function Home({
             className='h-4 rounded-full'
           />
         </div> */}
-        <p className='text-[0.6rem] italic text-blackopac2'>
+        <p className='text-[0.6rem] lg:text-sm lg:mt-4 italic text-black text-opacity-55'>
           Site web non-commercial 100% gratuit
         </p>
       </div>

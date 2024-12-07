@@ -25,7 +25,7 @@ export default function MultiSelectList({
   return (
     <div className='ml-3 flex space-x-[3px] items-center'>
       {label && (
-        <span className='text-sm lg:text-base text-whiteBG mr-1'>{label}</span>
+        <span className='text-sm lg:text-base text-white mr-1'>{label}</span>
       )}
       {items.map((item) => (
         <label key={item} className='flex items-center cursor-pointer'>
@@ -33,10 +33,10 @@ export default function MultiSelectList({
             type='checkbox'
             checked={selectedItems.includes(item)}
             onChange={() => toggleItemSelection(item)}
-            className='mt-[2px] rounded cursor-pointer mr-[1px] h-5 w-5'
+            className='rounded cursor-pointer mr-[3px] h-5 w-5 border-titan'
           />
           <span className='text-sm lg:text-base mr-1'>
-            {item === Fuel.HYBRID ? 'Hybride/Electrique' : item}
+            {item === Fuel.HYBRID ? 'Hybrid/Electrique' : item}
           </span>
         </label>
       ))}

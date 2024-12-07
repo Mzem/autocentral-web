@@ -100,7 +100,7 @@ export default function CarPostsFeed({
   const [searchText, setSearchText] = useState<string>(initialFilters?.q || '')
 
   // Relative search bar
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilters, setShowFilters] = useState(true)
   const [showMoreFilters, setShowMoreFilters] = useState(
     alarm ||
       keyless ||
@@ -227,14 +227,14 @@ export default function CarPostsFeed({
             {post.gearbox && <span>{post.gearbox}</span>}
             <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left items-center'>
               <span
-                className={`font-bold mt-1 text-[0.8rem] lg:text-base xs:text-[0.7rem] ${
+                className={`font-bold text-[0.8rem] lg:text-base xs:text-[0.7rem] ${
                   post.price && post.estimatedPrice
                     ? post.estimatedPrice.color === 'GREEN'
-                      ? 'text-green'
+                      ? 'text-green mt-1'
                       : post.estimatedPrice.color === 'RED'
-                      ? 'text-rolexgold'
-                      : ''
-                    : ''
+                      ? 'text-rolexgold mt-0'
+                      : 'mt-1'
+                    : 'mt-1'
                 }`}
               >
                 {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
@@ -285,7 +285,9 @@ export default function CarPostsFeed({
           )}
           <div className='flex flex-row items-center'>
             {post.merchant.isShop && <img src='/badge.svg' className='h-3' />}
-            <span className='w-full truncate'>{post.merchant.name}</span>
+            <span className='xs:max-w-[4rem] max-w-[5rem] md:w-full truncate'>
+              {post.merchant.name}
+            </span>
           </div>
           <div className='flex flex-row items-center'>
             <img src='/location.svg' className='h-3 lg:h-4' />
@@ -300,7 +302,7 @@ export default function CarPostsFeed({
     <>
       <div
         ref={searchDivRef}
-        className='bg-black bg-opacity-85 w-full p-[2px] rounded-lg text-center flex flex-col'
+        className='bg-gradient-to-b from-blackopac to-blackopac3 shadow-sm text-white w-full mx-0 p-[2px] text-center flex flex-col rounded-xl'
       >
         <div className='flex flex-row items-center justify-between'>
           <input
@@ -314,17 +316,13 @@ export default function CarPostsFeed({
             }}
             onChange={handleSearchTextChange}
             onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
-            placeholder={
-              showFilters ? 'Taper un mot clé...' : 'Rechercher un véhicule...'
-            }
-            className={`ml-1 py-1 xs:px-1 my-1 placeholder-white rounded-lg border-none text-base lg:text-xl outline-none w-[65%] lg:w-[75%] ${
-              showFilters ? 'bg-whiteopac' : 'bg-whiteopac2'
-            }`}
+            placeholder={'Recherche par mot-clé...'}
+            className={`ml-1 py-1 xs:px-1 my-1 placeholder-white rounded-xl border-none text-base lg:text-xl outline-none w-[65%] lg:w-[75%] bg-whiteopac`}
           />
 
           <div>
             <button
-              className='xs:w-12 w-14 sm:w-16 p-2 mr-[2px] lg:mr-2 bg-vividred rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-12 w-14 sm:w-16 p-2 mr-[2px] lg:mr-2 bg-vividred rounded-xl hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 if (!showFilters) setShowFilters(true)
                 else handleNewSearch()
@@ -337,7 +335,7 @@ export default function CarPostsFeed({
               />
             </button>
             <button
-              className='xs:w-10 w-12 sm:w-14 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded hover:bg-titan transition duration-300 ease-in-out'
+              className='xs:w-10 w-12 sm:w-14 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded-xl hover:bg-titan transition duration-300 ease-in-out'
               onClick={() => {
                 window.location.href = merchantId ? `/${merchantId}` : '/'
               }}
@@ -352,113 +350,129 @@ export default function CarPostsFeed({
         </div>
         {showFilters && (
           <div className='flex flex-col my-1 lg:my-2 text-sm lg:text-base'>
-            <div className='lg:flex lg:space-x-8'>
-              <div>
-                <div className='flex mb-3'>
+            <div className='lg:flex lg:flex-col'>
+              <div className='flex mb-2'>
+                <Select
+                  placeholder={'Marque'}
+                  noOptionsMessage={() => '...'}
+                  options={carModels.map((car) => ({
+                    value: car.make,
+                    label: car.make
+                  }))}
+                  value={make}
+                  isSearchable={false}
+                  onChange={(selected) => {
+                    if (selected?.value) setSearchText(selected.value)
+                    setMake(selected ?? undefined)
+                  }}
+                  unstyled
+                  styles={reactSelectFilterStyle}
+                  className={`w-[95%] ml-[4px] bg-whiteopac2 rounded`}
+                  classNamePrefix='react-select'
+                />
+                {make && (
                   <Select
-                    placeholder={'Marque'}
+                    placeholder={'Modèle'}
                     noOptionsMessage={() => '...'}
-                    options={carModels.map((car) => ({
-                      value: car.make,
-                      label: car.make
-                    }))}
-                    value={make}
+                    options={carModels
+                      .find((models) => models.make === make.value)
+                      ?.models.map((model) => ({
+                        value: model,
+                        label: model
+                      }))}
+                    isSearchable={false}
+                    value={model}
                     onChange={(selected) => {
-                      if (selected?.value) setSearchText(selected.value)
-                      setMake(selected ?? undefined)
+                      if (selected?.value) {
+                        let searchedModel = selected.value
+                        if (searchedModel.length <= 2) {
+                          searchedModel = `${make.value} ${searchedModel}`
+                        }
+                        setSearchText(searchedModel)
+                      }
+                      setModel(selected ?? undefined)
                     }}
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className={`w-[95%] ml-[4px] bg-whiteopac2 rounded mt-1`}
+                    className='w-[95%] ml-[4px] bg-whiteopac2 rounded mr-[2px]'
                     classNamePrefix='react-select'
                   />
-                  {make && (
-                    <Select
-                      placeholder={'Modèle'}
-                      noOptionsMessage={() => '...'}
-                      options={carModels
-                        .find((models) => models.make === make.value)
-                        ?.models.map((model) => ({
-                          value: model,
-                          label: model
-                        }))}
-                      value={model}
-                      onChange={(selected) => {
-                        if (selected?.value) {
-                          let searchedModel = selected.value
-                          if (searchedModel.length <= 2) {
-                            searchedModel = `${make.value} ${searchedModel}`
-                          }
-                          setSearchText(searchedModel)
-                        }
-                        setModel(selected ?? undefined)
-                      }}
-                      unstyled
-                      styles={reactSelectFilterStyle}
-                      className='w-[95%] ml-[4px] bg-whiteopac2 rounded mt-1 mr-[2px]'
-                      classNamePrefix='react-select'
-                    />
+                )}
+              </div>
+              <div className='w-full mt-[2px] md:flex'>
+                <div className='hidden md:flex md:flex-col space-y-1'>
+                  <MultiSelectList
+                    items={Object.values(Fuel)}
+                    selectedItems={fuel}
+                    setSelectedItems={setFuel}
+                  />
+                  {!merchantId && (
+                    <label className='flex items-center ml-3 cursor-pointer'>
+                      <input
+                        type='checkbox'
+                        checked={isShop}
+                        onChange={() => setIsShop(!isShop)}
+                        className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
+                      />
+                      <span className=''>Vendeurs PRO</span>
+                      <img src='/badge.svg' className='ml-1 h-3' />
+                    </label>
                   )}
-                </div>
-                {!merchantId && (
-                  <label className='flex items-center ml-3 cursor-pointer'>
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
                     <input
                       type='checkbox'
-                      checked={isShop}
-                      onChange={() => setIsShop(!isShop)}
-                      className='mr-2 mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred'
+                      checked={firstOwner}
+                      onChange={() => setFirstOwner(!firstOwner)}
+                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
                     />
-                    <span className=''>Vendeurs PRO</span>
-                    <img src='/badge.svg' className='ml-1 h-3' />
+                    <span className=''>Première main</span>
                   </label>
-                )}
-                <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={firstOwner}
-                    onChange={() => setFirstOwner(!firstOwner)}
-                    className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
+                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      checked={isAuto}
+                      onChange={() => setIsAuto(!isAuto)}
+                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                    />
+                    <span className=''>Boîte automatique</span>
+                  </label>
+                </div>
+                <div className='md:flex md:flex-col w-full md:space-y-2 md:ml-6 xl:ml-12 md:justify-center'>
+                  <MinMaxSelector
+                    min={minYear}
+                    max={maxYear}
+                    setMin={setMinYear}
+                    setMax={setMaxYear}
+                    label={'Année'}
+                    maxLimit={2050}
                   />
-                  <span className=''>Première main</span>
-                </label>
-                <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    checked={isAuto}
-                    onChange={() => setIsAuto(!isAuto)}
-                    className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
+                  <MinMaxSelector
+                    min={minPrice}
+                    max={maxPrice}
+                    setMin={setMinPrice}
+                    setMax={setMaxPrice}
+                    label={'Prix'}
                   />
-                  <span className=''>Boîte automatique</span>
-                </label>
-                <MultiSelectList
-                  items={Object.values(Fuel)}
-                  selectedItems={fuel}
-                  setSelectedItems={setFuel}
-                />
+                  <MinMaxSelector
+                    min={minKm}
+                    max={maxKm}
+                    setMin={setMinKm}
+                    setMax={setMaxKm}
+                    label={'Km'}
+                  />
+                </div>
               </div>
-              <div className='w-full'>
-                <MinMaxSelector
-                  min={minYear}
-                  max={maxYear}
-                  setMin={setMinYear}
-                  setMax={setMaxYear}
-                  label={'Année'}
-                  maxLimit={2050}
-                />
-                <MinMaxSelector
-                  min={minPrice}
-                  max={maxPrice}
-                  setMin={setMinPrice}
-                  setMax={setMaxPrice}
-                  label={'Prix'}
-                />
-                <MinMaxSelector
-                  min={minKm}
-                  max={maxKm}
-                  setMin={setMinKm}
-                  setMax={setMaxKm}
-                  label={'Km'}
-                />
+            </div>
+            <button
+              onClick={() => setShowMoreFilters(true)}
+              className={`bg-whiteopac w-[55%] mx-auto rounded-xl mt-2 font-semibold text-white text-opacity-85 ${
+                showMoreFilters ? 'hidden' : ''
+              }`}
+            >
+              Voir plus de filtres +
+            </button>
+            {showMoreFilters && (
+              <div className='lg:flex lg:flex-col'>
                 {!merchantId && (
                   <Select
                     isMulti
@@ -466,6 +480,7 @@ export default function CarPostsFeed({
                     noOptionsMessage={() => '...'}
                     options={regionsSelect}
                     value={regions}
+                    isSearchable={false}
                     onChange={(selected) =>
                       setRegions(
                         selected as Array<{ value: string; label: string }>
@@ -473,91 +488,124 @@ export default function CarPostsFeed({
                     }
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className='w-[95%] ml-[7px] mb-1 bg-whiteopac2 rounded mt-2'
+                    className='w-[95%] ml-[7px] mb-2 bg-whiteopac2 rounded mt-3'
                     classNamePrefix='react-select'
                   />
                 )}
-              </div>
-            </div>
-            <button
-              onClick={() => setShowMoreFilters(true)}
-              className={`bg-whiteopac w-[50%] mx-auto rounded-xl mb-1 mt-3 hover:underline ${
-                showMoreFilters ? 'underline cursor-default' : ''
-              }`}
-            >
-              {`${
-                showMoreFilters ? 'Plus de filtres' : 'Voir plus de filtres +'
-              }`}
-            </button>
-            {showMoreFilters && (
-              <div className='lg:flex lg:space-x-8'>
-                <div>
-                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      checked={alarm}
-                      onChange={() => setAlarm(!alarm)}
-                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
+                <div className='md:flex md:flex-row'>
+                  <div className='flex flex-col space-y-[1px]'>
+                    <div className='md:hidden'>
+                      <MultiSelectList
+                        items={Object.values(Fuel)}
+                        selectedItems={fuel}
+                        setSelectedItems={setFuel}
+                      />
+                      {!merchantId && (
+                        <label className='flex items-center ml-3 cursor-pointer'>
+                          <input
+                            type='checkbox'
+                            checked={isShop}
+                            onChange={() => setIsShop(!isShop)}
+                            className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
+                          />
+                          <span className=''>Vendeurs PRO</span>
+                          <img src='/badge.svg' className='ml-1 h-3' />
+                        </label>
+                      )}
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={firstOwner}
+                          onChange={() => setFirstOwner(!firstOwner)}
+                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Première main</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={isAuto}
+                          onChange={() => setIsAuto(!isAuto)}
+                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Boîte automatique</span>
+                      </label>
+                    </div>
+                    <div className='md:flex md:flex-col md:space-y-1'>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={alarm}
+                          onChange={() => setAlarm(!alarm)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Alarme anti-vol</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={keyless}
+                          onChange={() => setKeyless(!keyless)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Démarrage sans clé</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={camera}
+                          onChange={() => setCamera(!camera)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Caméra de stationnement</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={exchange}
+                          onChange={() => setExchange(!exchange)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Echange possible</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={leasing}
+                          onChange={() => setLeasing(!leasing)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>Leasing</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className='flex flex-col space-y-[5px] md:ml-8 xl:ml-32 md:mt-4'>
+                    <MinMaxSelector
+                      min={minCV}
+                      max={maxCV}
+                      setMin={setMinCV}
+                      setMax={setMaxCV}
+                      label={'CV'}
+                      maxLimit={99}
                     />
-                    <span className=''>Alarme anti-vol</span>
-                  </label>
-                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      checked={keyless}
-                      onChange={() => setKeyless(!keyless)}
-                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
+                    <MultiSelectList
+                      label='Intérieur'
+                      items={Object.values(InteriorType)}
+                      selectedItems={interiorTypes}
+                      setSelectedItems={setInteriorTypes}
                     />
-                    <span className=''>Démarrage sans clé</span>
-                  </label>
-                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      checked={camera}
-                      onChange={() => setCamera(!camera)}
-                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
+                    <ColorSelector
+                      selectedColors={colors}
+                      setSelectedColors={setColors}
                     />
-                    <span className=''>Caméra de stationnement</span>
-                  </label>
-                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      checked={exchange}
-                      onChange={() => setExchange(!exchange)}
-                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
-                    />
-                    <span className=''>Echange possible</span>
-                  </label>
-                  <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      checked={leasing}
-                      onChange={() => setLeasing(!leasing)}
-                      className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer'
-                    />
-                    <span className=''>Leasing</span>
-                  </label>
+                  </div>
                 </div>
-                <div>
-                  <MinMaxSelector
-                    min={minCV}
-                    max={maxCV}
-                    setMin={setMinCV}
-                    setMax={setMaxCV}
-                    label={'CV'}
-                    maxLimit={99}
-                  />
-                  <MultiSelectList
-                    label='Intérieur'
-                    items={Object.values(InteriorType)}
-                    selectedItems={interiorTypes}
-                    setSelectedItems={setInteriorTypes}
-                  />
-                  <ColorSelector
-                    selectedColors={colors}
-                    setSelectedColors={setColors}
-                  />
-                </div>
+                <button
+                  onClick={() => handleNewSearch()}
+                  className='bg-vividred text-white w-[55%] mx-auto rounded-xl mt-4 p-1 lg:p-2 lg:mt-4 font-semibold'
+                >
+                  Rechercher
+                </button>
               </div>
             )}
           </div>
@@ -568,8 +616,8 @@ export default function CarPostsFeed({
         <img src='estim_down.svg' alt='estimation haute' className='h-6' />
         <img src='estim_ok.svg' alt='estimation haute' className='h-6' />
         <img src='estim_up.svg' alt='estimation haute' className='h-6' />
-        <span className='text-black text-opacity-50 italic lg:text-base text-xs'>
-          Prix du véhicule par rapport à la moyenne
+        <span className='text-black text-opacity-80 italic lg:text-base text-xs'>
+          Prix par rapport à la moyenne du marché
         </span>
       </div>
       <div ref={searchDivRef} className='w-full mx-auto text-black'>
@@ -618,7 +666,7 @@ export default function CarPostsFeed({
             ))}
 
         {loadingPosts && (
-          <button className='text-white bg-blackopac2 font-medium shadow-lg p-1 rounded-lg w-full text-center mt-10 lg:text-lg'>
+          <button className='text-white bg-blackopac2 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'>
             Chargement des annonces...
           </button>
         )}
@@ -629,7 +677,7 @@ export default function CarPostsFeed({
         )}
         {hasMore && !loadingPosts && (
           <button
-            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-lg w-full text-center mt-10 text-lg lg:text-xl'
+            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +

@@ -22,7 +22,7 @@ export default function MinMaxSelector({
 
   const useDot = maxLimit >= 10000
   return (
-    <div className='mt-1 ml-3 flex items-center max-h-6'>
+    <div className='mt-[2px] ml-3 flex items-center max-h-6'>
       <span className='mr-2 font-medium w-[22%] lg:w-[30%] text-left max-h-6'>
         {label}
       </span>
@@ -51,7 +51,7 @@ export default function MinMaxSelector({
               setMinValue(input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))
             }
           }}
-          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black mr-1 p-1 text-right max-h-6 mb-0 mt-0'
+          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black mr-1 p-1 text-right max-h-6 mb-0 mt-0 bg-whiteBG'
         />
 
         <input
@@ -77,7 +77,7 @@ export default function MinMaxSelector({
               setMaxValue(input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))
             }
           }}
-          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black p-1 text-right max-h-6 mb-0 mt-0'
+          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black p-1 text-right max-h-6 mb-0 mt-0 bg-whiteBG'
         />
       </div>
     </div>

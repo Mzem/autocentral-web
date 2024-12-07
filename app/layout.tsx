@@ -3,6 +3,8 @@ import Footer from './_components/Footer'
 import Header from './_components/Header'
 import './_styles/globals.css'
 import { Open_Sans } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const openSans = Open_Sans({
   subsets: ['latin'],
@@ -192,8 +194,8 @@ export default function RootLayout({
           </div>
         </main>
         <Footer />
-        {/* <Analytics />
-        <SpeedInsights /> */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

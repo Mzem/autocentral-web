@@ -42,7 +42,11 @@ export default function Header() {
   return (
     <div className='bg-whiteBG'>
       {/* Header with fixed position */}
-      <div className='w-full fixed bg-blackopac z-10'>
+      <div
+        className={`w-full fixed z-10 ${
+          isMenuOpen ? 'bg-blacknotopac' : 'bg-blackopac'
+        }`}
+      >
         <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-10 lg:h-12'>
           {/* Mobile Logo on the Right and Desktop Logo */}
           <button
@@ -96,7 +100,7 @@ export default function Header() {
               className='flex space-x-2 items-center hover:underline'
               href='/'
             >
-              <img src='/flag_tn.svg' className='h-5' />
+              <img src='/car_white.svg' className='h-5' />
               <p className='text-sm'>Voitures d'occasion</p>
             </Link>
             <Link
@@ -117,7 +121,7 @@ export default function Header() {
               className='flex space-x-2 items-center hover:underline'
               href='/produits'
             >
-              <img src='/race_flag.svg' className='h-5' />
+              <img src='/cart.svg' className='h-5' />
               <p className='text-sm'>Boutique</p>
             </Link>
           </nav>
@@ -131,17 +135,17 @@ export default function Header() {
           className='xl:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
         >
           <Link
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacklight border-b border-whiteopac2 flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
             }}
             href='/'
           >
             Voitures d'occasion
-            <img src='/flag_tn.svg' className='h-6 ml-2 mr-1' />
+            <img src='/car_white.svg' className='h-6 ml-2 mr-1' />
           </Link>
           <Link
-            className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac flex justify-end'
+            className='w-full block px-4 py-2 hover:bg-whiteopac  bg-blacknotopac border-b border-whiteopac flex justify-end'
             onClick={() => {
               setIsMenuOpen(false)
             }}
@@ -152,7 +156,7 @@ export default function Header() {
           </Link>
           <Link
             href='/vendeurs'
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-whiteopac2 border-b border-whiteopac2 flex justify-end'
+            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacklight border-b border-whiteopac2 flex justify-end'
             onClick={() => setIsMenuOpen(false)}
           >
             Vendeurs professionnels
@@ -160,11 +164,11 @@ export default function Header() {
           </Link>
           <Link
             href='/produits'
-            className='w-full block px-4 py-2 hover:bg-whiteopac border-b border-whiteopac2 flex justify-end'
+            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacknotopac border-b-2 border-titanopac flex justify-end'
             onClick={() => setIsMenuOpen(false)}
           >
             Boutique & produits dérivés
-            <img src='/race_flag.svg' className='h-6 ml-2 mr-1' />
+            <img src='/cart.svg' className='h-6 ml-2 mr-1' />
           </Link>
         </div>
       )}
