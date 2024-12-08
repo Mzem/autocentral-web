@@ -21,6 +21,7 @@ import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
+import FeedAd from '../FeedAd'
 
 const API_PAGE_SIZE = 20
 
@@ -683,6 +684,9 @@ export default function CarPostsFeed({
             Charger plus d'annonces +
           </button>
         )}
+        <div className='my-4'>
+          <FeedAd />
+        </div>
 
         <button
           onClick={scrollToSearch}
