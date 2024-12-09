@@ -98,15 +98,17 @@ export default function CarPostsFeed({
   )
   const [exchange, setExchange] = useState(initialFilters?.exchange || false)
   const [leasing, setLeasing] = useState(initialFilters?.leasing || false)
+  const [fcr, setFCR] = useState(initialFilters?.fcr || false)
   const [searchText, setSearchText] = useState<string>(initialFilters?.q || '')
 
   // Relative search bar
-  const [showFilters, setShowFilters] = useState(true)
+  const [showFilters, setShowFilters] = useState(merchantId ? false : true)
   const [showMoreFilters, setShowMoreFilters] = useState(
     alarm ||
       keyless ||
       camera ||
       leasing ||
+      fcr ||
       exchange ||
       colors.length > 0 ||
       interiorTypes.length > 0
@@ -140,6 +142,7 @@ export default function CarPostsFeed({
       firstOwner,
       exchange,
       leasing,
+      fcr,
       q: searchText
     }
   }
@@ -577,6 +580,15 @@ export default function CarPostsFeed({
                           className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
                         />
                         <span className=''>Leasing</span>
+                      </label>
+                      <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={fcr}
+                          onChange={() => setFCR(!fcr)}
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                        />
+                        <span className=''>FCR</span>
                       </label>
                     </div>
                   </div>

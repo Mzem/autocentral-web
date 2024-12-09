@@ -89,6 +89,7 @@ export function fromQueryParamsToGetCarPostsFilters(
     firstOwner: getParamValueBoolean('firstOwner'),
     exchange: getParamValueBoolean('exchange'),
     leasing: getParamValueBoolean('leasing'),
+    fcr: getParamValueBoolean('fcr'),
     q: getParamValueString('q') || ''
   }
 }

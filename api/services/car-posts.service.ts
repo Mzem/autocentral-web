@@ -103,6 +103,7 @@ export interface GetCarPostsFilters {
   firstOwner?: boolean
   exchange?: boolean
   leasing?: boolean
+  fcr?: boolean
   q?: string
 }
 
@@ -145,6 +146,7 @@ export function generateCarPostsQueryParams(
   if (filters.firstOwner) qp += '&firstOwner=true'
   if (filters.exchange) qp += '&exchange=true'
   if (filters.leasing) qp += '&leasing=true'
+  if (filters.fcr) qp += '&fcr=true'
   if (filters.q) qp += `&q=${filters.q}`
 
   return qp
