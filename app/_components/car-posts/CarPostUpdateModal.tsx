@@ -36,7 +36,8 @@ function CarPostUpdateModal(
     cylinder: carData.cylinder || '',
     title: carData.title || '',
     gearbox: carData.gearbox || '',
-    fuel: carData.fuel || ''
+    fuel: carData.fuel || '',
+    isFeatured: ''
   })
 
   // Handle form data changes
@@ -67,7 +68,8 @@ function CarPostUpdateModal(
           fuel: formData.fuel || undefined,
           title: formData.title || undefined,
           gearbox: formData.gearbox || undefined,
-          cylinder: formData.cylinder || undefined
+          cylinder: formData.cylinder || undefined,
+          isFeatured: formData.isFeatured || undefined
         })
       }).then((res) => {
         if (res.ok) {
@@ -185,6 +187,16 @@ function CarPostUpdateModal(
               type='text'
               name='gearbox'
               value={formData.gearbox}
+              onChange={handleChange}
+              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+            />
+          </div>
+          <div className='flex mb-[2px] justify-between'>
+            <label className='block text-titan'>Featured</label>
+            <input
+              type='text'
+              name='isFeatured'
+              value={formData.isFeatured}
               onChange={handleChange}
               className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
             />

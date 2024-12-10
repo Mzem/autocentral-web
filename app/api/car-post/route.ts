@@ -23,7 +23,8 @@ export async function PATCH(req: NextRequest) {
     cylinder,
     title,
     gearbox,
-    fuel
+    fuel,
+    isFeatured
   } = await req.json()
 
   await updateCarPost(
@@ -38,7 +39,8 @@ export async function PATCH(req: NextRequest) {
     cylinder,
     title,
     gearbox,
-    fuel
+    fuel,
+    isFeatured
   )
   return Response.json({ message: 'ok' }, { status: 200 })
 }

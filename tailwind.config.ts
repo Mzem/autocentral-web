@@ -30,7 +30,8 @@ const config: Config = {
       gold: '#d4af37',
       rolexgold: '#a37e2c',
       rolexgoldopac: '#a37e2caa',
-      whatsapp: '#25d366'
+      whatsapp: '#25d366',
+      whiteopacred: '#d8454513'
     },
     screens: {
       sm: '390px', // For small mobile screens

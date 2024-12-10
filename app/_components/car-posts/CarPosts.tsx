@@ -27,9 +27,11 @@ const API_PAGE_SIZE = 20
 
 export default function CarPostsFeed({
   initialPosts,
+  featuredPosts,
   initialFilters
 }: {
   initialPosts: CarPostListItem[]
+  featuredPosts?: CarPostListItem[]
   initialFilters?: GetCarPostsFilters
 }) {
   const pathname = usePathname() // Get path, e.g., "/annonces/123"
@@ -191,11 +193,21 @@ export default function CarPostsFeed({
     }
   }, [id, initialPosts])
 
-  const PostCard = ({ post }: { post: CarPostListItem }) => {
+  const PostCard = ({
+    post,
+    featured
+  }: {
+    post: CarPostListItem
+    featured?: boolean
+  }) => {
     return (
       <div
         key={post.id}
-        className='justify-between w-full flex items-center mt-2 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem]'
+        className={`justify-between w-full flex items-center mt-2 shadow-md rounded text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem] ${
+          featured
+            ? 'bg-whiteopacred hover:bg-whiteopac'
+            : 'bg-whiteopac hover:bg-whiteBGDarker'
+        }`}
       >
         <button
           onClick={() => {
@@ -634,6 +646,9 @@ export default function CarPostsFeed({
         </span>
       </div>
       <div ref={searchDivRef} className='w-full mx-auto text-black'>
+        {featuredPosts &&
+          featuredPosts.length > 0 &&
+          featuredPosts.map((post) => <PostCard post={post} featured={true} />)}
         {!groupByMake && posts.map((post) => <PostCard post={post} />)}
         {groupByMake &&
           posts

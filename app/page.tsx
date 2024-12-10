@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
-import { getCarPosts } from '../api/services/car-posts.service'
+import {
+  getCarPosts,
+  getFeaturedCarPosts
+} from '../api/services/car-posts.service'
 import CarPostsFeed from './_components/car-posts/CarPosts'
 import { fromQueryParamsToGetCarPostsFilters } from './helpers'
 import { DateTime } from 'luxon'
@@ -42,6 +45,7 @@ export default async function Home({
 }) {
   const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
   const posts = await getCarPosts(filters)
+  const featuredPosts = await getFeaturedCarPosts()
 
   return (
     <>
@@ -79,7 +83,11 @@ export default async function Home({
           Site web non-commercial 100% gratuit
         </p>
       </div>
-      <CarPostsFeed initialPosts={posts} initialFilters={filters} />
+      <CarPostsFeed
+        initialPosts={posts}
+        featuredPosts={featuredPosts}
+        initialFilters={filters}
+      />
     </>
   )
 }

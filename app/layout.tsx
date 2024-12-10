@@ -134,7 +134,6 @@ export default function RootLayout({
           name='msapplication-square310x310logo'
           content='/favicon/mstile-310x310.png'
         />
-
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{
@@ -184,6 +183,16 @@ export default function RootLayout({
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6991672787454088'
           crossOrigin='anonymous'
         ></script>
+        <script
+          type='text/javascript'
+          dangerouslySetInnerHTML={{
+            __html: `var infolinks_pid = 3429875; var infolinks_wsid = 0;`
+          }}
+        ></script>
+        <script
+          type='text/javascript'
+          src='//resources.infolinks.com/js/infolinks_main.js'
+        ></script>
       </head>
 
       <body className='flex flex-col min-h-screen bg-blackopac'>
@@ -196,14 +205,6 @@ export default function RootLayout({
         <Footer />
         <Analytics />
         <SpeedInsights />
-        <script type='text/javascript'>
-          {' '}
-          var infolinks_pid = 3429875; var infolinks_wsid = 0;{' '}
-        </script>{' '}
-        <script
-          type='text/javascript'
-          src='//resources.infolinks.com/js/infolinks_main.js'
-        ></script>
       </body>
     </html>
   )

@@ -165,6 +165,17 @@ export async function getCarPosts(
   }
 }
 
+export async function getFeaturedCarPosts(): Promise<CarPostListItem[]> {
+  try {
+    const url = 'car-posts/featured'
+    const { content } = await apiGet<CarPostListItem[]>(url, 120)
+    return content
+  } catch (e) {
+    console.error('GET featured car posts error')
+    throw e
+  }
+}
+
 export async function getCarPost(id: string): Promise<CarPost | undefined> {
   try {
     const { content } = await apiGet<CarPost>(`car-posts/${id}`)
@@ -188,7 +199,8 @@ export async function updateCarPost(
   cylinder?: string,
   title?: string,
   gearbox?: string,
-  fuel?: string
+  fuel?: string,
+  isFeatured?: string
 ): Promise<void> {
   try {
     await apiPatch(`car-posts/${id}`, {
@@ -202,7 +214,8 @@ export async function updateCarPost(
       cylinder,
       title,
       gearbox,
-      fuel
+      fuel,
+      isFeatured
     })
   } catch (e) {
     console.error('PATCH car post error')
