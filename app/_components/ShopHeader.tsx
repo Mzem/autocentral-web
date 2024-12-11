@@ -69,7 +69,7 @@ function ShopHeader({
             href={location}
             className='flex flex-col items-center hover:underline'
           >
-            <img src='/location.svg' className='h-5' />
+            <img src='/location.svg' alt='Adresse' className='h-5' />
             <p className='text-l mt-1'>Localisation</p>
           </a>
         )}

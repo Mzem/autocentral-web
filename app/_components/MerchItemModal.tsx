@@ -58,7 +58,11 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
                   {item.merchant.name}
                 </span>
                 {item.merchant.isShop && (
-                  <img src='/badge.svg' className='h-3 md:h-4' />
+                  <img
+                    src='/badge.svg'
+                    alt='Professionnel'
+                    className='h-3 md:h-4'
+                  />
                 )}
               </Link>
             )}

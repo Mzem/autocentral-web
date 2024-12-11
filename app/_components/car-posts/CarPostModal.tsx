@@ -11,6 +11,11 @@ import ShareButton from '../Share'
 import { Carousel } from '../Carousel'
 import { Linkify } from '../../Linkify'
 
+function whatsappPhone(merchantId: string, phone: string): string {
+  if (merchantId === 'sscars') return '+21699775924'
+  return phone
+}
+
 type PostModalProps = {
   postId: string
   isFull?: boolean
@@ -84,7 +89,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   {post.merchant.name}
                 </span>
                 {post.merchant.isShop && (
-                  <img src='/badge.svg' className='h-3 md:h-4' />
+                  <img
+                    src='/badge.svg'
+                    alt='Professionnel'
+                    className='h-3 md:h-4'
+                  />
                 )}
               </Link>
             )}
@@ -146,7 +155,10 @@ const CarPostModal: React.FC<PostModalProps> = ({
             )}
             {post.phone && (
               <a
-                href={`https://wa.me/${post.phone
+                href={`https://wa.me/${whatsappPhone(
+                  post.merchant.id,
+                  post.phone
+                )
                   .toString()
                   .replace(
                     '+',
@@ -244,7 +256,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 </span>
                 {post.price && post.estimatedPrice && (
                   <img
-                    className='h-6 lg:h-8'
+                    className='h-6 lg:h-8 w-6 lg:w-8'
                     alt='estimation'
                     src={
                       post.estimatedPrice.color === 'GREEN'

@@ -59,7 +59,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
               target='_blank'
               className='flex flex-col items-center'
             >
-              <img src='/location.svg' className='h-5' />
+              <img src='/location.svg' alt='Adresse' className='h-5' />
               <p className='text-l mt-1'>{merchant.regionName}</p>
               {merchant.gmapsLink && <p className='text-xs underline'>GPS</p>}
             </a>
@@ -156,7 +156,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
               merchant.gmapsLink ? 'cursor-pointer' : ''
             }`}
           >
-            <img src='/location.svg' className='h-5' />
+            <img src='/location.svg' alt='Adresse' className='h-5' />
             <p className='text-l mt-1'>{merchant.regionName}</p>
             {merchant.gmapsLink && <p className='text-xs underline'>GPS</p>}
           </a>

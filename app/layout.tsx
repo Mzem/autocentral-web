@@ -14,7 +14,8 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: "Voitures d'occasion en Tunisie",
-  description: "Voitures d'occasion en Tunisie",
+  description:
+    "Vous cherchez une voiture d'occasion ? AutoCentral.TN est le premier site web qui regroupe toutes les annonces de voitures d'occasion en Tunisie dans un même endroit !",
   applicationName: 'autocentral.tn',
   keywords: [
     'tunis',
@@ -188,10 +189,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `var infolinks_pid = 3429875; var infolinks_wsid = 0;`
           }}
-        ></script>
-        <script
-          type='text/javascript'
-          src='//resources.infolinks.com/js/infolinks_main.js'
         ></script>
       </head>
 

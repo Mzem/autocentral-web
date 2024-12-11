@@ -257,7 +257,7 @@ export default function CarPostsFeed({
               </span>
               {post.price && post.estimatedPrice && (
                 <img
-                  className='h-5 lg:h-6'
+                  className='h-5 lg:h-6 w-5 lg:w-6'
                   alt='estimation'
                   src={
                     post.estimatedPrice.color === 'GREEN'
@@ -300,13 +300,19 @@ export default function CarPostsFeed({
             </a>
           )}
           <div className='flex flex-row items-center'>
-            {post.merchant.isShop && <img src='/badge.svg' className='h-3' />}
+            {post.merchant.isShop && (
+              <img src='/badge.svg' alt='Professionnel' className='h-3 w-3' />
+            )}
             <span className='xs:max-w-[4rem] max-w-[5rem] md:w-full truncate'>
               {post.merchant.name}
             </span>
           </div>
           <div className='flex flex-row items-center'>
-            <img src='/location.svg' className='h-3 lg:h-4' />
+            <img
+              src='/location.svg'
+              alt='Adresse'
+              className='h-3 lg:h-4 w-3 lg:w-4'
+            />
             <span className='w-full truncate'>{post.region.name}</span>
           </div>
         </div>
@@ -347,7 +353,7 @@ export default function CarPostsFeed({
               <img
                 src='/search.svg'
                 alt='Lancer la recherche'
-                className='xs:h-4 h-5 mx-auto'
+                className='xs:h-4 h-5 xs:w-4 w-5 mx-auto'
               />
             </button>
             <button
@@ -359,7 +365,7 @@ export default function CarPostsFeed({
               <img
                 src='/refresh.svg'
                 alt='Réinitialiser les filtres'
-                className='xs:h-4 h-5 mx-auto'
+                className='xs:h-4 h-5 xs:w-4 w-5 mx-auto'
               />
             </button>
           </div>
@@ -431,7 +437,11 @@ export default function CarPostsFeed({
                         className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
                       />
                       <span className=''>Vendeurs PRO</span>
-                      <img src='/badge.svg' className='ml-1 h-3' />
+                      <img
+                        src='/badge.svg'
+                        alt='Professionnel'
+                        className='ml-1 h-3'
+                      />
                     </label>
                   )}
                   <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
@@ -525,7 +535,11 @@ export default function CarPostsFeed({
                             className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
                           />
                           <span className=''>Vendeurs PRO</span>
-                          <img src='/badge.svg' className='ml-1 h-3' />
+                          <img
+                            src='/badge.svg'
+                            alt='Professionnel'
+                            className='ml-1 h-3'
+                          />
                         </label>
                       )}
                       <label className='flex items-center space-x-2 ml-3 cursor-pointer'>
@@ -638,9 +652,9 @@ export default function CarPostsFeed({
       </div>
 
       <div className='flex my-1 lg:my-4 items-center'>
-        <img src='estim_down.svg' alt='estimation haute' className='h-6' />
-        <img src='estim_ok.svg' alt='estimation haute' className='h-6' />
-        <img src='estim_up.svg' alt='estimation haute' className='h-6' />
+        <img src='estim_down.svg' alt='estimation haute' className='h-6 w-6' />
+        <img src='estim_ok.svg' alt='estimation haute' className='h-6 w-6' />
+        <img src='estim_up.svg' alt='estimation haute' className='h-6 w-6' />
         <span className='text-black text-opacity-80 italic lg:text-base text-xs'>
           Prix par rapport à la moyenne du marché
         </span>
@@ -722,7 +736,7 @@ export default function CarPostsFeed({
           <img
             src='/search.svg'
             alt='Rechercher'
-            className='h-7 lg:h-8 mx-auto'
+            className='h-7 lg:h-8 w-7 lg:w-8 mx-auto'
           />
         </button>
 

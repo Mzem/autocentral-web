@@ -25,6 +25,7 @@ export async function generateMetadata({
           ? `https://autocentral.tn/${params.merchantId}`
           : 'https://autocentral.tn'
       },
+      description: merchant.name,
       openGraph: {
         type: 'website',
         url: params.merchantId
@@ -37,6 +38,7 @@ export async function generateMetadata({
     }
   }
   return {
+    description: 'Vendeur occasion en Tunisie',
     alternates: {
       canonical: params.merchantId
         ? `https://autocentral.tn/${params.merchantId}`

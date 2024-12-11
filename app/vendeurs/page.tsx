@@ -6,7 +6,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     alternates: {
       canonical: 'https://autocentral.tn/vendeurs'
-    }
+    },
+    description:
+      "Les vendeurs professionnels de voitures d'occasion et les showroom dans toute la Tunisie"
   }
 }
 
@@ -17,14 +19,22 @@ export default async function Merchants() {
     <>
       <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px]'>
         <p>Showrooms & Vendeurs PRO</p>
-        <img src='/badge.svg' className='h-4 lg:h-5' />
+        <img
+          src='/badge.svg'
+          alt='Vendeur Professionnel'
+          className='h-4 lg:h-5'
+        />
       </div>
       <a
         href={`https://m.me/autocentral.tn?text=Je%20suis%20un%20vendeur%20PRO%20et%20je%20veux%20avoir%20une%20page%20web%20sur%20autocentral`}
         className='w-auto mt-2 rounded-lg bg-blackopac2 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
       >
         <p>Pour créer votre page, veuillez nous contacter</p>
-        <img src='/whatsapp_white.svg' className='h-[1rem]' alt='Whatsapp' />
+        <img
+          src='/whatsapp_white.svg'
+          className='h-[1rem] w-[1rem]'
+          alt='Whatsapp'
+        />
       </a>
 
       <div className='w-full mx-auto text-black'>
@@ -56,7 +66,7 @@ export default async function Merchants() {
                 <div className='flex items-center mt-1'>
                   <img
                     src='/location.svg'
-                    alt='Gouvernorat'
+                    alt='Région'
                     className='h-3 lg:h-4 mr-1'
                   />
                   <span>{merchant.regionName}</span>

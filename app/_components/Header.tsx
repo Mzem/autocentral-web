@@ -68,7 +68,7 @@ export default function Header() {
             <p className=''>Contact</p>
             <img
               src='/whatsapp_white.svg'
-              className='h-[1rem] xs:h-[0.7rem]'
+              className='h-[1rem] xs:h-[0.7rem] w-[1rem] xs:w-[0.7rem]'
               alt='Whatsapp'
             />
           </a>
@@ -79,7 +79,11 @@ export default function Header() {
             ref={menuButtonRef}
             className='xl:hidden flex flex-col lg:flex-row-reverse items-center text-titan'
           >
-            <img src='/menu.svg' className='h-7 lg:h-12' alt='Menu' />
+            <img
+              src='/menu.svg'
+              className='h-7 lg:h-12 w-7 lg:w-12'
+              alt='Ouvrir le menu'
+            />
             <span className='text-xs lg:text-base lg:mr-2 -mt-1'>Menu</span>
           </button>
 
