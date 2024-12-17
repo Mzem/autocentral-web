@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { MerchItem } from '../../api/services/merch-items.service'
-import { dotNumber } from '../helpers'
+import { dotNumber, logPhoneClientSide } from '../helpers'
 import { Linkify } from '../Linkify'
 import { Carousel } from './Carousel'
 import ShareButton from './Share'
@@ -67,7 +67,17 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
               </Link>
             )}
             {item.merchant.phone && item.merchant.phone !== '+21699999999' && (
-              <a href={`tel:${item.merchant.phone}`} className=''>
+              <a
+                href={`tel:${item.merchant.phone}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    item.merchant?.phone,
+                    'merchitem',
+                    item.id,
+                    item.merchant?.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
@@ -92,6 +102,14 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
                   )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
                   item.merchant.id
                 }`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    item.merchant?.phone,
+                    'merchitem whatsapp',
+                    item.id,
+                    item.merchant?.id
+                  )
+                }
               >
                 <img
                   src='/whatsapp.svg'
@@ -155,6 +173,14 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
               target='_blank'
               rel='noopener noreferrer'
               className='flex justify-center w-full mx-auto'
+              onClick={() =>
+                logPhoneClientSide(
+                  'external',
+                  'merchitem commander',
+                  item.id,
+                  item.merchant?.id
+                )
+              }
             >
               <InfoCard img='/external.svg' title='Commander' value={``} />
             </a>
