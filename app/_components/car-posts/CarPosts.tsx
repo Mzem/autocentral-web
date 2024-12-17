@@ -8,7 +8,7 @@ import {
   generateCarPostsQueryParams,
   GetCarPostsFilters
 } from '../../../api/services/car-posts.service'
-import { dotNumber, fromNameToId } from '../../helpers'
+import { dotNumber, fromNameToId, logPhoneClientSide } from '../../helpers'
 import {
   carModels,
   Fuel,
@@ -293,7 +293,11 @@ export default function CarPostsFeed({
           )}
 
           {post.phone && (
-            <a href={`tel:${post.phone}`} className='w-full'>
+            <a
+              href={`tel:${post.phone}`}
+              className='w-full'
+              onClick={() => logPhoneClientSide(post.phone, 'accueil', post.id)}
+            >
               <button className='text-white bg-blackopac border border-whiteopac p-1 md:p-2 md:px-4 px-3 rounded-xl hover:bg-titan transition duration-300 ease-in-out'>
                 Appeler
               </button>
