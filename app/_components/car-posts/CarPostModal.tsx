@@ -13,6 +13,7 @@ import { Linkify } from '../../Linkify'
 
 function whatsappPhone(merchantId: string, phone: string): string {
   if (merchantId === 'sscars') return '+21699775924'
+  if (merchantId === 'advent-auto') return '+21658529477'
   return phone
 }
 
