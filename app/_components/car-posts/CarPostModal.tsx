@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
-import { dotNumber } from '../../helpers'
+import { dotNumber, logPhoneClientSide } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
 import CarPostUpdateModal from './CarPostUpdateModal'
 import { InfoCard } from '../InfoCard'
@@ -98,7 +98,17 @@ const CarPostModal: React.FC<PostModalProps> = ({
               </Link>
             )}
             {post.phone && !post.phones && (
-              <a href={`tel:${post.phone}`} className=''>
+              <a
+                href={`tel:${post.phone}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    post.phone,
+                    'detail',
+                    post.id,
+                    post.merchant?.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
@@ -112,7 +122,17 @@ const CarPostModal: React.FC<PostModalProps> = ({
               </a>
             )}
             {post.phones && post.phones.length === 1 && (
-              <a href={`tel:${post.phones[0]}`} className=''>
+              <a
+                href={`tel:${post.phones[0]}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    post.phones?.[0],
+                    'detail',
+                    post.id,
+                    post.merchant?.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
@@ -127,7 +147,17 @@ const CarPostModal: React.FC<PostModalProps> = ({
             )}
             {post.phones && post.phones.length >= 2 && (
               <div className=''>
-                <a href={`tel:${post.phones[0]}`} className=''>
+                <a
+                  href={`tel:${post.phones[0]}`}
+                  onClick={() =>
+                    logPhoneClientSide(
+                      post.phones?.[0],
+                      'detail',
+                      post.id,
+                      post.merchant?.id
+                    )
+                  }
+                >
                   <button className='flex items-center space-x-1 mb-[2px] px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                     <img
                       src='/phone.svg'
@@ -139,7 +169,17 @@ const CarPostModal: React.FC<PostModalProps> = ({
                     </span>
                   </button>
                 </a>
-                <a href={`tel:${post.phones[1]}`} className=''>
+                <a
+                  href={`tel:${post.phones[1]}`}
+                  onClick={() =>
+                    logPhoneClientSide(
+                      post.phones?.[1],
+                      'detail',
+                      post.id,
+                      post.merchant?.id
+                    )
+                  }
+                >
                   <button className='flex items-center space-x-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                     <img
                       src='/phone.svg'
@@ -166,6 +206,15 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
                   post.id
                 }`}
+                target='_blank'
+                onClick={() =>
+                  logPhoneClientSide(
+                    post.phone,
+                    'whatsapp detail',
+                    post.id,
+                    post.merchant?.id
+                  )
+                }
               >
                 <img
                   src='/whatsapp.svg'
