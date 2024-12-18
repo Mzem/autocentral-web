@@ -1,7 +1,7 @@
 'use client'
 
 import { Merchant } from '../../api/services/merchants.service'
-import { dotNumber } from '../helpers'
+import { dotNumber, logPhoneClientSide } from '../helpers'
 
 type MerchantHeaderProps = {
   merchant: Merchant
@@ -66,7 +66,16 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           )}
           {merchant.phones && merchant.phones.length === 1 && (
             <div className='text-sm xs:text-xs'>
-              <a href={`tel:${merchant.phones[0]}`} className=''>
+              <a
+                href={`tel:${merchant.phones[0]}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    merchant.phones?.[0],
+                    'merchant detail',
+                    merchant.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
@@ -84,7 +93,16 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           )}
           {merchant.phones && merchant.phones.length >= 2 && (
             <div className='text-sm xs:text-xs'>
-              <a href={`tel:${merchant.phones[0]}`} className=''>
+              <a
+                href={`tel:${merchant.phones[0]}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    merchant.phones?.[0],
+                    'merchant detail',
+                    merchant.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
@@ -98,7 +116,16 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
                   </span>
                 </button>
               </a>
-              <a href={`tel:${merchant.phones[1]}`} className=''>
+              <a
+                href={`tel:${merchant.phones[1]}`}
+                onClick={() =>
+                  logPhoneClientSide(
+                    merchant.phones?.[1],
+                    'merchant detail',
+                    merchant.id
+                  )
+                }
+              >
                 <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'

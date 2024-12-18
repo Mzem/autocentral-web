@@ -122,3 +122,23 @@ export function fromNameToId(name?: string): string {
       .replace(/ /g, '-') ?? ''
   )
 }
+
+export async function logPhoneClientSide(
+  phone?: string,
+  origine?: string,
+  id?: string,
+  merchantId?: string
+): Promise<void> {
+  const message = `${phone || ''} ${origine || ''} ${id || ''} ${
+    merchantId || ''
+  }`
+  try {
+    await fetch('/api/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
+    })
+  } catch (error) {
+    console.error('Error logging phone:', error)
+  }
+}
