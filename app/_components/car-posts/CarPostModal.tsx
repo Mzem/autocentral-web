@@ -418,7 +418,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   )}
 
                   {post.options && post.options.length > 1 && (
-                    <div className='flex flex-col space-y-1'>
+                    <div className='flex flex-col space-y-1 mt-1'>
                       <span className='font-bold'>Options</span>
                       {post.options.map((option, index) => (
                         <span

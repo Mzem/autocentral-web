@@ -106,7 +106,11 @@ export default function CarPostsFeed({
   // Relative search bar
   const [showFilters, setShowFilters] = useState(merchantId ? false : true)
   const [showMoreFilters, setShowMoreFilters] = useState(
-    alarm ||
+    fuel.length > 0 ||
+      isShop ||
+      firstOwner ||
+      isAuto ||
+      alarm ||
       keyless ||
       camera ||
       leasing ||
