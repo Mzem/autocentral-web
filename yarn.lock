@@ -802,7 +802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@npmcli/map-workspaces@npm:^4.0.1":
+"@npmcli/map-workspaces@npm:^4.0.1, @npmcli/map-workspaces@npm:^4.0.2":
   version: 4.0.2
   resolution: "@npmcli/map-workspaces@npm:4.0.2"
   dependencies:
@@ -853,6 +853,21 @@ __metadata:
     proc-log: "npm:^5.0.0"
     semver: "npm:^7.5.3"
   checksum: 10c0/46798b2e1378e85cfe50e330792940c44dc30dd8ca136e990682c04f7095a1fd3761fcc442324f59124167f9b824411fa8679a40a9ac853e4f846d1459f8d11b
+  languageName: node
+  linkType: hard
+
+"@npmcli/package-json@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@npmcli/package-json@npm:6.1.0"
+  dependencies:
+    "@npmcli/git": "npm:^6.0.0"
+    glob: "npm:^10.2.2"
+    hosted-git-info: "npm:^8.0.0"
+    json-parse-even-better-errors: "npm:^4.0.0"
+    normalize-package-data: "npm:^7.0.0"
+    proc-log: "npm:^5.0.0"
+    semver: "npm:^7.5.3"
+  checksum: 10c0/95cc97f2382084e71a33d2739f0b1e659e32a8449d134d4264ecc2b5ada548069122d95887fe692373e2703b7a296a17e7296a4ce955dfa80c6ce3e00b5fab53
   languageName: node
   linkType: hard
 
@@ -3761,9 +3776,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"init-package-json@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "init-package-json@npm:7.0.1"
+"init-package-json@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "init-package-json@npm:7.0.2"
   dependencies:
     "@npmcli/package-json": "npm:^6.0.0"
     npm-package-arg: "npm:^12.0.0"
@@ -3772,7 +3787,7 @@ __metadata:
     semver: "npm:^7.3.5"
     validate-npm-package-license: "npm:^3.0.4"
     validate-npm-package-name: "npm:^6.0.0"
-  checksum: 10c0/9df71818f5400defb1533440ae49c5ac9d6acf436ce3a27128b7ccf737e275688edbbea36d61a7fe71c07d5580ca66745eca98276089d49c78e8e4ef43dc1722
+  checksum: 10c0/258860a3a41abd2dcb83727e234dd2f2f56d0b30191e6fa8dd424b83d5127a44330d6e97573cbe8df7582ab76d1b3da4090008b38f06003403988a5e5101fd6b
   languageName: node
   linkType: hard
 
@@ -5028,7 +5043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:^10.0.0, node-gyp@npm:^10.2.0, node-gyp@npm:latest":
+"node-gyp@npm:^10.0.0, node-gyp@npm:latest":
   version: 10.2.0
   resolution: "node-gyp@npm:10.2.0"
   dependencies:
@@ -5045,6 +5060,26 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 10c0/00630d67dbd09a45aee0a5d55c05e3916ca9e6d427ee4f7bc392d2d3dc5fad7449b21fc098dd38260a53d9dcc9c879b36704a1994235d4707e7271af7e9a835b
+  languageName: node
+  linkType: hard
+
+"node-gyp@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "node-gyp@npm:11.0.0"
+  dependencies:
+    env-paths: "npm:^2.2.0"
+    exponential-backoff: "npm:^3.1.1"
+    glob: "npm:^10.3.10"
+    graceful-fs: "npm:^4.2.6"
+    make-fetch-happen: "npm:^14.0.3"
+    nopt: "npm:^8.0.0"
+    proc-log: "npm:^5.0.0"
+    semver: "npm:^7.3.5"
+    tar: "npm:^7.4.3"
+    which: "npm:^5.0.0"
+  bin:
+    node-gyp: bin/node-gyp.js
+  checksum: 10c0/a3b885bbee2d271f1def32ba2e30ffcf4562a3db33af06b8b365e053153e2dd2051b9945783c3c8e852d26a0f20f65b251c7e83361623383a99635c0280ee573
   languageName: node
   linkType: hard
 
@@ -5210,15 +5245,15 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.9.1":
-  version: 10.9.1
-  resolution: "npm@npm:10.9.1"
+  version: 10.9.2
+  resolution: "npm@npm:10.9.2"
   dependencies:
     "@isaacs/string-locale-compare": "npm:^1.1.0"
     "@npmcli/arborist": "npm:^8.0.0"
     "@npmcli/config": "npm:^9.0.0"
     "@npmcli/fs": "npm:^4.0.0"
-    "@npmcli/map-workspaces": "npm:^4.0.1"
-    "@npmcli/package-json": "npm:^6.0.1"
+    "@npmcli/map-workspaces": "npm:^4.0.2"
+    "@npmcli/package-json": "npm:^6.1.0"
     "@npmcli/promise-spawn": "npm:^8.0.2"
     "@npmcli/redact": "npm:^3.0.0"
     "@npmcli/run-script": "npm:^9.0.1"
@@ -5235,7 +5270,7 @@ __metadata:
     graceful-fs: "npm:^4.2.11"
     hosted-git-info: "npm:^8.0.2"
     ini: "npm:^5.0.0"
-    init-package-json: "npm:^7.0.1"
+    init-package-json: "npm:^7.0.2"
     is-cidr: "npm:^5.1.0"
     json-parse-even-better-errors: "npm:^4.0.0"
     libnpmaccess: "npm:^9.0.0"
@@ -5254,7 +5289,7 @@ __metadata:
     minipass: "npm:^7.1.1"
     minipass-pipeline: "npm:^1.2.4"
     ms: "npm:^2.1.2"
-    node-gyp: "npm:^10.2.0"
+    node-gyp: "npm:^11.0.0"
     nopt: "npm:^8.0.0"
     normalize-package-data: "npm:^7.0.0"
     npm-audit-report: "npm:^6.0.0"
@@ -5284,7 +5319,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 10c0/66b6eeb99844accbd07be63cc2c48aeb6ddb8adc2b429cd473fb412e4d6c9d66cbbc130839199ad494116c6766bbe39054ed93fe5b5696bda818037760766813
+  checksum: 10c0/b6cc861a857a0a28ee91a9f10d42d37043b32712656d7f5d490cf3a60755606cfbd3c0e14ff3e0e3b90eed122a8c1fc7e5abc974b6e5db25cafc37d52d2cea57
   languageName: node
   linkType: hard
 
