@@ -44,15 +44,29 @@ export default async function Home({
   searchParams: Record<string, string | string[] | undefined>
 }) {
   const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
-  console.debug()
   const posts = await getCarPosts(filters)
   const featuredPosts =
     JSON.stringify(searchParams) === '{}'
       ? await getFeaturedCarPosts()
       : undefined
 
+  const isTransactionOK = searchParams.transaction === 'ok'
+  const isTransactionKO = searchParams.transaction === 'ko'
+
   return (
     <>
+      {isTransactionOK && (
+        <div className='bg-green rounded-lg bg-opacity-90 font-semibold text-white text-center py-2'>
+          🎉 Votre paiement est validé ! Nous allons mettre en avant votre
+          annonce sur le site et la partager sur nos réseaux sociaux.
+        </div>
+      )}
+      {isTransactionKO && (
+        <div className='bg-vividred rounded-lg font-semibold text-white text-center py-2'>
+          ❌ Votre paiement a échoué ! Veuillez réessayer ou prendre contact
+          avec notre équipe.
+        </div>
+      )}
       <div className='text-center xs:text-sm text-base lg:text-2xl mt-7 lg:mt-20 text-black mb-3 lg:mb-10'>
         <p className='mx-2'>
           1er moteur de recherche <br className='lg:hidden' />
