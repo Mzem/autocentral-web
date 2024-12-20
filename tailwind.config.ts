@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     colors: {
       green: '#105415',
-      greenopac: '#105415aa',
+      greenopac: '#1054154f',
       blue: '#08085e',
       yellow: '#b3ae14',
       orange: '#b36b14',
@@ -31,7 +31,7 @@ const config: Config = {
       rolexgold: '#a37e2c',
       rolexgoldopac: '#a37e2caa',
       whatsapp: '#25d366',
-      whiteopacred: '#d6482811'
+      whiteopacred: '#B3141410'
     },
     screens: {
       sm: '390px', // For small mobile screens

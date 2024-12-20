@@ -44,15 +44,29 @@ export default async function Home({
   searchParams: Record<string, string | string[] | undefined>
 }) {
   const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
-  console.debug()
   const posts = await getCarPosts(filters)
   const featuredPosts =
     JSON.stringify(searchParams) === '{}'
       ? await getFeaturedCarPosts()
       : undefined
 
+  const isTransactionOK = searchParams.transaction === 'ok'
+  const isTransactionKO = searchParams.transaction === 'ko'
+
   return (
     <>
+      {isTransactionOK && (
+        <div className='bg-green rounded-lg bg-opacity-90 font-semibold text-white text-center py-2'>
+          🎉 Votre paiement est validé ! Nous allons mettre en avant votre
+          annonce sur le site et la partager sur nos réseaux sociaux.
+        </div>
+      )}
+      {isTransactionKO && (
+        <div className='bg-vividred rounded-lg font-semibold text-white text-center py-2'>
+          ❌ Votre paiement a échoué ! Veuillez réessayer ou prendre contact
+          avec notre équipe.
+        </div>
+      )}
       <div className='text-center xs:text-sm text-base lg:text-2xl mt-7 lg:mt-20 text-black mb-3 lg:mb-10'>
         <p className='mx-2'>
           1er moteur de recherche <br className='lg:hidden' />
@@ -83,9 +97,19 @@ export default async function Home({
             className='h-4 rounded-full'
           />
         </div> */}
-        <p className='text-[0.6rem] lg:text-sm lg:mt-4 italic text-black text-opacity-55'>
-          Site web non-commercial 100% gratuit
-        </p>
+        <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-black text-opacity-55'>
+          <p className='mb-[0.1rem] italic'>
+            Ce service gratuit me coute du temps et de l'argent
+          </p>
+          <a
+            href='https://gateway.konnect.network/me/malekautocentral'
+            target='_blank'
+            className='rounded-lg px-[8px] py-[2px] text-black shadow-md shadow-titan  hover:bg-whiteoapc2 bg-white hover:bg-whiteopacred font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
+          >
+            <img src='/hand.svg' className='h-4' alt='Don' />
+            <span>Faire un don pour me soutenir</span>
+          </a>
+        </div>
       </div>
       <CarPostsFeed
         initialPosts={posts}

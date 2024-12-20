@@ -261,10 +261,16 @@ export default function CarPostsFeed({
               </span>
               {post.price && post.estimatedPrice && (
                 <img
-                  className='h-5 lg:h-6 w-5 lg:w-6'
+                  className={` ${
+                    featured
+                      ? 'h-3 w-3 lg:h-4 lg:w-4 mt-[3px] lg:mt-[5px]'
+                      : 'h-5 lg:h-6 w-5 lg:w-6'
+                  }`}
                   alt='estimation'
                   src={
-                    post.estimatedPrice.color === 'GREEN'
+                    featured
+                      ? '/badge.svg'
+                      : post.estimatedPrice.color === 'GREEN'
                       ? '/estim_down.svg'
                       : post.estimatedPrice.color === 'RED'
                       ? '/estim_up.svg'
