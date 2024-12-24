@@ -675,7 +675,7 @@ export default function CarPostsFeed({
             {featuredPosts.map((post) => (
               <PostCard key={post.id} post={post} featured={true} />
             ))}
-            <div className='rounded w-full mt-2 max-h-[8rem] lg:max-h-[10rem]'>
+            <div className='rounded w-full mt-2 max-h-[12rem]'>
               <FeedAd />
             </div>
           </>
