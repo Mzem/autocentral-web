@@ -236,7 +236,26 @@ const CarPostModal: React.FC<PostModalProps> = ({
               </h2>
             </div>
 
-            <Carousel images={post.images} setIsFullImage={setIsFullImage} />
+            <Carousel
+              images={post.images}
+              setIsFullImage={setIsFullImage}
+              noCaption={['instagram.com', 'facebook.com'].includes(
+                post.source
+              )}
+            />
+            {['instagram.com', 'facebook.com'].includes(post.source) && (
+              <a
+                href={post.urlSource}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex justify-center items-center mt-2 lg:mt-3'
+              >
+                <InfoCard
+                  img={`/${post.source.replace('.com', '')}.svg`}
+                  title='Voir toutes les photos'
+                />
+              </a>
+            )}
             <Infos post={post} />
             <div className='mt-4 lg:mt-6 mb-3 lg:mb-4 flex flex-col mx-auto w-full text-center items-center text-2xl font-bold'>
               <div className='flex items-center space-x-1'>
@@ -323,21 +342,6 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               <ul className='mt-1 text-sm lg:text-base space-y-1'>
-                {['instagram.com', 'facebook.com'].includes(post.source) && (
-                  <li className=''>
-                    <a
-                      href={post.urlSource}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <InfoCard
-                        img={`/${post.source.replace('.com', '')}.svg`}
-                        title='Voir les photos'
-                        value={`${post.publishedAtText}`}
-                      />
-                    </a>
-                  </li>
-                )}
                 {post.make && post.make !== 'Autres' && (
                   <li className='flex space-x-1'>
                     <InfoCard
@@ -380,21 +384,20 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 <li>
                   <InfoCard img='/location.svg' value={post.region.name} />
                 </li>
-                {!['instagram.com', 'facebook.com'].includes(post.source) && (
-                  <li className=''>
-                    <a
-                      href={post.urlSource}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <InfoCard
-                        img='/external.svg'
-                        title='Source'
-                        value={`${post.source} - ${post.publishedAtText}`}
-                      />
-                    </a>
-                  </li>
-                )}
+
+                <li className=''>
+                  <a
+                    href={post.urlSource}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <InfoCard
+                      img='/external.svg'
+                      title='Source'
+                      value={`${post.source} - ${post.publishedAtText}`}
+                    />
+                  </a>
+                </li>
               </ul>
 
               {(post.description ||

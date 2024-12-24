@@ -194,7 +194,7 @@ export default function RootLayout({
           <div className='w-[98%] lg:w-3/5 mx-auto mb-10 mt-4 lg:mt-12'>
             {children}
           </div>
-          <div className='rounded w-full mb-4'>
+          <div className='rounded w-full mb-4 w-[98%] lg:w-3/5 mx-auto '>
             <BottomAd />
           </div>
         </main>

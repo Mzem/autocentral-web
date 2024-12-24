@@ -20,7 +20,7 @@ const FeedAd = () => {
       className='adsbygoogle'
       style={{ display: 'block' }}
       data-ad-format='fluid'
-      data-ad-layout-key='-gs+x-3x-cq+11v'
+      data-ad-layout-key='-i7+6+r-72+bu'
       data-ad-client='ca-pub-6991672787454088'
       data-ad-slot='4198159136'
     ></ins>

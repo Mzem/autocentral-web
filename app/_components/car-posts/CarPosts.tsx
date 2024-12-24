@@ -207,10 +207,8 @@ export default function CarPostsFeed({
     return (
       <div
         key={post.id}
-        className={`justify-between w-full flex items-center mt-2 shadow-md rounded text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem] ${
-          featured
-            ? 'bg-whiteopacred hover:bg-whiteopac'
-            : 'bg-whiteopac hover:bg-whiteBGDarker'
+        className={`justify-between w-full flex items-center mt-2 rounded text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem] bg-whiteopac hover:bg-whiteBGDarker ${
+          featured ? 'shadow-md shadow-whiteopacred' : 'shadow-md'
         }`}
       >
         <button
@@ -675,7 +673,7 @@ export default function CarPostsFeed({
             {featuredPosts.map((post) => (
               <PostCard key={post.id} post={post} featured={true} />
             ))}
-            <div className='rounded w-full mt-2 max-h-[8rem] lg:max-h-[10rem]'>
+            <div className='rounded w-full mt-2 mx-auto'>
               <FeedAd />
             </div>
           </>

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const Carousel: React.FC<{ images: string[]; setIsFullImage: any }> = ({
-  images,
-  setIsFullImage
-}) => {
+export const Carousel: React.FC<{
+  images: string[]
+  setIsFullImage: any
+  noCaption?: boolean
+}> = ({ images, setIsFullImage, noCaption }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [fullScreenImage, setFullScreenImage] = useState(false)
   const [isLoading, setIsLoading] = useState(true) // State for image loading
@@ -75,9 +76,11 @@ export const Carousel: React.FC<{ images: string[]; setIsFullImage: any }> = ({
           onError={() => setIsLoading(false)} // Handle loading error
         />
       </div>
-      <span className='text-[0.7rem] italic text-blackopac2 mx-auto w-full flex justify-around mt-[2px]'>
-        Cliquer sur l'image pour l'agrandir
-      </span>
+      {!noCaption && (
+        <span className='text-[0.7rem] italic text-blackopac2 mx-auto w-full flex justify-around mt-[2px]'>
+          Cliquer sur l'image pour l'agrandir
+        </span>
+      )}
       {images.length > 1 && (
         <>
           <button

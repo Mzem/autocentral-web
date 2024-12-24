@@ -46,7 +46,8 @@ export default async function Home({
   const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
   const posts = await getCarPosts(filters)
   const featuredPosts =
-    JSON.stringify(searchParams) === '{}'
+    JSON.stringify(searchParams) === '{}' ||
+    !JSON.stringify(searchParams).includes('page')
       ? await getFeaturedCarPosts()
       : undefined
 

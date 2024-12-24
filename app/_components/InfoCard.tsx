@@ -1,7 +1,7 @@
 export const InfoCard: React.FC<{
   img?: string
   title?: string
-  value: string | number
+  value?: string | number
 }> = ({ img, title, value }) => {
   return (
     <div className='shadow-lg p-2 bg-white rounded-lg flex flex-col items-center w-fit'>
@@ -10,10 +10,10 @@ export const InfoCard: React.FC<{
         {title && (
           <>
             <div className='font-bold'>{title}</div>
-            <span className='text-titan mx-[2px]'>|</span>
+            {value && <span className='text-titan mx-[2px]'>|</span>}
           </>
         )}
-        <div className=''>{value}</div>
+        {value && <div className=''>{value}</div>}
       </div>
     </div>
   )
