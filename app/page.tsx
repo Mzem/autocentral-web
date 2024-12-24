@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import type { Metadata } from 'next'
 import {
   getCarPosts,
@@ -5,7 +6,6 @@ import {
 } from '../api/services/car-posts.service'
 import CarPostsFeed from './_components/car-posts/CarPosts'
 import { fromQueryParamsToGetCarPostsFilters } from './helpers'
-import { DateTime } from 'luxon'
 
 function getDailyCount(): number {
   const now = DateTime.local({ zone: 'UTC+1' }).toJSDate()
@@ -111,6 +111,7 @@ export default async function Home({
           </a>
         </div>
       </div>
+
       <CarPostsFeed
         initialPosts={posts}
         featuredPosts={featuredPosts}

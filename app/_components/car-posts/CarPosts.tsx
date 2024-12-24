@@ -21,7 +21,7 @@ import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
-import FeedAd from '../FeedAd'
+import FeedAd from '../ads/BottomAd'
 
 const API_PAGE_SIZE = 20
 
@@ -670,9 +670,16 @@ export default function CarPostsFeed({
         </span>
       </div>
       <div ref={searchDivRef} className='w-full mx-auto text-black'>
-        {featuredPosts &&
-          featuredPosts.length > 0 &&
-          featuredPosts.map((post) => <PostCard post={post} featured={true} />)}
+        {featuredPosts && featuredPosts.length > 0 && (
+          <>
+            {featuredPosts.map((post) => (
+              <PostCard key={post.id} post={post} featured={true} />
+            ))}
+            <div className='rounded w-full mt-2 max-h-[8rem] lg:max-h-[10rem]'>
+              <FeedAd />
+            </div>
+          </>
+        )}
         {!groupByMake && posts.map((post) => <PostCard post={post} />)}
         {groupByMake &&
           posts
@@ -735,9 +742,6 @@ export default function CarPostsFeed({
             Charger plus d'annonces +
           </button>
         )}
-        <div className='my-4'>
-          <FeedAd />
-        </div>
 
         <button
           onClick={scrollToSearch}

@@ -1,10 +1,11 @@
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
+import { Open_Sans } from 'next/font/google'
+import BottomAd from './_components/ads/BottomAd'
 import Footer from './_components/Footer'
 import Header from './_components/Header'
 import './_styles/globals.css'
-import { Open_Sans } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const openSans = Open_Sans({
   subsets: ['latin'],
@@ -179,24 +180,22 @@ export default function RootLayout({
             `
           }}
         />
+        <meta name='google-adsense-account' content='ca-pub-6991672787454088' />
         <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6991672787454088'
           crossOrigin='anonymous'
-        ></script>
-        <script
-          type='text/javascript'
-          dangerouslySetInnerHTML={{
-            __html: `var infolinks_pid = 3429875; var infolinks_wsid = 0;`
-          }}
         ></script>
       </head>
 
       <body className='flex flex-col min-h-screen bg-blackopac'>
         <Header />
         <main className='flex-grow bg-whiteBG'>
-          <div className='w-[98%] lg:w-3/5 mx-auto mb-14 mt-4 lg:mt-12'>
+          <div className='w-[98%] lg:w-3/5 mx-auto mb-10 mt-4 lg:mt-12'>
             {children}
+          </div>
+          <div className='rounded w-full mb-4'>
+            <BottomAd />
           </div>
         </main>
         <Footer />
