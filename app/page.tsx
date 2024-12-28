@@ -74,7 +74,7 @@ export default async function Home({
           de voitures d'occasion en{' '}
           <span className='font-semibold text-vividred'>Tunisie</span>
         </p>
-        <p className='mt-4 lg:mt-6'>
+        <p className='mt-2 lg:mt-4'>
           <span className='font-semibold text-vividred'>
             +{getDailyCount()}{' '}
           </span>
@@ -98,7 +98,7 @@ export default async function Home({
             className='h-4 rounded-full'
           />
         </div> */}
-        <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-black text-opacity-55'>
+        {/* <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-black text-opacity-55'>
           <p className='mb-[0.1rem] italic'>
             Ce service gratuit me coute du temps et de l'argent
           </p>
@@ -110,7 +110,7 @@ export default async function Home({
             <img src='/hand.svg' className='h-4' alt='Don' />
             <span>Faire un don pour me soutenir</span>
           </a>
-        </div>
+        </div> */}
       </div>
 
       <CarPostsFeed
