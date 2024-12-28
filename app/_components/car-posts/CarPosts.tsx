@@ -16,12 +16,12 @@ import {
   makesWithLogos,
   regionsSelect
 } from '../../types'
+import FeedAd from '../ads/BottomAd'
 import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
-import FeedAd from '../ads/BottomAd'
 
 const API_PAGE_SIZE = 20
 
@@ -760,7 +760,15 @@ export default function CarPostsFeed({
               setSelectedPostId(null)
               if (merchantId)
                 window.history.replaceState(null, '', `/${merchantId}`)
-              else window.history.replaceState(null, '', '/')
+              else {
+                const queryString = generateCarPostsQueryParams(
+                  stateToFilters(page)
+                ).replace(/page=\d+&?/g, '')
+                const oldPathWithParams = `/${
+                  queryString && queryString !== '?' ? `${queryString}` : ''
+                }`
+                window.history.replaceState(null, '', oldPathWithParams)
+              }
             }}
           />
         )}
