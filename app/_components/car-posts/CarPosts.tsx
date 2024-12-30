@@ -763,7 +763,7 @@ export default function CarPostsFeed({
               else {
                 const queryString = generateCarPostsQueryParams(
                   stateToFilters(page)
-                ).replace(/page=\d+&?/g, '')
+                ).replace(/page=\d+&?/g, 'page=1')
                 const oldPathWithParams = `/${
                   queryString && queryString !== '?' ? `${queryString}` : ''
                 }`
