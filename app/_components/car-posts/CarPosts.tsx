@@ -126,8 +126,6 @@ export default function CarPostsFeed({
     return {
       page,
       merchantId,
-      make: make?.value,
-      model: model?.value,
       regionIds: regions.map((region) => region.value),
       fuel,
       color: colors,

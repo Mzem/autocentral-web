@@ -76,6 +76,7 @@ export interface CarPost {
   leasing: boolean | undefined
   firstOwner: boolean | undefined
   options: string[] | undefined
+  whatsapp: string | undefined
 }
 
 export interface GetCarPostsFilters {

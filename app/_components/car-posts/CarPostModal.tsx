@@ -11,10 +11,10 @@ import ShareButton from '../Share'
 import { Carousel } from '../Carousel'
 import { Linkify } from '../../Linkify'
 
-function whatsappPhone(merchantId: string, phone: string): string {
+function whatsappPhone(merchantId: string, whatsapp: string): string {
   if (merchantId === 'sscars') return '+21699775924'
   if (merchantId === 'advent-auto') return '+21658529477'
-  return phone
+  return whatsapp
 }
 
 type PostModalProps = {
@@ -158,7 +158,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
               <a
                 href={`https://wa.me/${whatsappPhone(
                   post.merchant.id,
-                  post.phone
+                  post.whatsapp || post.phone
                 )
                   .toString()
                   .replace(
