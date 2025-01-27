@@ -16,12 +16,13 @@ import {
   makesWithLogos,
   regionsSelect
 } from '../../types'
-import FeedAd from '../ads/BottomAd'
+import FeedAd from '../ads/FeedAd'
 import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
+import FeedAd2 from '../ads/FeedAd2'
 
 const API_PAGE_SIZE = 20
 
@@ -676,49 +677,68 @@ export default function CarPostsFeed({
             </div>
           </>
         )}
-        {!groupByMake && posts.map((post) => <PostCard post={post} />)}
-        {groupByMake &&
-          posts
-            .reduce(
-              (
-                acc: Array<{ make: string; posts: CarPostListItem[] }>,
-                post: CarPostListItem
-              ) => {
-                const existingMake = acc.find(
-                  (group) => group.make === post.make
-                )
-
-                if (existingMake) {
-                  existingMake.posts.push(post)
-                } else {
-                  acc.push({
-                    make: post.make,
-                    posts: [post]
-                  })
-                }
-
-                return acc
-              },
-              []
-            )
-            .map((postsByMake) => (
-              <div key={postsByMake.make}>
-                <div className='mt-6 flex space-x-1 lg:space-x-2 items-center'>
-                  {makesWithLogos.includes(fromNameToId(postsByMake.make)) && (
-                    <img
-                      src={`/car-makes/${fromNameToId(postsByMake.make)}.svg`}
-                      alt={postsByMake.make}
-                      className='h-8'
-                    />
-                  )}
-                  <h2>{postsByMake.make ?? ''}</h2>
+        {!groupByMake &&
+          posts.map((post, index) => (
+            <>
+              <PostCard post={post} />
+              {index === 5 && (
+                <div className='rounded w-full mt-2 mx-auto'>
+                  <FeedAd2 />
                 </div>
+              )}
+            </>
+          ))}
 
-                {postsByMake.posts.map((post) => (
-                  <PostCard post={post} />
-                ))}
-              </div>
-            ))}
+        {groupByMake && (
+          <>
+            <div className='rounded w-full mt-2 mx-auto'>
+              <FeedAd />
+            </div>
+            {posts
+              .reduce(
+                (
+                  acc: Array<{ make: string; posts: CarPostListItem[] }>,
+                  post: CarPostListItem
+                ) => {
+                  const existingMake = acc.find(
+                    (group) => group.make === post.make
+                  )
+
+                  if (existingMake) {
+                    existingMake.posts.push(post)
+                  } else {
+                    acc.push({
+                      make: post.make,
+                      posts: [post]
+                    })
+                  }
+
+                  return acc
+                },
+                []
+              )
+              .map((postsByMake) => (
+                <div key={postsByMake.make}>
+                  <div className='mt-6 flex space-x-1 lg:space-x-2 items-center'>
+                    {makesWithLogos.includes(
+                      fromNameToId(postsByMake.make)
+                    ) && (
+                      <img
+                        src={`/car-makes/${fromNameToId(postsByMake.make)}.svg`}
+                        alt={postsByMake.make}
+                        className='h-8'
+                      />
+                    )}
+                    <h2>{postsByMake.make ?? ''}</h2>
+                  </div>
+
+                  {postsByMake.posts.map((post) => (
+                    <PostCard post={post} />
+                  ))}
+                </div>
+              ))}
+          </>
+        )}
 
         {loadingPosts && (
           <button className='text-white bg-blackopac2 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'>
@@ -726,9 +746,16 @@ export default function CarPostsFeed({
           </button>
         )}
         {!hasMore && !loadingPosts && (
-          <p className='text-center mt-12 text-lg lg:text-xl'>
-            {posts.length > 0 ? 'Fin des résultats.' : 'Aucun résultat.'}
-          </p>
+          <>
+            <p className='text-center mt-12 text-lg lg:text-xl'>
+              {posts.length > 0 ? 'Fin des résultats.' : 'Aucun résultat.'}
+            </p>
+            {posts.length === 0 && (
+              <div className='rounded w-full mt-2 mx-auto'>
+                <FeedAd2 />
+              </div>
+            )}
+          </>
         )}
         {hasMore && !loadingPosts && (
           <button

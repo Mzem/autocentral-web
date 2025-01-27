@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-const BottomAd = () => {
+const ModalAd = () => {
   useEffect(() => {
     // @ts-expect-error
     if (typeof window !== 'undefined' && window.adsbygoogle) {
@@ -20,11 +20,11 @@ const BottomAd = () => {
       className='adsbygoogle'
       style={{ display: 'block' }}
       data-ad-format='fluid'
-      data-ad-layout-key='-f9+6h-a-d6+og'
+      data-ad-layout-key='-fb+5w+4e-db+86'
       data-ad-client='ca-pub-6991672787454088'
-      data-ad-slot='2293806676'
+      data-ad-slot='1372816097'
     ></ins>
   )
 }
 
-export default BottomAd
+export default ModalAd

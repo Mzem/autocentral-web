@@ -10,12 +10,7 @@ import { InfoCard } from '../InfoCard'
 import ShareButton from '../Share'
 import { Carousel } from '../Carousel'
 import { Linkify } from '../../Linkify'
-
-function whatsappPhone(merchantId: string, whatsapp: string): string {
-  if (merchantId === 'sscars') return '+21699775924'
-  if (merchantId === 'advent-auto') return '+21658529477'
-  return whatsapp
-}
+import ModalAd from '../ads/ModalAd'
 
 type PostModalProps = {
   postId: string
@@ -154,19 +149,16 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 </a>
               </div>
             )}
-            {post.phone && (
+            {post.whatsapp && (
               <a
-                href={`https://wa.me/${whatsappPhone(
-                  post.merchant.id,
-                  post.whatsapp || post.phone
-                )
-                  .toString()
-                  .replace(
-                    '+',
-                    ''
-                  )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
+                href={`https://wa.me/${
+                  post.whatsapp
+                }?text=Bonjour%2C%20votre%20annonce%20${encodeURIComponent(
+                  post.title || `${post.make} ${post.model} ${post.year}`
+                )}%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
                   post.id
                 }`}
+                target='_blank'
               >
                 <img
                   src='/whatsapp.svg'
@@ -454,6 +446,9 @@ const CarPostModal: React.FC<PostModalProps> = ({
             className='bg-whiteBG p-2 lg:p-4 border border-whiteopac rounded w-[98%] lg:w-7/12 h-[80%] overflow-y-scroll'
           >
             <PostDetails />
+            <div className='rounded w-full mt-2 mx-auto'>
+              <ModalAd />
+            </div>
           </div>
         </div>
       )}
@@ -472,7 +467,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             model: post?.model,
             cylinder: post?.cylinder,
             title: post?.title,
-            gearbox: post?.gearbox,
+            // gearbox: post?.gearbox,
             fuel: post?.fuel
           }}
         />
