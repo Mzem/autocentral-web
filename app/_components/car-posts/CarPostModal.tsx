@@ -467,7 +467,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             model: post?.model,
             cylinder: post?.cylinder,
             title: post?.title,
-            // gearbox: post?.gearbox,
+            gearbox: post?.gearbox,
             fuel: post?.fuel
           }}
         />
