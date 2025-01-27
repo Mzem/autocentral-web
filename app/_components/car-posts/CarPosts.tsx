@@ -659,9 +659,9 @@ export default function CarPostsFeed({
       </div>
 
       <div className='flex my-1 lg:my-4 items-center'>
-        <img src='estim_down.svg' alt='estimation haute' className='h-6 w-6' />
-        <img src='estim_ok.svg' alt='estimation haute' className='h-6 w-6' />
-        <img src='estim_up.svg' alt='estimation haute' className='h-6 w-6' />
+        <img src='/estim_down.svg' alt='estimation haute' className='h-6 w-6' />
+        <img src='/estim_ok.svg' alt='estimation haute' className='h-6 w-6' />
+        <img src='/estim_up.svg' alt='estimation haute' className='h-6 w-6' />
         <span className='text-black text-opacity-80 italic lg:text-base text-xs'>
           Prix par rapport à la moyenne du marché
         </span>
