@@ -24,7 +24,7 @@ import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
 import FeedAd2 from '../ads/FeedAd2'
 
-const API_PAGE_SIZE = 20
+//const API_PAGE_SIZE = 20
 
 export default function CarPostsFeed({
   initialPosts,
@@ -49,7 +49,7 @@ export default function CarPostsFeed({
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
   const [loadingPosts, setLoadingPosts] = useState(false)
   const [hasMore, setHasMore] = useState(
-    initialPosts.length === API_PAGE_SIZE && !merchantId
+    initialPosts.length !== 0 && !merchantId
   )
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
@@ -171,7 +171,7 @@ export default function CarPostsFeed({
       .then((newPosts) => {
         if (page === 1) setPosts(newPosts)
         else setPosts([...posts, ...newPosts])
-        setHasMore(newPosts.length === API_PAGE_SIZE)
+        setHasMore(newPosts.length !== 0)
         setLoadingPosts(false)
       })
   }
