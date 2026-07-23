@@ -10,7 +10,7 @@ export const Linkify: React.FC<{ text: string }> = ({ text }) => {
           href={part}
           target='_blank'
           rel='noopener noreferrer'
-          className='text-vividred underline'
+          className='text-brand-600 underline'
         >
           {part.length > 25 ? part.slice(0, 25) + '...' : part}
         </a>

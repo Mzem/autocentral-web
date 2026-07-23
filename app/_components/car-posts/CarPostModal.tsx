@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
 import SpecList from '../car-specs/SpecList'
+import SimilarCarPosts from './SimilarCarPosts'
 import CarPostUpdateModal from './CarPostUpdateModal'
 import { InfoCard } from '../InfoCard'
 import ShareButton from '../Share'
@@ -75,7 +76,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             {post.merchant && (
               <Link
                 href={`/${post.merchant.id}`}
-                className='flex items-center space-x-1 p-2 lg:p-3 px-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+                className='flex items-center space-x-1 p-2 lg:p-3 px-3 lg:px-8 rounded-xl font-semibold hover:bg-ink-800 text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
                 onClick={() => {
                   if (onClose !== undefined && isMerchant) onClose()
                 }}
@@ -95,7 +96,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             )}
             {post.phone && !post.phones && (
               <a href={`tel:${post.phone}`} className=''>
-                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -109,7 +110,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             )}
             {post.phones && post.phones.length === 1 && (
               <a href={`tel:${post.phones[0]}`} className=''>
-                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -124,7 +125,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
             {post.phones && post.phones.length >= 2 && (
               <div className=''>
                 <a href={`tel:${post.phones[0]}`} className=''>
-                  <button className='flex items-center space-x-1 mb-[2px] px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                  <button className='flex items-center space-x-1 mb-[2px] px-2 lg:px-8 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                     <img
                       src='/phone.svg'
                       className='h-3 lg:h-4 invert'
@@ -136,7 +137,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   </button>
                 </a>
                 <a href={`tel:${post.phones[1]}`} className=''>
-                  <button className='flex items-center space-x-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                  <button className='flex items-center space-x-1 px-2 lg:px-8 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                     <img
                       src='/phone.svg'
                       className='h-3 lg:h-4 invert'
@@ -178,7 +179,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
         {!isFull && !isFullImage && (
           <button
             onClick={onClose}
-            className={`w-1/10 fixed right-[4%] lg:right-[23%] rounded-full bg-blackopac2 p-1 z-50`}
+            className={`w-1/10 fixed right-[4%] lg:right-[23%] rounded-full bg-ink-950/70 p-1 z-50`}
           >
             <img
               src='/close.svg'
@@ -212,7 +213,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
           <div>
             <div className={`flex justify-between mb-4 items-start `}>
               <button
-                className='text-whiteBG cursor-none'
+                className='text-ink-50 cursor-none'
                 onClick={() => {
                   setShowModalUpdate(true)
                 }}
@@ -227,6 +228,14 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 {post.title}
               </h2>
             </div>
+
+            {post.isExpired && (
+              <div className='mb-2 flex justify-center'>
+                <span className='inline-flex items-center gap-1.5 rounded-md bg-ink-950/85 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
+                  Vendu
+                </span>
+              </div>
+            )}
 
             <Carousel
               images={post.images}
@@ -258,7 +267,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                           post.estimatedPrice.color === 'GREEN'
                             ? 'text-green'
                             : post.estimatedPrice.color === 'RED'
-                            ? 'text-rolexgold'
+                            ? 'text-gold-600'
                             : ''
                         }`
                       : ''
@@ -285,10 +294,10 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   <div
                     className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
                       post.estimatedPrice.color === 'GREEN'
-                        ? 'bg-greenopac'
+                        ? 'bg-success/30'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'bg-rolexgoldopac'
-                        : 'bg-titanopac'
+                        ? 'bg-gold-600'
+                        : 'bg-white/20'
                     }`}
                   />
                   <span
@@ -296,8 +305,8 @@ const CarPostModal: React.FC<PostModalProps> = ({
                       post.estimatedPrice.color === 'GREEN'
                         ? 'text-green'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'text-rolexgold'
-                        : 'text-blackopac2'
+                        ? 'text-gold-600'
+                        : 'text-ink-950/70'
                     }`}
                   >
                     {post.estimatedPrice.text}
@@ -308,7 +317,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base px-3 py-[0.5rem] flex space-x-2 items-center rounded-lg mx-auto shadow-md shadow-titan bg-white border-vividred font-medium lg:my-6'
+                className='text-sm lg:text-base px-3 py-[0.5rem] flex space-x-2 items-center rounded-lg mx-auto shadow-md shadow-ink-200 bg-white border-brand-600 font-medium lg:my-6'
                 onClick={() => setShowIA(true)}
               >
                 <img src='/hand.svg' className='h-5' alt='Rapport technique' />
@@ -396,7 +405,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 (post.options && post.options.length > 0)) && (
                 <div className='flex flex-col space-y-6'>
                   {post.description && (
-                    <div className='mt-4 lg:mt-0 bg-whiteBG rounded-lg shadow p-2'>
+                    <div className='mt-4 lg:mt-0 bg-ink-50 rounded-lg shadow p-2'>
                       <p className='text-sm lg:text-base lg:max-w-[600px]'>
                         {post.description.split('\n').map((line, index) => (
                           <span key={index}>
@@ -418,7 +427,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                       {post.options.map((option, index) => (
                         <span
                           className={`${
-                            index % 2 === 0 ? 'bg-whiteBGDarker' : 'bg-white'
+                            index % 2 === 0 ? 'bg-ink-100' : 'bg-white'
                           } rounded py-1 px-2`}
                         >
                           {option}
@@ -431,6 +440,10 @@ const CarPostModal: React.FC<PostModalProps> = ({
             </div>
 
             <Infos post={post} />
+
+            {post.similar && post.similar.length > 0 && (
+              <SimilarCarPosts posts={post.similar} />
+            )}
           </div>
         )}
       </>
@@ -443,7 +456,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-whiteBG p-2 lg:p-4 border border-whiteopac rounded w-[98%] lg:w-7/12 h-[80%] overflow-y-scroll'
+            className='bg-ink-50 p-2 lg:p-4 border border-ink-200 rounded w-[98%] lg:w-7/12 h-[80%] overflow-y-scroll'
           >
             <PostDetails />
             <div className='rounded w-full mt-2 mx-auto'>

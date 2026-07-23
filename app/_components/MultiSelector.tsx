@@ -33,7 +33,7 @@ export default function MultiSelectList({
             type='checkbox'
             checked={selectedItems.includes(item)}
             onChange={() => toggleItemSelection(item)}
-            className='rounded cursor-pointer mr-[3px] h-5 w-5 border-titan'
+            className='rounded cursor-pointer mr-[3px] h-5 w-5 border-white/30'
           />
           <span className='text-sm lg:text-base mr-1'>
             {item === Fuel.HYBRID ? 'Hybrid/Electrique' : item}

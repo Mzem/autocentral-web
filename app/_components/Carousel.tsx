@@ -8,6 +8,9 @@ export const Carousel: React.FC<{
   const [currentIndex, setCurrentIndex] = useState(0)
   const [fullScreenImage, setFullScreenImage] = useState(false)
   const [isLoading, setIsLoading] = useState(true) // State for image loading
+  // URLs that failed to load, so we can show a placeholder instead of a broken
+  // image (common for old external tayara/automobile photos).
+  const [erroredSrcs, setErroredSrcs] = useState<Set<string>>(new Set())
   const overlayRef = useRef<HTMLDivElement>(null)
   const prevButtonRef = useRef<HTMLButtonElement>(null)
   const nextButtonRef = useRef<HTMLButtonElement>(null)
@@ -60,24 +63,50 @@ export const Carousel: React.FC<{
       }}
     >
       <div className='relative mx-auto h-64 w-full rounded-lg'>
-        {isLoading && (
+        {isLoading && !erroredSrcs.has(images[currentIndex]) && (
           <div className='absolute inset-0 flex items-center justify-center rounded-lg'>
             <span className='loader'></span>{' '}
             {/* Add your loader/spinner here */}
           </div>
         )}
-        <img
-          src={images[currentIndex]}
-          alt='Car image'
-          className={`mx-auto h-64 object-contain cursor-pointer rounded-lg ${
-            isLoading ? 'opacity-0' : 'opacity-100'
-          }`}
-          onLoad={() => setIsLoading(false)} // Image has loaded
-          onError={() => setIsLoading(false)} // Handle loading error
-        />
+        {erroredSrcs.has(images[currentIndex]) ? (
+          <div className='mx-auto flex h-64 flex-col items-center justify-center gap-1.5 rounded-lg bg-ink-100 text-ink-400'>
+            <svg
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='1.5'
+              className='h-10 w-10'
+              aria-hidden='true'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M3 5h13l2 3h3v11H3zM3 5l18 14'
+              />
+              <circle cx='11' cy='13' r='3' />
+            </svg>
+            <span className='text-xs font-medium uppercase tracking-wide'>
+              Photo indisponible
+            </span>
+          </div>
+        ) : (
+          <img
+            src={images[currentIndex]}
+            alt='Car image'
+            className={`mx-auto h-64 object-contain cursor-pointer rounded-lg ${
+              isLoading ? 'opacity-0' : 'opacity-100'
+            }`}
+            onLoad={() => setIsLoading(false)} // Image has loaded
+            onError={() => {
+              setIsLoading(false)
+              setErroredSrcs((prev) => new Set(prev).add(images[currentIndex]))
+            }}
+          />
+        )}
       </div>
       {!noCaption && (
-        <span className='text-[0.7rem] italic text-blackopac2 mx-auto w-full flex justify-around mt-[2px]'>
+        <span className='text-[0.7rem] italic text-ink-950/70 mx-auto w-full flex justify-around mt-[2px]'>
           Cliquer sur l'image pour l'agrandir
         </span>
       )}
@@ -88,7 +117,7 @@ export const Carousel: React.FC<{
               e.stopPropagation()
               prevImage()
             }}
-            className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
+            className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-ink-950/70 hover:whiteopac rounded-full'
           >
             <img
               src='/arrow_prev.svg'
@@ -101,7 +130,7 @@ export const Carousel: React.FC<{
               e.stopPropagation()
               nextImage()
             }}
-            className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-blackopac2 hover:whiteopac rounded-full'
+            className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-ink-950/70 hover:whiteopac rounded-full'
           >
             <img
               src='/arrow_next.svg'

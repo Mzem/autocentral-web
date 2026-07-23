@@ -1,184 +1,186 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+
+const NAV_LINKS = [
+  { href: '/', label: "Voitures d'occasion", icon: '/car_white.svg' },
+  { href: '/fiche-technique', label: 'Fiches techniques', icon: '/gears.svg' },
+  { href: '/vendeurs', label: 'Vendeurs professionnels', icon: '/man.svg' },
+  { href: '/produits', label: 'Boutique', icon: '/cart.svg' }
+]
+
+const CONTACT_URL =
+  'https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const menuRef = useRef(null)
-  const menuButtonRef = useRef(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const pathname = usePathname()
 
-  const switchMenu = () => {
-    setIsMenuOpen((prev) => !prev)
-  }
-
-  // @@ts-expect-error
-  const handleClickOutside = (event: any) => {
-    if (
-      menuRef.current &&
-      // @ts-expect-error
-      !menuRef.current.contains(event.target) &&
-      // @ts-expect-error
-      !menuButtonRef.current.contains(event.target) // Ignore clicks on menu button
-    ) {
-      setIsMenuOpen(false)
-    }
-  }
-
-  const handleScroll = () => {
-    setIsMenuOpen(false)
-  }
+  const switchMenu = () => setIsMenuOpen((prev) => !prev)
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(target)
+      ) {
+        setIsMenuOpen(false)
+      }
+    }
+    const handleScroll = () => {
+      setIsMenuOpen(false)
+      setIsScrolled(window.scrollY > 4)
+    }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    document.addEventListener('keydown', handleEscape)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
       window.removeEventListener('scroll', handleScroll)
+      document.removeEventListener('keydown', handleEscape)
     }
   }, [])
 
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
   return (
-    <div className='bg-whiteBG'>
-      {/* Header with fixed position */}
+    <div className='bg-ink-50'>
       <div
-        className={`w-full fixed z-10 ${
-          isMenuOpen ? 'bg-blacknotopac' : 'bg-blackopac'
+        className={`w-full fixed z-30 border-b transition-all duration-300 ${
+          isScrolled || isMenuOpen
+            ? 'bg-ink-950/95 backdrop-blur-md border-white/10 shadow-lg'
+            : 'bg-ink-950 border-transparent'
         }`}
       >
-        <header className='flex flex-row w-[90%] lg:w-4/6 items-center justify-between mx-auto h-10 lg:h-12'>
-          {/* Mobile Logo on the Right and Desktop Logo */}
-          <button
-            onClick={() => {
-              window.location.href = '/'
-            }}
+        <header className='flex flex-row w-[94%] lg:w-[88%] xl:max-w-6xl items-center justify-between mx-auto h-12 lg:h-14'>
+          <Link
+            href='/'
+            aria-label='Accueil autocentral.tn'
+            className='shrink-0'
           >
             <img
               src='/logo.svg'
               alt='autocentral.tn'
-              className='h-20 hover:text-white hover:filter hover:brightness-50'
+              className='h-16 lg:h-20 transition-opacity hover:opacity-80'
             />
-          </button>
+          </Link>
 
-          <a
-            href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
-            className='xl:hidden rounded-lg bg-whiteopac2 flex items-center space-x-1 text-sm lg:text-base py-[2px] px-[4px] md:ml-80 lg:ml-48'
-          >
-            <p className=''>Contact</p>
-            <img
-              src='/whatsapp_white.svg'
-              className='h-[1rem] xs:h-[0.7rem] w-[1rem] xs:w-[0.7rem]'
-              alt='Whatsapp'
-            />
-          </a>
-
-          {/* Mobile Burger Menu Icon on the Left */}
-          <button
-            onClick={switchMenu}
-            ref={menuButtonRef}
-            className='xl:hidden flex flex-col lg:flex-row-reverse items-center text-titan'
-          >
-            <img
-              src='/menu.svg'
-              className='h-7 lg:h-12 w-7 lg:w-12'
-              alt='Ouvrir le menu'
-            />
-            <span className='text-xs lg:text-base lg:mr-2 -mt-1'>Menu</span>
-          </button>
-
-          {/* Desktop Menu Links */}
-          <nav className='hidden xl:flex space-x-5'>
+          <nav className='hidden xl:flex items-center gap-1'>
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+                  isActive(link.href)
+                    ? 'bg-white/10 text-white font-semibold'
+                    : 'text-white/70 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                <img
+                  src={link.icon}
+                  alt=''
+                  aria-hidden='true'
+                  className='h-4'
+                />
+                <span>{link.label}</span>
+              </Link>
+            ))}
             <a
-              href={`https://m.me/autocentral.tn?text=Je%20veux%20d%C3%A9poser%20une%20annonce%20sur%20autocentral`}
-              className='rounded-lg bg-whiteopac2 flex text-sm items-center space-x-1 py-[2px] px-[6px]'
+              href={CONTACT_URL}
+              className='ml-2 flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-500'
             >
-              <p>Contactez-nous</p>
+              <span>Déposer une annonce</span>
               <img
                 src='/whatsapp_white.svg'
-                className='h-[1rem]'
-                alt='Whatsapp'
+                className='h-4'
+                alt=''
+                aria-hidden='true'
               />
             </a>
-            <Link
-              className='flex space-x-2 items-center hover:underline'
-              href='/'
-            >
-              <img src='/car_white.svg' className='h-5' />
-              <p className='text-sm'>Voitures d'occasion</p>
-            </Link>
-            <Link
-              className='flex space-x-2 items-center hover:underline'
-              href='/fiche-technique'
-            >
-              <img src='/gears.svg' className='h-5' />
-              <p className='text-sm'>Fiches techniques</p>
-            </Link>
-            <Link
-              className='flex space-x-2 items-center hover:underline'
-              href='/vendeurs'
-            >
-              <img src='/man.svg' className='h-5' />
-              <p className='text-sm'>Vendeurs professionnels</p>
-            </Link>
-            <Link
-              className='flex space-x-2 items-center hover:underline'
-              href='/produits'
-            >
-              <img src='/cart.svg' className='h-5' />
-              <p className='text-sm'>Boutique</p>
-            </Link>
           </nav>
+
+          <div className='flex items-center gap-2 xl:hidden'>
+            <a
+              href={CONTACT_URL}
+              className='flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-500'
+            >
+              <span>Contact</span>
+              <img
+                src='/whatsapp_white.svg'
+                className='h-3.5 w-3.5'
+                alt=''
+                aria-hidden='true'
+              />
+            </a>
+
+            <button
+              onClick={switchMenu}
+              ref={menuButtonRef}
+              aria-expanded={isMenuOpen}
+              aria-controls='mobile-menu'
+              aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              className='flex flex-col items-center rounded-lg p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-white'
+            >
+              <img
+                src='/menu.svg'
+                className='h-6 w-6'
+                alt=''
+                aria-hidden='true'
+              />
+              <span className='text-[0.6rem] leading-none'>Menu</span>
+            </button>
+          </div>
         </header>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div
+          id='mobile-menu'
           ref={menuRef}
-          className='xl:hidden fixed bg-blackopac top-10 w-full text-titan z-50 lg:w-4/6 inset-x-0 text-center mx-auto'
+          className='xl:hidden fixed top-12 inset-x-0 z-30 mx-auto w-full overflow-hidden border-b border-white/10 bg-ink-950/98 backdrop-blur-md shadow-xl animate-fade-in-up'
         >
-          <Link
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacklight border-b border-whiteopac2 flex justify-end'
-            onClick={() => {
-              setIsMenuOpen(false)
-            }}
-            href='/'
-          >
-            Voitures d'occasion
-            <img src='/car_white.svg' className='h-6 ml-2 mr-1' />
-          </Link>
-          <Link
-            className='w-full block px-4 py-2 hover:bg-whiteopac  bg-blacknotopac border-b border-whiteopac flex justify-end'
-            onClick={() => {
-              setIsMenuOpen(false)
-            }}
-            href='/fiche-technique'
-          >
-            Fiches techniques
-            <img src='/gears.svg' className='h-6 ml-2 mr-1' />
-          </Link>
-          <Link
-            href='/vendeurs'
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacklight border-b border-whiteopac2 flex justify-end'
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Vendeurs professionnels
-            <img src='/man.svg' className='h-6 ml-2 mr-1' />
-          </Link>
-          <Link
-            href='/produits'
-            className='w-full block px-4 py-2 hover:bg-whiteopac bg-blacknotopac border-b-2 border-titanopac flex justify-end'
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Boutique & produits dérivés
-            <img src='/cart.svg' className='h-6 ml-2 mr-1' />
-          </Link>
+          <nav className='flex flex-col'>
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMenuOpen(false)}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                className={`flex items-center justify-between gap-3 border-b border-white/5 px-5 py-3.5 text-sm transition-colors ${
+                  isActive(link.href)
+                    ? 'bg-white/10 text-white font-semibold'
+                    : 'text-white/80 hover:bg-white/5'
+                }`}
+              >
+                <span>{link.label}</span>
+                <img
+                  src={link.icon}
+                  className='h-5'
+                  alt=''
+                  aria-hidden='true'
+                />
+              </Link>
+            ))}
+          </nav>
         </div>
       )}
 
-      {/* Bottom Spacer to avoid content overlap */}
-      <div className={`mt-10 lg:mt-12`}></div>
+      <div className='mt-12 lg:mt-14' />
     </div>
   )
 }

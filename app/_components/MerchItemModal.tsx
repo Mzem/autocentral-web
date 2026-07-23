@@ -48,7 +48,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
             {item.merchant && (
               <Link
                 href={`/produits#${item.merchant.id}`}
-                className='flex items-center space-x-1 p-2 lg:p-3 px-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
+                className='flex items-center space-x-1 p-2 lg:p-3 px-3 lg:px-8 rounded-xl font-semibold hover:bg-ink-800 text-white bg-black bg-opacity-90 transition duration-300 ease-in-out'
                 onClick={() => {
                   if (onClose !== undefined) onClose()
                 }}
@@ -68,7 +68,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
             )}
             {item.merchant.phone && item.merchant.phone !== '+21699999999' && (
               <a href={`tel:${item.merchant.phone}`} className=''>
-                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 p-2 lg:p-3 lg:px-8 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -111,7 +111,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
         {!isFull && !isFullImage && (
           <button
             onClick={onClose}
-            className={`w-1/10 fixed right-[4%] lg:right-[23%] rounded-full bg-blackopac2 p-1 z-50`}
+            className={`w-1/10 fixed right-[4%] lg:right-[23%] rounded-full bg-ink-950/70 p-1 z-50`}
           >
             <img
               src='/close.svg'
@@ -161,7 +161,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               {item.description && (
-                <div className='mt-4 lg:mt-0 bg-whiteBG rounded-lg shadow p-2'>
+                <div className='mt-4 lg:mt-0 bg-ink-50 rounded-lg shadow p-2'>
                   <p className='text-sm lg:text-base lg:max-w-[600px]'>
                     {item.description.split('\n').map((line, index) => (
                       <span key={index}>
@@ -189,7 +189,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-whiteBG p-2 lg:p-4 border border-whiteopac rounded w-[98%] lg:w-7/12 h-[76%] overflow-y-scroll'
+            className='bg-ink-50 p-2 lg:p-4 border border-ink-200 rounded w-[98%] lg:w-7/12 h-[76%] overflow-y-scroll'
           >
             <Details />
           </div>

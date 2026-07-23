@@ -36,7 +36,7 @@ function ShopHeader({
             avatar ? avatar : hasLogo ? '/' + id + '/logo.jpg' : '/man.svg'
           }`}
           className={`max-w-28 w-28 lg:max-w-32 lg:w-32 max-h-[5rem] lg:max-h-[9rem] rounded-lg object-cover flex-shrink-0  ${
-            small ? 'h-16 w-16 border-blackopac' : ''
+            small ? 'h-16 w-16 border-ink-950' : ''
           } ${!avatar && !hasLogo ? 'invert' : ''}`}
         />
         <p className='text-xl lg:text-3xl'>{name}</p>

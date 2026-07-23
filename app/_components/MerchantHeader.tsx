@@ -67,7 +67,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           {merchant.phones && merchant.phones.length === 1 && (
             <div className='text-sm xs:text-xs'>
               <a href={`tel:${merchant.phones[0]}`} className=''>
-                <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -85,7 +85,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
           {merchant.phones && merchant.phones.length >= 2 && (
             <div className='text-sm xs:text-xs'>
               <a href={`tel:${merchant.phones[0]}`} className=''>
-                <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -99,7 +99,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
                 </button>
               </a>
               <a href={`tel:${merchant.phones[1]}`} className=''>
-                <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+                <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                   <img
                     src='/phone.svg'
                     className='h-3 lg:h-4 invert'
@@ -164,7 +164,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
         {merchant.phones && merchant.phones.length === 1 && (
           <div className='text-sm xs:text-xs'>
             <a href={`tel:${merchant.phones[0]}`} className=''>
-              <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+              <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                 <img
                   src='/phone.svg'
                   className='h-3 lg:h-4 invert'
@@ -180,7 +180,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
         {merchant.phones && merchant.phones.length >= 2 && (
           <div className='text-sm xs:text-xs'>
             <a href={`tel:${merchant.phones[0]}`} className=''>
-              <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+              <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                 <img
                   src='/phone.svg'
                   className='h-3 lg:h-4 invert'
@@ -192,7 +192,7 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
               </button>
             </a>
             <a href={`tel:${merchant.phones[1]}`} className=''>
-              <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-titan text-white bg-vividred transition duration-300 ease-in-out'>
+              <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
                 <img
                   src='/phone.svg'
                   className='h-3 lg:h-4 invert'

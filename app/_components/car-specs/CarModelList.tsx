@@ -28,7 +28,7 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         <Link href='/fiche-technique'>
           <img
             src='/arrow_prev.svg'
-            className='h-8 lg:h-10 bg-blackopac rounded hover:bg-titan'
+            className='h-8 lg:h-10 bg-ink-950 rounded hover:bg-ink-800'
           />
         </Link>
       </div>
@@ -38,13 +38,13 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         {modelsByMake.models.map((model: ModelListItem, index: number) => (
           <li
             key={model.modelName}
-            className={`px-1 pt-1 m-[3px] rounded-lg hover:bg-titanopac ${
-              index % 2 === 0 ? 'bg-whiteBGDarker' : 'bg-whiteBG'
+            className={`px-1 pt-1 m-[3px] rounded-lg hover:bg-white/20 ${
+              index % 2 === 0 ? 'bg-ink-100' : 'bg-ink-50'
             }`}
           >
             <button
               onClick={() => setSelectedModel(model)}
-              className='text-pureblack flex items-center w-full text-left'
+              className='text-ink-950 flex items-center w-full text-left'
             >
               <img src='/arrow_next.svg' className='h-4 mr-2 invert' />
               {model.modelName}

@@ -39,7 +39,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {lengthValue && (
           <div className='absolute top-10 flex justify-between items-center'>
-            <div className='p-[1px] rounded text-white bg-blackopac2'>
+            <div className='p-[1px] rounded text-white bg-ink-950/70'>
               Longeur {lengthValue} mm
             </div>
             <svg className='h-8 w-full'>
@@ -101,7 +101,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
             </svg>
 
             {weightValue && (
-              <div className='p-[1px] rounded text-white bg-blackopac2'>
+              <div className='p-[1px] rounded text-white bg-ink-950/70'>
                 Poids {weightValue + ' kg'}
               </div>
             )}
@@ -110,7 +110,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {widthValue && (
           <div className='absolute bottom-6 w-full flex justify-between items-center'>
-            <div className='p-[1px] rounded text-white bg-blackopac2'>
+            <div className='p-[1px] rounded text-white bg-ink-950/70'>
               Largeur {widthValue} mm
             </div>
             <svg className='h-8 w-full'>
@@ -142,7 +142,7 @@ const CarDimensions: React.FC<CarDimensionsProps> = ({
 
         {heightValue && (
           <div className='absolute right-0 top-6'>
-            <p className='p-[1px] rounded bg-blackopac2 text-white'>
+            <p className='p-[1px] rounded bg-ink-950/70 text-white'>
               Hauteur {heightValue} mm
             </p>
           </div>

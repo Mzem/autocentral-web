@@ -30,7 +30,7 @@ export default function ColorSelector({
 
   return (
     <div className='mt-1 ml-3 flex space-x-[3px] items-center'>
-      <span className='text-sm lg:text-base text-whiteBG mr-1'>Couleur</span>
+      <span className='text-sm lg:text-base text-ink-50 mr-1'>Couleur</span>
       {Object.entries(colorHexMap).map(([colorKey, hex]) => (
         <div
           key={colorKey}

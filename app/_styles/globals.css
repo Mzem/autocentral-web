@@ -31,20 +31,71 @@
   --rolexgoldopac: #a37e2caa;
   --whatsapp: #25d366;
   --whiteopacred: #B3141425;
+
+  /* modern palette (mirrors tailwind.config.ts) */
+  --ink-50: #f6f7f9;
+  --ink-100: #eceef2;
+  --ink-200: #d5dae3;
+  --ink-500: #667794;
+  --ink-950: #0f1218;
+  --brand-500: #ef3535;
+  --brand-600: #dc1c1c;
+  --gold-400: #d4af37;
 }
 
 html {
   font-family: theme('fontFamily.sans');
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   color: var(--white);
-  background: var(--black);
+  background: var(--ink-950);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings read tighter and less "default" at large sizes. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+/* Consistent, visible keyboard focus across the whole site. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Long content (tables, code) must scroll inside its box, never the page. */
+img {
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  /* Hides a scrollbar while keeping the area scrollable (filter chips, etc.). */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 

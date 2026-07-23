@@ -39,9 +39,7 @@ export async function generateMetadata({
 }
 
 export default async function Annonce({ params }: { params: { id: string } }) {
-  return (
-    <>
-      <CarPostModal postId={params.id} isFull={true} />
-    </>
-  )
+  // Similar cars are embedded in the post detail and rendered by the modal
+  // itself, so they show both here (full page) and in the feed modal.
+  return <CarPostModal postId={params.id} isFull={true} />
 }

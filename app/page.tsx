@@ -57,28 +57,33 @@ export default async function Home({
   return (
     <>
       {isTransactionOK && (
-        <div className='bg-green rounded-lg bg-opacity-90 font-semibold text-white text-center py-2'>
+        <div className='rounded-xl bg-success/10 ring-1 ring-success/30 font-semibold text-success text-center py-3 px-4 mb-4'>
           🎉 Votre paiement est validé ! Nous allons mettre en avant votre
           annonce sur le site et la partager sur nos réseaux sociaux.
         </div>
       )}
       {isTransactionKO && (
-        <div className='bg-vividred rounded-lg font-semibold text-white text-center py-2'>
+        <div className='rounded-xl bg-brand-50 ring-1 ring-brand-200 font-semibold text-brand-700 text-center py-3 px-4 mb-4'>
           ❌ Votre paiement a échoué ! Veuillez réessayer ou prendre contact
           avec notre équipe.
         </div>
       )}
-      <div className='text-center xs:text-sm text-base lg:text-2xl mt-7 lg:mt-20 text-black mb-3 lg:mb-10'>
-        <p className='mx-2'>
-          1er moteur de recherche <br className='lg:hidden' />
-          de voitures d'occasion en{' '}
-          <span className='font-semibold text-vividred'>Tunisie</span>
-        </p>
-        <p className='mt-2 lg:mt-4'>
-          <span className='font-semibold text-vividred'>
-            +{getDailyCount()}{' '}
+      <div className='text-center mt-4 lg:mt-10 mb-5 lg:mb-8'>
+        <h1 className='text-balance text-xl sm:text-2xl lg:text-4xl font-extrabold text-ink-950 leading-tight'>
+          1<sup className='text-[0.6em] font-bold'>er</sup> moteur de recherche{' '}
+          <br className='lg:hidden' />
+          de voitures d&apos;occasion en{' '}
+          <span className='text-brand-600'>Tunisie</span>
+        </h1>
+        <p className='mt-3 lg:mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs lg:text-sm text-ink-600 shadow-card ring-1 ring-ink-100'>
+          <span
+            aria-hidden='true'
+            className='h-2 w-2 rounded-full bg-success'
+          />
+          <span>
+            <span className='font-bold text-ink-950'>+{getDailyCount()}</span>{' '}
+            nouvelles annonces aujourd&apos;hui
           </span>
-          nouvelles annonces aujourd'hui
         </p>
         {/* <div className='w-[20%] md:w-[5%] mx-auto justify-around flex items-center space-x-1 text-[0.7rem]'>
           <img src='/tayara.jpg' alt='tayara.tn' className='h-4 rounded-full' />
@@ -105,7 +110,7 @@ export default async function Home({
           <a
             href='https://gateway.konnect.network/me/malekautocentral'
             target='_blank'
-            className='rounded-lg px-[8px] py-[2px] text-black shadow-md shadow-titan  hover:bg-whiteoapc2 bg-white hover:bg-whiteopacred font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
+            className='rounded-lg px-[8px] py-[2px] text-black shadow-md shadow-ink-200  hover:bg-whiteoapc2 bg-white hover:bg-brand-50 font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
           >
             <img src='/hand.svg' className='h-4' alt='Don' />
             <span>Faire un don pour me soutenir</span>

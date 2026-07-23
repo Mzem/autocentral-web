@@ -23,6 +23,8 @@ import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
 import CarPostModal from './CarPostModal'
 import FeedAd2 from '../ads/FeedAd2'
+import FeaturedCarPosts from './FeaturedCarPosts'
+import CarImage, { SoldBadge } from './CarImage'
 
 //const API_PAGE_SIZE = 20
 
@@ -206,8 +208,8 @@ export default function CarPostsFeed({
     return (
       <div
         key={post.id}
-        className={`justify-between w-full flex items-center mt-2 rounded text-xs lg:text-base xs:text-[0.7rem] text-blacklight h-[8rem] lg:h-[10rem] bg-whiteopac hover:bg-whiteBGDarker ${
-          featured ? 'shadow-md shadow-whiteopacred' : 'shadow-md'
+        className={`group justify-between w-full flex items-center mt-3 overflow-hidden rounded-xl text-xs lg:text-base xs:text-[0.7rem] text-ink-800 h-[8rem] lg:h-[10rem] bg-white ring-1 ring-ink-100 shadow-card transition-all duration-300 hover:shadow-card-hover hover:ring-ink-200 ${
+          featured ? 'ring-gold-300 hover:ring-gold-400' : ''
         }`}
       >
         <button
@@ -215,14 +217,17 @@ export default function CarPostsFeed({
             setSelectedPostId(post.id)
             window.history.pushState(null, '', `/annonces/${post.id}`)
           }}
-          className='flex flex-row w-4/5 space-x-1 lg:space-x-4 items-center'
+          className='flex flex-row w-4/5 space-x-2 lg:space-x-4 items-center'
         >
-          <img
-            src={post.image}
-            alt={post.title}
-            className='w-28 lg:w-40 object-cover rounded flex-shrink-0 h-[8rem] lg:h-[10rem]'
-          />
-          <div className='flex flex-col justify-between items-start h-[8rem] lg:h-[10rem] w-full'>
+          <div className='relative overflow-hidden flex-shrink-0 w-28 lg:w-40 h-[8rem] lg:h-[10rem] bg-ink-100'>
+            <CarImage
+              src={post.image}
+              alt={post.title}
+              className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+            />
+            {post.isExpired && <SoldBadge className='absolute top-2 left-2' />}
+          </div>
+          <div className='flex flex-col justify-between items-start h-[8rem] lg:h-[10rem] w-full py-2'>
             {post.title && (
               <span className='font-bold text-left xs:w-[8rem] w-[9rem] sm:w-[12rem] truncate text-[0.8rem] lg:w-[20rem] lg:text-base xs:text-[0.7rem]'>
                 {post.title}
@@ -247,9 +252,9 @@ export default function CarPostsFeed({
                 className={`font-bold text-[0.8rem] lg:text-base xs:text-[0.7rem] ${
                   post.price && post.estimatedPrice
                     ? post.estimatedPrice.color === 'GREEN'
-                      ? 'text-green mt-1'
+                      ? 'text-success mt-1'
                       : post.estimatedPrice.color === 'RED'
-                      ? 'text-rolexgold mt-0'
+                      ? 'text-gold-600 mt-0'
                       : 'mt-1'
                     : 'mt-1'
                 }`}
@@ -280,10 +285,10 @@ export default function CarPostsFeed({
                   <span
                     className={`font-normal italic text-[0.6rem] xs:text-[0.5rem] lg:text-xs ${
                       post.estimatedPrice.color === 'GREEN'
-                        ? 'text-green'
+                        ? 'text-success'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'text-rolexgold'
-                        : 'text-blackopac2'
+                        ? 'text-gold-600'
+                        : 'text-ink-500'
                     }`}
                   >
                     {post.estimatedPrice.text}
@@ -301,7 +306,7 @@ export default function CarPostsFeed({
 
           {post.phone && (
             <a href={`tel:${post.phone}`} className='w-full'>
-              <button className='text-white bg-blackopac border border-whiteopac p-1 md:p-2 md:px-4 px-3 rounded-xl hover:bg-titan transition duration-300 ease-in-out'>
+              <button className='w-full font-semibold text-white bg-ink-950 p-1 md:p-2 md:px-4 px-3 rounded-lg hover:bg-brand-600 transition-colors duration-300 ease-in-out'>
                 Appeler
               </button>
             </a>
@@ -331,51 +336,62 @@ export default function CarPostsFeed({
     <>
       <div
         ref={searchDivRef}
-        className='bg-gradient-to-b from-blackopac to-blackopac3 shadow-sm text-white w-full mx-0 p-[2px] text-center flex flex-col rounded-xl'
+        className='bg-ink-950 shadow-card text-white w-full mx-0 p-2 lg:p-3 text-center flex flex-col rounded-2xl ring-1 ring-white/10'
       >
-        <div className='flex flex-row items-center justify-between'>
-          <input
-            readOnly={!showFilters}
-            type='text'
-            value={searchText}
-            onClick={(e) => {
-              // @ts-expect-error
-              if (!showFilters) e.target.blur()
-              setShowFilters(true)
-            }}
-            onChange={handleSearchTextChange}
-            onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
-            placeholder={'Recherche par mot-clé...'}
-            className={`ml-1 py-1 xs:px-1 my-1 placeholder-white rounded-xl border-none text-base lg:text-xl outline-none w-[65%] lg:w-[75%] bg-whiteopac`}
-          />
-
-          <div>
-            <button
-              className='xs:w-12 w-14 sm:w-16 p-2 mr-[2px] lg:mr-2 bg-vividred rounded-xl hover:bg-titan transition duration-300 ease-in-out'
-              onClick={() => {
-                if (!showFilters) setShowFilters(true)
-                else handleNewSearch()
+        <div className='flex flex-row items-center gap-2'>
+          <div className='relative flex-1'>
+            <img
+              src='/search.svg'
+              alt=''
+              aria-hidden='true'
+              className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50'
+            />
+            <input
+              readOnly={!showFilters}
+              type='text'
+              value={searchText}
+              aria-label='Recherche par mot-clé'
+              onClick={(e) => {
+                // @ts-expect-error
+                if (!showFilters) e.target.blur()
+                setShowFilters(true)
               }}
-            >
-              <img
-                src='/search.svg'
-                alt='Lancer la recherche'
-                className='xs:h-4 h-5 xs:w-4 w-5 mx-auto'
-              />
-            </button>
-            <button
-              className='xs:w-10 w-12 sm:w-14 p-2 mr-[1px] lg:mr-2 bg-pureblack rounded-xl hover:bg-titan transition duration-300 ease-in-out'
-              onClick={() => {
-                window.location.href = merchantId ? `/${merchantId}` : '/'
-              }}
-            >
-              <img
-                src='/refresh.svg'
-                alt='Réinitialiser les filtres'
-                className='xs:h-4 h-5 xs:w-4 w-5 mx-auto'
-              />
-            </button>
+              onChange={handleSearchTextChange}
+              onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
+              placeholder={'Rechercher une voiture...'}
+              className='w-full rounded-xl border-none bg-white/10 py-2.5 pl-10 pr-3 text-base lg:text-lg text-white placeholder-white/50 outline-none transition-colors focus:bg-white/15'
+            />
           </div>
+
+          <button
+            aria-label='Lancer la recherche'
+            className='shrink-0 rounded-xl bg-brand-600 p-2.5 px-4 font-semibold transition-colors duration-200 hover:bg-brand-500'
+            onClick={() => {
+              if (!showFilters) setShowFilters(true)
+              else handleNewSearch()
+            }}
+          >
+            <img
+              src='/search.svg'
+              alt=''
+              aria-hidden='true'
+              className='h-5 w-5 mx-auto'
+            />
+          </button>
+          <button
+            aria-label='Réinitialiser les filtres'
+            className='shrink-0 rounded-xl bg-white/10 p-2.5 px-3.5 transition-colors duration-200 hover:bg-white/20'
+            onClick={() => {
+              window.location.href = merchantId ? `/${merchantId}` : '/'
+            }}
+          >
+            <img
+              src='/refresh.svg'
+              alt=''
+              aria-hidden='true'
+              className='h-5 w-5 mx-auto'
+            />
+          </button>
         </div>
         {showFilters && (
           <div className='flex flex-col my-1 lg:my-2 text-sm lg:text-base'>
@@ -396,7 +412,7 @@ export default function CarPostsFeed({
                   }}
                   unstyled
                   styles={reactSelectFilterStyle}
-                  className={`w-[95%] ml-[4px] bg-whiteopac2 rounded`}
+                  className={`w-[95%] ml-[4px] bg-white/10 rounded`}
                   classNamePrefix='react-select'
                 />
                 {make && (
@@ -423,7 +439,7 @@ export default function CarPostsFeed({
                     }}
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className='w-[95%] ml-[4px] bg-whiteopac2 rounded mr-[2px]'
+                    className='w-[95%] ml-[4px] bg-white/10 rounded mr-[2px]'
                     classNamePrefix='react-select'
                   />
                 )}
@@ -441,7 +457,7 @@ export default function CarPostsFeed({
                         type='checkbox'
                         checked={isShop}
                         onChange={() => setIsShop(!isShop)}
-                        className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
+                        className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-brand-600 border-white/30'
                       />
                       <span className=''>Vendeurs PRO</span>
                       <img
@@ -456,7 +472,7 @@ export default function CarPostsFeed({
                       type='checkbox'
                       checked={firstOwner}
                       onChange={() => setFirstOwner(!firstOwner)}
-                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                     />
                     <span className=''>Première main</span>
                   </label>
@@ -465,7 +481,7 @@ export default function CarPostsFeed({
                       type='checkbox'
                       checked={isAuto}
                       onChange={() => setIsAuto(!isAuto)}
-                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                      className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                     />
                     <span className=''>Boîte automatique</span>
                   </label>
@@ -498,7 +514,7 @@ export default function CarPostsFeed({
             </div>
             <button
               onClick={() => setShowMoreFilters(true)}
-              className={`bg-whiteopac w-[55%] mx-auto rounded-xl mt-2 font-semibold text-white text-opacity-85 ${
+              className={`bg-white/20 w-[55%] mx-auto rounded-xl mt-2 font-semibold text-white text-opacity-85 ${
                 showMoreFilters ? 'hidden' : ''
               }`}
             >
@@ -521,7 +537,7 @@ export default function CarPostsFeed({
                     }
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className='w-[95%] ml-[7px] mb-2 bg-whiteopac2 rounded mt-3'
+                    className='w-[95%] ml-[7px] mb-2 bg-white/10 rounded mt-3'
                     classNamePrefix='react-select'
                   />
                 )}
@@ -539,7 +555,7 @@ export default function CarPostsFeed({
                             type='checkbox'
                             checked={isShop}
                             onChange={() => setIsShop(!isShop)}
-                            className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-vividred border-titan'
+                            className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-brand-600 border-white/30'
                           />
                           <span className=''>Vendeurs PRO</span>
                           <img
@@ -554,7 +570,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={firstOwner}
                           onChange={() => setFirstOwner(!firstOwner)}
-                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Première main</span>
                       </label>
@@ -563,7 +579,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={isAuto}
                           onChange={() => setIsAuto(!isAuto)}
-                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Boîte automatique</span>
                       </label>
@@ -574,7 +590,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={alarm}
                           onChange={() => setAlarm(!alarm)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Alarme anti-vol</span>
                       </label>
@@ -583,7 +599,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={keyless}
                           onChange={() => setKeyless(!keyless)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Démarrage sans clé</span>
                       </label>
@@ -592,7 +608,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={camera}
                           onChange={() => setCamera(!camera)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Caméra de stationnement</span>
                       </label>
@@ -601,7 +617,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={exchange}
                           onChange={() => setExchange(!exchange)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Echange possible</span>
                       </label>
@@ -610,7 +626,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={leasing}
                           onChange={() => setLeasing(!leasing)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>Leasing</span>
                       </label>
@@ -619,7 +635,7 @@ export default function CarPostsFeed({
                           type='checkbox'
                           checked={fcr}
                           onChange={() => setFCR(!fcr)}
-                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-titan'
+                          className='mt-[2px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer border-white/30'
                         />
                         <span className=''>FCR</span>
                       </label>
@@ -648,7 +664,7 @@ export default function CarPostsFeed({
                 </div>
                 <button
                   onClick={() => handleNewSearch()}
-                  className='bg-vividred text-white w-[55%] mx-auto rounded-xl mt-4 p-1 lg:p-2 lg:mt-4 font-semibold'
+                  className='bg-brand-600 text-white w-[55%] mx-auto rounded-xl mt-4 p-1 lg:p-2 lg:mt-4 font-semibold'
                 >
                   Rechercher
                 </button>
@@ -669,9 +685,13 @@ export default function CarPostsFeed({
       <div ref={searchDivRef} className='w-full mx-auto text-black'>
         {featuredPosts && featuredPosts.length > 0 && (
           <>
-            {featuredPosts.map((post) => (
-              <PostCard key={post.id} post={post} featured={true} />
-            ))}
+            <FeaturedCarPosts
+              posts={featuredPosts}
+              onSelect={(postId) => {
+                setSelectedPostId(postId)
+                window.history.pushState(null, '', `/annonces/${postId}`)
+              }}
+            />
             <div className='rounded w-full mt-2 mx-auto'>
               <FeedAd />
             </div>
@@ -741,7 +761,7 @@ export default function CarPostsFeed({
         )}
 
         {loadingPosts && (
-          <button className='text-white bg-blackopac2 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'>
+          <button className='text-white bg-ink-950/70 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'>
             Chargement des annonces...
           </button>
         )}
@@ -759,7 +779,7 @@ export default function CarPostsFeed({
         )}
         {hasMore && !loadingPosts && (
           <button
-            className='text-white bg-vividred font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'
+            className='text-white bg-brand-600 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'
             onClick={() => fetchPosts(page + 1)}
           >
             Charger plus d'annonces +
@@ -768,7 +788,7 @@ export default function CarPostsFeed({
 
         <button
           onClick={scrollToSearch}
-          className='fixed bottom-[3%] right-[3%] lg:bottom-[80%] lg:right-[15%] p-3 bg-vividred text-white rounded-full shadow-lg hover:bg-blackopac2 transition'
+          className='fixed bottom-[3%] right-[3%] lg:bottom-[80%] lg:right-[15%] p-3 bg-brand-600 text-white rounded-full shadow-lg hover:bg-ink-950/70 transition'
         >
           <img
             src='/search.svg'

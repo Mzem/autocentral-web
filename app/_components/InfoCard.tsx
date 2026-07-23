@@ -10,7 +10,7 @@ export const InfoCard: React.FC<{
         {title && (
           <>
             <div className='font-bold'>{title}</div>
-            {value && <span className='text-titan mx-[2px]'>|</span>}
+            {value && <span className='text-white/70 mx-[2px]'>|</span>}
           </>
         )}
         {value && <div className=''>{value}</div>}

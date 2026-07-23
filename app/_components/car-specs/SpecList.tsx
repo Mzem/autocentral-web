@@ -82,12 +82,12 @@ const SpecList: React.FC<SpecListProps> = ({
             <div
               className={`w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] rounded-full ${
                 engine.note >= 8
-                  ? 'bg-greenopac'
+                  ? 'bg-success/30'
                   : engine.note <= 3
-                  ? 'bg-vividred'
+                  ? 'bg-brand-600'
                   : engine.note <= 6
-                  ? 'bg-rolexgoldopac'
-                  : 'bg-titanopac'
+                  ? 'bg-gold-600'
+                  : 'bg-white/20'
               }`}
             />
             <span
@@ -95,10 +95,10 @@ const SpecList: React.FC<SpecListProps> = ({
                 engine.note >= 8
                   ? 'text-green'
                   : engine.note <= 3
-                  ? 'text-vividred'
+                  ? 'text-brand-600'
                   : engine.note <= 6
-                  ? 'text-rolexgold'
-                  : 'text-blackopac2'
+                  ? 'text-gold-600'
+                  : 'text-ink-950/70'
               }`}
             >
               {engine.note >= 8
@@ -115,7 +115,7 @@ const SpecList: React.FC<SpecListProps> = ({
       )}
       {engine.id && isCarPost && (
         <Link
-          className='text-sm lg:text-base p-2 px-3 lg:px-6 flex items-center rounded-lg mx-auto hover:bg-titan text-white bg-black bg-opacity-90 transition duration-300 ease-in-out font-semibold'
+          className='text-sm lg:text-base p-2 px-3 lg:px-6 flex items-center rounded-lg mx-auto hover:bg-ink-800 text-white bg-black bg-opacity-90 transition duration-300 ease-in-out font-semibold'
           href={`/fiche-technique/motorisation/${engine.id}`}
         >
           <img
@@ -128,12 +128,12 @@ const SpecList: React.FC<SpecListProps> = ({
       )}
 
       {isCarPost && (
-        <p className='text-sm text-blackopac2 italic mt-2 lg:mt-4'>
+        <p className='text-sm text-ink-950/70 italic mt-2 lg:mt-4'>
           Les informations sont données à titre indicatif, veuillez vous référer
           au vendeur.
         </p>
       )}
-      <hr className='text-titan w-full' />
+      <hr className='text-white/70 w-full' />
     </div>
   )
 }

@@ -92,137 +92,137 @@ function CarPostUpdateModal(
         <h2 className='text-xl font-semibold mb-1'>Modifier</h2>
         <form onSubmit={handleSubmit} className=''>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Kilométrage</label>
+            <label className='block text-white/70'>Kilométrage</label>
             <input
               type='number'
               name='km'
               value={formData.km}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Année</label>
+            <label className='block text-white/70'>Année</label>
             <input
               type='number'
               name='year'
               value={formData.year}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Prix</label>
+            <label className='block text-white/70'>Prix</label>
             <input
               type='number'
               name='price'
               value={formData.price}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Estimation</label>
+            <label className='block text-white/70'>Estimation</label>
             <input
               type='number'
               name='estimation'
               value={formData.estimation}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Titre</label>
+            <label className='block text-white/70'>Titre</label>
             <input
               type='text'
               name='title'
               value={formData.title}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Marque</label>
+            <label className='block text-white/70'>Marque</label>
             <input
               type='text'
               name='make'
               value={formData.make}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-vividred'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-brand-600'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Modèle</label>
+            <label className='block text-white/70'>Modèle</label>
             <input
               type='text'
               name='model'
               value={formData.model}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Cylindrée</label>
+            <label className='block text-white/70'>Cylindrée</label>
             <input
               type='text'
               name='cylinder'
               value={formData.cylinder}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Carburant</label>
+            <label className='block text-white/70'>Carburant</label>
             <input
               type='text'
               name='fuel'
               value={formData.fuel}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Boite</label>
+            <label className='block text-white/70'>Boite</label>
             <input
               type='text'
               name='gearbox'
               value={formData.gearbox}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Featured</label>
+            <label className='block text-white/70'>Featured</label>
             <input
               type='text'
               name='isFeatured'
               value={formData.isFeatured}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex mb-[2px] justify-between'>
-            <label className='block text-titan'>Clé</label>
+            <label className='block text-white/70'>Clé</label>
             <input
               type='text'
               name='authKey'
               value={formData.authKey}
               onChange={handleChange}
-              className='px-3 py-0 border border-titan rounded focus:outline-none focus:ring focus:ring-red'
+              className='px-3 py-0 border border-white/30 rounded focus:outline-none focus:ring focus:ring-red'
             />
           </div>
           <div className='flex justify-end space-x-4 items-center mt-2'>
-            {!success && <p className='text-vividred'>Erreur</p>}
+            {!success && <p className='text-brand-600'>Erreur</p>}
             <button
               type='button'
               onClick={() => onClose(false)}
-              className='px-4 py-0 bg-black text-titan rounded-lg hover:bg-red'
+              className='px-4 py-0 bg-black text-white/70 rounded-lg hover:bg-red'
             >
               Cancel
             </button>
             <button
               type='submit'
-              className='px-4 py-0 text-white rounded-lg bg-vividred hover:bg-titan'
+              className='px-4 py-0 text-white rounded-lg bg-brand-600 hover:bg-brand-500'
             >
               Save
             </button>

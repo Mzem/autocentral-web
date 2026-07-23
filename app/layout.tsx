@@ -188,13 +188,13 @@ export default function RootLayout({
         ></script>
       </head>
 
-      <body className='flex flex-col min-h-screen bg-blackopac'>
+      <body className='flex flex-col min-h-screen bg-ink-950'>
         <Header />
-        <main className='flex-grow bg-whiteBG'>
-          <div className='w-[98%] lg:w-3/5 mx-auto mb-10 mt-4 lg:mt-12'>
+        <main className='flex-grow bg-ink-50'>
+          <div className='w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl mx-auto mb-10 mt-4 lg:mt-10'>
             {children}
           </div>
-          <div className='rounded w-full mb-4 w-[98%] lg:w-3/5 mx-auto '>
+          <div className='rounded w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl mb-4 mx-auto'>
             <BottomAd />
           </div>
         </main>

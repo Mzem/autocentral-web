@@ -51,7 +51,7 @@ export default function MinMaxSelector({
               setMinValue(input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))
             }
           }}
-          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black mr-1 p-1 text-right max-h-6 mb-0 mt-0 bg-whiteBG'
+          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black mr-1 p-1 text-right max-h-6 mb-0 mt-0 bg-ink-50'
         />
 
         <input
@@ -77,7 +77,7 @@ export default function MinMaxSelector({
               setMaxValue(input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'))
             }
           }}
-          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black p-1 text-right max-h-6 mb-0 mt-0 bg-whiteBG'
+          className='rounded xs:w-24 w-28 lg:w-20 xl:w-28 h-6 text-black p-1 text-right max-h-6 mb-0 mt-0 bg-ink-50'
         />
       </div>
     </div>

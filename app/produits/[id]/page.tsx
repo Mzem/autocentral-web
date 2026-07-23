@@ -27,11 +27,11 @@ export default async function Produit({ params }: { params: { id: string } }) {
           <p>Non trouvé(e)</p>
           <Link
             href='/'
-            className='bg-blackopac shadow px-8 rounded-xl mt-6 text-white italic text-base'
+            className='bg-ink-950 shadow px-8 rounded-xl mt-6 text-white italic text-base'
           >
             <img src='/logo.svg' alt='' className='h-20' />
           </Link>
-          <span className='text-blackopac2 italic text-sm mt-4'>
+          <span className='text-ink-950/70 italic text-sm mt-4'>
             Rechercher une voiture d'occasion
           </span>
         </div>

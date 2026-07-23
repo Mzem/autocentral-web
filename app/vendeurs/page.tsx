@@ -27,7 +27,7 @@ export default async function Merchants() {
       </div>
       <a
         href={`https://m.me/autocentral.tn?text=Je%20suis%20un%20vendeur%20PRO%20et%20je%20veux%20avoir%20une%20page%20web%20sur%20autocentral`}
-        className='w-auto mt-2 rounded-lg bg-blackopac2 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
+        className='w-auto mt-2 rounded-lg bg-ink-950/70 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
       >
         <p>Pour créer votre page, veuillez nous contacter</p>
         <img
@@ -42,7 +42,7 @@ export default async function Merchants() {
           <Link
             key={merchant.id}
             href={`/${merchant.id}`}
-            className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-xs lg:text-sm text-blacklight'
+            className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-white/20 hover:bg-ink-100 text-xs lg:text-sm text-ink-800'
           >
             <div className='flex flex-row space-x-2 lg:space-x-4 items-center'>
               {merchant.avatar && (
@@ -71,7 +71,7 @@ export default async function Merchants() {
                   />
                   <span>{merchant.regionName}</span>
 
-                  <span className='text-titan mx-2'>|</span>
+                  <span className='text-white/70 mx-2'>|</span>
                   <img
                     src='/speed.svg'
                     alt='Annonces'

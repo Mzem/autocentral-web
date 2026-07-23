@@ -61,7 +61,7 @@ export const MerchItems = ({ merchItems }: { merchItems: MerchItem[] }) => {
                     setSelectedPostId(item.id)
                     window.history.pushState(null, '', `/produits/${item.id}`)
                   }}
-                  className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-whiteopac hover:bg-whiteBGDarker text-sm lg:text-base text-blacklight'
+                  className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-white/20 hover:bg-ink-100 text-sm lg:text-base text-ink-800'
                 >
                   <div className='flex flex-row space-x-2 lg:space-x-4'>
                     <img
@@ -80,7 +80,7 @@ export const MerchItems = ({ merchItems }: { merchItems: MerchItem[] }) => {
                           {item.price ? `${item.price} DT` : 'Prix N.C'}
                         </span>
 
-                        <span className='italic text-blackopac2 text-xs lg:text-sm'>
+                        <span className='italic text-ink-950/70 text-xs lg:text-sm'>
                           {item.inStock ? 'En stock' : 'Rupture de stock'}
                         </span>
                       </div>

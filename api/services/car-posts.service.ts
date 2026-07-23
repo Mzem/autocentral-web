@@ -28,6 +28,7 @@ export interface CarPostListItem {
   exchange: boolean
   leasing: boolean
   firstOwner: boolean
+  isExpired: boolean | undefined
 }
 
 export interface CarPost {
@@ -77,6 +78,8 @@ export interface CarPost {
   firstOwner: boolean | undefined
   options: string[] | undefined
   whatsapp: string | undefined
+  isExpired: boolean | undefined
+  similar: CarPostListItem[] | undefined
 }
 
 export interface GetCarPostsFilters {
@@ -174,6 +177,22 @@ export async function getFeaturedCarPosts(): Promise<CarPostListItem[]> {
   } catch (e) {
     console.error('GET featured car posts error')
     throw e
+  }
+}
+
+export async function getSimilarCarPosts(
+  id: string
+): Promise<CarPostListItem[]> {
+  try {
+    const { content } = await apiGet<CarPostListItem[]>(
+      `car-posts/${id}/similar`,
+      300
+    )
+    return content
+  } catch (e) {
+    // A missing "similar cars" block must never break the listing page.
+    console.error('GET similar car posts error')
+    return []
   }
 }
 

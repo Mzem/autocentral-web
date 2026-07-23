@@ -63,10 +63,10 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
         {showReprog && (
           <table className='mb-12 text-sm lg:text-l font-bold mt-6 text-center lg:w-3/4 mx-auto border-collapse overflow-hidden shadow-lg rounded-lg'>
             <thead>
-              <tr className='bg-blackopac text-white text-base lg:text-lg'>
+              <tr className='bg-ink-950 text-white text-base lg:text-lg'>
                 <th className='p-2 lg:p-3 lg:p-4'></th>
                 <th className='border-b-4 p-2 lg:p-3 lg:p-4'>Origine</th>
-                <th className='border-b-4 p-2 lg:p-3 lg:p-4 text-vividred'>
+                <th className='border-b-4 p-2 lg:p-3 lg:p-4 text-brand-600'>
                   MAX
                 </th>
                 <th className='border-b-4 p-2 lg:p-3 lg:p-4 text-gold'>
@@ -75,24 +75,24 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
               </tr>
             </thead>
             <tbody className='lg:text-lg'>
-              <tr className='bg-whiteopac hover:bg-blackopac2 transition-colors duration-200'>
+              <tr className='bg-white/20 hover:bg-ink-950/70 transition-colors duration-200'>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>Puissance</td>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>
                   {carModel.hp} ch
                 </td>
-                <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-vividred'>
+                <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-brand-600'>
                   {carModel.hpStage1} ch
                 </td>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-gold'>
                   + {hpGain} ch
                 </td>
               </tr>
-              <tr className='bg-whiteBGDarker hover:bg-blackopac2 transition-colors duration-200'>
+              <tr className='bg-ink-100 hover:bg-ink-950/70 transition-colors duration-200'>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>Couple</td>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>
                   {carModel.torque} Nm
                 </td>
-                <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-vividred'>
+                <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-brand-600'>
                   {carModel.torqueStage1} Nm
                 </td>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4 text-gold'>

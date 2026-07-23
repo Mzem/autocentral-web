@@ -48,7 +48,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center invert'>
       <div
         ref={modalRef}
-        className='bg-black p-8 border border-whiteopac rounded-lg w-5/6 lg:w-1/3 h-3/4 overflow-y-scroll text-white'
+        className='bg-black p-8 border border-white/20 rounded-lg w-5/6 lg:w-1/3 h-3/4 overflow-y-scroll text-white'
       >
         <div className='flex items-center justify-between mb-4'>
           <h2 className='text-2xl'>{model.modelName}</h2>
@@ -65,10 +65,10 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                 <div
                   className={`rounded ${
                     selectedYear === modelYear.year
-                      ? 'bg-whiteopac3'
+                      ? 'bg-white/5'
                       : index % 2 === 0
-                      ? 'bg-whiteopac2'
-                      : 'bg-whiteopac3'
+                      ? 'bg-white/10'
+                      : 'bg-white/5'
                   }`}
                 >
                   <button
@@ -77,7 +77,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                         selectedYear === modelYear.year ? null : modelYear.year
                       )
                     }
-                    className={`hover:bg-whiteopac flex flex-row w-full space-x-2 font-bold items-center rounded`}
+                    className={`hover:bg-white/20 flex flex-row w-full space-x-2 font-bold items-center rounded`}
                   >
                     {selectedYear !== modelYear.year && (
                       <img src='/arrow_next.svg' className='h-4 mr-2' />
@@ -87,7 +87,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                     )}
                     <span className='min-w-10'>{modelYear.year}</span>
                     {modelYear.engines[0]?.type && (
-                      <span className='text-titan'>
+                      <span className='text-white/70'>
                         {modelYear.engines[0].type}
                       </span>
                     )}
@@ -96,7 +96,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                   {selectedYear === modelYear.year && (
                     <ul className='mt-1 ml-8'>
                       {Object.keys(groupedEngines).map((fuel) => (
-                        <li key={fuel} className='text-whiteBG font-bold'>
+                        <li key={fuel} className='text-ink-50 font-bold'>
                           <p className='text-orange'>{fuel}</p>
                           <ul className='mb-1 text-sm'>
                             {groupedEngines[fuel].map((engine: any) => (
@@ -106,7 +106,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                               >
                                 <li
                                   key={engine.id}
-                                  className='mt-1 flex justify-between w-[94%] bg-blackopac rounded'
+                                  className='mt-1 flex justify-between w-[94%] bg-ink-950 rounded'
                                 >
                                   <span>{engine.engineName}</span>
                                   <span>{engine.hp} ch</span>
