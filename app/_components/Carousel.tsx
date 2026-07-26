@@ -70,7 +70,7 @@ export const Carousel: React.FC<{
           </div>
         )}
         {erroredSrcs.has(images[currentIndex]) ? (
-          <div className='mx-auto flex h-64 flex-col items-center justify-center gap-1.5 rounded-lg bg-ink-100 text-ink-400'>
+          <div className='mx-auto flex h-64 flex-col items-center justify-center gap-1.5 rounded-lg bg-surface-raised text-ink-400'>
             <svg
               viewBox='0 0 24 24'
               fill='none'
@@ -106,7 +106,7 @@ export const Carousel: React.FC<{
         )}
       </div>
       {!noCaption && (
-        <span className='text-[0.7rem] italic text-ink-950/70 mx-auto w-full flex justify-around mt-[2px]'>
+        <span className='text-[0.7rem] italic text-white/55 mx-auto w-full flex justify-around mt-[2px]'>
           Cliquer sur l'image pour l'agrandir
         </span>
       )}

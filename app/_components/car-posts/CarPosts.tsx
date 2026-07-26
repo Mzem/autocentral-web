@@ -208,8 +208,8 @@ export default function CarPostsFeed({
     return (
       <div
         key={post.id}
-        className={`group justify-between w-full flex items-center mt-3 overflow-hidden rounded-xl text-xs lg:text-base xs:text-[0.7rem] text-ink-800 h-[8rem] lg:h-[10rem] bg-white ring-1 ring-ink-100 shadow-card transition-all duration-300 hover:shadow-card-hover hover:ring-ink-200 ${
-          featured ? 'ring-gold-300 hover:ring-gold-400' : ''
+        className={`group justify-between w-full flex items-center mt-3 overflow-hidden rounded-xl text-xs lg:text-base xs:text-[0.7rem] text-ink-200 h-[8rem] lg:h-[10rem] bg-surface ring-1 ring-white/10 shadow-card transition-all duration-300 hover:shadow-card-hover hover:ring-white/15 ${
+          featured ? 'ring-brand-500/40 hover:ring-brand-500/60' : ''
         }`}
       >
         <button
@@ -219,7 +219,7 @@ export default function CarPostsFeed({
           }}
           className='flex flex-row w-4/5 space-x-2 lg:space-x-4 items-center'
         >
-          <div className='relative overflow-hidden flex-shrink-0 w-28 lg:w-40 h-[8rem] lg:h-[10rem] bg-ink-100'>
+          <div className='relative overflow-hidden flex-shrink-0 w-28 lg:w-40 h-[8rem] lg:h-[10rem] bg-surface-raised'>
             <CarImage
               src={post.image}
               alt={post.title}
@@ -254,7 +254,7 @@ export default function CarPostsFeed({
                     ? post.estimatedPrice.color === 'GREEN'
                       ? 'text-success mt-1'
                       : post.estimatedPrice.color === 'RED'
-                      ? 'text-gold-600 mt-0'
+                      ? 'text-danger mt-0'
                       : 'mt-1'
                     : 'mt-1'
                 }`}
@@ -287,8 +287,8 @@ export default function CarPostsFeed({
                       post.estimatedPrice.color === 'GREEN'
                         ? 'text-success'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'text-gold-600'
-                        : 'text-ink-500'
+                        ? 'text-danger'
+                        : 'text-ink-400'
                     }`}
                   >
                     {post.estimatedPrice.text}
@@ -678,11 +678,11 @@ export default function CarPostsFeed({
         <img src='/estim_down.svg' alt='estimation haute' className='h-6 w-6' />
         <img src='/estim_ok.svg' alt='estimation haute' className='h-6 w-6' />
         <img src='/estim_up.svg' alt='estimation haute' className='h-6 w-6' />
-        <span className='text-black text-opacity-80 italic lg:text-base text-xs'>
+        <span className='text-white text-opacity-80 italic lg:text-base text-xs'>
           Prix par rapport à la moyenne du marché
         </span>
       </div>
-      <div ref={searchDivRef} className='w-full mx-auto text-black'>
+      <div ref={searchDivRef} className='w-full mx-auto text-white'>
         {featuredPosts && featuredPosts.length > 0 && (
           <>
             <FeaturedCarPosts
@@ -746,7 +746,7 @@ export default function CarPostsFeed({
                       <img
                         src={`/car-makes/${fromNameToId(postsByMake.make)}.svg`}
                         alt={postsByMake.make}
-                        className='h-8'
+                        className='h-8 object-contain brightness-0 invert opacity-80'
                       />
                     )}
                     <h2>{postsByMake.make ?? ''}</h2>

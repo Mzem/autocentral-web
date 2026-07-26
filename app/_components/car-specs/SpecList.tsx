@@ -86,7 +86,7 @@ const SpecList: React.FC<SpecListProps> = ({
                   : engine.note <= 3
                   ? 'bg-brand-600'
                   : engine.note <= 6
-                  ? 'bg-gold-600'
+                  ? 'bg-warning'
                   : 'bg-white/20'
               }`}
             />
@@ -97,8 +97,8 @@ const SpecList: React.FC<SpecListProps> = ({
                   : engine.note <= 3
                   ? 'text-brand-600'
                   : engine.note <= 6
-                  ? 'text-gold-600'
-                  : 'text-ink-950/70'
+                  ? 'text-warning'
+                  : 'text-white/55'
               }`}
             >
               {engine.note >= 8
@@ -128,7 +128,7 @@ const SpecList: React.FC<SpecListProps> = ({
       )}
 
       {isCarPost && (
-        <p className='text-sm text-ink-950/70 italic mt-2 lg:mt-4'>
+        <p className='text-sm text-white/55 italic mt-2 lg:mt-4'>
           Les informations sont données à titre indicatif, veuillez vous référer
           au vendeur.
         </p>

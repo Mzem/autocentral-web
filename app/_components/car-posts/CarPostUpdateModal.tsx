@@ -88,7 +88,7 @@ function CarPostUpdateModal(
       ref={ref}
       className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'
     >
-      <div className='bg-white w-full max-w-md p-6 rounded-lg shadow-lg'>
+      <div className='bg-surface w-full max-w-md p-6 rounded-lg shadow-lg'>
         <h2 className='text-xl font-semibold mb-1'>Modifier</h2>
         <form onSubmit={handleSubmit} className=''>
           <div className='flex mb-[2px] justify-between'>

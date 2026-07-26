@@ -161,7 +161,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
 
             <div className='shadow-lg rounded-lg mt-1 p-2 lg:p-6 lg:flex lg:justify-around'>
               {item.description && (
-                <div className='mt-4 lg:mt-0 bg-ink-50 rounded-lg shadow p-2'>
+                <div className='mt-4 lg:mt-0 bg-surface-sunken rounded-lg shadow p-2'>
                   <p className='text-sm lg:text-base lg:max-w-[600px]'>
                     {item.description.split('\n').map((line, index) => (
                       <span key={index}>
@@ -184,12 +184,12 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
   }
 
   return (
-    <div className='text-black'>
+    <div className='text-white'>
       {!isFull && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-ink-50 p-2 lg:p-4 border border-ink-200 rounded w-[98%] lg:w-7/12 h-[76%] overflow-y-scroll'
+            className='bg-surface-sunken p-2 lg:p-4 border border-white/10 rounded w-[98%] lg:w-7/12 h-[76%] overflow-y-scroll'
           >
             <Details />
           </div>

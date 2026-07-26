@@ -63,25 +63,25 @@ export default async function Home({
         </div>
       )}
       {isTransactionKO && (
-        <div className='rounded-xl bg-brand-50 ring-1 ring-brand-200 font-semibold text-brand-700 text-center py-3 px-4 mb-4'>
+        <div className='rounded-xl bg-danger/10 ring-1 ring-danger/30 font-semibold text-danger text-center py-3 px-4 mb-4'>
           ❌ Votre paiement a échoué ! Veuillez réessayer ou prendre contact
           avec notre équipe.
         </div>
       )}
       <div className='text-center mt-4 lg:mt-10 mb-5 lg:mb-8'>
-        <h1 className='text-balance text-xl sm:text-2xl lg:text-4xl font-extrabold text-ink-950 leading-tight'>
+        <h1 className='text-balance text-xl sm:text-2xl lg:text-4xl font-extrabold text-white leading-tight'>
           1<sup className='text-[0.6em] font-bold'>er</sup> moteur de recherche{' '}
           <br className='lg:hidden' />
           de voitures d&apos;occasion en{' '}
           <span className='text-brand-600'>Tunisie</span>
         </h1>
-        <p className='mt-3 lg:mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs lg:text-sm text-ink-600 shadow-card ring-1 ring-ink-100'>
+        <p className='mt-3 lg:mt-4 inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-xs lg:text-sm text-ink-400 shadow-card ring-1 ring-white/10'>
           <span
             aria-hidden='true'
             className='h-2 w-2 rounded-full bg-success'
           />
           <span>
-            <span className='font-bold text-ink-950'>+{getDailyCount()}</span>{' '}
+            <span className='font-bold text-white'>+{getDailyCount()}</span>{' '}
             nouvelles annonces aujourd&apos;hui
           </span>
         </p>
@@ -103,14 +103,14 @@ export default async function Home({
             className='h-4 rounded-full'
           />
         </div> */}
-        {/* <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-black text-opacity-55'>
+        {/* <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-white text-opacity-55'>
           <p className='mb-[0.1rem] italic'>
             Ce service gratuit me coute du temps et de l'argent
           </p>
           <a
             href='https://gateway.konnect.network/me/malekautocentral'
             target='_blank'
-            className='rounded-lg px-[8px] py-[2px] text-black shadow-md shadow-ink-200  hover:bg-whiteoapc2 bg-white hover:bg-brand-50 font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
+            className='rounded-lg px-[8px] py-[2px] text-white shadow-md shadow-black/40  hover:bg-whiteoapc2 bg-surface hover:bg-brand-50 font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
           >
             <img src='/hand.svg' className='h-4' alt='Don' />
             <span>Faire un don pour me soutenir</span>

@@ -37,7 +37,7 @@ export default function ShareButton() {
         className={`h-6 lg:h-10 ${copySuccess ? 'hidden' : ''}`}
       />
       {copySuccess && (
-        <span className='italic text-[0.55rem] lg:text-[0.94rem] text-ink-950'>
+        <span className='italic text-[0.55rem] lg:text-[0.94rem] text-white'>
           Copié
         </span>
       )}

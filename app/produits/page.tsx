@@ -15,7 +15,7 @@ export default async function Merchants() {
 
   return (
     <>
-      <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px] mb-8'>
+      <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-white flex items-center space-x-2 ml-[2px] mb-8'>
         <p>Boutique & Produits dérivés</p>
         <img src='/race_flag.svg' className='h-4 lg:h-5 invert' />
       </div>

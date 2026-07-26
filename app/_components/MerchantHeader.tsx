@@ -9,7 +9,7 @@ type MerchantHeaderProps = {
 
 function MerchantHeader({ merchant }: MerchantHeaderProps) {
   return (
-    <div className='flex flex-col  space-y-4 mt-2 mx-auto justify-between text-black'>
+    <div className='flex flex-col  space-y-4 mt-2 mx-auto justify-between text-white'>
       {/* Logo and Shop Name */}
       <div className='flex flex-row items-center justify-between'>
         <div className='flex space-x-4 items-center'>

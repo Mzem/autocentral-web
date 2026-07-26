@@ -21,12 +21,13 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
   const showReprog = hpGain && torqueGain
 
   return (
-    <div className='text-black'>
+    <div className='text-white'>
       <div className='flex flex-row items-center justify-start space-x-3 lg:space-x-20'>
         <Link href={`/fiche-technique/${carModel.make.id}`}>
           <img
             src={`/car-makes/${carModel.make.id}.svg`}
-            className='h-14 w-14 lg:h-20 lg:w-20'
+            alt={carModel.make.name}
+            className='h-14 w-14 lg:h-20 lg:w-20 object-contain brightness-0 invert opacity-80'
           />
         </Link>
         <Link
@@ -87,7 +88,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
                   + {hpGain} ch
                 </td>
               </tr>
-              <tr className='bg-ink-100 hover:bg-ink-950/70 transition-colors duration-200'>
+              <tr className='bg-surface-raised hover:bg-ink-950/70 transition-colors duration-200'>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>Couple</td>
                 <td className='border-b-2 p-2 lg:p-3 lg:p-4'>
                   {carModel.torque} Nm

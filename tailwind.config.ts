@@ -1,12 +1,12 @@
 import type { Config } from 'tailwindcss'
 
 /**
- * Design system.
+ * Design system — dark, sober (Tunisian Cars brand direction).
  *
- * `brand` / `ink` / `gold` are the modern scales used by the redesigned
- * surfaces. Every legacy colour key below is intentionally kept: Tailwind only
- * generates classes it actually finds in the source, so removing a key would
- * silently break the components still referencing it rather than failing loudly.
+ * Near-black base, white text, a single restrained steel-blue accent (`brand`,
+ * taken from the logo but desaturated to stay sober), thin white/10 borders.
+ * `surface` holds the card backgrounds that sit on the near-black body.
+ * Legacy colour keys are kept so any component still referencing them renders.
  */
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -15,20 +15,27 @@ const config: Config = {
       transparent: 'transparent',
       current: 'currentColor',
 
-      // ---- modern palette -------------------------------------------------
+      // ---- accent: sober steel blue (was red) -----------------------------
       brand: {
-        50: '#fff1f1',
-        100: '#ffdfdf',
-        200: '#ffc5c5',
-        300: '#ff9d9d',
-        400: '#fb6464',
-        500: '#ef3535',
-        600: '#dc1c1c',
-        700: '#b91414',
-        800: '#991616',
-        900: '#7f1919',
-        950: '#450808',
-        DEFAULT: '#dc1c1c'
+        50: '#eef6fb',
+        100: '#d6e9f4',
+        200: '#aed3e8',
+        300: '#7cb6d6',
+        400: '#4f97bf',
+        500: '#3585ac',
+        600: '#2b6d8e',
+        700: '#265a76',
+        800: '#254c63',
+        900: '#223f53',
+        950: '#132735',
+        DEFAULT: '#3585ac'
+      },
+      // ---- card/panel backgrounds on the near-black body ------------------
+      surface: {
+        DEFAULT: '#16181e',
+        raised: '#1e212a',
+        sunken: '#0b0c10',
+        border: '#262a33'
       },
       ink: {
         50: '#f6f7f9',
@@ -41,8 +48,8 @@ const config: Config = {
         700: '#424d63',
         800: '#3a4253',
         900: '#343a47',
-        950: '#0f1218',
-        DEFAULT: '#0f1218'
+        950: '#0d0f14',
+        DEFAULT: '#0d0f14'
       },
       gold: {
         50: '#fbf8ef',
@@ -111,11 +118,9 @@ const config: Config = {
         '3xl': '1.5rem'
       },
       boxShadow: {
-        card: '0 1px 2px rgba(15,18,24,0.04), 0 4px 16px rgba(15,18,24,0.06)',
-        'card-hover':
-          '0 2px 4px rgba(15,18,24,0.06), 0 12px 32px rgba(15,18,24,0.12)',
-        featured:
-          '0 2px 8px rgba(180,20,20,0.10), 0 16px 48px rgba(15,18,24,0.16)'
+        card: '0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35)',
+        'card-hover': '0 2px 6px rgba(0,0,0,0.5), 0 18px 48px rgba(0,0,0,0.55)',
+        featured: '0 0 0 1px rgba(53,133,172,0.25), 0 24px 60px rgba(0,0,0,0.6)'
       },
       keyframes: {
         'fade-in-up': {

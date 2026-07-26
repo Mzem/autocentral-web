@@ -16,11 +16,12 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
   const [selectedModel, setSelectedModel] = useState<ModelListItem | null>(null)
 
   return (
-    <div className='lg:h-screen text-black'>
+    <div className='lg:h-screen text-white'>
       <div className='flex flex-row items-center justify-between space-x-8 lg:space-x-20'>
         <img
           src={`/car-makes/${modelsByMake.make.id}.svg`}
-          className='h-20 w-20'
+          alt={modelsByMake.make.name}
+          className='h-20 w-20 object-contain brightness-0 invert opacity-80'
         />
         <p className='text-xl lg:text-3xl flex-grow'>
           {modelsByMake.make.name}
@@ -34,17 +35,17 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
       </div>
 
       {/* The ul with wrapping horizontally */}
-      <ul className='flex flex-col flex-wrap lg:max-h-[79%] mt-8 text-xl shadow rounded-lg p-3 bg-white'>
+      <ul className='flex flex-col flex-wrap lg:max-h-[79%] mt-8 text-xl shadow rounded-lg p-3 bg-surface'>
         {modelsByMake.models.map((model: ModelListItem, index: number) => (
           <li
             key={model.modelName}
             className={`px-1 pt-1 m-[3px] rounded-lg hover:bg-white/20 ${
-              index % 2 === 0 ? 'bg-ink-100' : 'bg-ink-50'
+              index % 2 === 0 ? 'bg-surface-raised' : 'bg-surface-sunken'
             }`}
           >
             <button
               onClick={() => setSelectedModel(model)}
-              className='text-ink-950 flex items-center w-full text-left'
+              className='text-white flex items-center w-full text-left'
             >
               <img src='/arrow_next.svg' className='h-4 mr-2 invert' />
               {model.modelName}

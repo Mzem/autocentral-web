@@ -24,7 +24,7 @@ export default function CarImage({
       <div
         role='img'
         aria-label='Photo indisponible'
-        className={`flex flex-col items-center justify-center gap-1 bg-ink-100 text-ink-400 ${
+        className={`flex flex-col items-center justify-center gap-1 bg-surface-raised text-ink-400 ${
           className ?? ''
         }`}
       >

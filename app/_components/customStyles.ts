@@ -30,13 +30,13 @@ export const reactSelectFilterStyle = {
     state: { isFocused: boolean; isSelected: boolean }
   ) => ({
     ...base,
-    // ink-950 surface with a lighter hover/selected state, matching the
-    // dark filter panel the selects sit in.
+    // Raised dark popover with a steel selected state and a lighter hover,
+    // matching the sober dark filter panel the selects sit in.
     background: state.isSelected
-      ? '#dc1c1c'
+      ? '#2b6d8e'
       : state.isFocused
-      ? '#343a47'
-      : '#0f1218',
+      ? '#2b3040'
+      : 'transparent',
     color: '#ffffff',
     cursor: 'pointer',
     padding: '8px 10px',
@@ -50,9 +50,9 @@ export const reactSelectFilterStyle = {
     marginTop: '4px',
     overflow: 'hidden',
     borderRadius: '12px',
-    border: '1px solid rgba(255,255,255,0.1)',
-    background: '#0f1218',
-    boxShadow: '0 12px 32px rgba(15,18,24,0.45)'
+    border: '1px solid rgba(255,255,255,0.12)',
+    background: '#1e212a',
+    boxShadow: '0 18px 48px rgba(0,0,0,0.55)'
   }),
   menuList: (base: object) => ({
     ...base,

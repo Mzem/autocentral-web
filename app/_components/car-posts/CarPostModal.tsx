@@ -213,7 +213,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
           <div>
             <div className={`flex justify-between mb-4 items-start `}>
               <button
-                className='text-ink-50 cursor-none'
+                className='text-white cursor-none'
                 onClick={() => {
                   setShowModalUpdate(true)
                 }}
@@ -267,7 +267,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                           post.estimatedPrice.color === 'GREEN'
                             ? 'text-green'
                             : post.estimatedPrice.color === 'RED'
-                            ? 'text-gold-600'
+                            ? 'text-danger'
                             : ''
                         }`
                       : ''
@@ -296,7 +296,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                       post.estimatedPrice.color === 'GREEN'
                         ? 'bg-success/30'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'bg-gold-600'
+                        ? 'bg-danger'
                         : 'bg-white/20'
                     }`}
                   />
@@ -305,8 +305,8 @@ const CarPostModal: React.FC<PostModalProps> = ({
                       post.estimatedPrice.color === 'GREEN'
                         ? 'text-green'
                         : post.estimatedPrice.color === 'RED'
-                        ? 'text-gold-600'
-                        : 'text-ink-950/70'
+                        ? 'text-danger'
+                        : 'text-white/55'
                     }`}
                   >
                     {post.estimatedPrice.text}
@@ -317,11 +317,11 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {!showIA && post.carEngine && (
               <button
-                className='text-sm lg:text-base px-3 py-[0.5rem] flex space-x-2 items-center rounded-lg mx-auto shadow-md shadow-ink-200 bg-white border-brand-600 font-medium lg:my-6'
+                className='text-sm lg:text-base px-3 py-[0.5rem] flex space-x-2 items-center rounded-lg mx-auto shadow-md shadow-black/40 bg-surface border-brand-600 font-medium lg:my-6'
                 onClick={() => setShowIA(true)}
               >
                 <img src='/hand.svg' className='h-5' alt='Rapport technique' />
-                <span className='text-black font-semibold'>
+                <span className='text-white font-semibold'>
                   Voir le rapport
                 </span>
                 <img
@@ -405,7 +405,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                 (post.options && post.options.length > 0)) && (
                 <div className='flex flex-col space-y-6'>
                   {post.description && (
-                    <div className='mt-4 lg:mt-0 bg-ink-50 rounded-lg shadow p-2'>
+                    <div className='mt-4 lg:mt-0 bg-surface-sunken rounded-lg shadow p-2'>
                       <p className='text-sm lg:text-base lg:max-w-[600px]'>
                         {post.description.split('\n').map((line, index) => (
                           <span key={index}>
@@ -427,7 +427,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                       {post.options.map((option, index) => (
                         <span
                           className={`${
-                            index % 2 === 0 ? 'bg-ink-100' : 'bg-white'
+                            index % 2 === 0 ? 'bg-surface-raised' : 'bg-surface'
                           } rounded py-1 px-2`}
                         >
                           {option}
@@ -451,12 +451,12 @@ const CarPostModal: React.FC<PostModalProps> = ({
   }
 
   return (
-    <div className='text-black'>
+    <div className='text-white'>
       {!isFull && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30'>
           <div
             ref={modalRef}
-            className='bg-ink-50 p-2 lg:p-4 border border-ink-200 rounded w-[98%] lg:w-7/12 h-[80%] overflow-y-scroll'
+            className='bg-surface-sunken p-2 lg:p-4 border border-white/10 rounded w-[98%] lg:w-7/12 h-[80%] overflow-y-scroll'
           >
             <PostDetails />
             <div className='rounded w-full mt-2 mx-auto'>

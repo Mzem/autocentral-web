@@ -17,7 +17,7 @@ export default async function Merchants() {
 
   return (
     <>
-      <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-black flex items-center space-x-2 ml-[2px]'>
+      <div className='text-center text-lg lg:text-2xl mt-9 lg:mt-20 text-white flex items-center space-x-2 ml-[2px]'>
         <p>Showrooms & Vendeurs PRO</p>
         <img
           src='/badge.svg'
@@ -37,12 +37,12 @@ export default async function Merchants() {
         />
       </a>
 
-      <div className='w-full mx-auto text-black'>
+      <div className='w-full mx-auto text-white'>
         {merchants.map((merchant) => (
           <Link
             key={merchant.id}
             href={`/${merchant.id}`}
-            className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-white/20 hover:bg-ink-100 text-xs lg:text-sm text-ink-800'
+            className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-white/20 hover:bg-surface-raised text-xs lg:text-sm text-ink-200'
           >
             <div className='flex flex-row space-x-2 lg:space-x-4 items-center'>
               {merchant.avatar && (

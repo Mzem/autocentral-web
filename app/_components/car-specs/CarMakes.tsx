@@ -26,7 +26,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
   )
 
   return (
-    <div className='mt-8 lg:mt-16 text-black'>
+    <div className='mt-8 lg:mt-16 text-white'>
       {carMakes.length > 0 && (
         <>
           <p className='text-left w-full text-xl lg:text-2xl'>
@@ -53,7 +53,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                   <img
                     src={`/car-makes/${carMake.id}.svg`}
                     alt={carMake.name}
-                    className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
+                    className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
                   />
                 </Link>
               ))}
@@ -74,7 +74,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                     <img
                       src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
+                      className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
                     />
                   </Link>
                 ))}
@@ -94,7 +94,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                     <img
                       src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain hover:opacity-60 transition-opacity'
+                      className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
                     />
                   </Link>
                 ))}

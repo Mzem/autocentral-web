@@ -7,7 +7,7 @@ import CarImage, { SoldBadge } from './CarImage'
 
 /**
  * The "à la une" showcase: a small, curated set of highlighted listings shown
- * above the feed with a distinct premium treatment (large visual, gold accent),
+ * above the feed with a distinct premium treatment (large visual, steel accent),
  * so they read as a selection rather than as ordinary feed rows.
  */
 
@@ -30,15 +30,15 @@ export default function FeaturedCarPosts({
       <header className='flex items-center gap-3 mb-3 lg:mb-5'>
         <span
           aria-hidden='true'
-          className='h-[1px] flex-1 bg-gradient-to-r from-transparent to-gold-300'
+          className='h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/20'
         />
-        <h2 className='flex items-center gap-2 text-xs lg:text-sm font-semibold uppercase tracking-[0.18em] text-ink-700'>
+        <h2 className='flex items-center gap-2 text-xs lg:text-sm font-semibold uppercase tracking-[0.18em] text-ink-300'>
           <img src='/badge.svg' alt='' aria-hidden='true' className='h-4 w-4' />
           À la une
         </h2>
         <span
           aria-hidden='true'
-          className='h-[1px] flex-1 bg-gradient-to-l from-transparent to-gold-300'
+          className='h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/20'
         />
       </header>
 
@@ -52,9 +52,9 @@ export default function FeaturedCarPosts({
             <button
               type='button'
               onClick={() => onSelect(post.id)}
-              className='group relative w-full text-left rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-featured ring-1 ring-ink-100 hover:ring-gold-300 transition-all duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500'
+              className='group relative w-full text-left rounded-2xl overflow-hidden bg-surface shadow-card hover:shadow-featured ring-1 ring-white/10 hover:ring-white/25 transition-all duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500'
             >
-              <div className='relative aspect-[16/10] overflow-hidden bg-ink-100'>
+              <div className='relative aspect-[16/10] overflow-hidden bg-surface-raised'>
                 <CarImage
                   src={post.image}
                   alt={post.title ?? `${post.make ?? ''} ${post.model ?? ''}`}
@@ -68,13 +68,13 @@ export default function FeaturedCarPosts({
                 {post.isExpired ? (
                   <SoldBadge className='absolute top-3 left-3' />
                 ) : (
-                  <span className='absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-gold-400/95 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-ink-950 shadow-sm'>
+                  <span className='absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-brand-600/95 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-white shadow-sm ring-1 ring-white/10'>
                     À la une
                   </span>
                 )}
 
                 {post.merchant?.isShop && (
-                  <span className='absolute top-3 right-3 rounded-full bg-white/90 px-2 py-1 text-[0.6rem] font-semibold text-ink-700'>
+                  <span className='absolute top-3 right-3 rounded-full bg-white/90 px-2 py-1 text-[0.6rem] font-semibold text-ink-300'>
                     Pro
                   </span>
                 )}
@@ -94,7 +94,7 @@ export default function FeaturedCarPosts({
 
               <div className='p-3 lg:p-4'>
                 <div className='flex items-baseline justify-between gap-2'>
-                  <span className='font-extrabold text-base lg:text-lg text-ink-950'>
+                  <span className='font-extrabold text-base lg:text-lg text-white'>
                     {post.price ? `${dotNumber(post.price)} DT` : 'Prix N.C.'}
                   </span>
                   {post.estimatedPrice && (
@@ -103,8 +103,8 @@ export default function FeaturedCarPosts({
                         post.estimatedPrice.color === 'GREEN'
                           ? 'bg-success/10 text-success'
                           : post.estimatedPrice.color === 'RED'
-                          ? 'bg-gold-100 text-gold-700'
-                          : 'bg-ink-100 text-ink-600'
+                          ? 'bg-danger/10 text-danger'
+                          : 'bg-surface-raised text-ink-400'
                       }`}
                     >
                       {post.estimatedPrice.text}
@@ -112,11 +112,11 @@ export default function FeaturedCarPosts({
                   )}
                 </div>
 
-                <dl className='mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.7rem] lg:text-xs text-ink-600'>
+                <dl className='mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.7rem] lg:text-xs text-ink-400'>
                   {post.km !== undefined && post.km !== null && (
                     <div className='flex items-center gap-1'>
                       <dt className='sr-only'>Kilométrage</dt>
-                      <dd className='font-semibold text-ink-800'>
+                      <dd className='font-semibold text-ink-200'>
                         {dotNumber(post.km)} km
                       </dd>
                     </div>
@@ -135,8 +135,8 @@ export default function FeaturedCarPosts({
                   )}
                 </dl>
 
-                <div className='mt-3 flex items-center justify-between border-t border-ink-100 pt-2.5'>
-                  <span className='truncate text-[0.65rem] lg:text-xs text-ink-500'>
+                <div className='mt-3 flex items-center justify-between border-t border-white/10 pt-2.5'>
+                  <span className='truncate text-[0.65rem] lg:text-xs text-ink-400'>
                     {post.region?.name}
                   </span>
                   <span className='shrink-0 text-[0.65rem] lg:text-xs font-semibold text-brand-600 group-hover:underline'>

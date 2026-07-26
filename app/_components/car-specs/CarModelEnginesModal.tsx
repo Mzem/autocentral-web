@@ -96,7 +96,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                   {selectedYear === modelYear.year && (
                     <ul className='mt-1 ml-8'>
                       {Object.keys(groupedEngines).map((fuel) => (
-                        <li key={fuel} className='text-ink-50 font-bold'>
+                        <li key={fuel} className='text-white font-bold'>
                           <p className='text-orange'>{fuel}</p>
                           <ul className='mb-1 text-sm'>
                             {groupedEngines[fuel].map((engine: any) => (

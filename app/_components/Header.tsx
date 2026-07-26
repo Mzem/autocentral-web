@@ -58,7 +58,7 @@ export default function Header() {
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <div className='bg-ink-50'>
+    <div className='bg-surface-sunken'>
       <div
         className={`w-full fixed z-30 border-b transition-all duration-300 ${
           isScrolled || isMenuOpen

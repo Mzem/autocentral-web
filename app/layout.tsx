@@ -188,9 +188,9 @@ export default function RootLayout({
         ></script>
       </head>
 
-      <body className='flex flex-col min-h-screen bg-ink-950'>
+      <body className='flex flex-col min-h-screen bg-ink-950 text-white'>
         <Header />
-        <main className='flex-grow bg-ink-50'>
+        <main className='flex-grow'>
           <div className='w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl mx-auto mb-10 mt-4 lg:mt-10'>
             {children}
           </div>
