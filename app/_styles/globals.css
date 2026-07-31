@@ -40,8 +40,8 @@
   --ink-950: #0d0f14;
   --surface: #16181e;
   --surface-sunken: #0b0c10;
-  --brand-500: #3585ac;
-  --brand-600: #2b6d8e;
+  --brand-500: #0081e3;
+  --brand-600: #006ec2;
   --gold-400: #d4af37;
 }
 
@@ -49,16 +49,17 @@ html {
   font-family: theme('fontFamily.sans');
   -webkit-text-size-adjust: 100%;
   color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
   color: var(--white);
-  /* Near-black base with a faint steel glow at the top, for a luxury feel. */
-  background-color: var(--ink-950);
+  /* Pure-black base with a faint Tunisian Cars blue glow at the top. */
+  background-color: #000000;
   background-image: radial-gradient(
     120% 60% at 50% -10%,
-    rgba(53, 133, 172, 0.08) 0%,
-    rgba(53, 133, 172, 0) 60%
+    rgba(0, 129, 227, 0.1) 0%,
+    rgba(0, 129, 227, 0) 60%
   );
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
@@ -74,7 +75,7 @@ h3 {
 
 /* Refined selection colour. */
 ::selection {
-  background: rgba(53, 133, 172, 0.35);
+  background: rgba(0, 129, 227, 0.35);
 }
 
 /* Slim dark scrollbars to match the theme. */

@@ -17,6 +17,10 @@
     "test:ci": "nyc --reporter=lcovonly mocha 'test/**/*.test.ts' --exit"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
     "@next/font": "^14.2.15",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",

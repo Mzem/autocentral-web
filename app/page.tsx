@@ -1,128 +1,164 @@
-import { DateTime } from 'luxon'
 import type { Metadata } from 'next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  getCarPosts,
-  getFeaturedCarPosts
-} from '../api/services/car-posts.service'
-import CarPostsFeed from './_components/car-posts/CarPosts'
-import { fromQueryParamsToGetCarPostsFilters } from './helpers'
+  faLocationDot,
+  faCar,
+  faArrowRight,
+  faGem,
+  faChevronDown
+} from '@fortawesome/free-solid-svg-icons'
+import { faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { getCarPosts, CarPostListItem } from '../api/services/car-posts.service'
+import { getPublicImages } from './_lib/media'
+import BackgroundCarousel from './_components/tunisiancars/BackgroundCarousel'
+import ShowroomCars from './_components/tunisiancars/ShowroomCars'
 
-function getDailyCount(): number {
-  const now = DateTime.local({ zone: 'UTC+1' }).toJSDate()
-  const hours = now.getHours()
-  const minutes = now.getMinutes()
+// The Tunisian Cars seller whose own listings power the showroom.
+const SHOWROOM_MERCHANT_ID = 'tunisian-cars'
+// "Récent" = published within this many days.
+const RECENT_DAYS = 60
 
-  // Calculate the progress of the day as a fraction (0 at midnight, 1 at 23:59)
-  const dayProgress = (hours * 60 + minutes) / (24 * 60)
-  let max = 30
-  if (hours >= 8) max = 50
-  if (hours >= 10) max = 300
-  if (hours >= 17) max = 500
-
-  // Return a number between 0 and max based on the progress of the day
-  return Math.floor(dayProgress * max)
+export const metadata: Metadata = {
+  alternates: { canonical: 'https://autocentral.tn' }
 }
 
-export async function generateMetadata({
-  searchParams
-}: {
-  searchParams: Record<string, string | string[] | undefined>
-}): Promise<Metadata> {
-  const q = typeof searchParams.q === 'string' ? searchParams.q : undefined
-
-  return {
-    alternates: {
-      canonical:
-        'https://autocentral.tn' + (q ? `/?q=${encodeURIComponent(q)}` : '')
-    }
+async function getShowroomPosts(): Promise<CarPostListItem[]> {
+  try {
+    // Single API call, as specified.
+    const posts = await getCarPosts({
+      page: 1,
+      merchantId: SHOWROOM_MERCHANT_ID
+    })
+    const cutoff = Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000
+    return posts
+      .filter((p) => {
+        const t = Date.parse(p.publishedAt)
+        return Number.isNaN(t) ? true : t >= cutoff
+      })
+      .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
+  } catch {
+    // API unreachable / merchant not created yet → clean empty state.
+    return []
   }
 }
 
-export default async function Home({
-  searchParams
-}: {
-  searchParams: Record<string, string | string[] | undefined>
-}) {
-  const filters = fromQueryParamsToGetCarPostsFilters(searchParams)
-  const posts = await getCarPosts(filters)
-  const featuredPosts =
-    JSON.stringify(searchParams) === '{}' ||
-    !JSON.stringify(searchParams).includes('page')
-      ? await getFeaturedCarPosts()
-      : undefined
-
-  const isTransactionOK = searchParams.transaction === 'ok'
-  const isTransactionKO = searchParams.transaction === 'ko'
+export default async function Home() {
+  const carouselImages = getPublicImages('tunisiancars/carousel')
+  const clubImages = getPublicImages('tunisiancars/club')
+  const showroomPosts = await getShowroomPosts()
 
   return (
     <>
-      {isTransactionOK && (
-        <div className='rounded-xl bg-success/10 ring-1 ring-success/30 font-semibold text-success text-center py-3 px-4 mb-4'>
-          🎉 Votre paiement est validé ! Nous allons mettre en avant votre
-          annonce sur le site et la partager sur nos réseaux sociaux.
-        </div>
-      )}
-      {isTransactionKO && (
-        <div className='rounded-xl bg-danger/10 ring-1 ring-danger/30 font-semibold text-danger text-center py-3 px-4 mb-4'>
-          ❌ Votre paiement a échoué ! Veuillez réessayer ou prendre contact
-          avec notre équipe.
-        </div>
-      )}
-      <div className='text-center mt-4 lg:mt-10 mb-5 lg:mb-8'>
-        <h1 className='text-balance text-xl sm:text-2xl lg:text-4xl font-extrabold text-white leading-tight'>
-          1<sup className='text-[0.6em] font-bold'>er</sup> moteur de recherche{' '}
-          <br className='lg:hidden' />
-          de voitures d&apos;occasion en{' '}
-          <span className='text-brand-600'>Tunisie</span>
-        </h1>
-        <p className='mt-3 lg:mt-4 inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-xs lg:text-sm text-ink-400 shadow-card ring-1 ring-white/10'>
-          <span
-            aria-hidden='true'
-            className='h-2 w-2 rounded-full bg-success'
-          />
-          <span>
-            <span className='font-bold text-white'>+{getDailyCount()}</span>{' '}
-            nouvelles annonces aujourd&apos;hui
-          </span>
-        </p>
-        {/* <div className='w-[20%] md:w-[5%] mx-auto justify-around flex items-center space-x-1 text-[0.7rem]'>
-          <img src='/tayara.jpg' alt='tayara.tn' className='h-4 rounded-full' />
-          <img
-            src='/automobiletn.png'
-            alt='automobile.tn'
-            className='h-4 rounded-full'
-          />
-          <img
-            src='/facebook.svg'
-            alt='facebook.com'
-            className='h-4 rounded-full'
-          />
-          <img
-            src='/instagram.svg'
-            alt='instagram.com'
-            className='h-4 rounded-full'
-          />
-        </div> */}
-        {/* <div className='text-xs lg:text-sm mt-2 lg:mt-4 text-white text-opacity-55'>
-          <p className='mb-[0.1rem] italic'>
-            Ce service gratuit me coute du temps et de l'argent
-          </p>
-          <a
-            href='https://gateway.konnect.network/me/malekautocentral'
-            target='_blank'
-            className='rounded-lg px-[8px] py-[2px] text-white shadow-md shadow-black/40  hover:bg-whiteoapc2 bg-surface hover:bg-brand-50 font-semibold flex items-center justify-center space-x-1 max-w-[230px] lg:max-w-[300px] mx-auto'
-          >
-            <img src='/hand.svg' className='h-4' alt='Don' />
-            <span>Faire un don pour me soutenir</span>
-          </a>
-        </div> */}
-      </div>
+      {/* ───────────── Écran 1 — Hero atelier + showroom ───────────── */}
+      <section className='relative flex min-h-[100svh] items-center overflow-hidden'>
+        <BackgroundCarousel
+          images={carouselImages}
+          overlayClassName='bg-gradient-to-b from-black/60 via-black/45 to-black/75'
+        />
 
-      <CarPostsFeed
-        initialPosts={posts}
-        featuredPosts={featuredPosts}
-        initialFilters={filters}
-      />
+        <div className='relative z-10 mx-auto w-[92%] xl:max-w-6xl py-28 lg:py-24'>
+          <h1 className='max-w-4xl text-balance text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl'>
+            L&apos;automobile d&apos;exception,{' '}
+            <span className='text-brand-500'>de A à Z.</span>
+          </h1>
+
+          <p className='mt-6 max-w-2xl text-pretty text-base leading-relaxed text-white/80 lg:text-lg'>
+            Un atelier de passionnés : restauration complète, mécanique,
+            vidange, nettoyage profond, polissage, lustrage et protection
+            céramique. Et un showroom de véhicules rares, importés sur mesure et
+            certifiés par nos experts.
+          </p>
+
+          <p className='mt-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-white/80 backdrop-blur'>
+            <FontAwesomeIcon
+              icon={faLocationDot}
+              className='h-3.5 w-3.5 text-brand-400'
+            />
+            Sousse, Tunisie
+          </p>
+        </div>
+
+        {/* Invitation à descendre vers la sélection — scroll fluide via l'ancre. */}
+        <a
+          href='#showroom'
+          aria-label='Voir la sélection de voitures'
+          className='group absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 text-white/85 transition-colors hover:text-white'
+        >
+          <span className='text-[0.7rem] font-medium uppercase tracking-[0.2em]'>
+            Voir la sélection
+          </span>
+          <span className='flex h-11 w-11 animate-bounce items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur transition-colors group-hover:border-white/70 group-hover:bg-white/20'>
+            <FontAwesomeIcon icon={faChevronDown} className='h-4 w-4' />
+          </span>
+        </a>
+      </section>
+
+      {/* ───────────── Écran 2 — Showroom (fond blanc) ───────────── */}
+      <section id='showroom' className='bg-white text-ink-950'>
+        <div className='mx-auto w-[92%] xl:max-w-6xl py-16 lg:py-24'>
+          <div className='max-w-2xl'>
+            <p className='inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500'>
+              <FontAwesomeIcon icon={faCar} className='h-4 w-4' />
+              Showroom
+            </p>
+            <h2 className='mt-3 text-3xl font-extrabold tracking-tight lg:text-4xl'>
+              Des véhicules sélectionnés par nos experts
+            </h2>
+            <p className='mt-4 text-pretty leading-relaxed text-ink-600'>
+              Vente de véhicules et d&apos;articles d&apos;exception,
+              importation sur mesure — rapide et soignée. Chaque voiture est
+              inspectée et certifiée par notre atelier{' '}
+              <span className='font-semibold text-ink-900'>
+                @tunisiancarsgarage
+              </span>
+              .
+            </p>
+          </div>
+
+          <div className='mt-10 lg:mt-12'>
+            <ShowroomCars posts={showroomPosts} />
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Écran 3 — Le club (carousel) ───────────── */}
+      <section className='relative flex min-h-[100svh] items-center overflow-hidden'>
+        <BackgroundCarousel
+          images={clubImages}
+          intervalMs={7000}
+          overlayClassName='bg-black/50'
+        />
+
+        <div className='relative z-10 mx-auto w-[92%] xl:max-w-3xl py-24 text-center lg:py-28'>
+          <p className='inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-white/80 backdrop-blur'>
+            <FontAwesomeIcon
+              icon={faGem}
+              className='h-3.5 w-3.5 text-brand-400'
+            />
+            Tunisian Cars Club
+          </p>
+          <h2 className='mt-6 text-balance text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl'>
+            Une communauté de passionnés unique en Tunisie
+          </h2>
+          <p className='mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-white/80'>
+            Des rassemblements, des routes mythiques et une même exigence :
+            l&apos;amour du beau véhicule. Rejoignez celles et ceux qui vivent
+            l&apos;automobile autrement.
+          </p>
+          <div className='mt-8 flex justify-center'>
+            <a
+              href='https://www.facebook.com/tunisiancars.tn'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/10'
+            >
+              <FontAwesomeIcon icon={faInstagram} className='h-4 w-4' />
+              Rejoindre la communauté
+              <FontAwesomeIcon icon={faArrowRight} className='h-3.5 w-3.5' />
+            </a>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

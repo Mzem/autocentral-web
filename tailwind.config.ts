@@ -15,20 +15,26 @@ const config: Config = {
       transparent: 'transparent',
       current: 'currentColor',
 
-      // ---- accent: sober steel blue (was red) -----------------------------
+      // ---- accent: Tunisian Cars blue -------------------------------------
       brand: {
-        50: '#eef6fb',
-        100: '#d6e9f4',
-        200: '#aed3e8',
-        300: '#7cb6d6',
-        400: '#4f97bf',
-        500: '#3585ac',
-        600: '#2b6d8e',
-        700: '#265a76',
-        800: '#254c63',
-        900: '#223f53',
-        950: '#132735',
-        DEFAULT: '#3585ac'
+        50: '#e6f2fd',
+        100: '#cce4fb',
+        200: '#99c9f7',
+        300: '#66aef3',
+        400: '#3393ef',
+        500: '#0081E3',
+        600: '#006ec2',
+        700: '#00559a',
+        800: '#004073',
+        900: '#002c4f',
+        950: '#001a30',
+        DEFAULT: '#0081E3'
+      },
+      // ---- brand grey (logo / dividers / muted labels) --------------------
+      mist: {
+        DEFAULT: '#C2C2C4',
+        light: '#d8d8da',
+        dark: '#9a9a9d'
       },
       // ---- card/panel backgrounds on the near-black body ------------------
       surface: {
@@ -120,16 +126,37 @@ const config: Config = {
       boxShadow: {
         card: '0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35)',
         'card-hover': '0 2px 6px rgba(0,0,0,0.5), 0 18px 48px rgba(0,0,0,0.55)',
-        featured: '0 0 0 1px rgba(53,133,172,0.25), 0 24px 60px rgba(0,0,0,0.6)'
+        featured: '0 0 0 1px rgba(0,129,227,0.25), 0 24px 60px rgba(0,0,0,0.6)',
+        'card-light':
+          '0 1px 2px rgba(16,24,40,0.06), 0 12px 32px rgba(16,24,40,0.10)',
+        'card-light-hover':
+          '0 2px 6px rgba(16,24,40,0.10), 0 22px 48px rgba(16,24,40,0.16)'
       },
       keyframes: {
         'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        },
+        kenburns: {
+          '0%': { transform: 'scale(1.05) translate(0, 0)' },
+          '100%': { transform: 'scale(1.18) translate(-1.5%, -1.5%)' }
+        },
+        // Slowly drifting vignette so the darkening feels like a moving halo.
+        halo: {
+          '0%': { transform: 'translate3d(-6%, -4%, 0) scale(1.25)' },
+          '50%': { transform: 'translate3d(6%, 5%, 0) scale(1.4)' },
+          '100%': { transform: 'translate3d(-6%, -4%, 0) scale(1.25)' }
         }
       },
       animation: {
-        'fade-in-up': 'fade-in-up 0.4s ease-out both'
+        'fade-in-up': 'fade-in-up 0.4s ease-out both',
+        'fade-in': 'fade-in 0.8s ease-out both',
+        kenburns: 'kenburns 32s ease-out both',
+        halo: 'halo 16s ease-in-out infinite'
       }
     }
   },

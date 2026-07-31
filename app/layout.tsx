@@ -5,6 +5,7 @@ import { Open_Sans } from 'next/font/google'
 import BottomAd from './_components/ads/BottomAd'
 import Footer from './_components/Footer'
 import Header from './_components/Header'
+import MainShell from './_components/MainShell'
 import './_styles/globals.css'
 
 const openSans = Open_Sans({
@@ -14,25 +15,30 @@ const openSans = Open_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Voitures d'occasion en Tunisie",
+  title: 'Tunisian Cars — Atelier & Showroom automobile à Sousse',
   description:
-    "Vous cherchez une voiture d'occasion ? AutoCentral.TN est le premier site web qui regroupe toutes les annonces de voitures d'occasion en Tunisie dans un même endroit !",
-  applicationName: 'autocentral.tn',
+    "Tunisian Cars : atelier automobile de A à Z (restauration, mécanique, nettoyage profond, protection céramique) et showroom de véhicules d'exception à Sousse, Tunisie.",
+  applicationName: 'Tunisian Cars',
   keywords: [
-    'tunis',
-    'tunisie',
-    'voiture',
-    'occasion',
-    'tayara',
-    'automobile',
-    'autocentral'
+    'tunisian cars',
+    'atelier automobile',
+    'detailing',
+    'protection céramique',
+    'restauration voiture',
+    'showroom',
+    'sousse',
+    'tunisie'
   ],
+  icons: {
+    icon: '/tunisiancars/tc_bleu_logo.jpeg',
+    apple: '/tunisiancars/tc_bleu_logo.jpeg'
+  },
   openGraph: {
     type: 'website',
     url: 'https://autocentral.tn',
-    title: "Voitures d'occasion en Tunisie",
-    siteName: "Voitures d'occasion en Tunisie",
-    images: '/logo_rect.jpg'
+    title: 'Tunisian Cars — Atelier & Showroom automobile à Sousse',
+    siteName: 'Tunisian Cars',
+    images: '/tunisiancars/tc_garage_logo.jpeg'
   }
 }
 
@@ -44,98 +50,8 @@ export default function RootLayout({
   return (
     <html lang='fr' className={openSans.variable}>
       <head>
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='57x57'
-          href='/favicon/apple-touch-icon-57x57.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='114x114'
-          href='/favicon/apple-touch-icon-114x114.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='72x72'
-          href='/favicon/apple-touch-icon-72x72.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='144x144'
-          href='/favicon/apple-touch-icon-144x144.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='60x60'
-          href='/favicon/apple-touch-icon-60x60.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='120x120'
-          href='/favicon/apple-touch-icon-120x120.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='76x76'
-          href='/favicon/apple-touch-icon-76x76.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='152x152'
-          href='/favicon/apple-touch-icon-152x152.png'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-196x196.png'
-          sizes='196x196'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-96x96.png'
-          sizes='96x96'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-32x32.png'
-          sizes='32x32'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-16x16.png'
-          sizes='16x16'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-128.png'
-          sizes='128x128'
-        />
-        <meta name='application-name' content='autocentral.tn' />
-        <meta name='msapplication-TileColor' content='#FFFFFF' />
-        <meta
-          name='msapplication-TileImage'
-          content='/favicon/mstile-144x144.png'
-        />
-        <meta
-          name='msapplication-square70x70logo'
-          content='/favicon/mstile-70x70.png'
-        />
-        <meta
-          name='msapplication-square150x150logo'
-          content='/favicon/mstile-150x150.png'
-        />
-        <meta
-          name='msapplication-wide310x150logo'
-          content='/favicon/mstile-310x150.png'
-        />
-        <meta
-          name='msapplication-square310x310logo'
-          content='/favicon/mstile-310x310.png'
-        />
+        <meta name='application-name' content='Tunisian Cars' />
+        <meta name='theme-color' content='#000000' />
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{
@@ -188,16 +104,9 @@ export default function RootLayout({
         ></script>
       </head>
 
-      <body className='flex flex-col min-h-screen bg-ink-950 text-white'>
+      <body className='flex flex-col min-h-screen bg-black text-white'>
         <Header />
-        <main className='flex-grow'>
-          <div className='w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl mx-auto mb-10 mt-4 lg:mt-10'>
-            {children}
-          </div>
-          <div className='rounded w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl mb-4 mx-auto'>
-            <BottomAd />
-          </div>
-        </main>
+        <MainShell ad={<BottomAd />}>{children}</MainShell>
         <Footer />
         <Analytics />
         <SpeedInsights />
