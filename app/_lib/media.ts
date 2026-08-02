@@ -32,3 +32,20 @@ export function getPublicImages(dir: string): string[] {
     return []
   }
 }
+
+/**
+ * Same as {@link getPublicImages} but returned in a random order.
+ *
+ * Shuffling on the server (per request, on dynamically-rendered pages) means
+ * the very first image in the delivered HTML is already random *and* already
+ * loading — so the carousel opens on a random photo with no client-side swap or
+ * flash. The client keeps this order as-is.
+ */
+export function getShuffledPublicImages(dir: string): string[] {
+  const files = getPublicImages(dir)
+  for (let i = files.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[files[i], files[j]] = [files[j], files[i]]
+  }
+  return files
+}

@@ -52,6 +52,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Big page/section headings use the modern display sans; everything else
+   (UI, cards, body) stays on the neutral body sans. */
+h1,
+h2 {
+  font-family: theme('fontFamily.display');
+  letter-spacing: -0.02em;
+}
+
 body {
   color: var(--white);
   /* Pure-black base with a faint Tunisian Cars blue glow at the top. */

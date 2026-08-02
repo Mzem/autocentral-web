@@ -104,8 +104,8 @@ const config: Config = {
       whiteopacred: '#B3141425'
     },
     screens: {
-      sm: '390px', // small mobile
-      md: '768px', // tablets
+      sm: '400px', // small mobile
+      md: '850px', // tablets
       lg: '1024px', // desktop
       xl: '1289px' // large screens
     },
@@ -116,7 +116,13 @@ const config: Config = {
         xxl: { min: '1600px' }
       },
       fontFamily: {
-        sans: ['var(--font-open-sans)', 'sans-serif']
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: [
+          'var(--font-display)',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif'
+        ]
       },
       borderRadius: {
         xl: '0.875rem',

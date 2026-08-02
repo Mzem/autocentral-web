@@ -10,6 +10,7 @@
     "watch": "yarn dev",
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production node server.js",
+    "scalingo": "echo 'skip devDependencies pruning (Yarn Berry)'",
     "lint": "next lint",
     "cover": "nyc mocha 'test/**/*.test.ts' --exit",
     "cover:report": "nyc report --reporter=lcovonly",

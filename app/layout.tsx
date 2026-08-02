@@ -1,21 +1,34 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
-import { Open_Sans } from 'next/font/google'
+import { Manrope, Sora } from 'next/font/google'
 import BottomAd from './_components/ads/BottomAd'
 import Footer from './_components/Footer'
 import Header from './_components/Header'
 import MainShell from './_components/MainShell'
 import './_styles/globals.css'
 
-const openSans = Open_Sans({
+// Body / UI — clean geometric sans (premium, highly legible).
+const sans = Manrope({
   subsets: ['latin'],
-  weight: ['400', '600', '700'], // Specify the font weights you need
-  variable: '--font-open-sans' // Define a CSS variable for Tailwind integration
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap'
+})
+
+// Display headings — modern geometric sans (premium, automotive-tech feel).
+const display = Sora({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap'
 })
 
 export const metadata: Metadata = {
-  title: 'Tunisian Cars — Atelier & Showroom automobile à Sousse',
+  // Needed so the (relative) share image resolves to an absolute, public URL —
+  // otherwise Next resolves it against localhost and the preview stays blank.
+  metadataBase: new URL('https://autocentral.tn'),
+  title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
   description:
     "Tunisian Cars : atelier automobile de A à Z (restauration, mécanique, nettoyage profond, protection céramique) et showroom de véhicules d'exception à Sousse, Tunisie.",
   applicationName: 'Tunisian Cars',
@@ -29,16 +42,28 @@ export const metadata: Metadata = {
     'sousse',
     'tunisie'
   ],
-  icons: {
-    icon: '/tunisiancars/tc_bleu_logo.jpeg',
-    apple: '/tunisiancars/tc_bleu_logo.jpeg'
-  },
   openGraph: {
     type: 'website',
     url: 'https://autocentral.tn',
-    title: 'Tunisian Cars — Atelier & Showroom automobile à Sousse',
+    title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
+    description:
+      "Atelier automobile de A à Z et showroom de véhicules d'exception à Sousse, Tunisie.",
     siteName: 'Tunisian Cars',
-    images: '/tunisiancars/tc_garage_logo.jpeg'
+    images: [
+      {
+        url: '/tunisiancars/logo_share.png',
+        width: 1200,
+        height: 630,
+        alt: 'Tunisian Cars'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
+    description:
+      "Atelier automobile de A à Z et showroom de véhicules d'exception à Sousse, Tunisie.",
+    images: ['/tunisiancars/logo_share.png']
   }
 }
 
@@ -48,10 +73,105 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='fr' className={openSans.variable}>
+    <html lang='fr' className={`${sans.variable} ${display.variable}`}>
       <head>
         <meta name='application-name' content='Tunisian Cars' />
         <meta name='theme-color' content='#000000' />
+
+        {/* Favicons — jeu généré dans /public/favicon (cf. favicon/code.txt) */}
+        <link rel='icon' href='/favicon/favicon.ico' sizes='any' />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='57x57'
+          href='/favicon/apple-touch-icon-57x57.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='114x114'
+          href='/favicon/apple-touch-icon-114x114.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='72x72'
+          href='/favicon/apple-touch-icon-72x72.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='144x144'
+          href='/favicon/apple-touch-icon-144x144.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='60x60'
+          href='/favicon/apple-touch-icon-60x60.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='120x120'
+          href='/favicon/apple-touch-icon-120x120.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='76x76'
+          href='/favicon/apple-touch-icon-76x76.png'
+        />
+        <link
+          rel='apple-touch-icon-precomposed'
+          sizes='152x152'
+          href='/favicon/apple-touch-icon-152x152.png'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          href='/favicon/favicon-196x196.png'
+          sizes='196x196'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          href='/favicon/favicon-96x96.png'
+          sizes='96x96'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          href='/favicon/favicon-32x32.png'
+          sizes='32x32'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          href='/favicon/favicon-16x16.png'
+          sizes='16x16'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          href='/favicon/favicon-128.png'
+          sizes='128x128'
+        />
+        <meta name='msapplication-TileColor' content='#FFFFFF' />
+        <meta
+          name='msapplication-TileImage'
+          content='/favicon/mstile-144x144.png'
+        />
+        <meta
+          name='msapplication-square70x70logo'
+          content='/favicon/mstile-70x70.png'
+        />
+        <meta
+          name='msapplication-square150x150logo'
+          content='/favicon/mstile-150x150.png'
+        />
+        <meta
+          name='msapplication-wide310x150logo'
+          content='/favicon/mstile-310x150.png'
+        />
+        <meta
+          name='msapplication-square310x310logo'
+          content='/favicon/mstile-310x310.png'
+        />
+
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{

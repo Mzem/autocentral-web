@@ -10,19 +10,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // Ship Font Awesome's CSS ourselves instead of letting it inject at runtime
 // (avoids a flash of oversized icons before hydration).
 config.autoAddCss = false
-import {
-  faScrewdriverWrench,
-  faCartShopping
-} from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
-
-const NAV_LINKS = [
-  { href: '/atelier', label: 'Atelier', icon: faScrewdriverWrench },
-  { href: '/produits', label: 'Boutique', icon: faCartShopping }
-]
-
-// Messenger of the Facebook page tunisiancars.tn
-const CONTACT_URL = 'https://m.me/tunisiancars.tn'
+import { NAV_LINKS, CONTACT_URL } from '../_lib/nav'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -64,7 +54,8 @@ export default function Header() {
     }
   }, [])
 
-  const isActive = (href: string) => pathname.startsWith(href)
+  const isActive = (href: string) =>
+    href.startsWith('/#') ? pathname === '/' : pathname.startsWith(href)
 
   return (
     <div
@@ -90,7 +81,7 @@ export default function Header() {
               href={link.href}
               aria-current={isActive(link.href) ? 'page' : undefined}
               className={`flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide transition-colors ${
-                isActive(link.href)
+                isActive(link.href) && !link.href.startsWith('/#')
                   ? 'bg-white/10 text-white'
                   : 'text-white/75 hover:bg-white/5 hover:text-white'
               }`}
@@ -100,25 +91,43 @@ export default function Header() {
             </Link>
           ))}
           <a
+            href='#contact'
+            className='ml-1 flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/15'
+          >
+            <FontAwesomeIcon icon={faLocationDot} className='h-4 w-4' />
+            <span>Nous trouver</span>
+          </a>
+          <a
             href={CONTACT_URL}
             target='_blank'
             rel='noopener noreferrer'
-            className='ml-2 flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600'
+            className='ml-1.5 flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600'
           >
             <FontAwesomeIcon icon={faFacebookMessenger} className='h-4 w-4' />
             <span>Nous contacter</span>
           </a>
         </nav>
 
-        <div className='flex items-center gap-2 md:hidden'>
+        <div className='flex items-center sm:gap-1.5 gap-0.5 md:hidden'>
+          <a
+            href='#contact'
+            aria-label='Nous trouver'
+            className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-white/10 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-white/15'
+          >
+            <FontAwesomeIcon icon={faLocationDot} className='h-3.5 w-3.5' />
+            <span>Localisation</span>
+          </a>
           <a
             href={CONTACT_URL}
             target='_blank'
             rel='noopener noreferrer'
             aria-label='Nous contacter'
-            className='flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
+            className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-brand-500 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-brand-600'
           >
-            <FontAwesomeIcon icon={faFacebookMessenger} className='h-4 w-4' />
+            <FontAwesomeIcon
+              icon={faFacebookMessenger}
+              className='h-3.5 w-3.5'
+            />
             <span>Contact</span>
           </a>
 
@@ -159,7 +168,7 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 aria-current={isActive(link.href) ? 'page' : undefined}
                 className={`flex items-center gap-3 rounded-lg px-4 py-3.5 text-sm transition-colors ${
-                  isActive(link.href)
+                  isActive(link.href) && !link.href.startsWith('/#')
                     ? 'bg-white/10 text-white font-semibold'
                     : 'text-white/80 hover:bg-white/5'
                 }`}

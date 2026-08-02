@@ -5,21 +5,20 @@ import { useEffect, useState } from 'react'
 /**
  * Full-bleed background carousel.
  *
- * - The image list comes from the server (a folder read), so it stays in sync
- *   with `/public` with no code change.
- * - The order is reshuffled on every mount (client-side, after hydration to
- *   avoid a mismatch), so the sequence feels alive rather than fixed.
- * - Layers cross-fade and the active one gets a slow Ken-Burns zoom for a
- *   premium, cinematic feel.
+ * - The image list comes from the server (a folder read), already **shuffled**
+ *   server-side, so it stays in sync with `/public` with no code change and the
+ *   very first image is random per visit — delivered already-loaded in the HTML
+ *   (no client-side swap or flash on open).
+ * - Implemented as a single sliding rail (`translateX`) rather than per-slide
+ *   toggles, so the right → left transition is always visibly rendered
+ *   (including on mobile, where the previous "add transition + move in the same
+ *   frame" approach made the incoming slide snap instead of glide).
+ * - The first image is appended again at the end; once the rail slides onto that
+ *   clone it jumps back to the real first slide with no animation, giving a
+ *   seamless infinite loop with no visible rewind.
+ * - A slowly drifting vignette adds a moving halo of shadow on top.
  */
-function shuffle<T>(input: T[]): T[] {
-  const arr = [...input]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
+const DURATION = 1100
 
 export default function BackgroundCarousel({
   images,
@@ -30,36 +29,57 @@ export default function BackgroundCarousel({
   intervalMs?: number
   overlayClassName?: string
 }) {
-  const [order, setOrder] = useState(images)
+  const looping = images.length > 1
+  const slides = looping ? [...images, images[0]] : images
+
   const [index, setIndex] = useState(0)
+  const [animate, setAnimate] = useState(true)
 
-  // Reshuffle after mount (keeps SSR/CSR markup identical, then randomises).
+  // Advance one slide at each tick.
   useEffect(() => {
-    setOrder(shuffle(images))
-    setIndex(0)
-  }, [images])
-
-  useEffect(() => {
-    if (order.length <= 1) return
-    const timer = setInterval(
-      () => setIndex((prev) => (prev + 1) % order.length),
-      intervalMs
-    )
+    if (!looping) return
+    const timer = setInterval(() => {
+      setAnimate(true)
+      setIndex((i) => i + 1)
+    }, intervalMs)
     return () => clearInterval(timer)
-  }, [order.length, intervalMs])
+  }, [looping, intervalMs])
+
+  // Once we've slid onto the appended clone of the first image, let the glide
+  // finish, then jump back to the real first slide with the transition off.
+  useEffect(() => {
+    if (!looping || index !== images.length) return
+    const t = setTimeout(() => {
+      setAnimate(false)
+      setIndex(0)
+    }, DURATION)
+    return () => clearTimeout(t)
+  }, [index, images.length, looping])
+
+  // Re-arm the transition on the frame after the instant reset.
+  useEffect(() => {
+    if (animate) return
+    const raf = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setAnimate(true))
+    )
+    return () => cancelAnimationFrame(raf)
+  }, [animate])
 
   return (
     <div aria-hidden='true' className='absolute inset-0 overflow-hidden'>
-      {order.map((src, i) => (
-        <div
-          key={src}
-          className={`absolute inset-0 transition-opacity duration-[1400ms] ease-out ${
-            i === index ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img src={src} alt='' className='h-full w-full object-cover' />
-        </div>
-      ))}
+      <div
+        className='flex h-full'
+        style={{
+          transform: `translateX(-${index * 100}%)`,
+          transition: animate ? `transform ${DURATION}ms ease-in-out` : 'none'
+        }}
+      >
+        {slides.map((src, i) => (
+          <div key={i} className='h-full w-full flex-shrink-0'>
+            <img src={src} alt='' className='h-full w-full object-cover' />
+          </div>
+        ))}
+      </div>
       {/* Base darkening for text legibility. */}
       <div className={`absolute inset-0 ${overlayClassName}`} />
       {/* Slowly drifting vignette — a moving halo of shadow. */}
