@@ -1,17 +1,28 @@
 import { Metadata } from 'next'
-import { getMerchItems } from '../../api/services/merch-items.service'
+import {
+  getMerchItems,
+  MerchItem
+} from '../../api/services/merch-items.service'
 import { MerchItems } from '../_components/MerchItems'
+
+// Only the Tunisian Cars shop's own items are shown in the boutique.
+const SHOP_MERCHANT_ID = 'tunisian-cars'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     alternates: {
-      canonical: 'https://autocentral.tn/produits'
+      canonical: 'https://tunisiancars.com.tn/produits'
     }
   }
 }
 
 export default async function Merchants() {
-  const merchItems = await getMerchItems()
+  let merchItems: MerchItem[] = []
+  try {
+    merchItems = await getMerchItems(SHOP_MERCHANT_ID)
+  } catch {
+    merchItems = []
+  }
 
   return (
     <>
@@ -20,7 +31,14 @@ export default async function Merchants() {
         <img src='/race_flag.svg' className='h-4 lg:h-5 invert' />
       </div>
 
-      <MerchItems merchItems={merchItems} />
+      {merchItems.length > 0 ? (
+        <MerchItems merchItems={merchItems} />
+      ) : (
+        <div className='mx-auto max-w-xl rounded-lg bg-surface px-6 py-16 text-center text-white/60'>
+          Aucun article pour le moment — la boutique Tunisian Cars arrive très
+          bientôt.
+        </div>
+      )}
     </>
   )
 }

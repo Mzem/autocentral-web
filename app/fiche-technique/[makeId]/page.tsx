@@ -10,8 +10,8 @@ export async function generateMetadata({
   return {
     alternates: {
       canonical: params.makeId
-        ? `https://autocentral.tn/fiche-technique/${params.makeId}`
-        : 'https://autocentral.tn'
+        ? `https://tunisiancars.com.tn/fiche-technique/${params.makeId}`
+        : 'https://tunisiancars.com.tn'
     }
   }
 }

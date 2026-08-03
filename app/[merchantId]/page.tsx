@@ -22,15 +22,15 @@ export async function generateMetadata({
     return {
       alternates: {
         canonical: params.merchantId
-          ? `https://autocentral.tn/${params.merchantId}`
-          : 'https://autocentral.tn'
+          ? `https://tunisiancars.com.tn/${params.merchantId}`
+          : 'https://tunisiancars.com.tn'
       },
       description: merchant.name,
       openGraph: {
         type: 'website',
         url: params.merchantId
-          ? `https://autocentral.tn/${params.merchantId}`
-          : 'https://autocentral.tn',
+          ? `https://tunisiancars.com.tn/${params.merchantId}`
+          : 'https://tunisiancars.com.tn',
         title: merchant.name,
         siteName: merchant.name,
         images: merchant.avatar || '/logo_rect.jpg'
@@ -41,8 +41,8 @@ export async function generateMetadata({
     description: 'Vendeur occasion en Tunisie',
     alternates: {
       canonical: params.merchantId
-        ? `https://autocentral.tn/${params.merchantId}`
-        : 'https://autocentral.tn'
+        ? `https://tunisiancars.com.tn/${params.merchantId}`
+        : 'https://tunisiancars.com.tn'
     }
   }
 }

@@ -22,7 +22,11 @@ export default function MainShell({
   const pathname = usePathname()
 
   // Branded, edge-to-edge pages: hero sits under the fixed transparent header.
-  const isFullBleed = pathname === '/' || pathname === '/atelier'
+  // The listing detail is also full-bleed (a white page filling the layout).
+  const isFullBleed =
+    pathname === '/' ||
+    pathname === '/atelier' ||
+    pathname.startsWith('/annonces/')
 
   if (isFullBleed) {
     return <main className='flex-grow'>{children}</main>

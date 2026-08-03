@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 export async function generateMetadata(): Promise<Metadata> {
   return {
     alternates: {
-      canonical: 'https://autocentral.tn/vendeurs'
+      canonical: 'https://tunisiancars.com.tn/vendeurs'
     },
     description:
       "Les vendeurs professionnels de voitures d'occasion et les showroom dans toute la Tunisie"
@@ -26,7 +26,7 @@ export default async function Merchants() {
         />
       </div>
       <a
-        href={`https://m.me/autocentral.tn?text=Je%20suis%20un%20vendeur%20PRO%20et%20je%20veux%20avoir%20une%20page%20web%20sur%20autocentral`}
+        href={`https://m.me/tunisiancars.tn?text=Je%20suis%20un%20vendeur%20PRO%20et%20je%20veux%20avoir%20une%20page%20web%20sur%20Tunisian%20Cars`}
         className='w-auto mt-2 rounded-lg bg-ink-950/70 inline-flex text-white text-xs sm:text-sm items-center space-x-1 py-[2px] px-[6px] mb-7 lg:mb-16'
       >
         <p>Pour créer votre page, veuillez nous contacter</p>

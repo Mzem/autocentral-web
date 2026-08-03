@@ -11,8 +11,8 @@ export async function generateMetadata({
   return {
     alternates: {
       canonical: params.id
-        ? `https://autocentral.tn/produits/${params.id}`
-        : 'https://autocentral.tn'
+        ? `https://tunisiancars.com.tn/produits/${params.id}`
+        : 'https://tunisiancars.com.tn'
     }
   }
 }

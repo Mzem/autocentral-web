@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import CarPostModal from '../../_components/car-posts/CarPostModal'
 import { getCarPost } from '../../../api/services/car-posts.service'
+import CarPostDetail from '../../_components/tunisiancars/CarPostDetail'
 
 export async function generateMetadata({
   params
@@ -13,15 +13,15 @@ export async function generateMetadata({
     return {
       alternates: {
         canonical: params.id
-          ? `https://autocentral.tn/annonces/${params.id}`
-          : 'https://autocentral.tn'
+          ? `https://tunisiancars.com.tn/annonces/${params.id}`
+          : 'https://tunisiancars.com.tn'
       },
       description: post.title,
       openGraph: {
         type: 'website',
         url: params.id
-          ? `https://autocentral.tn/annonces/${params.id}`
-          : 'https://autocentral.tn',
+          ? `https://tunisiancars.com.tn/annonces/${params.id}`
+          : 'https://tunisiancars.com.tn',
         title: post.title,
         siteName: post.title,
         images: post.images[0] || '/logo_rect.jpg'
@@ -29,17 +29,33 @@ export async function generateMetadata({
     }
   }
   return {
-    description: 'Annonce autocentral',
+    description: 'Annonce Tunisian Cars',
     alternates: {
       canonical: params.id
-        ? `https://autocentral.tn/annonces/${params.id}`
-        : 'https://autocentral.tn'
+        ? `https://tunisiancars.com.tn/annonces/${params.id}`
+        : 'https://tunisiancars.com.tn'
     }
   }
 }
 
 export default async function Annonce({ params }: { params: { id: string } }) {
-  // Similar cars are embedded in the post detail and rendered by the modal
-  // itself, so they show both here (full page) and in the feed modal.
-  return <CarPostModal postId={params.id} isFull={true} />
+  const post = await getCarPost(params.id)
+
+  if (!post) {
+    return (
+      <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>
+        <div className='mx-auto w-[92%] py-24 text-center text-ink-500 xl:max-w-6xl'>
+          Annonce introuvable ou expirée.
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>
+      <div className='mx-auto w-[92%] py-6 xl:max-w-6xl lg:py-10'>
+        <CarPostDetail post={post} />
+      </div>
+    </div>
+  )
 }

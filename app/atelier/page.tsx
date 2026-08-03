@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: 'Atelier — Tunisian Cars | Sousse',
   description:
     'Atelier automobile Tunisian Cars à Sousse : restauration complète, mécanique, vidange, nettoyage profond, polissage, lustrage et protection céramique.',
-  alternates: { canonical: 'https://autocentral.tn/atelier' }
+  alternates: { canonical: 'https://tunisiancars.com.tn/atelier' }
 }
 
 const CONTACT_URL = 'https://m.me/tunisiancars.tn'

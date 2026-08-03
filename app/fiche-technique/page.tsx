@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Fiche technique Tunisie',
     alternates: {
-      canonical: 'https://autocentral.tn/fiche-technique'
+      canonical: 'https://tunisiancars.com.tn/fiche-technique'
     }
   }
 }

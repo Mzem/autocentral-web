@@ -27,7 +27,7 @@ const display = Sora({
 export const metadata: Metadata = {
   // Needed so the (relative) share image resolves to an absolute, public URL —
   // otherwise Next resolves it against localhost and the preview stays blank.
-  metadataBase: new URL('https://autocentral.tn'),
+  metadataBase: new URL('https://tunisiancars.com.tn'),
   title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
   description:
     "Tunisian Cars : atelier automobile de A à Z (restauration, mécanique, nettoyage profond, protection céramique) et showroom de véhicules d'exception à Sousse, Tunisie.",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: 'website',
-    url: 'https://autocentral.tn',
+    url: 'https://tunisiancars.com.tn',
     title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
     description:
       "Atelier automobile de A à Z et showroom de véhicules d'exception à Sousse, Tunisie.",
@@ -68,9 +68,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children
+  children,
+  modal
 }: Readonly<{
   children: React.ReactNode
+  modal: React.ReactNode
 }>) {
   return (
     <html lang='fr' className={`${sans.variable} ${display.variable}`}>
@@ -183,19 +185,19 @@ export default function RootLayout({
                   '@type': 'ListItem',
                   position: 1,
                   name: "Voitures d'occasion en Tunisie",
-                  item: 'https://autocentral.tn'
+                  item: 'https://tunisiancars.com.tn'
                 },
                 {
                   '@type': 'ListItem',
                   position: 1,
                   name: 'Vendeurs voitures occasion Tunisie',
-                  item: 'https://autocentral.tn/vendeurs'
+                  item: 'https://tunisiancars.com.tn/vendeurs'
                 },
                 {
                   '@type': 'ListItem',
                   position: 3,
                   name: 'Fiche technique Tunisie',
-                  item: 'https://autocentral.tn/fiche-technique'
+                  item: 'https://tunisiancars.com.tn/fiche-technique'
                 }
               ]
             })
@@ -227,6 +229,7 @@ export default function RootLayout({
       <body className='flex flex-col min-h-screen bg-black text-white'>
         <Header />
         <MainShell ad={<BottomAd />}>{children}</MainShell>
+        {modal}
         <Footer />
         <Analytics />
         <SpeedInsights />

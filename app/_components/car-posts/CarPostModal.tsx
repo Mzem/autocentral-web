@@ -156,7 +156,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   post.whatsapp
                 }?text=Bonjour%2C%20votre%20annonce%20${encodeURIComponent(
                   post.title || `${post.make} ${post.model} ${post.year}`
-                )}%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
+                )}%20m%27int%C3%A9resse%20https%3A%2F%2Ftunisiancars.com.tn%2Fannonces%2F${
                   post.id
                 }`}
                 target='_blank'

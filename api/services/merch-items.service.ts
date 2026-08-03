@@ -21,9 +21,12 @@ export interface MerchItem {
   }
 }
 
-export async function getMerchItems(): Promise<MerchItem[]> {
+export async function getMerchItems(merchantId?: string): Promise<MerchItem[]> {
   try {
-    const { content } = await apiGet<MerchItem[]>(`merch-items`)
+    const url = merchantId
+      ? `merch-items?merchantId=${encodeURIComponent(merchantId)}`
+      : `merch-items`
+    const { content } = await apiGet<MerchItem[]>(url)
     return content
   } catch (e) {
     console.error('GET merch items error')

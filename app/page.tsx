@@ -5,6 +5,7 @@ import {
   faCar,
   faChevronDown,
   faCircleCheck,
+  faMagnifyingGlass,
   faScrewdriverWrench,
   faUsers
 } from '@fortawesome/free-solid-svg-icons'
@@ -25,7 +26,7 @@ const RECENT_DAYS = 60
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  alternates: { canonical: 'https://autocentral.tn' }
+  alternates: { canonical: 'https://tunisiancars.com.tn' }
 }
 
 async function getShowroomPosts(): Promise<CarPostListItem[]> {
@@ -98,22 +99,14 @@ export default async function Home() {
 
             <div className='rounded-xl bg-white/5 px-4 py-3 backdrop-blur-sm md:py-4'>
               <h2 className='flex items-center gap-2 text-sm font-semibold text-white'>
-                <span className='inline-flex h-3.5 w-5 shrink-0 overflow-hidden rounded-[3px] ring-1 ring-white/20'>
-                  <svg
-                    viewBox='0 0 5 3'
-                    preserveAspectRatio='none'
-                    className='h-full w-full'
-                    aria-hidden='true'
-                  >
-                    <rect width='5' height='1' fill='#000000' />
-                    <rect y='1' width='5' height='1' fill='#DD0000' />
-                    <rect y='2' width='5' height='1' fill='#FFCE00' />
-                  </svg>
-                </span>
-                Import sur mesure
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className='h-4 w-4 shrink-0 text-brand-400'
+                />
+                Véhicules sur mesure
               </h2>
               <p className='mt-2 hidden text-xs leading-relaxed text-white/75 md:block'>
-                Rapide, fiable et sécurisée, selon vos critères
+                Selon vos critères et votre budget
               </p>
             </div>
           </div>

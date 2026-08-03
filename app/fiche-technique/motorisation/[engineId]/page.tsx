@@ -12,8 +12,8 @@ export async function generateMetadata({
     return {
       alternates: {
         canonical: params.engineId
-          ? `https://autocentral.tn/fiche-technique/motorisation/${params.engineId}`
-          : 'https://autocentral.tn'
+          ? `https://tunisiancars.com.tn/fiche-technique/motorisation/${params.engineId}`
+          : 'https://tunisiancars.com.tn'
       },
       description: `Fiche technique ${carModel.make.name} ${carModel.model} ${
         carModel.type ? ' ' + carModel.type : ''
@@ -21,8 +21,8 @@ export async function generateMetadata({
       openGraph: {
         type: 'website',
         url: params.engineId
-          ? `https://autocentral.tn/fiche-technique/motorisation/${params.engineId}`
-          : 'https://autocentral.tn',
+          ? `https://tunisiancars.com.tn/fiche-technique/motorisation/${params.engineId}`
+          : 'https://tunisiancars.com.tn',
         title: `Fiche technique ${carModel.make.name} ${carModel.model} ${
           carModel.type ? ' ' + carModel.type : ''
         }`,
@@ -38,8 +38,8 @@ export async function generateMetadata({
     description: 'Vendeur occasion en Tunisie',
     alternates: {
       canonical: params.engineId
-        ? `https://autocentral.tn/fiche-technique/motorisation/${params.engineId}`
-        : 'https://autocentral.tn'
+        ? `https://tunisiancars.com.tn/fiche-technique/motorisation/${params.engineId}`
+        : 'https://tunisiancars.com.tn'
     }
   }
 }

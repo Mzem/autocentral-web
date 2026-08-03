@@ -89,7 +89,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
                   .replace(
                     '+',
                     ''
-                  )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Fautocentral.tn%2Fannonces%2F${
+                  )}?text=Bonjour%2C%20cette%20annonce%20m%27int%C3%A9resse%20https%3A%2F%2Ftunisiancars.com.tn%2Fannonces%2F${
                   item.merchant.id
                 }`}
               >

@@ -104,24 +104,24 @@ export default function Footer() {
             {REVIEWS.map((review) => (
               <li
                 key={review.name}
-                className='rounded-lg border border-ink-100 bg-white p-3 shadow-card-light'
+                className='rounded bg-white/10 p-3 backdrop-blur-sm'
               >
                 <div className='flex items-center gap-2'>
-                  <span className='flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-xs font-bold text-brand-500'>
+                  <span className='flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-500/20 text-xs font-bold text-brand-300'>
                     {review.initial}
                   </span>
                   <div className='min-w-0 flex-1'>
-                    <p className='truncate text-[0.8rem] font-semibold leading-tight'>
+                    <p className='truncate text-[0.8rem] font-semibold leading-tight text-white'>
                       {review.name}
                     </p>
-                    <p className='text-[0.6rem] text-ink-400'>{review.date}</p>
+                    <p className='text-[0.6rem] text-white/50'>{review.date}</p>
                   </div>
                   <FontAwesomeIcon
                     icon={faThumbsUp}
-                    className='h-3.5 w-3.5 shrink-0 text-brand-500'
+                    className='h-3.5 w-3.5 shrink-0 text-brand-400'
                   />
                 </div>
-                <p className='mt-1.5 text-[0.8rem] leading-snug text-ink-700'>
+                <p className='mt-1.5 text-[0.8rem] leading-snug text-white/75'>
                   {review.text}
                 </p>
               </li>
