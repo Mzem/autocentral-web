@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ModelListItem } from '../../../api/services/car-model.service'
 import Link from 'next/link'
+import { fuelLabel } from '../../types'
 
 type CarModelEnginesModalProps = {
   model: ModelListItem
@@ -97,7 +98,7 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                     <ul className='mt-1 ml-8'>
                       {Object.keys(groupedEngines).map((fuel) => (
                         <li key={fuel} className='text-white font-bold'>
-                          <p className='text-orange'>{fuel}</p>
+                          <p className='text-orange'>{fuelLabel(fuel)}</p>
                           <ul className='mb-1 text-sm'>
                             {groupedEngines[fuel].map((engine: any) => (
                               <Link

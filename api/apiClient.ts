@@ -90,7 +90,10 @@ export async function apiPatch(
   })
 }
 
-export async function apiDelete(path: string): Promise<void> {
+export async function apiDelete(
+  path: string,
+  payload?: { [key: string]: any }
+): Promise<void> {
   const headers = new Headers({
     'X-API-KEY': apiKey,
     'content-type': 'application/json'
@@ -98,6 +101,19 @@ export async function apiDelete(path: string): Promise<void> {
 
   await fetchNoContent(`${apiURL}/${path}`, {
     method: 'DELETE',
-    headers
+    headers,
+    ...(payload ? { body: JSON.stringify(payload) } : {})
   })
+}
+
+export async function apiPatchFormData(
+  path: string,
+  payload: FormData
+): Promise<unknown> {
+  const headers = new Headers({ 'X-API-KEY': apiKey })
+  const { content }: { content: unknown } = await fetchJson(
+    `${apiURL}/${path}`,
+    { method: 'PATCH', headers, body: payload }
+  )
+  return content
 }

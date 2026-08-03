@@ -38,7 +38,7 @@ export default function DetailModal({
       onClick={close}
     >
       <div
-        className='relative mx-auto flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden bg-white/90 text-ink-950 shadow-2xl'
+        className='relative mx-auto flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded bg-white/90 text-ink-950 shadow-2xl'
         onClick={(e) => e.stopPropagation()}
       >
         {/* Bouton fermer — reste flottant en haut à droite même en scrollant */}

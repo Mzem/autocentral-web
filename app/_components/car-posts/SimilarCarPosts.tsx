@@ -57,7 +57,9 @@ export default function SimilarCarPosts({
                 </p>
 
                 <span className='mt-auto pt-2 text-[0.8rem] lg:text-base font-extrabold text-white'>
-                  {post.price ? `${dotNumber(post.price)} DT` : 'Prix N.C.'}
+                  {post.price
+                    ? `${dotNumber(post.price)} DT`
+                    : 'Prix sur demande'}
                 </span>
               </div>
             </Link>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Fuel } from '../types'
+import { fuelLabel } from '../types'
 
 export default function MultiSelectList({
   label,
@@ -35,9 +35,7 @@ export default function MultiSelectList({
             onChange={() => toggleItemSelection(item)}
             className='rounded cursor-pointer mr-[3px] h-5 w-5 border-white/30'
           />
-          <span className='text-sm lg:text-base mr-1'>
-            {item === Fuel.HYBRID ? 'Hybrid/Electrique' : item}
-          </span>
+          <span className='text-sm lg:text-base mr-1'>{fuelLabel(item)}</span>
         </label>
       ))}
     </div>

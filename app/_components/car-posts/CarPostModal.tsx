@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
+import { fuelLabel } from '../../types'
 import SpecList from '../car-specs/SpecList'
 import SimilarCarPosts from './SimilarCarPosts'
 import CarPostUpdateModal from './CarPostUpdateModal'
@@ -231,7 +232,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
 
             {post.isExpired && (
               <div className='mb-2 flex justify-center'>
-                <span className='inline-flex items-center gap-1.5 rounded-md bg-ink-950/85 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
+                <span className='inline-flex items-center gap-1.5 rounded-md bg-red/60 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
                   Vendu
                 </span>
               </div>
@@ -364,7 +365,7 @@ const CarPostModal: React.FC<PostModalProps> = ({
                   <InfoCard
                     title='Carburant'
                     img='/fuel.svg'
-                    value={`${post.fuel ?? '-'}`}
+                    value={fuelLabel(post.fuel) || '-'}
                   />
                 </li>
                 <li>

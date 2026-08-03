@@ -156,13 +156,29 @@ const config: Config = {
           '0%': { transform: 'translate3d(-6%, -4%, 0) scale(1.25)' },
           '50%': { transform: 'translate3d(6%, 5%, 0) scale(1.4)' },
           '100%': { transform: 'translate3d(-6%, -4%, 0) scale(1.25)' }
+        },
+        // A "VENDU" stamp that slams in, shakes, then fades away.
+        'sold-stamp': {
+          '0%': { opacity: '0', transform: 'scale(1.5) rotate(-5deg)' },
+          '12%': { opacity: '1', transform: 'scale(1) rotate(-5deg)' },
+          '22%': { transform: 'scale(1) rotate(-5deg) translateX(-7px)' },
+          '34%': { transform: 'scale(1) rotate(-5deg) translateX(7px)' },
+          '46%': { transform: 'scale(1) rotate(-5deg) translateX(-5px)' },
+          '58%': { transform: 'scale(1) rotate(-5deg) translateX(5px)' },
+          '70%': { transform: 'scale(1) rotate(-5deg) translateX(-2px)' },
+          '80%': {
+            opacity: '1',
+            transform: 'scale(1) rotate(-5deg) translateX(0)'
+          },
+          '100%': { opacity: '0', transform: 'scale(1.15) rotate(-5deg)' }
         }
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.4s ease-out both',
         'fade-in': 'fade-in 0.8s ease-out both',
         kenburns: 'kenburns 32s ease-out both',
-        halo: 'halo 16s ease-in-out infinite'
+        halo: 'halo 16s ease-in-out infinite',
+        'sold-stamp': 'sold-stamp 1.3s ease-out forwards'
       }
     }
   },

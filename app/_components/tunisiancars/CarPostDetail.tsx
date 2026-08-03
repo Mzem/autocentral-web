@@ -1,23 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faPhone,
-  faLocationDot,
-  faGasPump,
-  faGears,
-  faGaugeHigh,
-  faCalendarDays,
-  faOilCan,
-  faShareNodes,
-  faStore,
-  faCircleCheck
-} from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import {
+  faCalendarDays,
+  faCircleCheck,
+  faClock,
+  faGasPump,
+  faGaugeHigh,
+  faGears,
+  faLocationDot,
+  faOilCan,
+  faPhone,
+  faShareNodes,
+  faShop
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
+import { fuelLabel } from '../../types'
 import { Linkify } from '../../Linkify'
 import DetailGallery from './DetailGallery'
 import ShowroomCars from './ShowroomCars'
@@ -87,7 +89,11 @@ function Content({ post }: { post: CarPost }) {
         label: 'Kilométrage',
         value: `${dotNumber(post.km)} km`
       },
-    post.fuel && { icon: faGasPump, label: 'Carburant', value: post.fuel },
+    post.fuel && {
+      icon: faGasPump,
+      label: 'Carburant',
+      value: fuelLabel(post.fuel)
+    },
     post.gearbox && { icon: faGears, label: 'Boîte', value: post.gearbox },
     (post.cv || post.cylinder) && {
       icon: faOilCan,
@@ -125,7 +131,7 @@ function Content({ post }: { post: CarPost }) {
         {/* Infos */}
         <div className='flex flex-col'>
           {post.isExpired && (
-            <span className='mb-3 inline-flex w-fit items-center rounded-lg bg-ink-950 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
+            <span className='mb-3 inline-flex w-fit items-center rounded-lg bg-red/60 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
               Vendu
             </span>
           )}
@@ -136,10 +142,16 @@ function Content({ post }: { post: CarPost }) {
           <p className='mt-1 text-sm text-ink-400'>
             {[post.year, post.make, post.model].filter(Boolean).join(' ')}
           </p>
+          {post.publishedAtText && (
+            <p className='mt-1.5 inline-flex items-center gap-1.5 text-xs text-ink-400'>
+              <FontAwesomeIcon icon={faClock} className='h-3 w-3' />
+              Publié {post.publishedAtText}
+            </p>
+          )}
 
           <div className='mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1'>
             <span className='text-3xl font-extrabold'>
-              {post.price ? `${dotNumber(post.price)} DT` : 'Prix N.C.'}
+              {post.price ? `${dotNumber(post.price)} DT` : 'Prix sur demande'}
             </span>
             {post.estimatedPrice && (
               <span
@@ -178,7 +190,7 @@ function Content({ post }: { post: CarPost }) {
               className='mx-auto mt-6 inline-flex w-fit items-center gap-2 rounded-lg border border-ink-200 bg-ink-50 px-4 py-2 text-sm font-semibold transition-colors hover:border-brand-500/40 hover:bg-brand-500/5'
             >
               <FontAwesomeIcon
-                icon={faStore}
+                icon={faShop}
                 className='h-3.5 w-3.5 text-brand-500'
               />
               {post.merchant.name}

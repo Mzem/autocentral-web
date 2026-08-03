@@ -61,15 +61,28 @@ export default function CarImage({
   )
 }
 
-/** Small "Vendu" ribbon shown on sold (expired) listings. */
+/** Slim "Vendu" badge shown on sold (expired) listings. */
 export function SoldBadge({ className }: { className?: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-md bg-ink-950/85 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-white ${
+      className={`inline-flex items-center rounded-md bg-red/60 px-2.5 py-0.5 text-[0.7rem] font-bold uppercase tracking-wide text-white shadow backdrop-blur-sm ${
         className ?? ''
       }`}
     >
       Vendu
+    </span>
+  )
+}
+
+/** Slim "Disponible" badge (very translucent black) for available listings. */
+export function AvailableBadge({ className }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-md bg-black/30 px-2.5 py-0.5 text-[0.7rem] font-bold uppercase tracking-wide text-white shadow backdrop-blur-sm ${
+        className ?? ''
+      }`}
+    >
+      Disponible
     </span>
   )
 }

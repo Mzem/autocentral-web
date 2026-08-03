@@ -1,4 +1,11 @@
-import { apiGet, apiPatch } from 'api/apiClient'
+import {
+  apiGet,
+  apiPost,
+  apiPatch,
+  apiDelete,
+  apiPostFormData,
+  apiPatchFormData
+} from 'api/apiClient'
 import { MerchantListItem } from './merchants.service'
 import { Region } from './regions.service'
 import { CarModel } from './car-model.service'
@@ -29,6 +36,8 @@ export interface CarPostListItem {
   leasing: boolean
   firstOwner: boolean
   isExpired: boolean | undefined
+  isHidden: boolean | undefined
+  isOnBehalf: boolean | undefined
 }
 
 export interface CarPost {
@@ -79,6 +88,7 @@ export interface CarPost {
   options: string[] | undefined
   whatsapp: string | undefined
   isExpired: boolean | undefined
+  isOnBehalf: boolean | undefined
   similar: CarPostListItem[] | undefined
 }
 
@@ -109,6 +119,8 @@ export interface GetCarPostsFilters {
   leasing?: boolean
   fcr?: boolean
   q?: string
+  includeHidden?: boolean
+  authKey?: string
 }
 
 export function generateCarPostsQueryParams(
@@ -152,16 +164,19 @@ export function generateCarPostsQueryParams(
   if (filters.leasing) qp += '&leasing=true'
   if (filters.fcr) qp += '&fcr=true'
   if (filters.q) qp += `&q=${filters.q}`
+  if (filters.includeHidden) qp += '&includeHidden=true'
+  if (filters.authKey) qp += `&authKey=${encodeURIComponent(filters.authKey)}`
 
   return qp
 }
 
 export async function getCarPosts(
-  filters: GetCarPostsFilters
+  filters: GetCarPostsFilters,
+  cacheInSeconds = 60
 ): Promise<CarPostListItem[]> {
   try {
     const url = 'car-posts/' + generateCarPostsQueryParams(filters)
-    const { content } = await apiGet<CarPostListItem[]>(url, 60)
+    const { content } = await apiGet<CarPostListItem[]>(url, cacheInSeconds)
     return content
   } catch (e) {
     console.error('GET car posts error')
@@ -220,7 +235,12 @@ export async function updateCarPost(
   title?: string,
   gearbox?: string,
   fuel?: string,
-  isFeatured?: string
+  isFeatured?: string,
+  isExpired?: string,
+  isHidden?: string,
+  clearPrice?: string,
+  cv?: number,
+  description?: string
 ): Promise<void> {
   try {
     await apiPatch(`car-posts/${id}`, {
@@ -235,10 +255,52 @@ export async function updateCarPost(
       title,
       gearbox,
       fuel,
-      isFeatured
+      isFeatured,
+      isExpired,
+      isHidden,
+      clearPrice,
+      cv,
+      description
     })
   } catch (e) {
     console.error('PATCH car post error')
+    throw e
+  }
+}
+
+export async function deleteCarPost(
+  id: string,
+  authKey: string
+): Promise<void> {
+  try {
+    await apiDelete(`car-posts/${id}`, { authKey })
+  } catch (e) {
+    console.error('DELETE car post error')
+    throw e
+  }
+}
+
+export async function createCarPost(formData: FormData): Promise<unknown> {
+  try {
+    return await apiPostFormData('car-posts', formData)
+  } catch (e) {
+    console.error('POST car post error')
+    throw e
+  }
+}
+
+export async function syncFacebook(authKey: string): Promise<void> {
+  await apiPost('car-posts/sync-facebook', { authKey })
+}
+
+export async function updateCarPostImages(
+  id: string,
+  formData: FormData
+): Promise<unknown> {
+  try {
+    return await apiPatchFormData(`car-posts/${id}/images`, formData)
+  } catch (e) {
+    console.error('PATCH car post images error')
     throw e
   }
 }

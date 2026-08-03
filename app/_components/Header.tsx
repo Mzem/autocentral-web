@@ -12,7 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 config.autoAddCss = false
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
-import { NAV_LINKS, CONTACT_URL } from '../_lib/nav'
+import { NAV_LINKS, ADMIN_NAV_LINKS, CONTACT_URL } from '../_lib/nav'
+import { useMerchantKey } from '../_lib/useMerchantKey'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,6 +21,10 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement | null>(null)
   const menuButtonRef = useRef<HTMLButtonElement | null>(null)
   const pathname = usePathname()
+  const { key } = useMerchantKey()
+
+  // Merchants also get quick links to the internal Annonces / Vendeurs pages.
+  const navLinks = key ? [...NAV_LINKS, ...ADMIN_NAV_LINKS] : NAV_LINKS
 
   const switchMenu = () => setIsMenuOpen((prev) => !prev)
 
@@ -75,12 +80,12 @@ export default function Header() {
         </Link>
 
         <nav className='hidden md:flex items-center gap-1'>
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               aria-current={isActive(link.href) ? 'page' : undefined}
-              className={`flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide transition-colors ${
+              className={`flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium tracking-wide transition-colors ${
                 isActive(link.href) && !link.href.startsWith('/#')
                   ? 'bg-white/10 text-white'
                   : 'text-white/75 hover:bg-white/5 hover:text-white'
@@ -95,7 +100,7 @@ export default function Header() {
             className='ml-1 flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/15'
           >
             <FontAwesomeIcon icon={faLocationDot} className='h-4 w-4' />
-            <span>Nous trouver</span>
+            <span>Localisation</span>
           </a>
           <a
             href={CONTACT_URL}
@@ -104,7 +109,7 @@ export default function Header() {
             className='ml-1.5 flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600'
           >
             <FontAwesomeIcon icon={faFacebookMessenger} className='h-4 w-4' />
-            <span>Nous contacter</span>
+            <span>Contact</span>
           </a>
         </nav>
 
@@ -121,7 +126,7 @@ export default function Header() {
             href={CONTACT_URL}
             target='_blank'
             rel='noopener noreferrer'
-            aria-label='Nous contacter'
+            aria-label='Contact'
             className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-brand-500 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-brand-600'
           >
             <FontAwesomeIcon
@@ -161,7 +166,7 @@ export default function Header() {
           className='md:hidden absolute inset-x-0 top-14 border-b border-white/10 bg-black/90 backdrop-blur-xl shadow-2xl animate-fade-in-up'
         >
           <nav className='flex flex-col p-2'>
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

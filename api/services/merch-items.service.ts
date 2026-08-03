@@ -1,5 +1,18 @@
-import { apiGet } from 'api/apiClient'
+import {
+  apiGet,
+  apiPatch,
+  apiDelete,
+  apiPostFormData,
+  apiPatchFormData
+} from 'api/apiClient'
 import { ApiError } from '../httpClient'
+
+export const MERCH_CATEGORIES = [
+  'Vêtements',
+  'Miniatures',
+  'Décoration',
+  'Accessoires'
+] as const
 
 export interface MerchItem {
   id: string
@@ -41,6 +54,60 @@ export async function getMerchItem(id: string): Promise<MerchItem | undefined> {
   } catch (e) {
     if (e instanceof ApiError) return undefined
     console.error('GET merch item error')
+    throw e
+  }
+}
+
+export interface UpdateMerchItemFields {
+  title?: string
+  description?: string
+  price?: number
+  category?: string
+  inStock?: string
+}
+
+export async function updateMerchItem(
+  id: string,
+  authKey: string,
+  fields: UpdateMerchItemFields
+): Promise<void> {
+  try {
+    await apiPatch(`merch-items/${id}`, { authKey, ...fields })
+  } catch (e) {
+    console.error('PATCH merch item error')
+    throw e
+  }
+}
+
+export async function deleteMerchItem(
+  id: string,
+  authKey: string
+): Promise<void> {
+  try {
+    await apiDelete(`merch-items/${id}`, { authKey })
+  } catch (e) {
+    console.error('DELETE merch item error')
+    throw e
+  }
+}
+
+export async function createMerchItem(formData: FormData): Promise<unknown> {
+  try {
+    return await apiPostFormData('merch-items', formData)
+  } catch (e) {
+    console.error('POST merch item error')
+    throw e
+  }
+}
+
+export async function updateMerchItemImages(
+  id: string,
+  formData: FormData
+): Promise<unknown> {
+  try {
+    return await apiPatchFormData(`merch-items/${id}/images`, formData)
+  } catch (e) {
+    console.error('PATCH merch item images error')
     throw e
   }
 }

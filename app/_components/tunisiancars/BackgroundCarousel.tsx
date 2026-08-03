@@ -23,11 +23,14 @@ const DURATION = 1100
 export default function BackgroundCarousel({
   images,
   intervalMs = 6000,
-  overlayClassName = 'bg-black/55'
+  overlayClassName = 'bg-black/55',
+  fit = 'cover'
 }: {
   images: string[]
   intervalMs?: number
   overlayClassName?: string
+  // 'contain' shows the whole image (full width, uncropped) anchored to the top.
+  fit?: 'cover' | 'contain'
 }) {
   const looping = images.length > 1
   const slides = looping ? [...images, images[0]] : images
@@ -66,7 +69,10 @@ export default function BackgroundCarousel({
   }, [animate])
 
   return (
-    <div aria-hidden='true' className='absolute inset-0 overflow-hidden'>
+    <div
+      aria-hidden='true'
+      className='absolute inset-0 overflow-hidden bg-black'
+    >
       <div
         className='flex h-full'
         style={{
@@ -76,7 +82,13 @@ export default function BackgroundCarousel({
       >
         {slides.map((src, i) => (
           <div key={i} className='h-full w-full flex-shrink-0'>
-            <img src={src} alt='' className='h-full w-full object-cover' />
+            <img
+              src={src}
+              alt=''
+              className={`h-full w-full ${
+                fit === 'contain' ? 'object-contain object-top' : 'object-cover'
+              }`}
+            />
           </div>
         ))}
       </div>

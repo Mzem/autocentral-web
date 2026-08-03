@@ -1,102 +1,139 @@
 'use client'
 
 import { useState } from 'react'
-import { MerchItem } from '../../api/services/merch-items.service'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
+import {
+  faCartShopping,
+  faShirt,
+  faCarSide,
+  faTrophy,
+  faTag,
+  faCircleCheck,
+  faCircleXmark
+} from '@fortawesome/free-solid-svg-icons'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import {
+  MerchItem,
+  MERCH_CATEGORIES
+} from '../../api/services/merch-items.service'
+import { dotNumber } from '../helpers'
+import { messengerOrderUrl } from '../_lib/merch'
 import MerchItemModal from './MerchItemModal'
+import { AdminMerchControls } from './tunisiancars/AdminMerchControls'
+
+const CATEGORY_ICONS: Record<string, IconDefinition> = {
+  Vêtements: faShirt,
+  Miniatures: faCarSide,
+  Décoration: faTrophy,
+  Accessoires: faTag
+}
 
 export const MerchItems = ({ merchItems }: { merchItems: MerchItem[] }) => {
-  const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  // Group by category, in the canonical order, then anything else under "Autres".
+  const known = new Set<string>(MERCH_CATEGORIES)
+  const groups: { category: string; items: MerchItem[] }[] =
+    MERCH_CATEGORIES.map((category) => ({
+      category,
+      items: merchItems.filter((i) => i.category === category)
+    })).filter((g) => g.items.length > 0)
+  const others = merchItems.filter((i) => !known.has(i.category))
+  if (others.length > 0) groups.push({ category: 'Autres', items: others })
+
+  const openItem = (id: string) => {
+    setSelectedId(id)
+    window.history.pushState(null, '', `/produits/${id}`)
+  }
 
   return (
     <>
-      <div className='w-full mx-auto text-white'>
-        {merchItems
-          .reduce(
-            (
-              acc: Array<{
-                merchant: { id: string; name: string; avatar?: string }
-                items: MerchItem[]
-              }>,
-              item: MerchItem
-            ) => {
-              const existingMake = acc.find(
-                (group) => group.merchant.id === item.merchant.id
-              )
+      <div className='space-y-12'>
+        {groups.map((group) => (
+          <section key={group.category}>
+            <h2 className='flex items-center gap-2.5 text-lg font-extrabold lg:text-xl'>
+              <FontAwesomeIcon
+                icon={CATEGORY_ICONS[group.category] ?? faCartShopping}
+                className='h-5 w-5 text-brand-500'
+              />
+              {group.category}
+              <span className='text-sm font-medium text-ink-400'>
+                ({group.items.length})
+              </span>
+            </h2>
 
-              if (existingMake) {
-                existingMake.items.push(item)
-              } else {
-                acc.push({
-                  merchant: {
-                    id: item.merchant.id,
-                    name: item.merchant.name,
-                    avatar: item.merchant.avatar
-                  },
-                  items: [item]
-                })
-              }
-
-              return acc
-            },
-            []
-          )
-          .map((itemsByMerchant) => (
-            <div
-              key={itemsByMerchant.merchant.id}
-              id={itemsByMerchant.merchant.id}
-            >
-              <div className='mt-6 flex space-x-1 lg:space-x-2 items-center'>
-                <img
-                  src={`${itemsByMerchant.merchant.avatar ?? '/man.svg'}`}
-                  alt={itemsByMerchant.merchant.name}
-                  className='h-12 lg:h-14 rounded-full mr-4'
-                />
-
-                <h2>{itemsByMerchant.merchant.name}</h2>
-              </div>
-              {itemsByMerchant.items.map((item) => (
-                <button
+            <ul className='mt-5 grid grid-cols-1 gap-5 md:grid-cols-2'>
+              {group.items.map((item) => (
+                <li
                   key={item.id}
-                  onClick={() => {
-                    setSelectedPostId(item.id)
-                    window.history.pushState(null, '', `/produits/${item.id}`)
-                  }}
-                  className='justify-between w-full flex items-center mt-4 shadow-md rounded bg-white/20 hover:bg-surface-raised text-sm lg:text-base text-ink-200'
+                  className='group relative flex flex-col overflow-hidden rounded-xl border border-ink-100 bg-white shadow-card-light transition hover:-translate-y-0.5 hover:shadow-lg'
                 >
-                  <div className='flex flex-row space-x-2 lg:space-x-4'>
-                    <img
-                      src={item.images[0]}
-                      alt={item.title}
-                      className='w-28 lg:w-40 h-[7rem] lg:h-[8rem] object-cover rounded flex-shrink-0'
-                    />
-                    <div className='flex flex-col h-[7rem] lg:h-[8rem] justify-between text-left'>
-                      {' '}
-                      {/* Ensure text-left here */}
-                      <p className='font-semibold text-sm lg:text-base'>
-                        {item.title}
-                      </p>
-                      <div className='flex flex-col'>
-                        <span className='font-semibold text-sm lg:text-base'>
-                          {item.price ? `${item.price} DT` : 'Prix N.C'}
-                        </span>
+                  <AdminMerchControls item={item} />
 
-                        <span className='italic text-white/55 text-xs lg:text-sm'>
-                          {item.inStock ? 'En stock' : 'Rupture de stock'}
+                  <button
+                    type='button'
+                    onClick={() => openItem(item.id)}
+                    className='block w-full text-left focus:outline-none'
+                  >
+                    <div className='aspect-square w-full overflow-hidden bg-ink-50'>
+                      <img
+                        src={item.images?.[0]}
+                        alt={item.title}
+                        className='h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105'
+                      />
+                    </div>
+                    <div className='p-3'>
+                      <h3 className='truncate text-sm font-bold lg:text-base'>
+                        {item.title}
+                      </h3>
+                      <div className='mt-1 flex items-center justify-between gap-2'>
+                        <span className='font-extrabold text-brand-600'>
+                          {item.price
+                            ? `${dotNumber(item.price)} DT`
+                            : 'Prix N.C.'}
+                        </span>
+                        <span
+                          className={`inline-flex items-center gap-1 text-[11px] font-medium ${
+                            item.inStock ? 'text-emerald-600' : 'text-danger'
+                          }`}
+                        >
+                          <FontAwesomeIcon
+                            icon={item.inStock ? faCircleCheck : faCircleXmark}
+                            className='h-3 w-3'
+                          />
+                          {item.inStock ? 'En stock' : 'Rupture'}
                         </span>
                       </div>
                     </div>
+                  </button>
+
+                  <div className='mt-auto px-3 pb-3'>
+                    <a
+                      href={messengerOrderUrl(item)}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='flex items-center justify-center gap-2 rounded-lg bg-[#1877F2] px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0f66d0]'
+                    >
+                      <FontAwesomeIcon
+                        icon={faFacebookMessenger}
+                        className='h-4 w-4'
+                      />
+                      Commander
+                    </a>
                   </div>
-                </button>
+                </li>
               ))}
-            </div>
-          ))}
+            </ul>
+          </section>
+        ))}
       </div>
 
-      {selectedPostId && (
+      {selectedId && (
         <MerchItemModal
-          item={merchItems.find((item) => item.id === selectedPostId)!}
+          item={merchItems.find((i) => i.id === selectedId)!}
           onClose={() => {
-            setSelectedPostId(null)
+            setSelectedId(null)
             window.history.replaceState(null, '', '/produits')
           }}
         />

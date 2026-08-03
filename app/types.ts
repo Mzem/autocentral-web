@@ -97,10 +97,30 @@ export const regionsSelect = [
   }
 ]
 
+// Values are the canonical strings stored in DB / accepted by the API (kept in
+// sync with the API `Fuel` enum and the engine catalog, so engine matching and
+// search filters keep working). Use `fuelLabel()` for the French display text.
 export enum Fuel {
   ESSENCE = 'Essence',
   DIESEL = 'Diesel',
-  HYBRID = 'Hybrid'
+  ESSENCE_HYBRIDE = 'Essence Hybrid',
+  DIESEL_HYBRIDE = 'Diesel Hybrid',
+  ELECTRIQUE = 'Electrique'
+}
+
+/** Maps a stored fuel value to its French display label. */
+export function fuelLabel(fuel?: string | null): string {
+  if (!fuel) return ''
+  const labels: Record<string, string> = {
+    'Essence Hybrid': 'Essence Hybride',
+    'Essence Micro Hybrid': 'Essence Hybride',
+    'Diesel Hybrid': 'Diesel Hybride',
+    'Diesel Micro Hybrid': 'Diesel Hybride',
+    'Plug-in Hybrid': 'Hybride rechargeable',
+    Hybrid: 'Hybride',
+    Electrique: 'Électrique'
+  }
+  return labels[fuel] ?? fuel
 }
 
 export enum Color {

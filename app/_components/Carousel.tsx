@@ -1,4 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChevronLeft,
+  faChevronRight,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons'
 
 export const Carousel: React.FC<{
   images: string[]
@@ -119,10 +125,9 @@ export const Carousel: React.FC<{
             }}
             className='absolute left-1 top-1/2 transform -translate-y-1/2 p-2 bg-ink-950/70 hover:whiteopac rounded-full'
           >
-            <img
-              src='/arrow_prev.svg'
-              alt='Image précédente'
-              className='h-6 w-6'
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              className='h-5 w-5 text-white'
             />
           </button>
           <button
@@ -132,10 +137,9 @@ export const Carousel: React.FC<{
             }}
             className='absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-ink-950/70 hover:whiteopac rounded-full'
           >
-            <img
-              src='/arrow_next.svg'
-              alt='Image suivante'
-              className='h-6 w-6'
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              className='h-5 w-5 text-white'
             />
           </button>
         </>
@@ -162,7 +166,7 @@ export const Carousel: React.FC<{
               }}
               className='absolute top-1 right-1 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full z-50'
             >
-              <img src='/close.svg' alt='Fermer' className='h-8 w-8 invert' />
+              <FontAwesomeIcon icon={faXmark} className='h-7 w-7 text-white' />
             </button>
             <div className='relative'>
               {isLoading && (
@@ -194,10 +198,9 @@ export const Carousel: React.FC<{
                 ref={prevButtonRef}
                 className='absolute left-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
               >
-                <img
-                  src='/arrow_prev.svg'
-                  alt='Image précédente'
-                  className='h-8 w-8'
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  className='h-7 w-7 text-white'
                 />
               </button>
               <button
@@ -208,10 +211,9 @@ export const Carousel: React.FC<{
                 ref={nextButtonRef}
                 className='absolute right-1 top-1/2 transform -translate-y-1/2 p-3 bg-black bg-opacity-20 hover:bg-opacity-50 rounded-full'
               >
-                <img
-                  src='/arrow_next.svg'
-                  alt='Image suivante'
-                  className='h-8 w-8'
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  className='h-7 w-7 text-white'
                 />
               </button>{' '}
             </>

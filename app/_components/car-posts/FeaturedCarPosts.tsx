@@ -3,6 +3,7 @@
 import React from 'react'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
+import { fuelLabel } from '../../types'
 import CarImage, { SoldBadge } from './CarImage'
 
 /**
@@ -95,7 +96,9 @@ export default function FeaturedCarPosts({
               <div className='p-3 lg:p-4'>
                 <div className='flex items-baseline justify-between gap-2'>
                   <span className='font-extrabold text-base lg:text-lg text-white'>
-                    {post.price ? `${dotNumber(post.price)} DT` : 'Prix N.C.'}
+                    {post.price
+                      ? `${dotNumber(post.price)} DT`
+                      : 'Prix sur demande'}
                   </span>
                   {post.estimatedPrice && (
                     <span
@@ -124,7 +127,7 @@ export default function FeaturedCarPosts({
                   {post.fuel && (
                     <div className="flex items-center gap-1 before:content-['•'] before:text-ink-300">
                       <dt className='sr-only'>Carburant</dt>
-                      <dd>{post.fuel}</dd>
+                      <dd>{fuelLabel(post.fuel)}</dd>
                     </div>
                   )}
                   {post.gearbox && (

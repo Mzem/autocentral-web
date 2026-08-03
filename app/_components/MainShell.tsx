@@ -26,7 +26,8 @@ export default function MainShell({
   const isFullBleed =
     pathname === '/' ||
     pathname === '/atelier' ||
-    pathname.startsWith('/annonces/')
+    pathname.startsWith('/annonces/') ||
+    pathname.startsWith('/produits')
 
   if (isFullBleed) {
     return <main className='flex-grow'>{children}</main>

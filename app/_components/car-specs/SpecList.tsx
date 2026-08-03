@@ -4,6 +4,7 @@ import React from 'react'
 import { CarModel } from '../../../api/services/car-model.service'
 import Link from 'next/link'
 import { InfoCard } from '../InfoCard'
+import { fuelLabel } from '../../types'
 
 type SpecListProps = {
   engine: CarModel
@@ -41,7 +42,9 @@ const SpecList: React.FC<SpecListProps> = ({
         </li>
 
         <li className='flex space-x-1 items-center'>
-          {engine.fuel && <InfoCard value={engine.fuel} img='/fuel.svg' />}
+          {engine.fuel && (
+            <InfoCard value={fuelLabel(engine.fuel)} img='/fuel.svg' />
+          )}
           {engine.cylinder && <InfoCard value={engine.cylinder} />}
           {tax && <InfoCard value={tax} />}
         </li>

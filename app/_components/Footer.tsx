@@ -44,12 +44,12 @@ const REVIEWS = [
 
 const SOCIALS = [
   {
-    label: 'Showroom',
+    label: 'Showroom Tunisian CARS',
     facebook: 'https://facebook.com/tunisiancars.tn',
     instagram: 'https://instagram.com/tunisiancars.tn'
   },
   {
-    label: 'Atelier',
+    label: 'Atelier Tunisian CARS Garage',
     facebook: 'https://facebook.com/tunisiancarsgaragesousse',
     instagram: 'https://instagram.com/tunisiancarsgarage'
   }
@@ -181,7 +181,7 @@ export default function Footer() {
               <div className='mt-7 space-y-3'>
                 {SOCIALS.map((social) => (
                   <div key={social.label} className='flex items-center gap-3'>
-                    <span className='min-w-[6rem] text-sm font-semibold text-white/85'>
+                    <span className='w-52 shrink-0 text-sm font-semibold leading-tight text-white/85'>
                       {social.label}
                     </span>
                     <a

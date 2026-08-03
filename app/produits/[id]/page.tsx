@@ -1,42 +1,59 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { getMerchItem } from '../../../api/services/merch-items.service'
 import MerchItemModal from '../../_components/MerchItemModal'
-import Link from 'next/link'
 
 export async function generateMetadata({
   params
 }: {
   params: { id?: string }
 }): Promise<Metadata> {
+  const item = params.id ? await getMerchItem(params.id) : undefined
+  const url = params.id
+    ? `https://tunisiancars.com.tn/produits/${params.id}`
+    : 'https://tunisiancars.com.tn'
   return {
-    alternates: {
-      canonical: params.id
-        ? `https://tunisiancars.com.tn/produits/${params.id}`
-        : 'https://tunisiancars.com.tn'
-    }
+    alternates: { canonical: url },
+    description: item?.title ?? 'Boutique Tunisian Cars',
+    openGraph: item
+      ? {
+          type: 'website',
+          url,
+          title: item.title,
+          siteName: item.title,
+          images: item.images?.[0] || '/logo_rect.jpg'
+        }
+      : undefined
   }
 }
 
 export default async function Produit({ params }: { params: { id: string } }) {
   const item = await getMerchItem(params.id)
+
   return (
-    <>
-      {!item && (
-        <div className='text-white mx-auto w-full flex flex-col items-center justify-around text-xl lg:text-2xl mt-[6rem]'>
-          <img src='/lost.svg' alt='Non trouvé(e)' className='max-h-96' />
-          <p>Non trouvé(e)</p>
-          <Link
-            href='/'
-            className='bg-ink-950 shadow px-8 rounded-xl mt-6 text-white italic text-base'
-          >
-            <img src='/logo.svg' alt='' className='h-20' />
-          </Link>
-          <span className='text-white/55 italic text-sm mt-4'>
-            Rechercher une voiture d'occasion
-          </span>
+    <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>
+      <div className='mx-auto w-[92%] max-w-3xl py-8 lg:py-12'>
+        <Link
+          href='/produits'
+          className='inline-flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-4 py-1.5 text-sm font-semibold text-ink-800 transition-colors hover:bg-ink-50'
+        >
+          <FontAwesomeIcon icon={faArrowLeft} className='h-3.5 w-3.5' />
+          Retour à la boutique
+        </Link>
+
+        <div className='mt-6'>
+          {item ? (
+            <MerchItemModal item={item} isFull={true} />
+          ) : (
+            <div className='flex flex-col items-center justify-center py-16 text-center'>
+              <img src='/lost.svg' alt='Non trouvé' className='max-h-72' />
+              <p className='mt-6 text-xl font-bold'>Article introuvable</p>
+            </div>
+          )}
         </div>
-      )}
-      {item && <MerchItemModal item={item} isFull={true} />}
-    </>
+      </div>
+    </div>
   )
 }

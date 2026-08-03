@@ -1,8 +1,24 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import Select from 'react-select'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMagnifyingGlass,
+  faRotateLeft,
+  faLocationDot,
+  faGaugeHigh,
+  faGasPump,
+  faGears,
+  faBolt,
+  faCircleCheck,
+  faArrowTrendDown,
+  faArrowTrendUp,
+  faEquals,
+  faClock
+} from '@fortawesome/free-solid-svg-icons'
 import {
   CarPostListItem,
   generateCarPostsQueryParams,
@@ -12,6 +28,7 @@ import { dotNumber, fromNameToId } from '../../helpers'
 import {
   carModels,
   Fuel,
+  fuelLabel,
   InteriorType,
   makesWithLogos,
   regionsSelect
@@ -21,7 +38,6 @@ import ColorSelector from '../ColorSelector'
 import { reactSelectFilterStyle } from '../customStyles'
 import MinMaxSelector from '../MinMaxSelector'
 import MultiSelectList from '../MultiSelector'
-import CarPostModal from './CarPostModal'
 import FeedAd2 from '../ads/FeedAd2'
 import FeaturedCarPosts from './FeaturedCarPosts'
 import CarImage, { SoldBadge } from './CarImage'
@@ -124,6 +140,7 @@ export default function CarPostsFeed({
   )
 
   const searchDivRef = useRef<HTMLDivElement | null>(null)
+  const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
   function stateToFilters(page: number): GetCarPostsFilters {
     return {
@@ -179,7 +196,7 @@ export default function CarPostsFeed({
   }
 
   function handleNewSearch() {
-    const actualPage = merchantId ? '/' + merchantId : '/'
+    const actualPage = merchantId ? '/' + merchantId : '/annonces'
     window.location.href =
       actualPage + generateCarPostsQueryParams(stateToFilters(1))
   }
@@ -198,6 +215,21 @@ export default function CarPostsFeed({
     }
   }, [id, initialPosts])
 
+  // Infinite scroll: auto-load the next page when the sentinel nears the viewport.
+  useEffect(() => {
+    if (!hasMore || loadingPosts) return
+    const el = loadMoreRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) fetchPosts(page + 1)
+      },
+      { rootMargin: '600px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasMore, loadingPosts, page, posts])
+
   const PostCard = ({
     post,
     featured
@@ -205,130 +237,112 @@ export default function CarPostsFeed({
     post: CarPostListItem
     featured?: boolean
   }) => {
+    const spec = (icon: typeof faGaugeHigh, value: React.ReactNode) =>
+      value ? (
+        <span className='inline-flex items-center gap-1.5 text-ink-300'>
+          <FontAwesomeIcon icon={icon} className='h-3.5 w-3.5 text-ink-500' />
+          {value}
+        </span>
+      ) : null
+
+    const estim = post.estimatedPrice
+    const estimIcon =
+      estim?.color === 'GREEN'
+        ? faArrowTrendDown
+        : estim?.color === 'RED'
+        ? faArrowTrendUp
+        : faEquals
+    const estimColor =
+      estim?.color === 'GREEN'
+        ? 'text-success'
+        : estim?.color === 'RED'
+        ? 'text-danger'
+        : 'text-ink-400'
+
     return (
-      <div
-        key={post.id}
-        className={`group justify-between w-full flex items-center mt-3 overflow-hidden rounded-xl text-xs lg:text-base xs:text-[0.7rem] text-ink-200 h-[8rem] lg:h-[10rem] bg-surface ring-1 ring-white/10 shadow-card transition-all duration-300 hover:shadow-card-hover hover:ring-white/15 ${
-          featured ? 'ring-brand-500/40 hover:ring-brand-500/60' : ''
-        }`}
-      >
-        <button
-          onClick={() => {
-            setSelectedPostId(post.id)
-            window.history.pushState(null, '', `/annonces/${post.id}`)
-          }}
-          className='flex flex-row w-4/5 space-x-2 lg:space-x-4 items-center'
+      <li className='list-none'>
+        <Link
+          href={`/annonces/${post.id}`}
+          scroll={false}
+          className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-surface shadow-card ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-white/20 ${
+            featured ? 'ring-brand-500/40' : ''
+          }`}
         >
-          <div className='relative overflow-hidden flex-shrink-0 w-28 lg:w-40 h-[8rem] lg:h-[10rem] bg-surface-raised'>
+          <div className='relative aspect-[4/3] w-full overflow-hidden bg-surface-raised'>
             <CarImage
               src={post.image}
               alt={post.title}
-              className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+              className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
             />
-            {post.isExpired && <SoldBadge className='absolute top-2 left-2' />}
-          </div>
-          <div className='flex flex-col justify-between items-start h-[8rem] lg:h-[10rem] w-full py-2'>
-            {post.title && (
-              <span className='font-bold text-left xs:w-[8rem] w-[9rem] sm:w-[12rem] truncate text-[0.8rem] lg:w-[20rem] lg:text-base xs:text-[0.7rem]'>
-                {post.title}
-              </span>
-            )}
-            <span className='text-left xs:w-[8rem] w-[9rem] sm:w-[12rem] lg:w-[20rem] truncate'>
-              {post.year ? post.year + ' ' : ''}
-              {post.make && post.make !== 'Autres'
-                ? post.make + ' ' + (post.model ?? '')
-                : ''}
+            {post.isExpired && <SoldBadge className='absolute left-3 top-3' />}
+            <span className='absolute bottom-3 left-3 rounded-lg bg-black/75 px-2.5 py-1 text-sm font-extrabold text-white backdrop-blur-sm'>
+              {post.price ? dotNumber(post.price) + ' DT' : 'Prix sur demande'}
             </span>
-            {post.km !== undefined && post.km !== null && (
-              <span className='font-bold'>{dotNumber(post.km)} km</span>
-            )}
-            <span>
-              {post.cv ? post.cv + 'cv ' : ''}
-              {post.fuel}
-            </span>
-            {post.gearbox && <span>{post.gearbox}</span>}
-            <div className='mt-auto flex space-x-1 lg:space-x-2 lg:flex-row text-left items-center'>
+            {post.price && estim && (
               <span
-                className={`font-bold text-[0.8rem] lg:text-base xs:text-[0.7rem] ${
-                  post.price && post.estimatedPrice
-                    ? post.estimatedPrice.color === 'GREEN'
-                      ? 'text-success mt-1'
-                      : post.estimatedPrice.color === 'RED'
-                      ? 'text-danger mt-0'
-                      : 'mt-1'
-                    : 'mt-1'
-                }`}
+                className={`absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-lg bg-black/75 px-2 py-1 text-xs font-semibold backdrop-blur-sm ${estimColor}`}
+                title={estim.text}
               >
-                {post.price ? dotNumber(post.price) + ' DT' : 'Prix N.C.'}
+                <FontAwesomeIcon icon={estimIcon} className='h-3 w-3' />
               </span>
-              {post.price && post.estimatedPrice && (
-                <img
-                  className={` ${
-                    featured
-                      ? 'h-3 w-3 lg:h-4 lg:w-4 mt-[3px] lg:mt-[5px]'
-                      : 'h-5 lg:h-6 w-5 lg:w-6'
-                  }`}
-                  alt='estimation'
-                  src={
-                    featured
-                      ? '/badge.svg'
-                      : post.estimatedPrice.color === 'GREEN'
-                      ? '/estim_down.svg'
-                      : post.estimatedPrice.color === 'RED'
-                      ? '/estim_up.svg'
-                      : '/estim_ok.svg'
-                  }
+            )}
+          </div>
+
+          <div className='flex flex-1 flex-col p-4 text-white'>
+            <h3 className='truncate font-bold'>
+              {post.title || `${post.make ?? ''} ${post.model ?? ''}`.trim()}
+            </h3>
+            <p className='mt-0.5 truncate text-sm text-ink-400'>
+              {[
+                post.year,
+                post.make && post.make !== 'Autres' ? post.make : null,
+                post.model
+              ]
+                .filter(Boolean)
+                .join(' ')}
+            </p>
+
+            <div className='mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-sm'>
+              {spec(faGaugeHigh, post.km != null && `${dotNumber(post.km)} km`)}
+              {spec(faGasPump, fuelLabel(post.fuel))}
+              {spec(faGears, post.gearbox)}
+              {spec(faBolt, post.cv && `${post.cv} cv`)}
+            </div>
+
+            {!post.price && estim && (
+              <span className={`mt-2 text-xs italic ${estimColor}`}>
+                {estim.text}
+              </span>
+            )}
+
+            {post.publishedAtText && (
+              <span className='mt-2 inline-flex items-center gap-1.5 text-xs text-ink-500'>
+                <FontAwesomeIcon icon={faClock} className='h-3 w-3' />
+                {post.publishedAtText}
+              </span>
+            )}
+
+            <div className='mt-auto flex items-center justify-between gap-2 border-t border-white/5 pt-3 text-xs text-ink-400'>
+              <span className='inline-flex min-w-0 items-center gap-1.5'>
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className='h-3 w-3 shrink-0'
                 />
-              )}
-              {!post.price && post.estimatedPrice && (
-                <div className='flex items-center space-x-1 mt-2'>
-                  <span
-                    className={`font-normal italic text-[0.6rem] xs:text-[0.5rem] lg:text-xs ${
-                      post.estimatedPrice.color === 'GREEN'
-                        ? 'text-success'
-                        : post.estimatedPrice.color === 'RED'
-                        ? 'text-danger'
-                        : 'text-ink-400'
-                    }`}
-                  >
-                    {post.estimatedPrice.text}
-                  </span>
-                </div>
-              )}
+                <span className='truncate'>{post.region.name}</span>
+              </span>
+              <span className='inline-flex min-w-0 items-center gap-1.5'>
+                {post.merchant.isShop && (
+                  <FontAwesomeIcon
+                    icon={faCircleCheck}
+                    className='h-3 w-3 shrink-0 text-brand-400'
+                  />
+                )}
+                <span className='truncate'>{post.merchant.name}</span>
+              </span>
             </div>
           </div>
-        </button>
-
-        <div className='flex flex-col items-center mr-2 text-center h-full justify-center space-y-2 text-xs xs:text-[0.6rem] xs:max-w-[4rem] max-w-[5rem] sm:max-w-[5.5rem] md:max-w-[6.5rem] h-[8rem] lg:h-[10rem]'>
-          {post.publishedAtText && (
-            <span className='w-full truncate'>{post.publishedAtText}</span>
-          )}
-
-          {post.phone && (
-            <a href={`tel:${post.phone}`} className='w-full'>
-              <button className='w-full font-semibold text-white bg-ink-950 p-1 md:p-2 md:px-4 px-3 rounded-lg hover:bg-brand-600 transition-colors duration-300 ease-in-out'>
-                Appeler
-              </button>
-            </a>
-          )}
-          <div className='flex flex-row items-center'>
-            {post.merchant.isShop && (
-              <img src='/badge.svg' alt='Professionnel' className='h-3 w-3' />
-            )}
-            <span className='xs:max-w-[4rem] max-w-[5rem] md:w-full truncate'>
-              {post.merchant.name}
-            </span>
-          </div>
-          <div className='flex flex-row items-center'>
-            <img
-              src='/location.svg'
-              alt='Adresse'
-              className='h-3 lg:h-4 w-3 lg:w-4'
-            />
-            <span className='w-full truncate'>{post.region.name}</span>
-          </div>
-        </div>
-      </div>
+        </Link>
+      </li>
     )
   }
 
@@ -336,15 +350,14 @@ export default function CarPostsFeed({
     <>
       <div
         ref={searchDivRef}
-        className='bg-ink-950 shadow-card text-white w-full mx-0 p-2 lg:p-3 text-center flex flex-col rounded-2xl ring-1 ring-white/10'
+        className='flex w-full flex-col rounded-2xl bg-gradient-to-b from-surface to-ink-950 p-3 text-left text-white shadow-card ring-1 ring-white/10 lg:p-4'
       >
         <div className='flex flex-row items-center gap-2'>
           <div className='relative flex-1'>
-            <img
-              src='/search.svg'
-              alt=''
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
               aria-hidden='true'
-              className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50'
+              className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50'
             />
             <input
               readOnly={!showFilters}
@@ -365,38 +378,37 @@ export default function CarPostsFeed({
 
           <button
             aria-label='Lancer la recherche'
-            className='shrink-0 rounded-xl bg-brand-600 p-2.5 px-4 font-semibold transition-colors duration-200 hover:bg-brand-500'
+            className='inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 font-semibold shadow-lg shadow-brand-600/25 transition-colors duration-200 hover:bg-brand-500'
             onClick={() => {
               if (!showFilters) setShowFilters(true)
               else handleNewSearch()
             }}
           >
-            <img
-              src='/search.svg'
-              alt=''
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
               aria-hidden='true'
-              className='h-5 w-5 mx-auto'
+              className='h-5 w-5'
             />
+            <span className='hidden sm:inline'>Rechercher</span>
           </button>
           <button
             aria-label='Réinitialiser les filtres'
             className='shrink-0 rounded-xl bg-white/10 p-2.5 px-3.5 transition-colors duration-200 hover:bg-white/20'
             onClick={() => {
-              window.location.href = merchantId ? `/${merchantId}` : '/'
+              window.location.href = merchantId ? `/${merchantId}` : '/annonces'
             }}
           >
-            <img
-              src='/refresh.svg'
-              alt=''
+            <FontAwesomeIcon
+              icon={faRotateLeft}
               aria-hidden='true'
-              className='h-5 w-5 mx-auto'
+              className='mx-auto h-5 w-5'
             />
           </button>
         </div>
         {showFilters && (
           <div className='flex flex-col my-1 lg:my-2 text-sm lg:text-base'>
             <div className='lg:flex lg:flex-col'>
-              <div className='flex mb-2'>
+              <div className='mb-2 flex gap-2'>
                 <Select
                   placeholder={'Marque'}
                   noOptionsMessage={() => '...'}
@@ -412,7 +424,7 @@ export default function CarPostsFeed({
                   }}
                   unstyled
                   styles={reactSelectFilterStyle}
-                  className={`w-[95%] ml-[4px] bg-white/10 rounded`}
+                  className='flex-1 rounded-lg bg-white/10'
                   classNamePrefix='react-select'
                 />
                 {make && (
@@ -439,7 +451,7 @@ export default function CarPostsFeed({
                     }}
                     unstyled
                     styles={reactSelectFilterStyle}
-                    className='w-[95%] ml-[4px] bg-white/10 rounded mr-[2px]'
+                    className='flex-1 rounded-lg bg-white/10'
                     classNamePrefix='react-select'
                   />
                 )}
@@ -460,10 +472,9 @@ export default function CarPostsFeed({
                         className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-brand-600 border-white/30'
                       />
                       <span className=''>Vendeurs PRO</span>
-                      <img
-                        src='/badge.svg'
-                        alt='Professionnel'
-                        className='ml-1 h-3'
+                      <FontAwesomeIcon
+                        icon={faCircleCheck}
+                        className='ml-1 h-3.5 w-3.5 text-brand-400'
                       />
                     </label>
                   )}
@@ -514,7 +525,7 @@ export default function CarPostsFeed({
             </div>
             <button
               onClick={() => setShowMoreFilters(true)}
-              className={`bg-white/20 w-[55%] mx-auto rounded-xl mt-2 font-semibold text-white text-opacity-85 ${
+              className={`mx-auto mt-3 rounded-full bg-white/10 px-5 py-2 text-sm font-semibold text-white/85 ring-1 ring-white/15 transition-colors hover:bg-white/20 ${
                 showMoreFilters ? 'hidden' : ''
               }`}
             >
@@ -558,10 +569,9 @@ export default function CarPostsFeed({
                             className='mr-2 mt-[1.5px] h-5 w-5 lg:h-6 lg:w-6 rounded cursor-pointer checked:bg-brand-600 border-white/30'
                           />
                           <span className=''>Vendeurs PRO</span>
-                          <img
-                            src='/badge.svg'
-                            alt='Professionnel'
-                            className='ml-1 h-3'
+                          <FontAwesomeIcon
+                            icon={faCircleCheck}
+                            className='ml-1 h-3.5 w-3.5 text-brand-400'
                           />
                         </label>
                       )}
@@ -674,11 +684,17 @@ export default function CarPostsFeed({
         )}
       </div>
 
-      <div className='flex my-1 lg:my-4 items-center'>
-        <img src='/estim_down.svg' alt='estimation haute' className='h-6 w-6' />
-        <img src='/estim_ok.svg' alt='estimation haute' className='h-6 w-6' />
-        <img src='/estim_up.svg' alt='estimation haute' className='h-6 w-6' />
-        <span className='text-white text-opacity-80 italic lg:text-base text-xs'>
+      <div className='my-1 flex items-center gap-2 lg:my-4'>
+        <FontAwesomeIcon
+          icon={faArrowTrendDown}
+          className='h-4 w-4 text-success'
+        />
+        <FontAwesomeIcon icon={faEquals} className='h-4 w-4 text-ink-400' />
+        <FontAwesomeIcon
+          icon={faArrowTrendUp}
+          className='h-4 w-4 text-danger'
+        />
+        <span className='text-xs italic text-white/80 lg:text-base'>
           Prix par rapport à la moyenne du marché
         </span>
       </div>
@@ -697,17 +713,20 @@ export default function CarPostsFeed({
             </div>
           </>
         )}
-        {!groupByMake &&
-          posts.map((post, index) => (
-            <>
-              <PostCard post={post} />
-              {index === 5 && (
-                <div className='rounded w-full mt-2 mx-auto'>
-                  <FeedAd2 />
-                </div>
-              )}
-            </>
-          ))}
+        {!groupByMake && (
+          <ul className='mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
+            {posts.map((post, index) => (
+              <React.Fragment key={post.id}>
+                <PostCard post={post} />
+                {index === 5 && (
+                  <li className='col-span-full list-none'>
+                    <FeedAd2 />
+                  </li>
+                )}
+              </React.Fragment>
+            ))}
+          </ul>
+        )}
 
         {groupByMake && (
           <>
@@ -752,9 +771,11 @@ export default function CarPostsFeed({
                     <h2>{postsByMake.make ?? ''}</h2>
                   </div>
 
-                  {postsByMake.posts.map((post) => (
-                    <PostCard post={post} />
-                  ))}
+                  <ul className='mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
+                    {postsByMake.posts.map((post) => (
+                      <PostCard key={post.id} post={post} />
+                    ))}
+                  </ul>
                 </div>
               ))}
           </>
@@ -777,6 +798,8 @@ export default function CarPostsFeed({
             )}
           </>
         )}
+        {/* Infinite-scroll sentinel: auto-loads the next page when in view. */}
+        <div ref={loadMoreRef} className='h-1 w-full' />
         {hasMore && !loadingPosts && (
           <button
             className='text-white bg-brand-600 font-medium shadow-lg p-1 rounded-xl w-full text-center mt-10 text-lg lg:text-xl'
@@ -786,37 +809,14 @@ export default function CarPostsFeed({
           </button>
         )}
 
+        {/* Mobile only: round FAB fixed at the bottom, back to the search bar. */}
         <button
           onClick={scrollToSearch}
-          className='fixed bottom-[3%] right-[3%] lg:bottom-[80%] lg:right-[15%] p-3 bg-brand-600 text-white rounded-full shadow-lg hover:bg-ink-950/70 transition'
+          aria-label='Revenir à la recherche'
+          className='fixed bottom-6 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-xl shadow-brand-600/30 ring-4 ring-brand-600/20 transition hover:bg-brand-500 md:hidden'
         >
-          <img
-            src='/search.svg'
-            alt='Rechercher'
-            className='h-7 lg:h-8 w-7 lg:w-8 mx-auto'
-          />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className='h-6 w-6' />
         </button>
-
-        {selectedPostId && (
-          <CarPostModal
-            postId={selectedPostId}
-            isMerchant={groupByMake}
-            onClose={() => {
-              setSelectedPostId(null)
-              if (merchantId)
-                window.history.replaceState(null, '', `/${merchantId}`)
-              else {
-                const queryString = generateCarPostsQueryParams(
-                  stateToFilters(page)
-                ).replace(/page=\d+&?/g, 'page=1')
-                const oldPathWithParams = `/${
-                  queryString && queryString !== '?' ? `${queryString}` : ''
-                }`
-                window.history.replaceState(null, '', oldPathWithParams)
-              }
-            }}
-          />
-        )}
       </div>
     </>
   )
