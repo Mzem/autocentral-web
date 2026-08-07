@@ -39,8 +39,8 @@ const isValid = (v: unknown) => {
 function Skeleton() {
   return (
     <div className='animate-pulse'>
-      <div className='grid gap-6 lg:grid-cols-2 lg:gap-10'>
-        <div className='aspect-square w-full rounded-lg bg-ink-100' />
+      <div className='grid gap-6'>
+        <div className='mx-auto aspect-[4/3] w-full rounded-lg bg-ink-100 lg:max-w-2xl' />
         <div className='space-y-4'>
           <div className='h-8 w-2/3 rounded bg-ink-100' />
           <div className='h-10 w-1/3 rounded bg-ink-100' />
@@ -120,13 +120,15 @@ function Content({ post }: { post: CarPost }) {
 
   return (
     <article className='text-ink-950'>
-      <div className='grid gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-10'>
-        {/* Galerie — remplit la colonne de gauche, swipe + plein écran */}
-        <DetailGallery
-          images={post.images}
-          source={post.source}
-          sourceUrl={post.urlSource}
-        />
+      <div className='grid gap-6'>
+        {/* Galerie — 4:3 paysage, centrée en haut ; les infos en dessous */}
+        <div className='mx-auto w-full lg:max-w-2xl'>
+          <DetailGallery
+            images={post.images}
+            source={post.source}
+            sourceUrl={post.urlSource}
+          />
+        </div>
 
         {/* Infos */}
         <div className='flex flex-col'>
@@ -284,7 +286,7 @@ function Content({ post }: { post: CarPost }) {
           <h2 className='mb-6 text-xl font-extrabold tracking-tight'>
             Véhicules similaires
           </h2>
-          <ShowroomCars posts={post.similar} />
+          <ShowroomCars posts={post.similar} replace />
         </section>
       )}
     </article>

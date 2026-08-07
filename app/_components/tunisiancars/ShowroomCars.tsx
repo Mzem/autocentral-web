@@ -7,7 +7,8 @@ import {
   faGaugeHigh,
   faGasPump,
   faBolt,
-  faGears
+  faGears,
+  faLocationDot
 } from '@fortawesome/free-solid-svg-icons'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
@@ -25,7 +26,15 @@ import CallButton from './CallButton'
  * the details in white text and blue icons. A "Disponible" / "Vendu" badge sits
  * on the photo. Each card links to `/annonces/[id]` (intercepted as a modal).
  */
-export default function ShowroomCars({ posts }: { posts: CarPostListItem[] }) {
+export default function ShowroomCars({
+  posts,
+  replace = false
+}: {
+  posts: CarPostListItem[]
+  // When shown as "similar" inside an open detail modal, navigate with replace
+  // so closing (×) returns to the main screen, not the previous listing.
+  replace?: boolean
+}) {
   if (!posts || posts.length === 0) {
     return (
       <div className='rounded-2xl bg-ink-50 px-6 py-16 text-center'>
@@ -81,12 +90,21 @@ export default function ShowroomCars({ posts }: { posts: CarPostListItem[] }) {
                 {post.title ?? `${post.make ?? ''} ${post.model ?? ''}`.trim()}
               </h3>
 
-              {/* Line 1: year + km (price now sits on the photo) */}
-              <div className='mt-0.5 flex flex-wrap items-center gap-x-1 text-[0.68rem] text-white/85 lg:text-xs'>
+              {/* Line 1: year + km, region pushed to the end (price is on the photo) */}
+              <div className='mt-0.5 flex items-center gap-x-1 text-[0.68rem] text-white/85 lg:text-xs'>
                 {spec(faCalendarDays, post.year)}
                 {spec(
                   faGaugeHigh,
                   post.km != null ? `${dotNumber(post.km)}km` : null
+                )}
+                {post.region?.name && (
+                  <span className='ml-auto inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap'>
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className='h-3 w-3 text-white'
+                    />
+                    {post.region.name}
+                  </span>
                 )}
               </div>
 
@@ -115,6 +133,7 @@ export default function ShowroomCars({ posts }: { posts: CarPostListItem[] }) {
               <Link
                 href={`/annonces/${post.id}`}
                 scroll={false}
+                replace={replace}
                 className='group block overflow-hidden shadow-card-light transition-shadow hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500'
               >
                 {inner}

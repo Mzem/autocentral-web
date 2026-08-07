@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -11,7 +11,7 @@ import {
 import { MerchItem } from '../../api/services/merch-items.service'
 import { dotNumber } from '../helpers'
 import { Linkify } from '../Linkify'
-import { Carousel } from './Carousel'
+import DetailGallery from './tunisiancars/DetailGallery'
 import ShareButton from './Share'
 import { messengerOrderUrl } from '../_lib/merch'
 
@@ -26,20 +26,18 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
   isFull,
   onClose
 }) => {
-  const [isFullImage, setIsFullImage] = useState(false)
-
   const Details = () => (
     <div className='text-ink-950'>
       <h1 className='pr-10 text-lg font-extrabold tracking-tight lg:text-2xl'>
         {item.title}
       </h1>
 
-      <div className='mt-4'>
-        <Carousel images={item.images} setIsFullImage={setIsFullImage} />
+      <div className='mx-auto mt-4 w-full lg:max-w-2xl'>
+        <DetailGallery images={item.images} />
       </div>
 
       <div className='mt-5 flex flex-wrap items-center justify-between gap-3'>
-        <span className='text-2xl font-extrabold lg:text-3xl'>
+        <span className='text-2xl font-extrabold text-brand-600 lg:text-3xl'>
           {item.price ? `${dotNumber(item.price)} DT` : 'Prix N.C.'}
         </span>
         <span
@@ -61,7 +59,7 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
         href={messengerOrderUrl(item)}
         target='_blank'
         rel='noopener noreferrer'
-        className='mt-4 flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#1877F2] px-5 py-3 text-base font-bold text-white shadow-lg shadow-[#1877F2]/25 transition-colors hover:bg-[#0f66d0]'
+        className='mt-4 flex w-full items-center justify-center gap-2.5 rounded-lg bg-brand-500 px-5 py-3 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600'
       >
         <FontAwesomeIcon icon={faFacebookMessenger} className='h-5 w-5' />
         Commander sur Messenger
@@ -91,23 +89,21 @@ const MerchItemModal: React.FC<MerchItemModalProps> = ({
 
   return (
     <div
-      className='fixed inset-0 z-30 flex items-center justify-center bg-black/60 p-3'
+      className='fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-3 backdrop-blur-sm'
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className='relative max-h-[90vh] w-[98%] max-w-2xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl lg:p-6'
       >
-        {!isFullImage && (
-          <button
-            type='button'
-            aria-label='Fermer'
-            onClick={onClose}
-            className='absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-lg bg-ink-100 text-ink-600 transition-colors hover:bg-ink-200'
-          >
-            <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
-          </button>
-        )}
+        <button
+          type='button'
+          aria-label='Fermer'
+          onClick={onClose}
+          className='absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-lg bg-ink-100 text-ink-600 transition-colors hover:bg-ink-200'
+        >
+          <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
+        </button>
         {Details()}
       </div>
     </div>

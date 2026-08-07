@@ -28,6 +28,7 @@ type Form = {
   gearbox: string
   cv: string
   cylinder: string
+  phone: string
   isExpired: boolean
   isHidden: boolean
 }
@@ -80,6 +81,7 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
     gearbox: '',
     cv: '',
     cylinder: '',
+    phone: '',
     isExpired: false,
     isHidden: false
   })
@@ -105,6 +107,10 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
       gearbox: post.gearbox ?? '',
       cv: post.cv != null ? String(post.cv) : '',
       cylinder: '',
+      // On-behalf listings show the owner number; prefill its local 8 digits.
+      phone: post.isOnBehalf
+        ? (post.phone ?? '').replace(/\D/g, '').slice(-8)
+        : '',
       isExpired: !!post.isExpired,
       isHidden: !!post.isHidden
     })
@@ -189,6 +195,11 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
           gearbox: form.gearbox || undefined,
           cv: form.cv || undefined,
           cylinder: cylinder || undefined,
+          // Owner phone only for on-behalf listings.
+          phone:
+            post.isOnBehalf && form.phone.trim()
+              ? form.phone.trim()
+              : undefined,
           isExpired: form.isExpired ? 'true' : 'false',
           isHidden: form.isHidden ? 'true' : 'false'
         })
@@ -340,6 +351,16 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
               <form onSubmit={save}>
                 <div className='grid grid-cols-2 gap-3'>
                   <div className='col-span-2'>{field('Titre', 'title')}</div>
+                  {post.isOnBehalf && (
+                    <div className='col-span-2'>
+                      {field(
+                        'Téléphone du propriétaire',
+                        'phone',
+                        'number',
+                        'Annonce au nom du propriétaire'
+                      )}
+                    </div>
+                  )}
                   {field('Prix (DT)', 'price', 'number')}
                   {field('Kilométrage', 'km', 'number')}
                   {field('Année', 'year', 'number')}

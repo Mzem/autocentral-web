@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  /* Lock our own theming: opt out of Android Chrome "Auto Dark Theme" and other
+     forced/auto dark modes that re-invert the site and make it ugly. The site
+     already ships its own (dark shell + light content) design. */
+  color-scheme: only light;
+
   --green: #105415;
   --greenopac: #1054154f;
   --blue: #08085e;
@@ -10,7 +15,7 @@
   --orange: #b36b14;
   --black: #000000;
   --blacklight: #2d2d2d;
-  --blacknotopac: #151515,
+  --blacknotopac: #151515;
   --blackopac: #151515ee;
   --blackopac2: #15151560;
   --blackopac3: #131313;
@@ -30,7 +35,7 @@
   --rolexgold: #a37e2c;
   --rolexgoldopac: #a37e2caa;
   --whatsapp: #25d366;
-  --whiteopacred: #B3141425;
+  --whiteopacred: #b3141425;
 
   /* dark palette (mirrors tailwind.config.ts) */
   --ink-50: #f6f7f9;
@@ -48,7 +53,8 @@
 html {
   font-family: theme('fontFamily.sans');
   -webkit-text-size-adjust: 100%;
-  color-scheme: dark;
+  /* color-scheme is declared once on :root (only light) to opt out of forced
+     dark modes; keeping a conflicting "dark" here would be misleading. */
   scroll-behavior: smooth;
 }
 

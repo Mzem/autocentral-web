@@ -12,10 +12,10 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import CarImage from '../car-posts/CarImage'
 
 /**
- * Premium image viewer for the listing detail.
+ * Premium image viewer for the listing detail (and the boutique modal).
  *
- * - On desktop the main image fills the whole left column (object-cover),
- *   centred, next to the info column.
+ * - The main image is always 4:3 landscape (object-cover), centred on top with
+ *   the details below.
  * - Font Awesome controls (prev / next / expand / close).
  * - Left/right swipe works on mobile, both inline and in the fullscreen viewer.
  * - When the listing comes from Facebook / Instagram, a "see all photos" link
@@ -34,10 +34,17 @@ export default function DetailGallery({
   const n = list.length
   const [index, setIndex] = useState(0)
   const [full, setFull] = useState(false)
+  // False while the current photo is still loading → show a loader instead of
+  // keeping the previous photo on screen during a next/prev navigation.
+  const [loaded, setLoaded] = useState(false)
   const startX = useRef<number | null>(null)
 
   const current = Math.min(index, Math.max(n - 1, 0))
-  const go = (dir: number) => n > 1 && setIndex((i) => (i + dir + n) % n)
+  const go = (dir: number) => {
+    if (n <= 1) return
+    setLoaded(false)
+    setIndex((i) => (i + dir + n) % n)
+  }
 
   const swipe = {
     onTouchStart: (e: React.TouchEvent) => {
@@ -100,17 +107,27 @@ export default function DetailGallery({
 
   return (
     <div className='flex h-full flex-col gap-3'>
-      {/* Image principale — remplit la colonne de gauche en desktop */}
+      {/* Image principale — toujours en 4:3 paysage (desktop inclus) */}
       <div
         {...swipe}
         onClick={() => setFull(true)}
-        className='relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-ink-100 lg:aspect-auto lg:min-h-[380px] lg:flex-1'
+        className='relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-lg bg-ink-100'
       >
         <CarImage
+          key={current}
           src={list[current]}
           alt=''
-          className='h-full w-full object-cover'
+          onLoad={() => setLoaded(true)}
+          onError={() => setLoaded(true)}
+          className={`h-full w-full object-cover transition-opacity duration-200 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
         />
+        {!loaded && (
+          <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
+            <span className='h-8 w-8 animate-spin rounded-full border-2 border-ink-300 border-t-brand-500' />
+          </div>
+        )}
         <button
           type='button'
           aria-label='Agrandir'
@@ -154,11 +171,19 @@ export default function DetailGallery({
           className='fixed inset-0 z-[80] flex items-center justify-center bg-black/95 p-4'
         >
           <img
+            key={current}
             src={list[current]}
             alt=''
             onClick={(e) => e.stopPropagation()}
-            className='max-h-[90vh] max-w-[95vw] object-contain'
+            onLoad={() => setLoaded(true)}
+            onError={() => setLoaded(true)}
+            className={`max-h-[90vh] max-w-[95vw] object-contain transition-opacity duration-200 ${
+              loaded ? 'opacity-100' : 'opacity-0'
+            }`}
           />
+          {!loaded && (
+            <span className='pointer-events-none absolute h-10 w-10 animate-spin rounded-full border-2 border-white/30 border-t-white' />
+          )}
           <button
             type='button'
             aria-label='Fermer'

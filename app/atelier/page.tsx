@@ -1,5 +1,6 @@
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
+  faAnglesDown,
   faArrowRight,
   faCircleCheck,
   faGears,
@@ -80,7 +81,7 @@ export default function AtelierPage() {
   return (
     <>
       {/* ───────── Hero ───────── */}
-      <section className='relative flex min-h-[85svh] items-center overflow-hidden'>
+      <section className='relative flex min-h-[100svh] items-center overflow-hidden'>
         <BackgroundCarousel
           images={images}
           overlayClassName='bg-gradient-to-b from-black/66 via-black/50 to-black/78'
@@ -118,10 +119,28 @@ export default function AtelierPage() {
             </a>
           </div>
         </div>
+
+        {/* Invitation à scroller vers les prestations */}
+        <a
+          href='#prestations'
+          aria-label='Découvrir nos services'
+          className='absolute inset-x-0 bottom-6 z-10 mx-auto flex w-fit flex-col items-center gap-2 text-white/75 transition-colors hover:text-white'
+        >
+          <span className='text-[0.7rem] font-semibold uppercase tracking-[0.25em]'>
+            Découvrir nos services
+          </span>
+          <FontAwesomeIcon
+            icon={faAnglesDown}
+            className='h-4 w-4 animate-bounce'
+          />
+        </a>
       </section>
 
       {/* ───────── Prestations ───────── */}
-      <section className='bg-white text-ink-950'>
+      <section
+        id='prestations'
+        className='scroll-mt-14 bg-white text-ink-950 lg:scroll-mt-16'
+      >
         <div className='mx-auto w-[92%] xl:max-w-6xl py-16 lg:py-24'>
           <div className='max-w-2xl'>
             <p className='inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500'>

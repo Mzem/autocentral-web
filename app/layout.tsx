@@ -80,6 +80,22 @@ export default function RootLayout({
         <meta name='application-name' content='Tunisian Cars' />
         <meta name='theme-color' content='#000000' />
 
+        {/* Refuse forced/auto dark modes (Android Chrome "Auto Dark Theme",
+            Dark Reader…) that re-invert our own design and make it ugly. */}
+        <meta name='color-scheme' content='only light' />
+        <meta name='supported-color-schemes' content='light' />
+        <meta name='darkreader-lock' />
+
+        {/* PWA — "Ajouter à l'écran d'accueil" */}
+        <link rel='manifest' href='/manifest.webmanifest' />
+        <meta name='mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta
+          name='apple-mobile-web-app-status-bar-style'
+          content='black-translucent'
+        />
+        <meta name='apple-mobile-web-app-title' content='Tunisian Cars' />
+
         {/* Favicons — jeu généré dans /public/favicon (cf. favicon/code.txt) */}
         <link rel='icon' href='/favicon/favicon.ico' sizes='any' />
         <link

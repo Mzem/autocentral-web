@@ -36,7 +36,8 @@ export async function PATCH(req: NextRequest) {
     isFeatured,
     isExpired,
     isHidden,
-    clearPrice
+    clearPrice,
+    phone
   } = await req.json()
 
   try {
@@ -58,7 +59,8 @@ export async function PATCH(req: NextRequest) {
       isHidden,
       clearPrice,
       num(cv),
-      description
+      description,
+      num(phone)
     )
     return Response.json({ message: 'ok' }, { status: 200 })
   } catch (e) {

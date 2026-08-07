@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useRef } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -17,9 +17,23 @@ export default function DetailModal({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const pathname = usePathname()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const close = () => router.back()
 
+  // Only show while the URL is an annonce detail. If navigation leaves it (e.g.
+  // clicking the seller → /[merchantId]), hide the modal and restore scrolling,
+  // even if the parallel-route slot lingers.
+  const show = !!pathname?.startsWith('/annonces/')
+
+  // Swapping to a similar listing (replace nav) changes the URL/id: reset the
+  // modal's scroll to the top so we don't stay stuck at the previous position.
   useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 })
+  }, [pathname])
+
+  useEffect(() => {
+    if (!show) return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') router.back()
     }
@@ -30,7 +44,9 @@ export default function DetailModal({
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = previous
     }
-  }, [router])
+  }, [router, show])
+
+  if (!show) return null
 
   return (
     <div
@@ -50,7 +66,9 @@ export default function DetailModal({
         >
           <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
         </button>
-        <div className='overflow-y-auto p-3'>{children}</div>
+        <div ref={scrollRef} className='overflow-y-auto p-3'>
+          {children}
+        </div>
       </div>
     </div>
   )

@@ -13,6 +13,7 @@ import {
   faInstagram
 } from '@fortawesome/free-brands-svg-icons'
 import { NAV_LINKS } from '../_lib/nav'
+import InstallAppButton from './tunisiancars/InstallAppButton'
 
 const PHONES = [
   { display: '98 192 053', intl: '21698192053' },
@@ -226,9 +227,15 @@ export default function Footer() {
             </div>
           </div>
 
+          <div className='flex justify-center mt-8'>
+            <InstallAppButton />
+          </div>
+
           {/* Bottom bar */}
+
           <div className='mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row'>
             <p>© 2026 Tunisian Cars. Tous droits réservés.</p>
+
             <nav aria-label='Pied de page' className='flex items-center gap-5'>
               {NAV_LINKS.map((link) => (
                 <Link

@@ -11,11 +11,15 @@ import React, { useState } from 'react'
 export default function CarImage({
   src,
   alt,
-  className
+  className,
+  onLoad,
+  onError
 }: {
   src?: string
   alt?: string
   className?: string
+  onLoad?: () => void
+  onError?: () => void
 }) {
   const [failed, setFailed] = useState(false)
 
@@ -55,7 +59,11 @@ export default function CarImage({
       src={src}
       alt={alt}
       loading='lazy'
-      onError={() => setFailed(true)}
+      onLoad={onLoad}
+      onError={() => {
+        setFailed(true)
+        onError?.()
+      }}
       className={className}
     />
   )

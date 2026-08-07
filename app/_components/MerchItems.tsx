@@ -76,7 +76,7 @@ export const MerchItems = ({ merchItems }: { merchItems: MerchItem[] }) => {
                     onClick={() => openItem(item.id)}
                     className='block w-full text-left focus:outline-none'
                   >
-                    <div className='aspect-square w-full overflow-hidden bg-ink-50'>
+                    <div className='aspect-[4/3] w-full overflow-hidden bg-ink-50'>
                       <img
                         src={item.images?.[0]}
                         alt={item.title}
@@ -113,7 +113,7 @@ export const MerchItems = ({ merchItems }: { merchItems: MerchItem[] }) => {
                       href={messengerOrderUrl(item)}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='flex items-center justify-center gap-2 rounded-lg bg-[#1877F2] px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0f66d0]'
+                      className='flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
                     >
                       <FontAwesomeIcon
                         icon={faFacebookMessenger}

@@ -240,7 +240,8 @@ export async function updateCarPost(
   isHidden?: string,
   clearPrice?: string,
   cv?: number,
-  description?: string
+  description?: string,
+  phone?: number
 ): Promise<void> {
   try {
     await apiPatch(`car-posts/${id}`, {
@@ -260,7 +261,8 @@ export async function updateCarPost(
       isHidden,
       clearPrice,
       cv,
-      description
+      description,
+      phone
     })
   } catch (e) {
     console.error('PATCH car post error')

@@ -15,6 +15,8 @@ import { useMerchantKey } from '../../_lib/useMerchantKey'
 import ImagesEditor from './ImagesEditor'
 
 const GEARBOXES = ['Automatique', 'Manuelle']
+// Engine displacement: single digit, dot, single digit (e.g. "2.0").
+const CYLINDER_RE = /^\d\.\d$/
 const inputCls =
   'mt-1 w-full rounded-lg border border-ink-200 px-3 py-2 text-sm outline-none focus:border-brand-500'
 const labelCls = 'text-xs font-medium text-ink-500'
@@ -47,6 +49,7 @@ export default function NewCarForm({
     km: '',
     year: '',
     cv: '',
+    cylinder: '',
     price: '',
     fuel: Fuel.ESSENCE as string,
     color: Color.BLACK as string,
@@ -91,6 +94,9 @@ export default function NewCarForm({
     if (files.length === 0) return alert('Ajoutez au moins une photo')
     if (form.isOnBehalf && !form.phone)
       return alert('Saisissez le téléphone du propriétaire')
+    const cylinder = form.cylinder.trim()
+    if (cylinder && !CYLINDER_RE.test(cylinder))
+      return alert('Cylindrée invalide : le format doit être x.x (ex. 2.0)')
     if (!key) return
     setBusy(true)
     try {
@@ -109,6 +115,7 @@ export default function NewCarForm({
       fd.append('km', form.km)
       fd.append('year', form.year)
       fd.append('cv', form.cv)
+      if (cylinder) fd.append('cylinder', cylinder)
       if (form.price) fd.append('price', form.price)
       fd.append('fuel', form.fuel)
       fd.append('color', form.color)
@@ -184,6 +191,7 @@ export default function NewCarForm({
               setModelName(e.target.value)
               setCarYear('')
               setCarEngineId('')
+              set('cylinder', '')
             }}
             className={inputCls}
           >
@@ -204,6 +212,7 @@ export default function NewCarForm({
             onChange={(e) => {
               setCarYear(e.target.value)
               setCarEngineId('')
+              set('cylinder', '')
             }}
             className={inputCls}
           >
@@ -221,7 +230,14 @@ export default function NewCarForm({
             required
             value={carEngineId}
             disabled={!engines.length}
-            onChange={(e) => setCarEngineId(e.target.value)}
+            onChange={(e) => {
+              const id = e.target.value
+              setCarEngineId(id)
+              // Auto-fill the displacement from the chosen engine (hybrids /
+              // electrics often have none in the catalog → left blank to type).
+              const eng = engines.find((x) => x.id === id)
+              set('cylinder', eng?.cylinder ?? '')
+            }}
             className={inputCls}
           >
             <option value=''>— Choisir —</option>
@@ -327,6 +343,20 @@ export default function NewCarForm({
             onChange={(e) => set('cv', e.target.value)}
             className={inputCls}
           />
+        </label>
+        <label className='block'>
+          <span className={labelCls}>Cylindrée (L)</span>
+          <input
+            type='text'
+            inputMode='decimal'
+            placeholder='ex. 2.0'
+            value={form.cylinder}
+            onChange={(e) => set('cylinder', e.target.value)}
+            className={inputCls}
+          />
+          <span className='mt-0.5 block text-[0.65rem] text-ink-400'>
+            Auto-remplie selon la motorisation ; format x.x (ex. 2.0)
+          </span>
         </label>
         <label className='block'>
           <span className={labelCls}>Prix (DT)</span>
