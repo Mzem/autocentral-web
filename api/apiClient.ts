@@ -10,11 +10,12 @@ export async function apiGet<T>(
   const headers = new Headers({
     'X-API-KEY': apiKey
   })
+  // 0 → always fresh (search/filter results), otherwise cache for N seconds.
   return fetchJson(`${apiURL}/${path}`, {
     headers,
-    next: {
-      revalidate: cacheInSeconds
-    }
+    ...(cacheInSeconds === 0
+      ? { cache: 'no-store' as RequestCache }
+      : { next: { revalidate: cacheInSeconds } })
   })
 }
 

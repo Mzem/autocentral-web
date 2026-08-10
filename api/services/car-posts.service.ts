@@ -23,7 +23,7 @@ export interface CarPostListItem {
   title: string
   image: string
   price: number | undefined
-  estimatedPrice: { color: string; text: string; price: number } | undefined
+  estimatedPrice: { color: string; text: string; value: number } | undefined
   make: string
   model: string
   year: number
@@ -114,11 +114,14 @@ export interface GetCarPostsFilters {
   camera?: boolean
   isShop?: boolean
   isAuto?: boolean
+  gearbox?: string
   firstOwner?: boolean
   exchange?: boolean
   leasing?: boolean
   fcr?: boolean
   q?: string
+  /** Lift the 4-month freshness window applied to relevance (text) searches. */
+  broaden?: boolean
   includeHidden?: boolean
   authKey?: string
 }
@@ -157,13 +160,15 @@ export function generateCarPostsQueryParams(
   if (filters.alarm) qp += `&alarm=true`
   if (filters.keyless) qp += `&keyless=true`
   if (filters.camera) qp += `&camera=true`
-  if (filters.isShop) qp += '&isShop=true'
+  if (filters.isShop !== undefined) qp += `&isShop=${filters.isShop}`
   if (filters.isAuto) qp += '&isAuto=true'
+  if (filters.gearbox) qp += `&gearbox=${filters.gearbox}`
   if (filters.firstOwner) qp += '&firstOwner=true'
   if (filters.exchange) qp += '&exchange=true'
   if (filters.leasing) qp += '&leasing=true'
   if (filters.fcr) qp += '&fcr=true'
   if (filters.q) qp += `&q=${filters.q}`
+  if (filters.broaden) qp += '&broaden=true'
   if (filters.includeHidden) qp += '&includeHidden=true'
   if (filters.authKey) qp += `&authKey=${encodeURIComponent(filters.authKey)}`
 
@@ -182,6 +187,41 @@ export async function getCarPosts(
     console.error('GET car posts error')
     throw e
   }
+}
+
+export interface CarPriceEstimate {
+  enough: boolean
+  sampleSize: number
+  low?: number
+  mid?: number
+  high?: number
+}
+
+export async function estimateCarPrice(params: {
+  make: string
+  model: string
+  year: number
+  km: number
+  cv: number
+  fuel?: string
+  gearbox?: string
+  firstOwner?: boolean
+}): Promise<CarPriceEstimate> {
+  const qs = new URLSearchParams({
+    make: params.make,
+    model: params.model,
+    year: String(params.year),
+    km: String(params.km),
+    cv: String(params.cv)
+  })
+  if (params.fuel) qs.set('fuel', params.fuel)
+  if (params.gearbox) qs.set('gearbox', params.gearbox)
+  if (params.firstOwner) qs.set('firstOwner', 'true')
+  const { content } = await apiGet<CarPriceEstimate>(
+    `car-posts/estimate?${qs.toString()}`,
+    60
+  )
+  return content
 }
 
 export async function getFeaturedCarPosts(): Promise<CarPostListItem[]> {

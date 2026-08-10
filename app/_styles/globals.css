@@ -161,7 +161,7 @@ input[type='checkbox'] {
   color: var(--white);
 }
 input[type='checkbox']:checked {
-  color: var(--vividred);
+  color: var(--brand-500);
 }
 
 /* Hide the spinner (arrows) in number input fields */
@@ -187,6 +187,55 @@ input[type='text'] {
 
 input[type='text']:focus {
   @apply ring-0 ring-red rounded;
+}
+
+/* Prevent iOS Safari from auto-zooming when a form control is focused: any
+   font-size below 16px triggers the zoom, so force ≥16px on mobile for every
+   input / select / textarea across the site. */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Dual-thumb range slider. The two overlaid inputs handle dragging only — their
+   native thumbs are INVISIBLE but still grabbable (pointer-events on the thumbs
+   only). The visible circles are drawn by the component and positioned in %, so
+   they always sit at the right spot (native thumbs misrender on some mobiles). */
+.range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  pointer-events: none;
+  margin: 0;
+}
+.range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: auto;
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.range-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.range-thumb::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.range-thumb::-moz-range-track {
+  background: transparent;
 }
 
 .loader {

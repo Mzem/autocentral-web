@@ -5,7 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useMerchantKey } from '../../_lib/useMerchantKey'
 
 /**
- * "+" to add a new vehicle — visible only to a logged-in merchant. Uses a plain
+ * "+" to add a new vehicle - visible only to a logged-in merchant. Uses a plain
  * anchor (full navigation) so the `@modal/(.)annonces/[id]` interceptor doesn't
  * hijack `/annonces/nouveau` as a listing modal.
  */

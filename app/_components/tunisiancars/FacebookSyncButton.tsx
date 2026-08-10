@@ -11,7 +11,7 @@ const STORAGE_KEY = 'tc_fb_sync_until'
 
 /**
  * Admin-only button to sync the Facebook page on demand. After a launch it stays
- * greyed for 30 min (tracked per-device in localStorage — approximate on
+ * greyed for 30 min (tracked per-device in localStorage - approximate on
  * purpose) with a live countdown, to signal "already running".
  */
 export default function FacebookSyncButton() {
@@ -76,7 +76,7 @@ export default function FacebookSyncButton() {
       {busy
         ? 'Lancement…'
         : onCooldown
-        ? `Sync en cours — ${mins}m ${String(secs).padStart(2, '0')}s`
+        ? `Sync en cours - ${mins}m ${String(secs).padStart(2, '0')}s`
         : 'Synchroniser FB'}
     </button>
   )

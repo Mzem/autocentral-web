@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
  *
  * The Tunisian Cars home is an edge-to-edge branded landing (full-bleed
  * carousels, white sections), so it renders with no width constraint and no
- * top offset — its hero sits under the fixed, transparent header on purpose.
+ * top offset - its hero sits under the fixed, transparent header on purpose.
  *
  * Every other (kept) page keeps the original centered container and gains a top
  * padding to clear the now-fixed header.
@@ -26,7 +26,7 @@ export default function MainShell({
   const isFullBleed =
     pathname === '/' ||
     pathname === '/atelier' ||
-    pathname.startsWith('/annonces/') ||
+    pathname.startsWith('/annonces') ||
     pathname.startsWith('/produits')
 
   if (isFullBleed) {

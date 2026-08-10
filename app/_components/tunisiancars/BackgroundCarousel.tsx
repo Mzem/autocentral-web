@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
  *
  * - The image list comes from the server (a folder read), already **shuffled**
  *   server-side, so it stays in sync with `/public` with no code change and the
- *   very first image is random per visit — delivered already-loaded in the HTML
+ *   very first image is random per visit - delivered already-loaded in the HTML
  *   (no client-side swap or flash on open).
  * - Implemented as a single sliding rail (`translateX`) rather than per-slide
  *   toggles, so the right → left transition is always visibly rendered
@@ -94,7 +94,7 @@ export default function BackgroundCarousel({
       </div>
       {/* Base darkening for text legibility. */}
       <div className={`absolute inset-0 ${overlayClassName}`} />
-      {/* Slowly drifting vignette — a moving halo of shadow. */}
+      {/* Slowly drifting vignette - a moving halo of shadow. */}
       <div className='pointer-events-none absolute inset-[-15%] animate-halo bg-[radial-gradient(circle_at_center,transparent_28%,rgba(0,0,0,0.42)_78%)]' />
     </div>
   )

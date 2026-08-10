@@ -8,7 +8,7 @@ import Header from './_components/Header'
 import MainShell from './_components/MainShell'
 import './_styles/globals.css'
 
-// Body / UI — clean geometric sans (premium, highly legible).
+// Body / UI - clean geometric sans (premium, highly legible).
 const sans = Manrope({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
@@ -16,7 +16,7 @@ const sans = Manrope({
   display: 'swap'
 })
 
-// Display headings — modern geometric sans (premium, automotive-tech feel).
+// Display headings - modern geometric sans (premium, automotive-tech feel).
 const display = Sora({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
@@ -25,7 +25,7 @@ const display = Sora({
 })
 
 export const metadata: Metadata = {
-  // Needed so the (relative) share image resolves to an absolute, public URL —
+  // Needed so the (relative) share image resolves to an absolute, public URL -
   // otherwise Next resolves it against localhost and the preview stays blank.
   metadataBase: new URL('https://tunisiancars.com.tn'),
   title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
@@ -86,7 +86,7 @@ export default function RootLayout({
         <meta name='supported-color-schemes' content='light' />
         <meta name='darkreader-lock' />
 
-        {/* PWA — "Ajouter à l'écran d'accueil" */}
+        {/* PWA - "Ajouter à l'écran d'accueil" */}
         <link rel='manifest' href='/manifest.webmanifest' />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
@@ -96,7 +96,7 @@ export default function RootLayout({
         />
         <meta name='apple-mobile-web-app-title' content='Tunisian Cars' />
 
-        {/* Favicons — jeu généré dans /public/favicon (cf. favicon/code.txt) */}
+        {/* Favicons - jeu généré dans /public/favicon (cf. favicon/code.txt) */}
         <link rel='icon' href='/favicon/favicon.ico' sizes='any' />
         <link
           rel='apple-touch-icon-precomposed'

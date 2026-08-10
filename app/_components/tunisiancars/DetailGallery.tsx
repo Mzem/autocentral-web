@@ -6,7 +6,8 @@ import {
   faChevronLeft,
   faChevronRight,
   faXmark,
-  faExpand
+  faExpand,
+  faArrowUpRightFromSquare
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import CarImage from '../car-posts/CarImage'
@@ -18,8 +19,8 @@ import CarImage from '../car-posts/CarImage'
  *   the details below.
  * - Font Awesome controls (prev / next / expand / close).
  * - Left/right swipe works on mobile, both inline and in the fullscreen viewer.
- * - When the listing comes from Facebook / Instagram, a "see all photos" link
- *   is shown under the image.
+ * - When the listing has an external source, a "see contact (& photos)" link to
+ *   that source is shown under the image.
  */
 export default function DetailGallery({
   images,
@@ -107,11 +108,11 @@ export default function DetailGallery({
 
   return (
     <div className='flex h-full flex-col gap-3'>
-      {/* Image principale — toujours en 4:3 paysage (desktop inclus) */}
+      {/* Image principale - toujours en 4:3 paysage (desktop inclus) */}
       <div
         {...swipe}
         onClick={() => setFull(true)}
-        className='relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-lg bg-ink-100'
+        className='relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-ink-100'
       >
         <CarImage
           key={current}
@@ -147,8 +148,8 @@ export default function DetailGallery({
         )}
       </div>
 
-      {/* Voir toutes les photos sur le réseau source */}
-      {(isFB || isIG) && sourceUrl && (
+      {/* Coordonnées (et photos) sur la source d'origine */}
+      {sourceUrl && (
         <a
           href={sourceUrl}
           target='_blank'
@@ -156,10 +157,22 @@ export default function DetailGallery({
           className='inline-flex items-center justify-center gap-2 rounded-lg border border-ink-200 bg-ink-50 px-4 py-2 text-sm font-semibold text-ink-800 transition-colors hover:border-brand-500/40 hover:bg-brand-500/5'
         >
           <FontAwesomeIcon
-            icon={isFB ? faFacebook : faInstagram}
-            className={`h-4 w-4 ${isFB ? 'text-[#1877F2]' : 'text-[#d62976]'}`}
+            icon={
+              isFB ? faFacebook : isIG ? faInstagram : faArrowUpRightFromSquare
+            }
+            className={`h-4 w-4 ${
+              isFB
+                ? 'text-[#1877F2]'
+                : isIG
+                ? 'text-[#d62976]'
+                : 'text-brand-500'
+            }`}
           />
-          Voir les photos sur {isFB ? 'Facebook' : 'Instagram'}
+          {isFB || isIG
+            ? `Voir coordonnées et photos sur ${
+                isFB ? 'Facebook' : 'Instagram'
+              }`
+            : `Voir coordonnées sur ${source ?? 'la source'}`}
         </a>
       )}
 

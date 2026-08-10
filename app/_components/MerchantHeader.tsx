@@ -1,5 +1,14 @@
 'use client'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import {
+  faCar,
+  faCircleCheck,
+  faLocationDot,
+  faPhone,
+  faStore
+} from '@fortawesome/free-solid-svg-icons'
 import { Merchant } from '../../api/services/merchants.service'
 import { dotNumber } from '../helpers'
 
@@ -7,130 +16,73 @@ type MerchantHeaderProps = {
   merchant: Merchant
 }
 
-function MerchantHeader({ merchant }: MerchantHeaderProps) {
+export default function MerchantHeader({ merchant }: MerchantHeaderProps) {
+  const phones = merchant.phones ?? (merchant.phone ? [merchant.phone] : [])
+
   return (
-    <div className='flex flex-col  space-y-4 mt-2 mx-auto justify-between text-white'>
-      {/* Logo and Shop Name */}
-      <div className='flex flex-row items-center justify-between'>
-        <div className='flex space-x-4 items-center'>
+    <div className='mt-2 flex flex-col gap-4 text-white'>
+      <div className='flex flex-wrap items-center gap-4'>
+        {merchant.avatar ? (
           <img
-            src={`${merchant.avatar ? merchant.avatar : '/man.svg'}`}
-            className={`max-w-28 w-28 lg:max-w-32 lg:w-32 max-h-[5rem] lg:max-h-[9rem] rounded-lg object-cover flex-shrink-0  ${
-              !merchant.avatar ? 'invert' : ''
-            }`}
+            src={merchant.avatar}
+            alt={merchant.name}
+            className='h-24 w-24 shrink-0 rounded-xl object-cover lg:h-28 lg:w-28'
           />
-          <p className='text-xl lg:text-3xl'>{merchant.name}</p>
-        </div>
-        <div className='hidden xxl:flex xxl:flex-row items-center space-x-16'>
-          <div className='flex flex-col items-center'>
-            <img src='/speed.svg' alt='Annonces' className='h-5' />
-            <p className=''>{merchant.count} annonces</p>
-          </div>
+        ) : (
+          <span className='flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-400 lg:h-28 lg:w-28'>
+            <FontAwesomeIcon icon={faStore} className='h-10 w-10' />
+          </span>
+        )}
 
-          {(merchant.fb || merchant.insta) && (
-            <div className='flex flex-col items-center space-y-2 mt-4'>
-              {merchant.fb && (
-                <a href={merchant.fb} target='_blank' rel='noopener noreferrer'>
-                  <img
-                    src='/facebook.svg'
-                    alt='Facebook'
-                    className='h-5 w-5 hover:text-white hover:brightness-50'
-                  />
-                </a>
-              )}
-              {merchant.insta && (
-                <a
-                  href={merchant.insta}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <img
-                    src='/instagram.svg'
-                    alt='Instagram'
-                    className='h-5 w-5 hover:text-white hover:brightness-50'
-                  />
-                </a>
-              )}
-            </div>
-          )}
-          {merchant.regionName && (
-            <a
-              href={merchant.gmapsLink ?? undefined}
-              target='_blank'
-              className='flex flex-col items-center'
-            >
-              <img src='/location.svg' alt='Adresse' className='h-5' />
-              <p className='text-l mt-1'>{merchant.regionName}</p>
-              {merchant.gmapsLink && <p className='text-xs underline'>GPS</p>}
-            </a>
-          )}
-          {merchant.phones && merchant.phones.length === 1 && (
-            <div className='text-sm xs:text-xs'>
-              <a href={`tel:${merchant.phones[0]}`} className=''>
-                <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                  <img
-                    src='/phone.svg'
-                    className='h-3 lg:h-4 invert'
-                    alt='Appeler'
-                  />
-                  <span>
-                    {dotNumber(
-                      merchant.phones[0].toString().replace('+216', '')
-                    )}
-                  </span>
-                </button>
-              </a>
-            </div>
-          )}
-          {merchant.phones && merchant.phones.length >= 2 && (
-            <div className='text-sm xs:text-xs'>
-              <a href={`tel:${merchant.phones[0]}`} className=''>
-                <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                  <img
-                    src='/phone.svg'
-                    className='h-3 lg:h-4 invert'
-                    alt='Appeler'
-                  />
-                  <span>
-                    {dotNumber(
-                      merchant.phones[0].toString().replace('+216', '')
-                    )}
-                  </span>
-                </button>
-              </a>
-              <a href={`tel:${merchant.phones[1]}`} className=''>
-                <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                  <img
-                    src='/phone.svg'
-                    className='h-3 lg:h-4 invert'
-                    alt='Appeler'
-                  />
-                  <span>
-                    {dotNumber(
-                      merchant.phones[1].toString().replace('+216', '')
-                    )}
-                  </span>
-                </button>
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className='xxl:hidden flex flex-row items-center justify-around'>
-        <div className='flex flex-col items-center'>
-          <img src='/speed.svg' alt='Annonces' className='h-5' />
-          <p className='xs:text-xs'>{merchant.count} annonces</p>
-        </div>
+        <div className='min-w-0 flex-1'>
+          <h1 className='flex items-center gap-2 text-xl font-extrabold tracking-tight lg:text-3xl'>
+            {merchant.name}
+            {merchant.isShop && (
+              <FontAwesomeIcon
+                icon={faCircleCheck}
+                className='h-5 w-5 text-brand-400'
+              />
+            )}
+          </h1>
 
-        {(merchant.fb || merchant.insta) && (
-          <div className='flex flex-col items-center space-y-2 mt-4'>
-            {merchant.fb && (
-              <a href={merchant.fb} target='_blank' rel='noopener noreferrer'>
-                <img
-                  src='/facebook.svg'
-                  alt='Facebook'
-                  className='h-5 w-5 hover:text-white hover:brightness-50'
+          <div className='mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-300'>
+            <span className='inline-flex items-center gap-1.5'>
+              <FontAwesomeIcon
+                icon={faCar}
+                className='h-4 w-4 text-brand-400'
+              />
+              {merchant.count} annonces
+            </span>
+
+            {merchant.regionName && (
+              <a
+                href={merchant.gmapsLink ?? undefined}
+                target='_blank'
+                rel='noopener noreferrer'
+                className={`inline-flex items-center gap-1.5 ${
+                  merchant.gmapsLink ? 'hover:text-white' : ''
+                }`}
+              >
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className='h-4 w-4 text-brand-400'
                 />
+                {merchant.regionName}
+                {merchant.gmapsLink && (
+                  <span className='text-xs underline'>GPS</span>
+                )}
+              </a>
+            )}
+
+            {merchant.fb && (
+              <a
+                href={merchant.fb}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Facebook'
+                className='flex h-8 w-8 items-center justify-center rounded-full bg-[#1877F2] text-white transition-opacity hover:opacity-90'
+              >
+                <FontAwesomeIcon icon={faFacebookF} className='h-4 w-4' />
               </a>
             )}
             {merchant.insta && (
@@ -138,92 +90,56 @@ function MerchantHeader({ merchant }: MerchantHeaderProps) {
                 href={merchant.insta}
                 target='_blank'
                 rel='noopener noreferrer'
+                aria-label='Instagram'
+                className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#4f5bd5] text-white transition-opacity hover:opacity-90'
               >
-                <img
-                  src='/instagram.svg'
-                  alt='Instagram'
-                  className='h-5 w-5 hover:text-white hover:brightness-50'
-                />
+                <FontAwesomeIcon icon={faInstagram} className='h-4 w-4' />
               </a>
             )}
           </div>
-        )}
-        {merchant.regionName && (
-          <a
-            href={merchant.gmapsLink ?? undefined}
-            target='_blank'
-            className={`flex flex-col items-center ${
-              merchant.gmapsLink ? 'cursor-pointer' : ''
-            }`}
-          >
-            <img src='/location.svg' alt='Adresse' className='h-5' />
-            <p className='text-l mt-1'>{merchant.regionName}</p>
-            {merchant.gmapsLink && <p className='text-xs underline'>GPS</p>}
-          </a>
-        )}
-        {merchant.phones && merchant.phones.length === 1 && (
-          <div className='text-sm xs:text-xs'>
-            <a href={`tel:${merchant.phones[0]}`} className=''>
-              <button className='flex items-center space-x-1 py-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                <img
-                  src='/phone.svg'
-                  className='h-3 lg:h-4 invert'
-                  alt='Appeler'
-                />
-                <span>
-                  {dotNumber(merchant.phones[0].toString().replace('+216', ''))}
-                </span>
-              </button>
-            </a>
-          </div>
-        )}
-        {merchant.phones && merchant.phones.length >= 2 && (
-          <div className='text-sm xs:text-xs'>
-            <a href={`tel:${merchant.phones[0]}`} className=''>
-              <button className='flex items-center space-x-1 mb-[2px] px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                <img
-                  src='/phone.svg'
-                  className='h-3 lg:h-4 invert'
-                  alt='Appeler'
-                />
-                <span>
-                  {dotNumber(merchant.phones[0].toString().replace('+216', ''))}
-                </span>
-              </button>
-            </a>
-            <a href={`tel:${merchant.phones[1]}`} className=''>
-              <button className='flex items-center space-x-1 px-2 rounded-xl font-semibold hover:bg-brand-500 text-white bg-brand-600 transition duration-300 ease-in-out'>
-                <img
-                  src='/phone.svg'
-                  className='h-3 lg:h-4 invert'
-                  alt='Appeler'
-                />
-                <span>
-                  {dotNumber(merchant.phones[1].toString().replace('+216', ''))}
-                </span>
-              </button>
-            </a>
+        </div>
+
+        {phones.length > 0 && (
+          <div className='flex shrink-0 flex-col gap-1.5'>
+            {phones.slice(0, 2).map((phone) => (
+              <a
+                key={phone}
+                href={`tel:${phone}`}
+                className='inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3.5 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-500'
+              >
+                <FontAwesomeIcon icon={faPhone} className='h-3.5 w-3.5' />
+                {dotNumber(phone.toString().replace('+216', ''))}
+              </a>
+            ))}
           </div>
         )}
       </div>
+
       {merchant.description && merchant.address !== merchant.description && (
-        <div className='text-sm xs:text-xs'>{merchant.description}</div>
+        <p className='text-sm leading-relaxed text-ink-300'>
+          {merchant.description}
+        </p>
       )}
+
       {(merchant.address || merchant.regionDetail) && (
         <a
-          className={`text-xs flex ${
-            merchant.gmapsLink ? 'cursor-pointer' : ''
-          }`}
           href={merchant.gmapsLink ?? undefined}
           target='_blank'
+          rel='noopener noreferrer'
+          className={`inline-flex items-start gap-1.5 text-xs text-ink-400 ${
+            merchant.gmapsLink ? 'hover:text-white' : ''
+          }`}
         >
-          <img src='/location.svg' alt='Adresse' className='h-3 mt-[2px]' />
-          {merchant.regionDetail ? merchant.regionDetail + ' ' : ''}
-          {merchant.address ? merchant.address + ' ' : ''}
+          <FontAwesomeIcon
+            icon={faLocationDot}
+            className='mt-0.5 h-3 w-3 shrink-0 text-brand-400'
+          />
+          <span>
+            {merchant.regionDetail ? merchant.regionDetail + ' ' : ''}
+            {merchant.address ?? ''}
+          </span>
         </a>
       )}
     </div>
   )
 }
-
-export default MerchantHeader

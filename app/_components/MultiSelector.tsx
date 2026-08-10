@@ -23,7 +23,7 @@ export default function MultiSelectList({
   }
 
   return (
-    <div className='ml-3 flex space-x-[3px] items-center'>
+    <div className='ml-3 flex flex-wrap items-center gap-x-3 gap-y-1'>
       {label && (
         <span className='text-sm lg:text-base text-white mr-1'>{label}</span>
       )}

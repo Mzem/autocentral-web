@@ -10,8 +10,8 @@ import { useMerchantKey } from '../../_lib/useMerchantKey'
  * INCLUDING hidden posts (validated + scoped server-side), so the admin can see
  * and unhide them; the public keeps the server-rendered (hidden-free) list.
  *
- * The admin list is re-fetched whenever `initialPosts` changes — i.e. after a
- * `router.refresh()` following an edit/hide — so the admin view never falls back
+ * The admin list is re-fetched whenever `initialPosts` changes - i.e. after a
+ * `router.refresh()` following an edit/hide - so the admin view never falls back
  * to the (hidden-free, recency-filtered) public list and "loses" its cars.
  */
 export default function AdminShowroom({

@@ -61,6 +61,14 @@ export default async function MerchantPage({
     filters = fromQueryParamsToGetCarPostsFilters(searchParams)
     filters.merchantId = merchant.id
     posts = await getCarPosts(filters)
+    // Only the last 30 days on the seller's page (the rest stays browsable in
+    // the global search engine). publishedAt is the "DD/MM/YYYY" (fr) string.
+    const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000
+    posts = posts.filter((post) => {
+      const [d, m, y] = (post.publishedAt || '').split('/').map(Number)
+      if (!d || !m || !y) return true
+      return new Date(y, m - 1, d).getTime() >= cutoff
+    })
   }
   return (
     <>

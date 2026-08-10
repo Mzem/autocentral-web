@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 /**
- * Design system — dark, sober (Tunisian Cars brand direction).
+ * Design system - dark, sober (Tunisian Cars brand direction).
  *
  * Near-black base, white text, a single restrained steel-blue accent (`brand`,
  * taken from the logo but desaturated to stay sober), thin white/10 borders.

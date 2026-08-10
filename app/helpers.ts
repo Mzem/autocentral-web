@@ -64,6 +64,14 @@ export function fromQueryParamsToGetCarPostsFilters(
       searchParamsURL?.get(key) === 'true'
     )
   }
+  // Tri-state: undefined when the param is absent (so "seller: all" stays the
+  // default instead of collapsing to false → "private").
+  function getParamValueTristate(key: string): boolean | undefined {
+    const v = searchParamsRecord?.[key] ?? searchParamsURL?.get(key)
+    if (v === 'true') return true
+    if (v === 'false') return false
+    return undefined
+  }
   return {
     page: Number(searchParamsRecord?.page ?? searchParamsURL?.get('page')) || 1,
     merchantId: getParamValueString('merchantId'),
@@ -84,8 +92,9 @@ export function fromQueryParamsToGetCarPostsFilters(
     alarm: getParamValueBoolean('alarm'),
     keyless: getParamValueBoolean('keyless'),
     camera: getParamValueBoolean('camera'),
-    isShop: getParamValueBoolean('isShop'),
+    isShop: getParamValueTristate('isShop'),
     isAuto: getParamValueBoolean('isAuto'),
+    gearbox: getParamValueString('gearbox'),
     firstOwner: getParamValueBoolean('firstOwner'),
     exchange: getParamValueBoolean('exchange'),
     leasing: getParamValueBoolean('leasing'),
@@ -108,6 +117,14 @@ export function dotNumber(
   if (!nb) return
   if (nb >= 10000) return nb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
   return nb.toString()
+}
+
+/**
+ * Label for a listing without a set price: Tunisian Cars' own listings say
+ * "Prix sur demande"; every other source keeps the classic "Prix N.C.".
+ */
+export function noPriceText(merchantId?: string): string {
+  return merchantId === 'tunisian-cars' ? 'Prix sur demande' : 'Prix N.C.'
 }
 
 export function fromNameToId(name?: string): string {

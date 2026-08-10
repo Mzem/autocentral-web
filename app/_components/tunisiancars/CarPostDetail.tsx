@@ -1,9 +1,10 @@
 'use client'
 
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faCalendarDays,
-  faCircleCheck,
+  faChevronDown,
   faClock,
   faGasPump,
   faGaugeHigh,
@@ -15,10 +16,9 @@ import {
   faShop
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
-import { dotNumber } from '../../helpers'
+import { dotNumber, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
 import { Linkify } from '../../Linkify'
 import DetailGallery from './DetailGallery'
@@ -39,17 +39,11 @@ const isValid = (v: unknown) => {
 function Skeleton() {
   return (
     <div className='animate-pulse'>
-      <div className='grid gap-6'>
-        <div className='mx-auto aspect-[4/3] w-full rounded-lg bg-ink-100 lg:max-w-2xl' />
-        <div className='space-y-4'>
+      <div className='mx-auto w-full max-w-2xl px-4 py-6 lg:py-8'>
+        <div className='aspect-[4/3] w-full rounded-lg bg-ink-100' />
+        <div className='mt-5 space-y-4'>
           <div className='h-8 w-2/3 rounded bg-ink-100' />
           <div className='h-10 w-1/3 rounded bg-ink-100' />
-          <div className='grid grid-cols-2 gap-4 pt-2'>
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className='h-10 rounded bg-ink-100' />
-            ))}
-          </div>
-          <div className='h-11 w-40 rounded-lg bg-ink-100' />
         </div>
       </div>
     </div>
@@ -57,6 +51,8 @@ function Skeleton() {
 }
 
 function Content({ post }: { post: CarPost }) {
+  const [ficheOpen, setFicheOpen] = useState(false)
+
   const title =
     post.title ?? (`${post.make ?? ''} ${post.model ?? ''}`.trim() || 'Annonce')
 
@@ -68,46 +64,42 @@ function Content({ post }: { post: CarPost }) {
       : []
   const phones = rawPhones.filter(isValid)
 
-  const hideSimilar = post.merchant?.id === SHOWROOM_MERCHANT_ID
+  const isTunisianCars = post.merchant?.id === SHOWROOM_MERCHANT_ID
+  // Only genuine Tunisian Cars sales expose the shop's contact. On-behalf and
+  // external (scraped) listings show nothing here (their contact is elsewhere).
+  const showContact = isTunisianCars && !post.isOnBehalf
+  const showSimilar =
+    !isTunisianCars && !!post.similar && post.similar.length > 0
+  const hasOptions = !!post.options && post.options.length > 1
 
-  const estimationColor =
-    post.estimatedPrice?.color === 'GREEN'
-      ? 'text-success'
-      : post.estimatedPrice?.color === 'RED'
-      ? 'text-danger'
-      : 'text-ink-500'
+  // Spec values (each shown on its own line group).
+  const yearVal = post.year ? `${post.year}` : null
+  const kmVal = post.km != null ? `${dotNumber(post.km)} km` : null
+  const motorVal =
+    `${post.cylinder ? post.cylinder + ' ' : ''}${
+      post.cv ? post.cv + ' cv' : ''
+    }`.trim() || null
+  const fuelVal = post.fuel ? fuelLabel(post.fuel) : null
+  const gearboxVal = post.gearbox || null
+  // Region for Tunisian Cars listings (incl. on-behalf); hidden for external.
+  const regionVal = isTunisianCars ? post.region?.name || null : null
 
-  const specs = [
-    post.year && {
-      icon: faCalendarDays,
-      label: 'Année',
-      value: `${post.year}`
-    },
-    post.km !== undefined &&
-      post.km !== null && {
-        icon: faGaugeHigh,
-        label: 'Kilométrage',
-        value: `${dotNumber(post.km)} km`
-      },
-    post.fuel && {
-      icon: faGasPump,
-      label: 'Carburant',
-      value: fuelLabel(post.fuel)
-    },
-    post.gearbox && { icon: faGears, label: 'Boîte', value: post.gearbox },
-    (post.cv || post.cylinder) && {
-      icon: faOilCan,
-      label: 'Motorisation',
-      value: `${post.cylinder ? post.cylinder + ' ' : ''}${
-        post.cv ? post.cv + ' cv' : ''
-      }`.trim()
-    },
-    post.region?.name && {
-      icon: faLocationDot,
-      label: 'Localisation',
-      value: post.region.name
-    }
-  ].filter(Boolean) as { icon: typeof faPhone; label: string; value: string }[]
+  const eng = post.carEngine
+  const consumption =
+    eng && eng.urban && eng.highway
+      ? `${
+          Math.ceil((0.37 * eng.urban + 0.63 * eng.highway) * 10) / 10
+        } L/100km`
+      : null
+  const hasSpecs = !!(
+    yearVal ||
+    kmVal ||
+    motorVal ||
+    fuelVal ||
+    gearboxVal ||
+    regionVal ||
+    eng
+  )
 
   const share = () => {
     const url = `https://tunisiancars.com.tn/annonces/${post.id}`
@@ -118,89 +110,193 @@ function Content({ post }: { post: CarPost }) {
     }
   }
 
-  return (
-    <article className='text-ink-950'>
-      <div className='grid gap-6'>
-        {/* Galerie — 4:3 paysage, centrée en haut ; les infos en dessous */}
-        <div className='mx-auto w-full lg:max-w-2xl'>
+  // One spec: white icon + label/value, for the dark specs band.
+  const specItem = (
+    icon: IconDefinition,
+    label: string,
+    value: string | null
+  ) =>
+    value ? (
+      <div className='flex items-center gap-2.5'>
+        <FontAwesomeIcon icon={icon} className='h-4 w-4 shrink-0 text-white' />
+        <div className='min-w-0'>
+          <dt className='text-[0.6rem] font-medium uppercase tracking-wide text-white/45'>
+            {label}
+          </dt>
+          <dd className='truncate text-sm font-semibold'>{value}</dd>
+        </div>
+      </div>
+    ) : null
+
+  // One "fiche technique" row (label ─ value).
+  const ficheRow = (label: string, value: string | null | undefined) =>
+    value ? (
+      <div className='flex items-center justify-between gap-4 border-b border-white/10 pb-2'>
+        <dt className='text-xs text-white/50'>{label}</dt>
+        <dd className='text-sm font-semibold text-white'>{value}</dd>
+      </div>
+    ) : null
+
+  const priceNode = post.price ? (
+    <p className='text-3xl font-extrabold text-brand-600'>
+      {dotNumber(post.price)} DT
+    </p>
+  ) : post.estimatedPrice?.value ? (
+    <p className='inline-flex items-baseline gap-2 text-xl bg-ink-50 p-2 rounded-md font-extrabold text-ink-300'>
+      {dotNumber(post.estimatedPrice.value)} DT estimé
+    </p>
+  ) : (
+    <p className='text-2xl font-bold text-ink-500'>
+      {noPriceText(post.merchant?.id)}
+    </p>
+  )
+
+  // Sections. Each carries a fixed background so specs & description are always
+  // white-on-black (legible), while details / contact / similar stay white.
+  const bands: { key: string; dark: boolean; node: ReactNode }[] = [
+    {
+      key: 'main',
+      dark: false,
+      node: (
+        <>
           <DetailGallery
             images={post.images}
             source={post.source}
             sourceUrl={post.urlSource}
           />
-        </div>
-
-        {/* Infos */}
-        <div className='flex flex-col'>
-          {post.isExpired && (
-            <span className='mb-3 inline-flex w-fit items-center rounded-lg bg-red/60 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
-              Vendu
-            </span>
-          )}
-
-          <h1 className='text-2xl font-extrabold leading-tight tracking-tight lg:text-3xl'>
-            {title}
-          </h1>
-          <p className='mt-1 text-sm text-ink-400'>
-            {[post.year, post.make, post.model].filter(Boolean).join(' ')}
-          </p>
-          {post.publishedAtText && (
-            <p className='mt-1.5 inline-flex items-center gap-1.5 text-xs text-ink-400'>
-              <FontAwesomeIcon icon={faClock} className='h-3 w-3' />
-              Publié {post.publishedAtText}
-            </p>
-          )}
-
-          <div className='mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1'>
-            <span className='text-3xl font-extrabold'>
-              {post.price ? `${dotNumber(post.price)} DT` : 'Prix sur demande'}
-            </span>
-            {post.estimatedPrice && (
-              <span
-                className={`inline-flex items-center gap-1.5 text-sm font-semibold ${estimationColor}`}
-              >
-                <FontAwesomeIcon icon={faCircleCheck} className='h-3.5 w-3.5' />
-                {post.estimatedPrice.text}
+          <div className='mt-5'>
+            {post.isExpired && (
+              <span className='mb-3 inline-flex w-fit items-center rounded-md bg-red/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white'>
+                Vendu
               </span>
             )}
+            <h1 className='text-2xl font-extrabold leading-tight tracking-tight lg:text-3xl'>
+              {title}
+            </h1>
+            <p className='mt-1 text-sm text-ink-500'>
+              {[post.year, post.make, post.model].filter(Boolean).join(' ')}
+            </p>
+            {post.publishedAtText && (
+              <p className='mt-1.5 inline-flex items-center gap-1.5 text-xs text-ink-400'>
+                <FontAwesomeIcon icon={faClock} className='h-3 w-3' />
+                Publié {post.publishedAtText}
+              </p>
+            )}
+            <div className='mt-4'>{priceNode}</div>
+            <button
+              type='button'
+              onClick={share}
+              className='mt-4 inline-flex items-center gap-2 rounded-lg border border-ink-200 px-3.5 py-1.5 text-xs font-semibold text-ink-700 transition-colors hover:bg-ink-50'
+            >
+              <FontAwesomeIcon icon={faShareNodes} className='h-3.5 w-3.5' />
+              Partager
+            </button>
           </div>
+        </>
+      )
+    }
+  ]
 
-          {/* Specs — cartes */}
-          <dl className='mt-6 grid grid-cols-2 gap-2.5 lg:grid-cols-3'>
-            {specs.map((spec) => (
-              <div
-                key={spec.label}
-                className='flex items-center gap-2.5 rounded-lg bg-ink-50 p-2.5 ring-1 ring-ink-100 transition-colors hover:bg-brand-500/5'
-              >
-                <span className='flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-500/10 text-brand-500'>
-                  <FontAwesomeIcon icon={spec.icon} className='h-4 w-4' />
-                </span>
-                <div className='min-w-0'>
-                  <dt className='text-[0.6rem] font-medium uppercase tracking-wide text-ink-400'>
-                    {spec.label}
-                  </dt>
-                  <dd className='truncate text-sm font-bold'>{spec.value}</dd>
-                </div>
+  if (hasSpecs) {
+    bands.push({
+      key: 'specs',
+      dark: true,
+      node: (
+        <>
+          <dl className='space-y-3'>
+            {/* Two-column grid so Kilométrage and Carburant line up at the
+                half (aligned under each other). */}
+            {(yearVal || kmVal) && (
+              <div className='grid grid-cols-2 gap-x-6'>
+                <div>{specItem(faCalendarDays, 'Année', yearVal)}</div>
+                <div>{specItem(faGaugeHigh, 'Kilométrage', kmVal)}</div>
               </div>
-            ))}
+            )}
+            {(motorVal || fuelVal) && (
+              <div className='grid grid-cols-2 gap-x-6'>
+                <div>{specItem(faOilCan, 'Motorisation', motorVal)}</div>
+                <div>{specItem(faGasPump, 'Carburant', fuelVal)}</div>
+              </div>
+            )}
+            {specItem(faGears, 'Boîte', gearboxVal)}
+            {specItem(faLocationDot, 'Localisation', regionVal)}
           </dl>
 
-          {/* Vendeur — centré */}
-          {post.merchant?.name && (
-            <Link
-              href={`/${post.merchant.id}`}
-              className='mx-auto mt-6 inline-flex w-fit items-center gap-2 rounded-lg border border-ink-200 bg-ink-50 px-4 py-2 text-sm font-semibold transition-colors hover:border-brand-500/40 hover:bg-brand-500/5'
-            >
-              <FontAwesomeIcon
-                icon={faShop}
-                className='h-3.5 w-3.5 text-brand-500'
-              />
-              {post.merchant.name}
-            </Link>
+          {hasOptions && (
+            <div className='mt-6'>
+              <p className='text-[0.6rem] font-medium uppercase tracking-wide text-white/45'>
+                Options
+              </p>
+              <div className='mt-2 flex flex-wrap gap-2'>
+                {post.options!.map((option, i) => (
+                  <span
+                    key={i}
+                    className='rounded-md bg-white/10 px-3 py-1 text-xs font-medium text-white/90'
+                  >
+                    {option}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
 
-          {/* Contact — un WhatsApp par numéro, centré */}
-          <div className='mt-5 flex flex-col items-center gap-2.5'>
+          {eng && (
+            <div className='mt-6 border-t border-white/10 pt-4'>
+              <button
+                type='button'
+                onClick={() => setFicheOpen((o) => !o)}
+                className='flex w-full items-center justify-between gap-2 text-left text-sm font-semibold text-white'
+              >
+                Fiche technique (données tunisiancars)
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className={`h-3.5 w-3.5 shrink-0 text-white/70 transition-transform ${
+                    ficheOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              {ficheOpen && (
+                <dl className='mt-4 space-y-2'>
+                  {ficheRow('Motorisation', eng.engineName)}
+                  {ficheRow('Cylindrée', eng.cylinder)}
+                  {ficheRow('Carburant', eng.fuel ? fuelLabel(eng.fuel) : null)}
+                  {ficheRow('Puissance', eng.hp ? `${eng.hp} ch` : null)}
+                  {ficheRow('Couple', eng.torque ? `${eng.torque} Nm` : null)}
+                  {ficheRow(
+                    '0–100 km/h',
+                    eng.acceleration ? `${eng.acceleration} s` : null
+                  )}
+                  {ficheRow(
+                    'Vitesse max',
+                    eng.vmax ? `${eng.vmax} km/h` : null
+                  )}
+                  {ficheRow('Consommation', consumption)}
+                  {ficheRow('Fiabilité', eng.note ? `${eng.note}/10` : null)}
+                  {eng.pbs && (
+                    <p className='pt-1 text-xs leading-relaxed text-white/55'>
+                      {eng.pbs}
+                    </p>
+                  )}
+                </dl>
+              )}
+            </div>
+          )}
+        </>
+      )
+    })
+  }
+
+  if (showContact) {
+    bands.push({
+      key: 'contact',
+      dark: false,
+      node: (
+        <div className='flex flex-col gap-4'>
+          <p className='inline-flex items-center gap-2 text-sm font-bold'>
+            <FontAwesomeIcon icon={faShop} className='h-4 w-4 text-brand-500' />
+            Vendu par Tunisian Cars
+          </p>
+          <div className='flex flex-col gap-2.5'>
             {phones.map((phone) => {
               const digits = phone.toString().replace(/\D/g, '')
               return (
@@ -214,7 +310,7 @@ function Content({ post }: { post: CarPost }) {
                   </a>
                   <a
                     href={`https://wa.me/${digits}?text=${encodeURIComponent(
-                      `Bonjour, votre annonce ${title} m'intéresse — https://tunisiancars.com.tn/annonces/${post.id}`
+                      `Bonjour, votre annonce ${title} m'intéresse - https://tunisiancars.com.tn/annonces/${post.id}`
                     )}`}
                     target='_blank'
                     rel='noopener noreferrer'
@@ -228,29 +324,21 @@ function Content({ post }: { post: CarPost }) {
               )
             })}
           </div>
-
-          {/* Partager — seul sur sa ligne, centré */}
-          <div className='mt-3 flex justify-center'>
-            <button
-              type='button'
-              onClick={share}
-              aria-label='Partager'
-              className='inline-flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-4 py-1.5 text-sm font-semibold text-ink-800 transition-colors hover:bg-ink-50'
-            >
-              <FontAwesomeIcon icon={faShareNodes} className='h-4 w-4' />
-              Partager
-            </button>
-          </div>
         </div>
-      </div>
+      )
+    })
+  }
 
-      {/* Description */}
-      {post.description && (
-        <div className='mt-8 rounded-lg bg-ink-100 p-5 lg:p-6'>
-          <h2 className='text-sm font-bold uppercase tracking-wide text-ink-500'>
+  if (post.description) {
+    bands.push({
+      key: 'desc',
+      dark: true,
+      node: (
+        <>
+          <h2 className='text-[0.7rem] font-semibold uppercase tracking-wide text-white/45'>
             Description
           </h2>
-          <p className='mt-2 text-sm leading-relaxed text-ink-700'>
+          <p className='mt-2 text-sm leading-relaxed text-white/80'>
             {post.description.split('\n').map((line, i) => (
               <span key={i}>
                 <Linkify text={line} />
@@ -258,37 +346,40 @@ function Content({ post }: { post: CarPost }) {
               </span>
             ))}
           </p>
-        </div>
-      )}
+        </>
+      )
+    })
+  }
 
-      {/* Options */}
-      {post.options && post.options.length > 1 && (
-        <div className='mt-6'>
-          <h2 className='text-sm font-bold uppercase tracking-wide text-ink-500'>
-            Options
-          </h2>
-          <div className='mt-2 flex flex-wrap gap-2'>
-            {post.options.map((option, i) => (
-              <span
-                key={i}
-                className='rounded-lg bg-ink-100 px-3 py-1 text-xs font-medium text-ink-700'
-              >
-                {option}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Suggestions — masquées pour le showroom Tunisian Cars */}
-      {!hideSimilar && post.similar && post.similar.length > 0 && (
-        <section className='mt-12 border-t border-ink-100 pt-8'>
+  if (showSimilar) {
+    bands.push({
+      key: 'similar',
+      dark: false,
+      node: (
+        <>
           <h2 className='mb-6 text-xl font-extrabold tracking-tight'>
             Véhicules similaires
           </h2>
-          <ShowroomCars posts={post.similar} replace />
+          <ShowroomCars posts={post.similar!} compact replaceNav />
+        </>
+      )
+    })
+  }
+
+  return (
+    <article>
+      {bands.map((band) => (
+        <section
+          key={band.key}
+          className={
+            band.dark ? 'bg-ink-950 text-white' : 'bg-white text-ink-950'
+          }
+        >
+          <div className='mx-auto w-full max-w-2xl px-4 py-6 lg:py-8'>
+            {band.node}
+          </div>
         </section>
-      )}
+      ))}
     </article>
   )
 }
@@ -296,7 +387,7 @@ function Content({ post }: { post: CarPost }) {
 /**
  * Renders a listing detail. On the full page it receives the already-fetched
  * `post` (SSR). In the modal it receives only `postId` and fetches on the
- * client — so the modal opens instantly and shows a loading skeleton while the
+ * client - so the modal opens instantly and shows a loading skeleton while the
  * data arrives.
  */
 export default function CarPostDetail({

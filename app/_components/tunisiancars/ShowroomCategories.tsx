@@ -11,7 +11,7 @@ import {
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import ShowroomCars from './ShowroomCars'
 
-/** Collapsible "sold vehicles" block — hidden by default, revealed on click. */
+/** Collapsible "sold vehicles" block - hidden by default, revealed on click. */
 function SoldReveal({ sold }: { sold: CarPostListItem[] }) {
   const [open, setOpen] = useState(false)
   if (sold.length === 0) return null

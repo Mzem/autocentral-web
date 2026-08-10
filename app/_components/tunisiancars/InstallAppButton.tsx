@@ -15,7 +15,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 /**
- * "Ajouter à l'écran d'accueil" (PWA install) — shown in the footer.
+ * "Ajouter à l'écran d'accueil" (PWA install) - shown in the footer.
  *
  *  - Chrome / Android / desktop: uses the captured `beforeinstallprompt` event.
  *  - iOS Safari (no such event): shows the manual Share → "Sur l'écran

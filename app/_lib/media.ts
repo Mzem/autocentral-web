@@ -38,7 +38,7 @@ export function getPublicImages(dir: string): string[] {
  *
  * Shuffling on the server (per request, on dynamically-rendered pages) means
  * the very first image in the delivered HTML is already random *and* already
- * loading — so the carousel opens on a random photo with no client-side swap or
+ * loading - so the carousel opens on a random photo with no client-side swap or
  * flash. The client keeps this order as-is.
  */
 export function getShuffledPublicImages(dir: string): string[] {

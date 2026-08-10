@@ -52,7 +52,7 @@ export default async function Boutique() {
             <MerchItems merchItems={merchItems} />
           ) : (
             <div className='rounded-2xl bg-ink-50 px-6 py-16 text-center text-ink-600'>
-              Aucun article pour le moment — la boutique Tunisian Cars arrive
+              Aucun article pour le moment - la boutique Tunisian Cars arrive
               très bientôt.
             </div>
           )}

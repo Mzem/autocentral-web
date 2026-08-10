@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 async function getShowroomPosts(): Promise<CarPostListItem[]> {
   try {
-    // Show every listing (no recency cutoff — the merchant hides what they
+    // Show every listing (no recency cutoff - the merchant hides what they
     // want). The API already orders them: sold last, then by last edited.
     return await getCarPosts({ page: 1, merchantId: SHOWROOM_MERCHANT_ID })
   } catch {
@@ -46,7 +46,7 @@ export default async function Home() {
 
   return (
     <>
-      {/* ───────────── Écran 1 — Hero atelier ─────────────
+      {/* ───────────── Écran 1 - Hero atelier ─────────────
           Bandeau paysage occupant ~40% de la hauteur d'écran (desktop + mobile),
           image en fond, puis directement la section "en vente". */}
       <section className='relative flex min-h-[45svh] lg:min-h-[51svh] items-center overflow-hidden'>
@@ -61,7 +61,7 @@ export default async function Home() {
             <span className='text-brand-500'>de A à Z.</span>
           </h1>
 
-          {/* 3 encarts de largeur égale — en mobile, titre seul (icône inline) */}
+          {/* 3 encarts de largeur égale - en mobile, titre seul (icône inline) */}
           <div className='mt-6 grid w-fit grid-cols-1 gap-1.5 md:w-auto md:max-w-4xl md:grid-cols-3 md:gap-3 lg:mt-10'>
             <div className='rounded-xl bg-white/5 px-3 py-2 backdrop-blur-sm md:px-4 md:py-4'>
               <h2 className='flex items-center gap-2 text-xs font-semibold text-white md:text-sm'>
@@ -105,7 +105,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ───────────── Écran 2 — Showroom (fond blanc) ───────────── */}
+      {/* ───────────── Écran 2 - Showroom (fond blanc) ───────────── */}
       <section id='vente' className='bg-white text-ink-950'>
         <div className='mx-auto w-[92%] xl:max-w-6xl py-5 lg:py-8'>
           <div className='max-w-2xl'>
@@ -126,7 +126,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ───────────── Écran 3 — Le club (carousel) ───────────── */}
+      {/* ───────────── Écran 3 - Le club (carousel) ───────────── */}
       <section className='relative flex min-h-[100svh] items-center overflow-hidden'>
         <BackgroundCarousel
           images={clubImages}

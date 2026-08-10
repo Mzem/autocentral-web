@@ -258,7 +258,7 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
         onChange={(ev) => setForm((f) => ({ ...f, [name]: ev.target.value }))}
         className={inputCls}
       >
-        <option value=''>—</option>
+        <option value=''>-</option>
         {options.map((o) => (
           <option key={o} value={o}>
             {fuelLabel(o)}

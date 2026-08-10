@@ -57,7 +57,7 @@ export default function DetailModal({
         className='relative mx-auto flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded bg-white/90 text-ink-950 shadow-2xl'
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Bouton fermer — reste flottant en haut à droite même en scrollant */}
+        {/* Bouton fermer - reste flottant en haut à droite même en scrollant */}
         <button
           type='button'
           onClick={close}
@@ -66,7 +66,7 @@ export default function DetailModal({
         >
           <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
         </button>
-        <div ref={scrollRef} className='overflow-y-auto p-3'>
+        <div ref={scrollRef} className='overflow-y-auto'>
           {children}
         </div>
       </div>

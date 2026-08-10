@@ -53,9 +53,7 @@ export default async function Annonce({ params }: { params: { id: string } }) {
 
   return (
     <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>
-      <div className='mx-auto w-[92%] py-6 xl:max-w-6xl lg:py-10'>
-        <CarPostDetail post={post} />
-      </div>
+      <CarPostDetail post={post} />
     </div>
   )
 }

@@ -217,7 +217,7 @@ export default function Footer() {
                 className='block overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-card transition-shadow hover:shadow-card-hover'
               >
                 <iframe
-                  title='Tunisian Cars Garage — Sousse'
+                  title='Tunisian Cars Garage - Sousse'
                   src={MAPS_EMBED}
                   loading='lazy'
                   referrerPolicy='no-referrer-when-downgrade'

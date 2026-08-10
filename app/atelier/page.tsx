@@ -21,7 +21,7 @@ import { getShuffledPublicImages } from '../_lib/media'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Atelier — Tunisian Cars | Sousse',
+  title: 'Atelier - Tunisian Cars | Sousse',
   description:
     'Atelier automobile Tunisian Cars à Sousse : restauration complète, mécanique, vidange, nettoyage profond, polissage, lustrage et protection céramique.',
   alternates: { canonical: 'https://tunisiancars.com.tn/atelier' }

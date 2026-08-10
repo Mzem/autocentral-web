@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
     undefined,
     req.nextUrl.searchParams
   )
-  const posts = await getCarPosts(filters)
+  // No cache: filter/search results must reflect the latest data immediately.
+  const posts = await getCarPosts(filters, 0)
   return Response.json(posts)
 }

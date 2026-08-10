@@ -173,7 +173,7 @@ export default function NewCarForm({
             onChange={(e) => setMakeId(e.target.value)}
             className={inputCls}
           >
-            <option value=''>— Choisir —</option>
+            <option value=''>- Choisir -</option>
             {makes.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name}
@@ -195,7 +195,7 @@ export default function NewCarForm({
             }}
             className={inputCls}
           >
-            <option value=''>— Choisir —</option>
+            <option value=''>- Choisir -</option>
             {models.map((m) => (
               <option key={m.modelName} value={m.modelName}>
                 {m.modelName}
@@ -216,7 +216,7 @@ export default function NewCarForm({
             }}
             className={inputCls}
           >
-            <option value=''>— Choisir —</option>
+            <option value=''>- Choisir -</option>
             {years.map((y) => (
               <option key={y.year} value={y.year}>
                 {y.year}
@@ -240,7 +240,7 @@ export default function NewCarForm({
             }}
             className={inputCls}
           >
-            <option value=''>— Choisir —</option>
+            <option value=''>- Choisir -</option>
             {engines.map((eng) => (
               <option key={eng.id} value={eng.id}>
                 {[
@@ -264,7 +264,7 @@ export default function NewCarForm({
             onChange={(e) => set('regionId', e.target.value)}
             className={inputCls}
           >
-            <option value=''>— Choisir —</option>
+            <option value=''>- Choisir -</option>
             {regions.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
