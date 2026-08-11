@@ -8,15 +8,24 @@ import CarPostsFeed from '../_components/car-posts/CarPosts'
 import MerchantHeader from '../_components/MerchantHeader'
 import { fromQueryParamsToGetCarPostsFilters } from '../helpers'
 import Link from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCarBurst } from '@fortawesome/free-solid-svg-icons'
+
+// A real merchant slug is lowercase alphanumerics + hyphens (e.g. "tunisian-cars").
+// Anything else is an asset request (favicon.ico, race_flag.svg) or a bot probe
+// (wp-login.php, 67.php): skip the API round-trip that would only 404-spam.
+const isMerchantSlug = (s?: string): boolean =>
+  !!s && /^[a-z0-9-]{1,60}$/.test(s)
 
 export async function generateMetadata({
   params
 }: {
   params: { merchantId?: string }
 }): Promise<Metadata> {
-  const merchant = params.merchantId
-    ? await getMerchant(params.merchantId)
-    : null
+  const merchant =
+    params.merchantId && isMerchantSlug(params.merchantId)
+      ? await getMerchant(params.merchantId)
+      : null
 
   if (merchant) {
     return {
@@ -54,7 +63,9 @@ export default async function MerchantPage({
   searchParams: Record<string, string | string[] | undefined>
   params: { merchantId: string }
 }) {
-  const merchant = await getMerchant(params.merchantId)
+  const merchant = isMerchantSlug(params.merchantId)
+    ? await getMerchant(params.merchantId)
+    : null
   let posts: CarPostListItem[] = []
   let filters
   if (merchant) {
@@ -74,13 +85,21 @@ export default async function MerchantPage({
     <>
       {!merchant && (
         <div className='text-white mx-auto w-full flex flex-col items-center justify-around text-xl lg:text-2xl mt-[6rem]'>
-          <img src='/lost.svg' alt='Non trouvé(e)' className='max-h-96' />
-          <p>Non trouvé(e)</p>
+          <FontAwesomeIcon
+            icon={faCarBurst}
+            aria-hidden='true'
+            className='h-40 text-white/25'
+          />
+          <p className='mt-6'>Non trouvé(e)</p>
           <Link
             href='/'
-            className='bg-ink-950 shadow px-8 rounded-xl mt-6 text-white italic text-base'
+            className='bg-ink-950 shadow px-8 py-3 rounded-xl mt-6 text-white italic text-base'
           >
-            <img src='/logo.svg' alt='' className='h-20' />
+            <img
+              src='/tunisiancars/logo_rect.png'
+              alt='Tunisian Cars'
+              className='h-16'
+            />
           </Link>
           <span className='text-white/55 italic text-sm mt-4'>
             Rechercher une voiture d'occasion

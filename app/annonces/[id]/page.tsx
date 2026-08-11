@@ -2,12 +2,22 @@ import { Metadata } from 'next'
 import { getCarPost } from '../../../api/services/car-posts.service'
 import CarPostDetail from '../../_components/tunisiancars/CarPostDetail'
 
+// Reject junk ids (bot probes like xmlrpc.php, stray "null"/"toyota-", path
+// chars) before the API call — they only ever produce a wasteful 404.
+const isCarPostId = (s?: string): boolean =>
+  !!s &&
+  s !== 'null' &&
+  s !== 'undefined' &&
+  !/[./\\]/.test(s) &&
+  s.length <= 80
+
 export async function generateMetadata({
   params
 }: {
   params: { id?: string }
 }): Promise<Metadata> {
-  const post = params.id ? await getCarPost(params.id) : null
+  const post =
+    params.id && isCarPostId(params.id) ? await getCarPost(params.id) : null
 
   if (post) {
     return {
@@ -39,7 +49,7 @@ export async function generateMetadata({
 }
 
 export default async function Annonce({ params }: { params: { id: string } }) {
-  const post = await getCarPost(params.id)
+  const post = isCarPostId(params.id) ? await getCarPost(params.id) : null
 
   if (!post) {
     return (

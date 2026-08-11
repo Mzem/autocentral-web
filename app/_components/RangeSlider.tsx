@@ -1,5 +1,8 @@
 'use client'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+
 /**
  * Dual-thumb range slider (min + max) with a filled active track. Both thumbs
  * stay draggable thanks to the `.range-thumb` CSS (pointer-events on the thumbs
@@ -7,6 +10,7 @@
  */
 export default function RangeSlider({
   label,
+  icon,
   unit,
   min,
   max,
@@ -17,6 +21,7 @@ export default function RangeSlider({
   format
 }: {
   label: string
+  icon?: IconDefinition
   unit?: string
   min: number
   max: number
@@ -32,8 +37,16 @@ export default function RangeSlider({
   return (
     <div>
       <div className='flex items-center justify-between text-sm'>
-        <span className='font-medium'>{label}</span>
-        <span className='text-white/70'>
+        <span className='flex items-center gap-2 font-semibold'>
+          {icon && (
+            <FontAwesomeIcon
+              icon={icon}
+              className='h-3.5 w-3.5 text-brand-500'
+            />
+          )}
+          {label}
+        </span>
+        <span className='font-medium text-white/70'>
           {fmt(valueMin)} – {fmt(valueMax)}
           {valueMax >= max ? '+' : ''}
           {unit ? ` ${unit}` : ''}

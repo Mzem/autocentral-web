@@ -12,6 +12,11 @@ import {
 
 type Item = { key: string; url?: string; file?: File; preview: string }
 
+// Hard cap per photo. Oversized uploads are the main cause of truncated
+// multipart streams ("Unexpected end of form"); block them client-side.
+const MAX_IMAGE_MB = 5
+const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024
+
 /**
  * Image manager: keep / delete / reorder / add photos, with the first image as
  * the main thumbnail.
@@ -53,8 +58,20 @@ export default function ImagesEditor({
 
   const addFiles = (fl: FileList | null) => {
     if (!fl) return
+    const picked = Array.from(fl)
+    // Reject anything over the cap and tell the user exactly which files.
+    const tooBig = picked.filter((f) => f.size > MAX_IMAGE_BYTES)
+    if (tooBig.length > 0) {
+      alert(
+        `Photo(s) trop lourde(s) — max ${MAX_IMAGE_MB} Mo par photo, ignorée(s) :\n` +
+          tooBig
+            .map((f) => `• ${f.name} — ${(f.size / 1024 / 1024).toFixed(1)} Mo`)
+            .join('\n') +
+          `\n\nCompressez-la/les ou choisissez des photos plus légères.`
+      )
+    }
     const room = Math.max(0, max - items.length)
-    const toAdd = Array.from(fl).slice(0, room)
+    const toAdd = picked.filter((f) => f.size <= MAX_IMAGE_BYTES).slice(0, room)
     if (toAdd.length === 0) return
     setItems((prev) => [
       ...prev,
@@ -195,7 +212,8 @@ export default function ImagesEditor({
 
       <div className='mt-2 flex items-center justify-between'>
         <p className='text-xs text-ink-500'>
-          {items.length}/{max} · la 1ère photo est la principale
+          {items.length}/{max} · la 1ère photo est la principale · max{' '}
+          {MAX_IMAGE_MB} Mo/photo
         </p>
         {onSave && (
           <button

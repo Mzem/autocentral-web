@@ -22,7 +22,7 @@ import { dotNumber, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
 import { Linkify } from '../../Linkify'
 import DetailGallery from './DetailGallery'
-import ShowroomCars from './ShowroomCars'
+import CarPostCard from '../car-posts/CarPostCard'
 
 const SHOWROOM_MERCHANT_ID = 'tunisian-cars'
 
@@ -360,7 +360,12 @@ function Content({ post }: { post: CarPost }) {
           <h2 className='mb-6 text-xl font-extrabold tracking-tight'>
             Véhicules similaires
           </h2>
-          <ShowroomCars posts={post.similar!} compact replaceNav />
+          {/* Standard (non-admin) cards — 2 per row then 1, like ShowroomCars. */}
+          <ul className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+            {post.similar!.map((similar) => (
+              <CarPostCard key={similar.id} post={similar} replaceNav />
+            ))}
+          </ul>
         </>
       )
     })

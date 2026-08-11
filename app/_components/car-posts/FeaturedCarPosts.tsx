@@ -1,6 +1,8 @@
 'use client'
 
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import { dotNumber } from '../../helpers'
 import { fuelLabel } from '../../types'
@@ -34,7 +36,11 @@ export default function FeaturedCarPosts({
           className='h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/20'
         />
         <h2 className='flex items-center gap-2 text-xs lg:text-sm font-semibold uppercase tracking-[0.18em] text-ink-300'>
-          <img src='/badge.svg' alt='' aria-hidden='true' className='h-4 w-4' />
+          <FontAwesomeIcon
+            icon={faStar}
+            aria-hidden='true'
+            className='h-4 w-4 text-gold-400'
+          />
           À la une
         </h2>
         <span

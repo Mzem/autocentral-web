@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faCarBurst } from '@fortawesome/free-solid-svg-icons'
 import { getMerchItem } from '../../../api/services/merch-items.service'
 import MerchItemModal from '../../_components/MerchItemModal'
 
@@ -48,7 +48,11 @@ export default async function Produit({ params }: { params: { id: string } }) {
             <MerchItemModal item={item} isFull={true} />
           ) : (
             <div className='flex flex-col items-center justify-center py-16 text-center'>
-              <img src='/lost.svg' alt='Non trouvé' className='max-h-72' />
+              <FontAwesomeIcon
+                icon={faCarBurst}
+                aria-hidden='true'
+                className='h-32 text-ink-300'
+              />
               <p className='mt-6 text-xl font-bold'>Article introuvable</p>
             </div>
           )}

@@ -76,7 +76,7 @@ export default function ShowroomCars({
             }`}
           >
             {/* Photo - landscape, top */}
-            <div className='relative aspect-[4/3] w-full overflow-hidden bg-ink-900'>
+            <div className='relative aspect-[4/3] w-full overflow-hidden bg-white'>
               <RevealCarImage
                 src={post.image}
                 alt={post.title ?? `${post.make ?? ''} ${post.model ?? ''}`}
@@ -103,11 +103,11 @@ export default function ShowroomCars({
             {/* Details - solid black panel. In the "similar" block it gets a
                 fixed height (homogeneous) with "Publié" pinned to the bottom. */}
             <div
-              className={`flex flex-col bg-blackopac3 px-3 py-2 text-white ${
-                compact ? 'h-[6.5rem] overflow-hidden' : 'flex-1 justify-center'
+              className={`flex flex-col bg-blackopac3 px-3 text-white ${
+                compact ? 'py-1 overflow-hidden' : 'flex-1 justify-center'
               }`}
             >
-              <h3 className='truncate text-sm font-bold leading-tight lg:text-base'>
+              <h3 className='truncate text-sm font-bold leading-tight lg:text-[0.9rem]'>
                 {post.title ?? `${post.make ?? ''} ${post.model ?? ''}`.trim()}
               </h3>
 
@@ -118,15 +118,6 @@ export default function ShowroomCars({
                   faGaugeHigh,
                   post.km != null ? `${dotNumber(post.km)}km` : null
                 )}
-                {isTC && post.region?.name && (
-                  <span className='ml-auto inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap'>
-                    <FontAwesomeIcon
-                      icon={faLocationDot}
-                      className='h-3 w-3 text-white'
-                    />
-                    {post.region.name}
-                  </span>
-                )}
               </div>
 
               {/* Line 2: the rest */}
@@ -136,11 +127,23 @@ export default function ShowroomCars({
                 {spec(faGears, post.gearbox)}
               </div>
 
-              {/* "Publié" pinned to the bottom — compact (similar) block only. */}
-              {compact && post.publishedAtText && (
-                <div className='mt-auto flex items-center gap-1 pt-1 text-[0.6rem] text-white/55'>
+              {/* "Publié il y a …" — Tunisian Cars only (incl. on-behalf), in
+                  every context; sits right after the specs. Uses the publication
+                  date (updated_at is churned by the scraper, so it can't stand in
+                  for a genuine merchant edit). */}
+              {post.publishedAtText && (
+                <div className='mt-1.5 flex items-center gap-1 text-[0.6rem] text-white/55'>
                   <FontAwesomeIcon icon={faClock} className='h-2.5 w-2.5' />
                   Publié {post.publishedAtText}
+                  {isTC && post.region?.name && (
+                    <span className='ml-auto inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap text-white text-[0.68rem]'>
+                      <FontAwesomeIcon
+                        icon={faLocationDot}
+                        className='h-3 w-3 text-white'
+                      />
+                      {post.region.name}
+                    </span>
+                  )}
                 </div>
               )}
             </div>

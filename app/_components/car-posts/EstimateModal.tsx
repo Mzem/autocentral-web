@@ -15,7 +15,7 @@ import {
 } from '../../../api/services/car-posts.service'
 import { carModels, Fuel, fuelLabel } from '../../types'
 import { dotNumber } from '../../helpers'
-import ShowroomCars from '../tunisiancars/ShowroomCars'
+import CarPostCard from './CarPostCard'
 
 const inputCls =
   'mt-1 w-full rounded-lg border border-ink-200 px-3 py-2 text-sm text-ink-950 outline-none focus:border-brand-500'
@@ -262,9 +262,13 @@ export default function EstimateModal() {
                       <p className='mb-3 text-sm font-bold'>
                         Véhicules similaires
                       </p>
-                      {/* Same cards as the annonce "similaires" block; clicking
+                      {/* Standard (non-admin) cards, 2 per row then 1; clicking
                           opens the detail modal on top (this modal stays open). */}
-                      <ShowroomCars posts={similar} compact />
+                      <ul className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                        {similar.map((p) => (
+                          <CarPostCard key={p.id} post={p} />
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>

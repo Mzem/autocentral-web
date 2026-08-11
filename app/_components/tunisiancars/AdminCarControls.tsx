@@ -290,8 +290,12 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
       </div>
 
       {post.isHidden && (
-        <span className='absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded bg-black/70 px-2 py-0.5 text-[11px] font-semibold text-white'>
-          <FontAwesomeIcon icon={faEyeSlash} className='h-3 w-3' /> Masquée
+        <span
+          className={`absolute left-2 z-10 inline-flex items-center gap-1.5 rounded-md bg-black/75 px-2.5 py-1.5 text-xs font-bold text-white shadow backdrop-blur-sm ${
+            post.isExpired ? 'top-12' : 'top-2'
+          }`}
+        >
+          <FontAwesomeIcon icon={faEyeSlash} className='h-4 w-4' /> Masquée
         </span>
       )}
 

@@ -2,6 +2,11 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChevronLeft,
+  faChevronRight
+} from '@fortawesome/free-solid-svg-icons'
 import {
   CarModelsByMake,
   ModelListItem
@@ -26,10 +31,10 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
         <p className='text-xl lg:text-3xl flex-grow'>
           {modelsByMake.make.name}
         </p>
-        <Link href='/fiche-technique'>
-          <img
-            src='/arrow_prev.svg'
-            className='h-8 lg:h-10 bg-ink-950 rounded hover:bg-ink-800'
+        <Link href='/fiche-technique' aria-label='Retour'>
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            className='h-8 w-8 lg:h-10 lg:w-10 rounded bg-ink-950 p-2 hover:bg-ink-800'
           />
         </Link>
       </div>
@@ -47,7 +52,7 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
               onClick={() => setSelectedModel(model)}
               className='text-white flex items-center w-full text-left'
             >
-              <img src='/arrow_next.svg' className='h-4 mr-2 invert' />
+              <FontAwesomeIcon icon={faChevronRight} className='h-4 w-4 mr-2' />
               {model.modelName}
             </button>
           </li>

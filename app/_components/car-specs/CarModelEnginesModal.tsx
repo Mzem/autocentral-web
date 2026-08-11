@@ -1,6 +1,12 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faXmark,
+  faChevronRight,
+  faChevronDown
+} from '@fortawesome/free-solid-svg-icons'
 import { ModelListItem } from '../../../api/services/car-model.service'
 import Link from 'next/link'
 import { fuelLabel } from '../../types'
@@ -53,8 +59,8 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
       >
         <div className='flex items-center justify-between mb-4'>
           <h2 className='text-2xl'>{model.modelName}</h2>
-          <button onClick={onClose} className='rounded'>
-            <img src='/close.svg' className='h-6 lg:h-8 rounded invert' />
+          <button onClick={onClose} aria-label='Fermer' className='rounded'>
+            <FontAwesomeIcon icon={faXmark} className='h-6 w-6 lg:h-8 lg:w-8' />
           </button>
         </div>
         <ul className='flex flex-col justify-between'>
@@ -81,10 +87,16 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                     className={`hover:bg-white/20 flex flex-row w-full space-x-2 font-bold items-center rounded`}
                   >
                     {selectedYear !== modelYear.year && (
-                      <img src='/arrow_next.svg' className='h-4 mr-2' />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className='h-4 w-4 mr-2'
+                      />
                     )}
                     {selectedYear === modelYear.year && (
-                      <img src='/arrow_down.svg' className='h-4 mr-2' />
+                      <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className='h-4 w-4 mr-2'
+                      />
                     )}
                     <span className='min-w-10'>{modelYear.year}</span>
                     {modelYear.engines[0]?.type && (

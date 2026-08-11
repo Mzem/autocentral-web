@@ -1,6 +1,16 @@
 'use client'
 
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faCar,
+  faCalendarDays,
+  faGasPump,
+  faGears,
+  faHorse,
+  faArrowsRotate,
+  faStopwatch
+} from '@fortawesome/free-solid-svg-icons'
 import { CarModel } from '../../../api/services/car-model.service'
 import Link from 'next/link'
 import { InfoCard } from '../InfoCard'
@@ -22,7 +32,7 @@ const SpecList: React.FC<SpecListProps> = ({
       <ul className='flex flex-col space-y-1'>
         <li className='flex space-x-1 items-center'>
           <InfoCard
-            img={'/car.svg'}
+            icon={faCar}
             value={
               engine.make.name +
               ' ' +
@@ -34,7 +44,7 @@ const SpecList: React.FC<SpecListProps> = ({
         <li>
           {engine.fromYear && (
             <InfoCard
-              img={'/calendar.svg'}
+              icon={faCalendarDays}
               value={engine.fromYear}
               title='Début de production'
             />
@@ -43,7 +53,7 @@ const SpecList: React.FC<SpecListProps> = ({
 
         <li className='flex space-x-1 items-center'>
           {engine.fuel && (
-            <InfoCard value={fuelLabel(engine.fuel)} img='/fuel.svg' />
+            <InfoCard value={fuelLabel(engine.fuel)} icon={faGasPump} />
           )}
           {engine.cylinder && <InfoCard value={engine.cylinder} />}
           {tax && <InfoCard value={tax} />}
@@ -51,11 +61,11 @@ const SpecList: React.FC<SpecListProps> = ({
 
         <li className='flex space-x-1'>
           {engine.engineName && (
-            <InfoCard value={engine.engineName} img='/engine.svg' />
+            <InfoCard value={engine.engineName} icon={faGears} />
           )}
-          {engine.hp && <InfoCard value={engine.hp + 'ch'} img='/horse.svg' />}
+          {engine.hp && <InfoCard value={engine.hp + 'ch'} icon={faHorse} />}
           {engine.torque && (
-            <InfoCard value={engine.torque + 'nm'} img='/gears_red.svg' />
+            <InfoCard value={engine.torque + 'nm'} icon={faArrowsRotate} />
           )}
         </li>
         {engine.acceleration && engine.vmax && (
@@ -63,7 +73,7 @@ const SpecList: React.FC<SpecListProps> = ({
             <InfoCard
               value={`${engine.acceleration}s ${engine.vmax}km/h`}
               title='Performances'
-              img='/chrono.svg'
+              icon={faStopwatch}
             />
           </li>
         )}
@@ -73,7 +83,7 @@ const SpecList: React.FC<SpecListProps> = ({
               //value={`${engine.urban}L/100 urbain ${engine.highway}L/100 extra`}
               value={displayConsumption(engine)!}
               title='Consommation'
-              img='/fuel.svg'
+              icon={faGasPump}
             />
           </li>
         )}
@@ -121,9 +131,9 @@ const SpecList: React.FC<SpecListProps> = ({
           className='text-sm lg:text-base p-2 px-3 lg:px-6 flex items-center rounded-lg mx-auto hover:bg-ink-800 text-white bg-black bg-opacity-90 transition duration-300 ease-in-out font-semibold'
           href={`/fiche-technique/motorisation/${engine.id}`}
         >
-          <img
-            src='/gears.svg'
-            alt='Fiche technique'
+          <FontAwesomeIcon
+            icon={faGears}
+            aria-hidden='true'
             className='h-3 lg:h-4 mr-1 lg:mr-2'
           />
           <span>Fiche technique</span>
