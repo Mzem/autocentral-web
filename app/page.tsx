@@ -2,6 +2,7 @@ import { faInstagram } from '@fortawesome/free-brands-svg-icons'
 import {
   faArrowRight,
   faArrowUpRightFromSquare,
+  faBagShopping,
   faCar,
   faCircleCheck,
   faMagnifyingGlass,
@@ -11,9 +12,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { Metadata } from 'next'
 import { CarPostListItem, getCarPosts } from '../api/services/car-posts.service'
+import { MotoListItem, getMotos } from '../api/services/moto-posts.service'
 import BackgroundCarousel from './_components/tunisiancars/BackgroundCarousel'
 import AdminShowroom from './_components/tunisiancars/AdminShowroom'
-import AddCarButton from './_components/tunisiancars/AddCarButton'
+import MotoShowroom from './_components/tunisiancars/MotoShowroom'
+import AddVehicleButtons from './_components/tunisiancars/AddVehicleButtons'
 import FacebookSyncButton from './_components/tunisiancars/FacebookSyncButton'
 import { getShuffledPublicImages } from './_lib/media'
 
@@ -43,6 +46,7 @@ export default async function Home() {
   const carouselImages = getShuffledPublicImages('tunisiancars/carousel')
   const clubImages = getShuffledPublicImages('tunisiancars/club')
   const showroomPosts = await getShowroomPosts()
+  const motos: MotoListItem[] = await getMotos()
 
   return (
     <>
@@ -115,13 +119,30 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className='mt-2 lg:mt-3 flex flex-wrap justify-end gap-1'>
+          <div className='mt-2 lg:mt-3 flex flex-wrap items-center justify-end gap-1'>
             <FacebookSyncButton />
-            <AddCarButton />
+            <AddVehicleButtons />
           </div>
 
           <div className='mt-1 lg:mt-2'>
             <AdminShowroom initialPosts={showroomPosts} />
+          </div>
+
+          {/* Motos - juste après "vendus par leur propriétaire" */}
+          <div className='mt-10 lg:mt-14'>
+            <MotoShowroom initialMotos={motos} />
+          </div>
+
+          {/* Fin de section : accès à la boutique de produits dérivés */}
+          <div className='mt-10 flex justify-center lg:mt-14'>
+            <a
+              href='/produits'
+              className='inline-flex items-center gap-2 rounded-full bg-ink-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-ink-800'
+            >
+              <FontAwesomeIcon icon={faBagShopping} className='h-4 w-4' />
+              Voir les produits dérivés
+              <FontAwesomeIcon icon={faArrowRight} className='h-3.5 w-3.5' />
+            </a>
           </div>
         </div>
       </section>
