@@ -206,6 +206,8 @@ export async function estimateCarPrice(params: {
   fuel?: string
   gearbox?: string
   firstOwner?: boolean
+  fullOptions?: boolean
+  specialVersion?: boolean
 }): Promise<CarPriceEstimate> {
   const qs = new URLSearchParams({
     make: params.make,
@@ -217,6 +219,8 @@ export async function estimateCarPrice(params: {
   if (params.fuel) qs.set('fuel', params.fuel)
   if (params.gearbox) qs.set('gearbox', params.gearbox)
   if (params.firstOwner) qs.set('firstOwner', 'true')
+  if (params.fullOptions) qs.set('fullOptions', 'true')
+  if (params.specialVersion) qs.set('specialVersion', 'true')
   const { content } = await apiGet<CarPriceEstimate>(
     `car-posts/estimate?${qs.toString()}`,
     60

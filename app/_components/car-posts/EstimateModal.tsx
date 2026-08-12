@@ -35,6 +35,8 @@ export default function EstimateModal() {
   const [fuel, setFuel] = useState('')
   const [gearbox, setGearbox] = useState('')
   const [firstOwner, setFirstOwner] = useState(false)
+  const [fullOptions, setFullOptions] = useState(false)
+  const [specialVersion, setSpecialVersion] = useState(false)
 
   const models = carModels.find((c) => c.make === make)?.models ?? []
 
@@ -63,6 +65,8 @@ export default function EstimateModal() {
       if (fuel) params.set('fuel', fuel)
       if (gearbox) params.set('gearbox', gearbox)
       if (firstOwner) params.set('firstOwner', 'true')
+      if (fullOptions) params.set('fullOptions', 'true')
+      if (specialVersion) params.set('specialVersion', 'true')
       const estRes = await fetch('/api/estimate?' + params.toString())
       const est: CarPriceEstimate = await estRes.json()
       setEstimate(est)
@@ -221,6 +225,22 @@ export default function EstimateModal() {
                     onChange={(e) => setFirstOwner(e.target.checked)}
                   />
                   Première main
+                </label>
+                <label className='flex items-center gap-2 self-end pb-2 text-sm'>
+                  <input
+                    type='checkbox'
+                    checked={fullOptions}
+                    onChange={(e) => setFullOptions(e.target.checked)}
+                  />
+                  Full options (AMG+, M Pro…)
+                </label>
+                <label className='flex items-center gap-2 self-end pb-2 text-sm'>
+                  <input
+                    type='checkbox'
+                    checked={specialVersion}
+                    onChange={(e) => setSpecialVersion(e.target.checked)}
+                  />
+                  Version spéciale (Coupé/Cabriolet…)
                 </label>
               </div>
 

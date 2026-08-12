@@ -15,6 +15,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { Metadata } from 'next'
 import BackgroundCarousel from '../_components/tunisiancars/BackgroundCarousel'
+import RealisationsSection from '../_components/tunisiancars/RealisationsSection'
+import {
+  getRealisations,
+  RealisationItem
+} from '../../api/services/realisations.service'
 import { getShuffledPublicImages } from '../_lib/media'
 
 // Rendered per request so the carousel opens on a random photo each visit.
@@ -75,8 +80,9 @@ const SERVICES = [
   }
 ]
 
-export default function AtelierPage() {
+export default async function AtelierPage() {
   const images = getShuffledPublicImages('tunisiancars/carousel')
+  const realisations: RealisationItem[] = await getRealisations()
 
   return (
     <>
@@ -196,6 +202,9 @@ export default function AtelierPage() {
           </ul>
         </div>
       </section>
+
+      {/* ───────── Nos réalisations récentes ───────── */}
+      <RealisationsSection initialItems={realisations} />
     </>
   )
 }

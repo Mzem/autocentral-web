@@ -16,8 +16,8 @@ import { NAV_LINKS } from '../_lib/nav'
 import InstallAppButton from './tunisiancars/InstallAppButton'
 
 const PHONES = [
-  { display: '98 192 053', intl: '21698192053' },
-  { display: '24 660 559', intl: '21624660559' }
+  { title: 'Atelier', display: '98 192 053', intl: '21698192053' },
+  { title: 'Vente', display: '24 660 559', intl: '21624660559' }
 ]
 
 // Facebook recommendations (last names shortened to an initial).
@@ -152,14 +152,17 @@ export default function Footer() {
 
               <div className='mt-5 space-y-3'>
                 {PHONES.map((phone) => (
-                  <div key={phone.intl} className='flex items-center gap-3'>
-                    <span className='min-w-[7.5rem] font-semibold tracking-wide text-white'>
+                  <div key={phone.intl} className='flex items-center gap-2'>
+                    <span className='min-w-[3.3rem] font-semibold tracking-wide text-white'>
+                      {phone.title}
+                    </span>
+                    <span className='min-w-[5.5rem] font-semibold tracking-wide text-white'>
                       {phone.display}
                     </span>
                     <a
                       href={`tel:+${phone.intl}`}
                       aria-label={`Appeler le ${phone.display}`}
-                      className='inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
+                      className='inline-flex items-center gap-1 rounded-full bg-brand-500 px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
                     >
                       <FontAwesomeIcon icon={faPhone} className='h-3.5 w-3.5' />
                       Appeler
@@ -169,7 +172,7 @@ export default function Footer() {
                       target='_blank'
                       rel='noopener noreferrer'
                       aria-label={`WhatsApp ${phone.display}`}
-                      className='inline-flex items-center gap-1.5 rounded-full bg-whatsapp px-3.5 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
+                      className='inline-flex items-center gap-1 rounded-full bg-whatsapp px-2 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
                     >
                       <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
                       WhatsApp

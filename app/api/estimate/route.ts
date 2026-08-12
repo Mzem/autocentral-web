@@ -23,7 +23,9 @@ export async function GET(req: NextRequest) {
       cv,
       fuel: sp.get('fuel') || undefined,
       gearbox: sp.get('gearbox') || undefined,
-      firstOwner: sp.get('firstOwner') === 'true'
+      firstOwner: sp.get('firstOwner') === 'true',
+      fullOptions: sp.get('fullOptions') === 'true',
+      specialVersion: sp.get('specialVersion') === 'true'
     })
     return Response.json(estimate)
   } catch (e) {

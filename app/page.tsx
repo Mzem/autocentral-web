@@ -66,17 +66,17 @@ export default async function Home() {
           </h1>
 
           {/* 3 encarts de largeur égale - en mobile, titre seul (icône inline) */}
-          <div className='mt-6 grid w-fit grid-cols-1 gap-1.5 md:w-auto md:max-w-4xl md:grid-cols-3 md:gap-3 lg:mt-10'>
+          <div className='mt-6 grid w-fit grid-cols-1 gap-1.5 md:w-auto md:max-w-5xl md:grid-cols-3 md:gap-3 lg:mt-10'>
             <div className='rounded-xl bg-white/5 px-3 py-2 backdrop-blur-sm md:px-4 md:py-4'>
               <h2 className='flex items-center gap-2 text-xs font-semibold text-white md:text-sm'>
                 <FontAwesomeIcon
                   icon={faScrewdriverWrench}
                   className='h-3.5 w-3.5 shrink-0 text-brand-400 md:h-4 md:w-4'
                 />
-                Mécanique & esthétique premium
+                Atelier & Restauration
               </h2>
               <p className='mt-2 hidden text-xs leading-relaxed text-white/75 md:block'>
-                Restauration, vidange, detailing, céramique...
+                Mécanique • Carrosserie • Detailing • Restauration
               </p>
             </div>
 
@@ -86,10 +86,10 @@ export default async function Home() {
                   icon={faCircleCheck}
                   className='h-3.5 w-3.5 shrink-0 text-brand-400 md:h-4 md:w-4'
                 />
-                Vente selectionnée & certifiée
+                Vente & Dépôt-vente
               </h2>
               <p className='mt-2 hidden text-xs leading-relaxed text-white/75 md:block'>
-                Vehicules inspectés par nos soins
+                Automobiles sélectionnées & inspectées
               </p>
             </div>
 
@@ -102,7 +102,7 @@ export default async function Home() {
                 Recherche sur mesure
               </h2>
               <p className='mt-2 hidden text-xs leading-relaxed text-white/75 md:block'>
-                Selon vos critères et votre budget
+                Correspond à vos critères et votre budget
               </p>
             </div>
           </div>

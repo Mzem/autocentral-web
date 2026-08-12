@@ -28,7 +28,7 @@ function SoldReveal({ sold }: { sold: CarPostListItem[] }) {
             open ? 'rotate-180' : ''
           }`}
         />
-        {open ? 'Masquer' : 'Voir'} les véhicules déjà vendus ({sold.length})
+        Ils nous ont fait confiance ({sold.length})
       </button>
       {open && (
         <div className='mt-6'>
