@@ -153,7 +153,7 @@ export default function ShowroomCars({
         return (
           <li
             key={post.id}
-            className='mx-auto w-full max-w-sm animate-fade-in-up lg:max-w-none'
+            className='w-full animate-fade-in-up'
             style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
           >
             {post.isExpired ? (

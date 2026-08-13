@@ -2,12 +2,20 @@ import { NextRequest } from 'next/server'
 import {
   createMoto,
   deleteMoto,
+  getMoto,
   updateMoto
 } from '../../../api/services/moto-posts.service'
 import { apiErrorResponse } from '../_apiError'
 
 const num = (v: unknown) =>
   v === undefined || v === null || v === '' ? undefined : Number(v)
+
+export async function GET(req: NextRequest) {
+  const postId = req.nextUrl.searchParams.get('postId')!
+  const moto = await getMoto(postId)
+  if (!moto) return Response.json({})
+  return Response.json(moto)
+}
 
 export async function POST(req: NextRequest) {
   try {

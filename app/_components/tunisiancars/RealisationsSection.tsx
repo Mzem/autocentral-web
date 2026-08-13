@@ -142,7 +142,7 @@ export default function RealisationsSection({
 
   return (
     <section className='bg-white text-ink-950'>
-      <div className='mx-auto w-[92%] py-14 xl:max-w-6xl lg:py-20'>
+      <div className='mx-auto w-[92%] xl:max-w-6xl pb-10 lg:pb-20'>
         <div className='flex flex-wrap items-end justify-between gap-3'>
           <div className='max-w-2xl'>
             <p className='inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500'>
@@ -197,7 +197,7 @@ export default function RealisationsSection({
         </div>
 
         {items.length > 0 ? (
-          <ul className='mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
+          <ul className='mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2 lg:grid-cols-3'>
             {items.map((it) => (
               <li key={it.id} className='list-none'>
                 <RealisationCard item={it} />

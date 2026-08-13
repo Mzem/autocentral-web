@@ -137,7 +137,12 @@ export default function AdminMotoControls({ moto }: { moto: MotoListItem }) {
         <button
           type='button'
           aria-label='Modifier'
-          onClick={openEdit}
+          onClick={(e) => {
+            // The card is wrapped in a <Link>: don't let admin actions navigate.
+            e.preventDefault()
+            e.stopPropagation()
+            openEdit()
+          }}
           className='flex h-8 w-8 items-center justify-center rounded-lg bg-black/60 text-white backdrop-blur transition hover:bg-black/80'
         >
           <FontAwesomeIcon icon={faPen} className='h-3.5 w-3.5' />
@@ -145,7 +150,11 @@ export default function AdminMotoControls({ moto }: { moto: MotoListItem }) {
         <button
           type='button'
           aria-label='Supprimer'
-          onClick={remove}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            remove()
+          }}
           className='flex h-8 w-8 items-center justify-center rounded-lg bg-danger/90 text-white backdrop-blur transition hover:bg-danger'
         >
           <FontAwesomeIcon icon={faTrash} className='h-3.5 w-3.5' />
@@ -163,7 +172,12 @@ export default function AdminMotoControls({ moto }: { moto: MotoListItem }) {
         createPortal(
           <div
             className='fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3'
-            onClick={() => setEditing(false)}
+            onClick={(e) => {
+              // Portal clicks bubble via the React tree to the card's <Link>;
+              // stop them so interacting with the modal doesn't navigate.
+              e.stopPropagation()
+              setEditing(false)
+            }}
           >
             <form
               onClick={(e) => e.stopPropagation()}

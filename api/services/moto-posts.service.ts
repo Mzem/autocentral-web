@@ -28,6 +28,17 @@ export interface MotoListItem {
   publishedAtText?: string
 }
 
+// Public front default: motos with no saved number fall back to the Tunisian
+// Cars line (+216 form so tel/WhatsApp/display all work like car listings).
+// This is applied ONLY at read time on the front — nothing is persisted — and
+// NOT for the admin path (authKey), so the edit form keeps the real value.
+const DEFAULT_MOTO_PHONE = '+21698192053'
+
+function withDefaultPhone(m: MotoListItem): MotoListItem {
+  if (m.phone || (m.phones && m.phones.length > 0)) return m
+  return { ...m, phone: DEFAULT_MOTO_PHONE, phones: [DEFAULT_MOTO_PHONE] }
+}
+
 export async function getMotos(
   opts?: { includeHidden?: boolean; authKey?: string },
   cacheInSeconds = 60
@@ -41,10 +52,26 @@ export async function getMotos(
       'moto-posts' + (qs ? `?${qs}` : ''),
       cacheInSeconds
     )
-    return content
+    // Admin (authKey) sees raw values; the public gets the default number.
+    return opts?.authKey ? content : content.map(withDefaultPhone)
   } catch (e) {
     console.error('GET motos error')
     return []
+  }
+}
+
+export async function getMoto(
+  id: string,
+  cacheInSeconds = 60
+): Promise<MotoListItem | undefined> {
+  try {
+    const { content } = await apiGet<MotoListItem>(
+      `moto-posts/${id}`,
+      cacheInSeconds
+    )
+    return content && content.id ? withDefaultPhone(content) : undefined
+  } catch (e) {
+    return undefined
   }
 }
 

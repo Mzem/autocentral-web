@@ -49,7 +49,8 @@ const CV_MAX = 60
 // Same centred container as the rest of the site (MainShell) so the white
 // content lines up with the other pages; the black criteria band stays
 // full-width (black spilling to the edges) with its content aligned.
-const CONTAINER = 'mx-auto w-[94%] sm:w-[92%] lg:w-[88%] xl:max-w-6xl'
+// Same width as the home showroom / moto grids so car cards match their width.
+const CONTAINER = 'mx-auto w-[92%] xl:max-w-6xl'
 
 type SellerType = 'all' | 'pro' | 'private'
 type GearboxChoice = 'all' | 'Automatique' | 'Manuelle'
@@ -605,7 +606,7 @@ export default function CarPostsFeed({
         )}
 
         {!refreshing && !groupByMake && (
-          <ul className='mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
+          <ul className='mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {posts.map((post, index) => (
               <React.Fragment key={post.id}>
                 <CarPostCard post={post} />
@@ -662,7 +663,7 @@ export default function CarPostsFeed({
                     )}
                     <h2>{postsByMake.make ?? ''}</h2>
                   </div>
-                  <ul className='mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
+                  <ul className='mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
                     {postsByMake.posts.map((post) => (
                       <CarPostCard key={post.id} post={post} />
                     ))}

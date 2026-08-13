@@ -1,20 +1,13 @@
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faAnglesDown,
-  faArrowRight,
-  faCircleCheck,
-  faGears,
   faLocationDot,
-  faOilCan,
-  faScrewdriverWrench,
-  faShieldHalved,
-  faSprayCan,
-  faStar,
-  faWandMagicSparkles
+  faScrewdriverWrench
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { Metadata } from 'next'
 import BackgroundCarousel from '../_components/tunisiancars/BackgroundCarousel'
+import PrestationsCarousel from '../_components/tunisiancars/PrestationsCarousel'
 import RealisationsSection from '../_components/tunisiancars/RealisationsSection'
 import {
   getRealisations,
@@ -34,51 +27,6 @@ export const metadata: Metadata = {
 
 const CONTACT_URL = 'https://m.me/tunisiancars.tn'
 const WHATSAPP_URL = 'https://wa.me/21698192053'
-
-const SERVICES = [
-  {
-    icon: faScrewdriverWrench,
-    title: 'Restauration complète',
-    text: 'Redonner vie à votre véhicule, de la carrosserie aux moindres finitions.',
-    image: '/tunisiancars/services/restauration.jpg'
-  },
-  {
-    icon: faGears,
-    title: 'Mécanique',
-    text: 'Diagnostic et interventions mécaniques par des experts.',
-    image: '/tunisiancars/services/mecanique.jpg'
-  },
-  {
-    icon: faOilCan,
-    title: 'Vidange',
-    text: 'Entretien moteur avec des produits adaptés à votre motorisation.',
-    image: '/tunisiancars/services/vidange.jpg'
-  },
-  {
-    icon: faSprayCan,
-    title: 'Nettoyage profond',
-    text: 'Detailing intérieur et extérieur, propreté irréprochable jusque dans les détails.',
-    image: '/tunisiancars/services/nettoyage.jpg'
-  },
-  {
-    icon: faWandMagicSparkles,
-    title: 'Polissage',
-    text: 'Correction des micro-rayures pour retrouver une carrosserie parfaite.',
-    image: '/tunisiancars/services/polissage.png'
-  },
-  {
-    icon: faStar,
-    title: 'Lustrage',
-    text: 'Une brillance profonde et durable, digne des plus belles pièces.',
-    image: '/tunisiancars/services/lustrage.png'
-  },
-  {
-    icon: faShieldHalved,
-    title: 'Protection céramique',
-    text: 'Un bouclier durable contre le temps, les rayures et les agressions.',
-    image: '/tunisiancars/services/ceramique.png'
-  }
-]
 
 export default async function AtelierPage() {
   const images = getShuffledPublicImages('tunisiancars/carousel')
@@ -143,10 +91,7 @@ export default async function AtelierPage() {
       </section>
 
       {/* ───────── Prestations ───────── */}
-      <section
-        id='prestations'
-        className='scroll-mt-14 bg-white text-ink-950 lg:scroll-mt-16'
-      >
+      <section id='prestations' className='scroll-mt-10 bg-white text-ink-950'>
         <div className='mx-auto w-[92%] xl:max-w-6xl py-16 lg:py-24'>
           <div className='max-w-2xl'>
             <p className='inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500'>
@@ -163,43 +108,7 @@ export default async function AtelierPage() {
             </p>
           </div>
 
-          <ul className='mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:mt-12 lg:grid-cols-3'>
-            {SERVICES.map((service, index) => (
-              <li
-                key={service.title}
-                className='group relative animate-fade-in-up overflow-hidden shadow-card-light ring-1 ring-ink-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-light-hover'
-                style={{ animationDelay: `${index * 60}ms` }}
-              >
-                {/* Image homogène : aspect fixe + object-cover, quelles que soient
-                    les dimensions du fichier source. */}
-                <div className='aspect-[4/3] overflow-hidden'>
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    loading='lazy'
-                    className='h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110'
-                  />
-                </div>
-
-                <div
-                  aria-hidden='true'
-                  className='absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent'
-                />
-
-                <div className='absolute inset-x-0 bottom-0 p-5'>
-                  <span className='inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 text-white ring-1 ring-white/25 backdrop-blur transition-colors duration-300 group-hover:bg-brand-500 group-hover:ring-brand-500'>
-                    <FontAwesomeIcon icon={service.icon} className='h-5 w-5' />
-                  </span>
-                  <h3 className='mt-3 text-lg font-bold text-white drop-shadow'>
-                    {service.title}
-                  </h3>
-                  <p className='mt-1 text-sm leading-relaxed text-white/80'>
-                    {service.text}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <PrestationsCarousel />
         </div>
       </section>
 

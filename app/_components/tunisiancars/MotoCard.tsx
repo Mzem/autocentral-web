@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import type { ReactNode } from 'react'
@@ -28,7 +29,7 @@ export default function MotoCard({ moto }: { moto: MotoListItem }) {
       </span>
     ) : null
 
-  return (
+  const inner = (
     <div className='relative flex w-full flex-col overflow-hidden bg-black shadow-card-light'>
       <div className='relative aspect-[4/3] w-full overflow-hidden bg-ink-900'>
         {moto.image && (
@@ -81,5 +82,18 @@ export default function MotoCard({ moto }: { moto: MotoListItem }) {
         )}
       </div>
     </div>
+  )
+
+  // Sold motos aren't clickable (mirrors the car SoldCard behaviour); available
+  // ones open the detail as a modal (intercepted) or a full page on refresh.
+  if (moto.isExpired) return inner
+  return (
+    <Link
+      href={`/annonces/moto/${moto.id}`}
+      scroll={false}
+      className='group block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500'
+    >
+      {inner}
+    </Link>
   )
 }
