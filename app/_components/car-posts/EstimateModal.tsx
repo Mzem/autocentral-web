@@ -153,7 +153,7 @@ export default function EstimateModal() {
                 marché.
               </p>
 
-              <div className='mt-5 grid grid-cols-2 gap-3'>
+              <div className='mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2'>
                 <label className='block'>
                   <span className={labelCls}>Marque</span>
                   <select
@@ -164,7 +164,7 @@ export default function EstimateModal() {
                     }}
                     className={inputCls}
                   >
-                    <option value=''>— Choisir —</option>
+                    <option value=''>- Choisir -</option>
                     {carModels.map((c) => (
                       <option key={c.make} value={c.make}>
                         {c.make}
@@ -180,7 +180,7 @@ export default function EstimateModal() {
                     onChange={(e) => setModel(e.target.value)}
                     className={inputCls}
                   >
-                    <option value=''>— Choisir —</option>
+                    <option value=''>- Choisir -</option>
                     {models.map((m) => (
                       <option key={m} value={m}>
                         {m}

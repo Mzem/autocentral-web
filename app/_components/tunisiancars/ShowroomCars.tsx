@@ -72,7 +72,7 @@ export default function ShowroomCars({
         const inner = (
           <div
             className={`relative flex w-full flex-col overflow-hidden bg-black ${
-              compact ? '' : 'aspect-square'
+              compact ? '' : 'aspect-square xs:aspect-auto'
             }`}
           >
             {/* Photo - landscape, top */}
@@ -127,12 +127,12 @@ export default function ShowroomCars({
                 {spec(faGears, post.gearbox)}
               </div>
 
-              {/* "Publié il y a …" — Tunisian Cars only (incl. on-behalf), in
+              {/* "Publié il y a …" - Tunisian Cars only (incl. on-behalf), in
                   every context; sits right after the specs. Uses the publication
                   date (updated_at is churned by the scraper, so it can't stand in
                   for a genuine merchant edit). */}
               {post.publishedAtText && (
-                <div className='mt-1.5 flex items-center gap-1 text-[0.6rem] text-white/55'>
+                <div className='mt-1.5 flex flex-wrap items-center gap-1 text-[0.6rem] text-white/55'>
                   <FontAwesomeIcon icon={faClock} className='h-2.5 w-2.5' />
                   Publié {post.publishedAtText}
                   {isTC && post.region?.name && (

@@ -173,7 +173,7 @@ function Content({ moto }: { moto: MotoListItem }) {
             {phones.map((phone) => {
               const digits = phone.toString().replace(/\D/g, '')
               return (
-                <div key={phone} className='flex items-center gap-2'>
+                <div key={phone} className='flex flex-wrap items-center gap-2'>
                   <a
                     href={`tel:${phone}`}
                     className='inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
@@ -245,7 +245,7 @@ function Content({ moto }: { moto: MotoListItem }) {
 /**
  * Moto listing detail. On the full page it receives the already-fetched `moto`
  * (SSR); in the modal it receives only `motoId` and fetches on the client (with
- * a skeleton) — mirrors CarPostDetail exactly.
+ * a skeleton) - mirrors CarPostDetail exactly.
  */
 export default function MotoDetail({
   moto: motoProp,

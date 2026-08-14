@@ -353,7 +353,7 @@ export default function AdminCarControls({ post }: { post: CarPostListItem }) {
 
               {/* Details */}
               <form onSubmit={save}>
-                <div className='grid grid-cols-2 gap-3'>
+                <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
                   <div className='col-span-2'>{field('Titre', 'title')}</div>
                   {post.isOnBehalf && (
                     <div className='col-span-2'>

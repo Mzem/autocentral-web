@@ -131,7 +131,7 @@ export default function RealisationsSection({
       window.localStorage.setItem(SCRAP_STORAGE_KEY, String(u))
       setUntil(u)
       alert(
-        'Sync Instagram lancée en arrière-plan. Les réalisations apparaîtront dans quelques minutes — rafraîchis la page.'
+        'Sync Instagram lancée en arrière-plan. Les réalisations apparaîtront dans quelques minutes - rafraîchis la page.'
       )
     } catch (err) {
       alert(`Échec du scrap : ${(err as Error).message}`)
@@ -206,7 +206,7 @@ export default function RealisationsSection({
           </ul>
         ) : (
           <p className='mt-8 rounded-2xl bg-ink-50 px-6 py-10 text-center text-sm text-ink-500'>
-            Aucune réalisation — ajoutez-en une ou scrapez Instagram.
+            Aucune réalisation - ajoutez-en une ou scrapez Instagram.
           </p>
         )}
       </div>

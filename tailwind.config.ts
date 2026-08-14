@@ -111,7 +111,7 @@ const config: Config = {
     },
     extend: {
       screens: {
-        xs: { max: '352px' },
+        xs: { max: '360px' },
         mdm: { max: '768px' },
         xxl: { min: '1600px' }
       },

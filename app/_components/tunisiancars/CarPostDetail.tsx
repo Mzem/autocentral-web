@@ -300,7 +300,7 @@ function Content({ post }: { post: CarPost }) {
             {phones.map((phone) => {
               const digits = phone.toString().replace(/\D/g, '')
               return (
-                <div key={phone} className='flex items-center gap-2'>
+                <div key={phone} className='flex flex-wrap items-center gap-2'>
                   <a
                     href={`tel:${phone}`}
                     className='inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
@@ -360,7 +360,7 @@ function Content({ post }: { post: CarPost }) {
           <h2 className='mb-6 text-xl font-extrabold tracking-tight'>
             Véhicules similaires
           </h2>
-          {/* Standard (non-admin) cards — 2 per row then 1, like ShowroomCars. */}
+          {/* Standard (non-admin) cards - 2 per row then 1, like ShowroomCars. */}
           <ul className='grid grid-cols-1 gap-5 md:grid-cols-2'>
             {post.similar!.map((similar) => (
               <CarPostCard key={similar.id} post={similar} replaceNav />

@@ -152,7 +152,7 @@ export default function RealisationCard({ item }: { item: RealisationItem }) {
           </>
         )}
 
-        {/* Affordance only — the whole card is clickable, so let clicks pass through. */}
+        {/* Affordance only - the whole card is clickable, so let clicks pass through. */}
         {count > 0 && (
           <span
             className={`${roundBtn} pointer-events-none absolute bottom-2 left-2 z-10 h-9 w-9 opacity-90`}
@@ -189,7 +189,7 @@ export default function RealisationCard({ item }: { item: RealisationItem }) {
             className='fixed inset-0 z-[80] flex flex-col bg-black/90 p-4'
             onClick={(e) => {
               // Portal events bubble through the React tree to the card's
-              // onClick (which reopens the viewer) — stop them here.
+              // onClick (which reopens the viewer) - stop them here.
               e.stopPropagation()
               setViewerOpen(false)
             }}

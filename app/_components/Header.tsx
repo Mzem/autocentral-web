@@ -120,7 +120,9 @@ export default function Header() {
             className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-white/10 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-white/15'
           >
             <FontAwesomeIcon icon={faLocationDot} className='h-3.5 w-3.5' />
-            <span>Localisation</span>
+            {/* Icon-only on very narrow screens (<=360px) so the header cluster
+                never overflows; label returns above that. */}
+            <span className='xs:hidden'>Localisation</span>
           </a>
           <a
             href={CONTACT_URL}
@@ -133,7 +135,7 @@ export default function Header() {
               icon={faFacebookMessenger}
               className='h-3.5 w-3.5'
             />
-            <span>Contact</span>
+            <span className='xs:hidden'>Contact</span>
           </a>
 
           <button

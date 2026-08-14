@@ -136,7 +136,7 @@ export default function CarPostsFeed({
   // A page-1 (re)search hides the old cards behind a loader instead of leaving
   // them on screen until the new ones silently swap in.
   const [refreshing, setRefreshing] = useState(false)
-  // Mobile "back to search" FAB — only once the search bar is scrolled away.
+  // Mobile "back to search" FAB - only once the search bar is scrolled away.
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [hasMore, setHasMore] = useState(
     initialPosts.length !== 0 && !merchantId
@@ -247,7 +247,7 @@ export default function CarPostsFeed({
       window.location.href = '/' + merchantId + qp
       return
     }
-    // /annonces: search in place — update the URL, scroll to results, show the
+    // /annonces: search in place - update the URL, scroll to results, show the
     // loader and disable the button while it fetches (no full reload).
     window.history.replaceState(null, '', '/annonces' + qp)
     requestAnimationFrame(() =>
@@ -256,7 +256,7 @@ export default function CarPostsFeed({
     fetchPosts(1, false)
   }
 
-  // "Élargir" — re-run the same search without the 4-month freshness window.
+  // "Élargir" - re-run the same search without the 4-month freshness window.
   function broadenSearch() {
     setBroaden(true)
     fetchPosts(1, true)
@@ -375,7 +375,7 @@ export default function CarPostsFeed({
 
           {showFilters && (
             <div className='mt-4 space-y-5 text-sm'>
-              {/* Carburant — chips */}
+              {/* Carburant - chips */}
               <div>
                 <SectionLabel icon={faGasPump}>Carburant</SectionLabel>
                 <div className='flex flex-wrap gap-2'>
@@ -448,7 +448,7 @@ export default function CarPostsFeed({
                 </div>
               </div>
 
-              {/* Sliders réalistes — 1 par ligne en mobile */}
+              {/* Sliders réalistes - 1 par ligne en mobile */}
               <div className='grid grid-cols-1 gap-x-8 gap-y-5 rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10 md:grid-cols-2'>
                 <RangeSlider
                   label='Année'

@@ -200,7 +200,7 @@ input[type='text']:focus {
   }
 }
 
-/* Dual-thumb range slider. The two overlaid inputs handle dragging only — their
+/* Dual-thumb range slider. The two overlaid inputs handle dragging only - their
    native thumbs are INVISIBLE but still grabbable (pointer-events on the thumbs
    only). The visible circles are drawn by the component and positioned in %, so
    they always sit at the right spot (native thumbs misrender on some mobiles). */

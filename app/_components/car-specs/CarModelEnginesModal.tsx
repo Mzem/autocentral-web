@@ -119,10 +119,14 @@ const CarModelEnginesModal: React.FC<CarModelEnginesModalProps> = ({
                               >
                                 <li
                                   key={engine.id}
-                                  className='mt-1 flex justify-between w-[94%] bg-ink-950 rounded'
+                                  className='mt-1 flex w-[94%] min-w-0 justify-between gap-2 rounded bg-ink-950'
                                 >
-                                  <span>{engine.engineName}</span>
-                                  <span>{engine.hp} ch</span>
+                                  <span className='truncate'>
+                                    {engine.engineName}
+                                  </span>
+                                  <span className='shrink-0'>
+                                    {engine.hp} ch
+                                  </span>
                                 </li>
                               </Link>
                             ))}

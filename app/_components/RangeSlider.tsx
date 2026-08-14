@@ -64,7 +64,7 @@ export default function RangeSlider({
             right: `${100 - pct(valueMax)}%`
           }}
         />
-        {/* Visible thumbs — drawn in % so they always sit at the right spot */}
+        {/* Visible thumbs - drawn in % so they always sit at the right spot */}
         <div
           className='pointer-events-none absolute top-1/2 h-[18px] w-[18px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-brand-500 bg-white shadow'
           style={{ left: `${pct(valueMin)}%` }}

@@ -63,9 +63,9 @@ export default function ImagesEditor({
     const tooBig = picked.filter((f) => f.size > MAX_IMAGE_BYTES)
     if (tooBig.length > 0) {
       alert(
-        `Photo(s) trop lourde(s) — max ${MAX_IMAGE_MB} Mo par photo, ignorée(s) :\n` +
+        `Photo(s) trop lourde(s) - max ${MAX_IMAGE_MB} Mo par photo, ignorée(s) :\n` +
           tooBig
-            .map((f) => `• ${f.name} — ${(f.size / 1024 / 1024).toFixed(1)} Mo`)
+            .map((f) => `• ${f.name} - ${(f.size / 1024 / 1024).toFixed(1)} Mo`)
             .join('\n') +
           `\n\nCompressez-la/les ou choisissez des photos plus légères.`
       )
@@ -141,7 +141,7 @@ export default function ImagesEditor({
 
   return (
     <div>
-      <div className='grid grid-cols-3 gap-2 sm:grid-cols-4'>
+      <div className='grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4'>
         {items.map((it, idx) => (
           <div
             key={it.key}
@@ -210,7 +210,7 @@ export default function ImagesEditor({
         )}
       </div>
 
-      <div className='mt-2 flex items-center justify-between'>
+      <div className='mt-2 flex flex-wrap items-center justify-between gap-2'>
         <p className='text-xs text-ink-500'>
           {items.length}/{max} · la 1ère photo est la principale · max{' '}
           {MAX_IMAGE_MB} Mo/photo

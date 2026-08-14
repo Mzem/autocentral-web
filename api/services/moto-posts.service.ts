@@ -30,7 +30,7 @@ export interface MotoListItem {
 
 // Public front default: motos with no saved number fall back to the Tunisian
 // Cars line (+216 form so tel/WhatsApp/display all work like car listings).
-// This is applied ONLY at read time on the front — nothing is persisted — and
+// This is applied ONLY at read time on the front - nothing is persisted - and
 // NOT for the admin path (authKey), so the edit form keeps the real value.
 const DEFAULT_MOTO_PHONE = '+21698192053'
 

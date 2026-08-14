@@ -19,7 +19,7 @@ import { fuelLabel } from '../../types'
 import CarImage, { SoldBadge } from './CarImage'
 
 /**
- * Standard listing card — the one used on the /annonces feed: a 4:3 photo with
+ * Standard listing card - the one used on the /annonces feed: a 4:3 photo with
  * the price + market-price symbol, then a black spec panel. No admin controls,
  * no "Appeler", no region, so it is safe to reuse for "similar" blocks where the
  * ShowroomCars edit/delete overlay should NOT appear.

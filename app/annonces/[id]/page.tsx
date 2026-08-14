@@ -3,7 +3,7 @@ import { getCarPost } from '../../../api/services/car-posts.service'
 import CarPostDetail from '../../_components/tunisiancars/CarPostDetail'
 
 // Reject junk ids (bot probes like xmlrpc.php, stray "null"/"toyota-", path
-// chars) before the API call — they only ever produce a wasteful 404.
+// chars) before the API call - they only ever produce a wasteful 404.
 const isCarPostId = (s?: string): boolean =>
   !!s &&
   s !== 'null' &&

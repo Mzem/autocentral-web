@@ -248,7 +248,7 @@ export default function AdminMotoControls({ moto }: { moto: MotoListItem }) {
                   />
                 </label>
                 <label className='block'>
-                  <span className={labelCls}>Prix (DT) — vide = N.C.</span>
+                  <span className={labelCls}>Prix (DT) - vide = N.C.</span>
                   <input
                     type='number'
                     value={form.price}

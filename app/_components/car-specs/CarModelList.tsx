@@ -22,13 +22,13 @@ export default function CarModelList({ modelsByMake }: CarModelListProps) {
 
   return (
     <div className='lg:h-screen text-white'>
-      <div className='flex flex-row items-center justify-between space-x-8 lg:space-x-20'>
+      <div className='flex flex-row items-center justify-between space-x-3 lg:space-x-20'>
         <img
           src={`/car-makes/${modelsByMake.make.id}.svg`}
           alt={modelsByMake.make.name}
-          className='h-20 w-20 object-contain brightness-0 invert opacity-80'
+          className='h-14 w-14 shrink-0 object-contain brightness-0 invert opacity-80 lg:h-20 lg:w-20'
         />
-        <p className='text-xl lg:text-3xl flex-grow'>
+        <p className='min-w-0 flex-grow truncate text-xl lg:text-3xl'>
           {modelsByMake.make.name}
         </p>
         <Link href='/fiche-technique' aria-label='Retour'>

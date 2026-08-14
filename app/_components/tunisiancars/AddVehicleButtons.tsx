@@ -5,7 +5,7 @@ import { faCar, faMotorcycle } from '@fortawesome/free-solid-svg-icons'
 import { useMerchantKey } from '../../_lib/useMerchantKey'
 
 /**
- * Admin-only pair of "add" buttons — icon only (no text): a car (new listing)
+ * Admin-only pair of "add" buttons - icon only (no text): a car (new listing)
  * and a moto (new moto). Plain anchors (full navigation) so the annonce modal
  * interceptor doesn't hijack the routes.
  */

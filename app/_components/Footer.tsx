@@ -152,31 +152,44 @@ export default function Footer() {
 
               <div className='mt-5 space-y-3'>
                 {PHONES.map((phone) => (
-                  <div key={phone.intl} className='flex items-center gap-2'>
+                  <div
+                    key={phone.intl}
+                    className='flex flex-wrap items-center gap-2'
+                  >
                     <span className='min-w-[3.3rem] font-semibold tracking-wide text-white'>
                       {phone.title}
                     </span>
                     <span className='min-w-[5.5rem] font-semibold tracking-wide text-white'>
                       {phone.display}
                     </span>
-                    <a
-                      href={`tel:+${phone.intl}`}
-                      aria-label={`Appeler le ${phone.display}`}
-                      className='inline-flex items-center gap-1 rounded-full bg-brand-500 px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
-                    >
-                      <FontAwesomeIcon icon={faPhone} className='h-3.5 w-3.5' />
-                      Appeler
-                    </a>
-                    <a
-                      href={`https://wa.me/${phone.intl}`}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      aria-label={`WhatsApp ${phone.display}`}
-                      className='inline-flex items-center gap-1 rounded-full bg-whatsapp px-2 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
-                    >
-                      <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
-                      WhatsApp
-                    </a>
+                    {/* Grouped so the two pills wrap together (never split) when
+                        the row is too narrow (<=360px phones). */}
+                    <div className='flex items-center gap-2'>
+                      <a
+                        href={`tel:+${phone.intl}`}
+                        aria-label={`Appeler le ${phone.display}`}
+                        className='inline-flex items-center gap-1 rounded-full bg-brand-500 px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
+                      >
+                        <FontAwesomeIcon
+                          icon={faPhone}
+                          className='h-3.5 w-3.5'
+                        />
+                        Appeler
+                      </a>
+                      <a
+                        href={`https://wa.me/${phone.intl}`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        aria-label={`WhatsApp ${phone.display}`}
+                        className='inline-flex items-center gap-1 rounded-full bg-whatsapp px-2 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
+                      >
+                        <FontAwesomeIcon
+                          icon={faWhatsapp}
+                          className='h-4 w-4'
+                        />
+                        WhatsApp
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -185,7 +198,7 @@ export default function Footer() {
               <div className='mt-7 space-y-3'>
                 {SOCIALS.map((social) => (
                   <div key={social.label} className='flex items-center gap-3'>
-                    <span className='w-52 shrink-0 text-sm font-semibold leading-tight text-white/85'>
+                    <span className='min-w-0 flex-1 text-sm font-semibold leading-tight text-white/85'>
                       {social.label}
                     </span>
                     <a

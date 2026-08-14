@@ -22,7 +22,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ carModel }) => {
 
   return (
     <div className='text-white'>
-      <div className='flex flex-row items-center justify-start space-x-3 lg:space-x-20'>
+      <div className='flex flex-row flex-wrap items-center justify-start gap-y-1 space-x-3 lg:space-x-20'>
         <Link href={`/fiche-technique/${carModel.make.id}`}>
           <img
             src={`/car-makes/${carModel.make.id}.svg`}

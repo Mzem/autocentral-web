@@ -53,7 +53,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                   <img
                     src={`/car-makes/${carMake.id}.svg`}
                     alt={carMake.name}
-                    className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
+                    className='h-auto w-full max-w-[3.5rem] object-contain brightness-0 invert opacity-75 transition-opacity hover:opacity-100 lg:max-w-[5rem]'
                   />
                 </Link>
               ))}
@@ -74,7 +74,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                     <img
                       src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
+                      className='h-auto w-full max-w-[3.5rem] object-contain brightness-0 invert opacity-75 transition-opacity hover:opacity-100 lg:max-w-[5rem]'
                     />
                   </Link>
                 ))}
@@ -94,7 +94,7 @@ function CarMakes({ carMakes }: CarMakesProps) {
                     <img
                       src={`/car-makes/${carMake.id}.svg`}
                       alt={carMake.name}
-                      className='w-20 h-20 object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity'
+                      className='h-auto w-full max-w-[3.5rem] object-contain brightness-0 invert opacity-75 transition-opacity hover:opacity-100 lg:max-w-[5rem]'
                     />
                   </Link>
                 ))}
