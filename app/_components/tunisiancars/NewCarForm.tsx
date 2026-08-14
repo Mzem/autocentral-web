@@ -44,7 +44,6 @@ export default function NewCarForm({
 
   const [form, setForm] = useState({
     title: '',
-    phone: '',
     regionId: '',
     km: '',
     year: '',
@@ -55,8 +54,7 @@ export default function NewCarForm({
     color: Color.BLACK as string,
     gearbox: GEARBOXES[0],
     description: '',
-    isFeatured: false,
-    isOnBehalf: false
+    isFeatured: false
   })
 
   useEffect(() => {
@@ -92,8 +90,6 @@ export default function NewCarForm({
     e.preventDefault()
     if (!carEngineId) return alert('Sélectionnez la motorisation')
     if (files.length === 0) return alert('Ajoutez au moins une photo')
-    if (form.isOnBehalf && !form.phone)
-      return alert('Saisissez le téléphone du propriétaire')
     const cylinder = form.cylinder.trim()
     if (cylinder && !CYLINDER_RE.test(cylinder))
       return alert('Cylindrée invalide : le format doit être x.x (ex. 2.0)')
@@ -107,9 +103,6 @@ export default function NewCarForm({
       fd.append('merchantId', merchantId)
       fd.append('regionId', form.regionId)
       fd.append('carEngineId', carEngineId)
-      // Only on-behalf listings carry an owner phone; otherwise the API falls
-      // back to the Tunisian Cars merchant number.
-      if (form.isOnBehalf && form.phone) fd.append('phone', form.phone)
       fd.append('title', form.title)
       if (form.description) fd.append('description', form.description)
       fd.append('km', form.km)
@@ -121,7 +114,6 @@ export default function NewCarForm({
       fd.append('color', form.color)
       fd.append('gearbox', form.gearbox)
       fd.append('isFeatured', form.isFeatured ? 'true' : 'false')
-      fd.append('isOnBehalf', form.isOnBehalf ? 'true' : 'false')
 
       const res = await fetch('/api/car-post', { method: 'POST', body: fd })
       if (!res.ok) {
@@ -272,45 +264,6 @@ export default function NewCarForm({
             ))}
           </select>
         </label>
-        {/* Vendeur : annonce au nom du proprio ? → téléphone conditionnel.
-            Sinon, c'est le numéro de Tunisian Cars qui est utilisé. */}
-        <div className='space-y-3 sm:col-span-2'>
-          <label className='flex items-start gap-2 rounded-lg bg-brand-500/5 p-3 text-sm ring-1 ring-brand-500/20'>
-            <input
-              type='checkbox'
-              className='mt-0.5'
-              checked={form.isOnBehalf}
-              onChange={(e) => set('isOnBehalf', e.target.checked)}
-            />
-            <span>
-              <span className='font-semibold'>
-                Annonce au nom du propriétaire
-              </span>
-              <span className='mt-0.5 block text-xs text-ink-500'>
-                Vendue par Tunisian Cars pour un client. Le téléphone du
-                propriétaire ci-dessous sera affiché à la place du nôtre.
-              </span>
-            </span>
-          </label>
-
-          {form.isOnBehalf ? (
-            <label className='block max-w-xs'>
-              <span className={labelCls}>Téléphone du propriétaire</span>
-              <input
-                required
-                type='number'
-                value={form.phone}
-                onChange={(e) => set('phone', e.target.value)}
-                className={inputCls}
-              />
-            </label>
-          ) : (
-            <p className='text-xs text-ink-500'>
-              Le numéro de Tunisian Cars sera affiché sur l&apos;annonce.
-            </p>
-          )}
-        </div>
-
         <label className='block'>
           <span className={labelCls}>Année de 1ʳᵉ mise en circulation</span>
           <input

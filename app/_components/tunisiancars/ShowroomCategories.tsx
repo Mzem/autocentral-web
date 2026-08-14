@@ -3,11 +3,7 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
-import {
-  faChevronDown,
-  faCircleCheck,
-  faUserTie
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import ShowroomCars from './ShowroomCars'
 
@@ -84,9 +80,9 @@ function Category({
 }
 
 /**
- * Home showroom split into two categories: cars sold by Tunisian Cars itself,
- * and cars sold on behalf of their owners. Sold vehicles are hidden by default
- * in each category behind a reveal toggle.
+ * Home showroom: vehicles inspected and sold by Tunisian Cars. On-behalf (owner)
+ * listings are excluded from the home. Sold vehicles stay hidden by default
+ * behind a reveal toggle.
  */
 export default function ShowroomCategories({
   posts
@@ -94,23 +90,13 @@ export default function ShowroomCategories({
   posts: CarPostListItem[]
 }) {
   const own = posts.filter((p) => !p.isOnBehalf)
-  const onBehalf = posts.filter((p) => p.isOnBehalf)
 
   return (
-    <div className='space-y-10 lg:space-y-14'>
-      <Category
-        icon={faCircleCheck}
-        title='Véhicules inspectés et vendus par Tunisian Cars'
-        posts={own}
-        emptyInvite='Aucun véhicule disponible pour le moment.'
-      />
-      <Category
-        icon={faUserTie}
-        title='Véhicules vendus directement par leur propriétaires'
-        subtitle='Veuillez nous contacter pour ajouter le vôtre'
-        posts={onBehalf}
-        emptyInvite='Aucune annonce de propriétaire pour le moment - contactez-nous pour ajouter la vôtre'
-      />
-    </div>
+    <Category
+      icon={faCircleCheck}
+      title='Véhicules inspectés et vendus par Tunisian Cars'
+      posts={own}
+      emptyInvite='Aucun véhicule disponible pour le moment.'
+    />
   )
 }
