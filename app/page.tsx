@@ -26,7 +26,7 @@ const SHOWROOM_MERCHANT_ID = 'tunisian-cars'
 // ISR: the home is identical for every visitor (admin bits are client-side), so
 // we render it once and revalidate every 2 min instead of doing a full, uncached
 // SSR (+ API/DB round-trips) on every request. The hero's "random first photo"
-// now rotates once per revalidation window rather than per visit — imperceptible,
+// now rotates once per revalidation window rather than per visit - imperceptible,
 // and it makes the HTML cacheable (browser + Cloudflare edge). Was force-dynamic.
 export const revalidate = 120
 

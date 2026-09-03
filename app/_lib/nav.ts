@@ -3,7 +3,8 @@ import {
   faCar,
   faScrewdriverWrench,
   faCartShopping,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faGavel
 } from '@fortawesome/free-solid-svg-icons'
 
 export type NavLink = { href: string; label: string; icon: IconDefinition }
@@ -16,7 +17,8 @@ export const NAV_LINKS: NavLink[] = [
   { href: '/#vente', label: 'Vente', icon: faCar },
   { href: '/atelier', label: 'Atelier', icon: faScrewdriverWrench },
   { href: '/produits', label: 'Boutique', icon: faCartShopping },
-  { href: '/annonces', label: 'Moteur de recherche', icon: faMagnifyingGlass }
+  { href: '/annonces', label: 'Moteur de recherche', icon: faMagnifyingGlass },
+  { href: '/encheres', label: 'Enchères', icon: faGavel }
 ]
 
 /** Extra links shown in the header only when a merchant is logged in. */

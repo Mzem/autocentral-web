@@ -53,6 +53,10 @@
 html {
   font-family: theme('fontFamily.sans');
   -webkit-text-size-adjust: 100%;
+  /* Safety net: a single element wider than the viewport (e.g. a non-wrapping
+     row) must never make the whole site scroll sideways. Inner horizontal
+     scrollers (carousels) are unaffected - they clip their own overflow. */
+  overflow-x: hidden;
   /* color-scheme is declared once on :root (only light) to opt out of forced
      dark modes; keeping a conflicting "dark" here would be misleading. */
   scroll-behavior: smooth;
@@ -76,6 +80,9 @@ body {
     rgba(0, 129, 227, 0) 60%
   );
   background-attachment: fixed;
+  /* Belt and braces with the html rule above (iOS Safari historically only
+     honours it on body). */
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

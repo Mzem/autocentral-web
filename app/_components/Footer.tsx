@@ -252,7 +252,12 @@ export default function Footer() {
           <div className='mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row'>
             <p>© 2026 Tunisian Cars. Tous droits réservés.</p>
 
-            <nav aria-label='Pied de page' className='flex items-center gap-5'>
+            {/* Wraps: 5 links + gaps exceed a phone's width on one line, which
+                made the whole document (every page) scroll horizontally. */}
+            <nav
+              aria-label='Pied de page'
+              className='flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end'
+            >
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}

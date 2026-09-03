@@ -17,7 +17,7 @@ import { getShuffledPublicImages } from '../_lib/media'
 
 // ISR: same page for everyone (admin realisations refetch client-side), so we
 // render once and revalidate every 2 min instead of a full uncached SSR per
-// request. The hero's random first photo now rotates per revalidation window —
+// request. The hero's random first photo now rotates per revalidation window -
 // imperceptible, and it makes the HTML cacheable (browser + Cloudflare edge).
 export const revalidate = 120
 
