@@ -3,11 +3,12 @@
 import { usePathname } from 'next/navigation'
 
 /**
- * Wraps page content.
+ * Wraps the page content of tunisiancars.com.tn (Autocentral pages are all
+ * full-bleed and don't use it).
  *
- * The Tunisian Cars home is an edge-to-edge branded landing (full-bleed
- * carousels, white sections), so it renders with no width constraint and no
- * top offset - its hero sits under the fixed, transparent header on purpose.
+ * The home (atelier) and /vente are edge-to-edge branded landings (full-bleed
+ * carousels, white sections), so they render with no width constraint and no
+ * top offset - their hero sits under the fixed, transparent header on purpose.
  *
  * Every other (kept) page keeps the original centered container and gains a top
  * padding to clear the now-fixed header.
@@ -25,7 +26,7 @@ export default function MainShell({
   // The listing detail is also full-bleed (a white page filling the layout).
   const isFullBleed =
     pathname === '/' ||
-    pathname === '/atelier' ||
+    pathname === '/vente' ||
     pathname.startsWith('/annonces') ||
     pathname.startsWith('/produits') ||
     pathname.startsWith('/encheres')

@@ -6,23 +6,40 @@ import {
   faMagnifyingGlass,
   faGavel
 } from '@fortawesome/free-solid-svg-icons'
+import { TC_MESSENGER_URL, TC_WHATSAPP_URL } from './site'
 
-export type NavLink = { href: string; label: string; icon: IconDefinition }
+export type NavLink = {
+  href: string
+  label: string
+  /** Shorter label for narrow screens (falls back to `label`). */
+  short?: string
+  icon: IconDefinition
+}
 
 /**
- * Single source of truth for the primary navigation, shared by the header and
- * the footer so they always stay in sync.
+ * Tunisian Cars primary navigation - single source of truth shared by its
+ * header and footer so they always stay in sync.
  */
 export const NAV_LINKS: NavLink[] = [
-  { href: '/#vente', label: 'Vente', icon: faCar },
-  { href: '/atelier', label: 'Atelier', icon: faScrewdriverWrench },
-  { href: '/produits', label: 'Boutique', icon: faCartShopping },
-  { href: '/annonces', label: 'Moteur de recherche', icon: faMagnifyingGlass },
-  { href: '/encheres', label: 'Enchères', icon: faGavel }
+  { href: '/', label: 'Atelier', icon: faScrewdriverWrench },
+  { href: '/vente', label: 'Vente', icon: faCar },
+  { href: '/produits', label: 'Boutique', icon: faCartShopping }
 ]
 
 /** Extra links shown in the header only when a merchant is logged in. */
 export const ADMIN_NAV_LINKS: NavLink[] = []
 
-// Messenger of the Facebook page tunisiancars.tn
-export const CONTACT_URL = 'https://m.me/tunisiancars.tn'
+/** Autocentral (autocentral.tn) navigation: the search engine and auctions. */
+export const AC_NAV_LINKS: NavLink[] = [
+  {
+    href: '/annonces',
+    label: 'Moteur de recherche',
+    short: 'Recherche',
+    icon: faMagnifyingGlass
+  },
+  { href: '/encheres', label: 'Enchères', icon: faGavel }
+]
+
+// Tunisian Cars contact channels (header + footer).
+export const CONTACT_URL = TC_MESSENGER_URL
+export const WHATSAPP_URL = TC_WHATSAPP_URL

@@ -13,12 +13,8 @@ import {
   faInstagram
 } from '@fortawesome/free-brands-svg-icons'
 import { NAV_LINKS } from '../_lib/nav'
+import { TC_PHONE, TC_WHATSAPP_URL } from '../_lib/site'
 import InstallAppButton from './tunisiancars/InstallAppButton'
-
-const PHONES = [
-  { title: 'Atelier', display: '98 192 053', intl: '21698192053' },
-  { title: 'Vente', display: '24 660 559', intl: '21624660559' }
-]
 
 // Facebook recommendations (last names shortened to an initial).
 const REVIEWS_URL = 'https://www.facebook.com/tunisiancarsgaragesousse/reviews'
@@ -150,48 +146,33 @@ export default function Footer() {
                 Sousse, Kalaa Sghira, Tunisie
               </p>
 
-              <div className='mt-5 space-y-3'>
-                {PHONES.map((phone) => (
-                  <div
-                    key={phone.intl}
-                    className='flex flex-wrap items-center gap-2'
+              {/* The one Tunisian Cars number (calls + WhatsApp). */}
+              <div className='mt-5 flex flex-wrap items-center gap-2'>
+                <span className='mr-1 text-lg font-bold tracking-wide text-white'>
+                  {TC_PHONE.display}
+                </span>
+                {/* Grouped so the two pills wrap together (never split) when
+                    the row is too narrow (<=360px phones). */}
+                <div className='flex items-center gap-2'>
+                  <a
+                    href={`tel:${TC_PHONE.e164}`}
+                    aria-label={`Appeler le ${TC_PHONE.display}`}
+                    className='inline-flex items-center gap-1 rounded-full bg-brand-500 px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
                   >
-                    <span className='min-w-[3.3rem] font-semibold tracking-wide text-white'>
-                      {phone.title}
-                    </span>
-                    <span className='min-w-[5.5rem] font-semibold tracking-wide text-white'>
-                      {phone.display}
-                    </span>
-                    {/* Grouped so the two pills wrap together (never split) when
-                        the row is too narrow (<=360px phones). */}
-                    <div className='flex items-center gap-2'>
-                      <a
-                        href={`tel:+${phone.intl}`}
-                        aria-label={`Appeler le ${phone.display}`}
-                        className='inline-flex items-center gap-1 rounded-full bg-brand-500 px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
-                      >
-                        <FontAwesomeIcon
-                          icon={faPhone}
-                          className='h-3.5 w-3.5'
-                        />
-                        Appeler
-                      </a>
-                      <a
-                        href={`https://wa.me/${phone.intl}`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        aria-label={`WhatsApp ${phone.display}`}
-                        className='inline-flex items-center gap-1 rounded-full bg-whatsapp px-2 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
-                      >
-                        <FontAwesomeIcon
-                          icon={faWhatsapp}
-                          className='h-4 w-4'
-                        />
-                        WhatsApp
-                      </a>
-                    </div>
-                  </div>
-                ))}
+                    <FontAwesomeIcon icon={faPhone} className='h-3.5 w-3.5' />
+                    Appeler
+                  </a>
+                  <a
+                    href={TC_WHATSAPP_URL}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label={`WhatsApp ${TC_PHONE.display}`}
+                    className='inline-flex items-center gap-1 rounded-full bg-whatsapp px-2 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90'
+                  >
+                    <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
+                    WhatsApp
+                  </a>
+                </div>
               </div>
 
               {/* Réseaux sociaux */}

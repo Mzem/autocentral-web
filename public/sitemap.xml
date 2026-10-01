@@ -2,34 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
         <loc>https://tunisiancars.com.tn</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+  </url>
+  <url>
+        <loc>https://tunisiancars.com.tn/vente</loc>
         <changefreq>always</changefreq>
         <priority>1.0</priority>
   </url>
-
   <url>
-        <loc>https://tunisiancars.com.tn/annonces?q=golf</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.9</priority>
-  </url>
-  <url>
-        <loc>https://tunisiancars.com.tn/annonces?q=seat</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.9</priority>
-  </url>
-  <url>
-        <loc>https://tunisiancars.com.tn/annonces?q=mercedes</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.9</priority>
-  </url>
-  <url>
-        <loc>https://tunisiancars.com.tn/annonces?q=bmw</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.9</priority>
+        <loc>https://tunisiancars.com.tn/produits</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
   </url>
   <url>
       <loc>https://tunisiancars.com.tn/vendeurs</loc>
       <changefreq>daily</changefreq>
-      <priority>0.8</priority>
+      <priority>0.6</priority>
   </url>
   <url>
         <loc>https://tunisiancars.com.tn/fiche-technique</loc>

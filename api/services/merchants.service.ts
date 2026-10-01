@@ -1,5 +1,6 @@
 import { apiGet } from 'api/apiClient'
 import { ApiError } from '../httpClient'
+import { withTcMerchantContact } from './tc-contact'
 
 export interface MerchantListItem {
   id: string
@@ -33,7 +34,7 @@ export interface Merchant {
 export async function getMerchants(isShop: boolean): Promise<Merchant[]> {
   try {
     const { content } = await apiGet<Merchant[]>(`merchants?isShop=${isShop}`)
-    return content
+    return content.map(withTcMerchantContact)
   } catch (e) {
     console.error('GET merchants error')
     throw e
@@ -43,7 +44,7 @@ export async function getMerchants(isShop: boolean): Promise<Merchant[]> {
 export async function getMerchant(id: string): Promise<Merchant | undefined> {
   try {
     const { content } = await apiGet<Merchant>(`merchants/${id}`)
-    return content
+    return content ? withTcMerchantContact(content) : content
   } catch (e) {
     if (e instanceof ApiError) return undefined
     console.error('GET merchant error')

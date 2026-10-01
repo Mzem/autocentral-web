@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "Autocentral",
+  "short_name": "Autocentral",
+  "description": "Toutes les annonces de voitures d'occasion en Tunisie, au même endroit.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "fr",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/autocentral/favicon/favicon-196x196.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/autocentral/favicon/mstile-310x310.png",
+      "sizes": "310x310",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

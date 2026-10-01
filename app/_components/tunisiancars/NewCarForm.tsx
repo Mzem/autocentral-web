@@ -126,7 +126,7 @@ export default function NewCarForm({
         }
         throw new Error(msg)
       }
-      router.push('/')
+      router.push('/vente')
       router.refresh()
     } catch (err) {
       alert(`Échec de l'ajout : ${(err as Error).message}`)

@@ -11,6 +11,7 @@ import { Region } from './regions.service'
 import { CarModel } from './car-model.service'
 import { ApiError } from '../httpClient'
 import { Color, Fuel, InteriorType } from '../../app/types'
+import { withTcContact } from './tc-contact'
 
 export interface CarPostListItem {
   id: string
@@ -182,7 +183,7 @@ export async function getCarPosts(
   try {
     const url = 'car-posts/' + generateCarPostsQueryParams(filters)
     const { content } = await apiGet<CarPostListItem[]>(url, cacheInSeconds)
-    return content
+    return content.map(withTcContact)
   } catch (e) {
     console.error('GET car posts error')
     throw e
@@ -232,7 +233,7 @@ export async function getFeaturedCarPosts(): Promise<CarPostListItem[]> {
   try {
     const url = 'car-posts/featured'
     const { content } = await apiGet<CarPostListItem[]>(url, 120)
-    return content
+    return content.map(withTcContact)
   } catch (e) {
     console.error('GET featured car posts error')
     throw e
@@ -247,7 +248,7 @@ export async function getSimilarCarPosts(
       `car-posts/${id}/similar`,
       300
     )
-    return content
+    return content.map(withTcContact)
   } catch (e) {
     // A missing "similar cars" block must never break the listing page.
     console.error('GET similar car posts error')
@@ -258,7 +259,11 @@ export async function getSimilarCarPosts(
 export async function getCarPost(id: string): Promise<CarPost | undefined> {
   try {
     const { content } = await apiGet<CarPost>(`car-posts/${id}`)
-    return content
+    if (!content) return content
+    const post = withTcContact(content)
+    return post.similar
+      ? { ...post, similar: post.similar.map(withTcContact) }
+      : post
   } catch (e) {
     if (e instanceof ApiError) return undefined
     console.error('GET car post error')

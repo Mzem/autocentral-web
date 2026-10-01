@@ -3,18 +3,26 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { config } from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-// Ship Font Awesome's CSS ourselves instead of letting it inject at runtime
-// (avoids a flash of oversized icons before hydration).
-config.autoAddCss = false
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
-import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
-import { NAV_LINKS, ADMIN_NAV_LINKS, CONTACT_URL } from '../_lib/nav'
+import {
+  faFacebookMessenger,
+  faWhatsapp
+} from '@fortawesome/free-brands-svg-icons'
+import '../_lib/fontawesome'
+import {
+  NAV_LINKS,
+  ADMIN_NAV_LINKS,
+  CONTACT_URL,
+  WHATSAPP_URL
+} from '../_lib/nav'
 import { useMerchantKey } from '../_lib/useMerchantKey'
 
+/**
+ * Header of tunisiancars.com.tn: Atelier / Vente / Boutique, then Localisation
+ * and the two contact channels (Messenger + WhatsApp). Autocentral has its own
+ * header (`autocentral/AcHeader.tsx`).
+ */
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -23,7 +31,7 @@ export default function Header() {
   const pathname = usePathname()
   const { key } = useMerchantKey()
 
-  // Merchants also get quick links to the internal Annonces / Vendeurs pages.
+  // Merchants also get quick links to the internal pages (none for now).
   const navLinks = key ? [...NAV_LINKS, ...ADMIN_NAV_LINKS] : NAV_LINKS
 
   const switchMenu = () => setIsMenuOpen((prev) => !prev)
@@ -59,8 +67,15 @@ export default function Header() {
     }
   }, [])
 
+  // "/" (Atelier) is the home: it must match exactly, or it would be active on
+  // every page.
   const isActive = (href: string) =>
-    href.startsWith('/#') ? pathname === '/' : pathname.startsWith(href)
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
+  // Mobile pills: icon-only for the two contact channels (there is no room for
+  // three labelled pills next to the logo), labels come back on wide phones.
+  const mobilePill =
+    'flex items-center gap-1 whitespace-nowrap rounded-lg sm:px-2.5 sm:py-1.5 p-1.5 text-[0.7rem] font-semibold text-white transition-colors'
 
   return (
     <div
@@ -86,7 +101,7 @@ export default function Header() {
               href={link.href}
               aria-current={isActive(link.href) ? 'page' : undefined}
               className={`flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium tracking-wide transition-colors ${
-                isActive(link.href) && !link.href.startsWith('/#')
+                isActive(link.href)
                   ? 'bg-white/10 text-white'
                   : 'text-white/75 hover:bg-white/5 hover:text-white'
               }`}
@@ -106,36 +121,65 @@ export default function Header() {
             href={CONTACT_URL}
             target='_blank'
             rel='noopener noreferrer'
+            aria-label='Contact Messenger'
             className='ml-1.5 flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600'
           >
             <FontAwesomeIcon icon={faFacebookMessenger} className='h-4 w-4' />
             <span>Contact</span>
           </a>
+          <a
+            href={WHATSAPP_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Contact WhatsApp'
+            className='ml-1.5 flex items-center gap-1.5 rounded-lg bg-whatsapp px-3 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90'
+          >
+            <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
+            <span>WhatsApp</span>
+          </a>
         </nav>
 
-        <div className='flex items-center sm:gap-1.5 gap-0.5 md:hidden'>
+        <div className='flex items-center sm:gap-1.5 gap-1 md:hidden'>
           <a
             href='#contact'
             aria-label='Nous trouver'
-            className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-white/10 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-white/15'
+            className={`${mobilePill} bg-white/10 hover:bg-white/15`}
           >
             <FontAwesomeIcon icon={faLocationDot} className='h-3.5 w-3.5' />
-            {/* Icon-only on very narrow screens (<=360px) so the header cluster
-                never overflows; label returns above that. */}
-            <span className='xs:hidden'>Localisation</span>
+            {/* Icon-only under 380px so the cluster (logo + 3 pills + menu)
+                never overflows; the label returns above that. Raw media
+                queries: this project's `screens` config disables Tailwind's
+                min-[…]/max-[…] variants. */}
+            <span className='[@media(max-width:379px)]:hidden'>
+              Localisation
+            </span>
           </a>
           <a
             href={CONTACT_URL}
             target='_blank'
             rel='noopener noreferrer'
-            aria-label='Contact'
-            className='flex items-center gap-1 whitespace-nowrap rounded-lg bg-brand-500 sm:px-2.5 sm:py-1.5 p-1 text-[0.7rem] font-semibold text-white transition-colors hover:bg-brand-600'
+            aria-label='Contact Messenger'
+            className={`${mobilePill} bg-brand-500 hover:bg-brand-600`}
           >
             <FontAwesomeIcon
               icon={faFacebookMessenger}
               className='h-3.5 w-3.5'
             />
-            <span className='xs:hidden'>Contact</span>
+            <span className='hidden [@media(min-width:560px)]:inline'>
+              Contact
+            </span>
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Contact WhatsApp'
+            className={`${mobilePill} bg-whatsapp hover:opacity-90`}
+          >
+            <FontAwesomeIcon icon={faWhatsapp} className='h-3.5 w-3.5' />
+            <span className='hidden [@media(min-width:560px)]:inline'>
+              WhatsApp
+            </span>
           </a>
 
           <button
@@ -175,7 +219,7 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 aria-current={isActive(link.href) ? 'page' : undefined}
                 className={`flex items-center gap-3 rounded-lg px-4 py-3.5 text-sm transition-colors ${
-                  isActive(link.href) && !link.href.startsWith('/#')
+                  isActive(link.href)
                     ? 'bg-white/10 text-white font-semibold'
                     : 'text-white/80 hover:bg-white/5'
                 }`}

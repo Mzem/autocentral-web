@@ -1,31 +1,29 @@
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCarBurst } from '@fortawesome/free-solid-svg-icons'
+import './_lib/fontawesome'
 
-export default async function NotFoundPage() {
+// Unmatched URLs on either site end up here, inside the root layout only (no
+// site header/footer), so the page is neutral and self-contained. "/" is the
+// home of whichever site the visitor is on.
+export default function NotFoundPage() {
   return (
-    <>
-      <div className='text-white mx-auto w-full flex flex-col items-center justify-around text-xl lg:text-2xl mt-[6rem]'>
-        <FontAwesomeIcon
-          icon={faCarBurst}
-          aria-hidden='true'
-          className='h-40 text-white/25'
-        />
-        <p className='mt-6'>Non trouvé(e)</p>
-        <Link
-          href='/'
-          className='bg-ink-950 shadow px-8 py-3 rounded-xl mt-6 text-white italic text-base'
-        >
-          <img
-            src='/tunisiancars/logo_rect.png'
-            alt='Tunisian Cars'
-            className='h-16'
-          />
-        </Link>
-        <span className='text-white/55 italic text-sm mt-4'>
-          Rechercher une voiture d&apos;occasion
-        </span>
-      </div>
-    </>
+    <div className='mx-auto flex min-h-screen w-[92%] max-w-md flex-col items-center justify-center py-16 text-center text-white'>
+      <FontAwesomeIcon
+        icon={faCarBurst}
+        aria-hidden='true'
+        className='h-32 text-white/25'
+      />
+      <p className='mt-6 text-xl font-bold lg:text-2xl'>Page introuvable</p>
+      <p className='mt-2 text-sm text-white/55'>
+        Cette page n&apos;existe pas ou n&apos;existe plus.
+      </p>
+      <Link
+        href='/'
+        className='mt-6 rounded-xl bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
+      >
+        Retour à l&apos;accueil
+      </Link>
+    </div>
   )
 }

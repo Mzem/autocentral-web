@@ -102,7 +102,8 @@ function Content({ post }: { post: CarPost }) {
   )
 
   const share = () => {
-    const url = `https://tunisiancars.com.tn/annonces/${post.id}`
+    // Share the page on the site the visitor is on (both domains serve it).
+    const url = `${window.location.origin}/annonces/${post.id}`
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({ title, url }).catch(() => {})
     } else if (typeof navigator !== 'undefined' && navigator.clipboard) {

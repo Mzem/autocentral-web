@@ -1,11 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import type { Metadata } from 'next'
 import { Manrope, Sora } from 'next/font/google'
-import BottomAd from './_components/ads/BottomAd'
-import Footer from './_components/Footer'
-import Header from './_components/Header'
-import MainShell from './_components/MainShell'
 import './_styles/globals.css'
 
 // Body / UI - clean geometric sans (premium, highly legible).
@@ -24,55 +19,18 @@ const display = Sora({
   display: 'swap'
 })
 
-export const metadata: Metadata = {
-  // Needed so the (relative) share image resolves to an absolute, public URL -
-  // otherwise Next resolves it against localhost and the preview stays blank.
-  metadataBase: new URL('https://tunisiancars.com.tn'),
-  title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
-  description:
-    "Tunisian Cars : atelier automobile de A à Z (restauration, mécanique, nettoyage profond, protection céramique) et showroom de véhicules d'exception à Sousse, Tunisie.",
-  applicationName: 'Tunisian Cars',
-  keywords: [
-    'tunisian cars',
-    'atelier automobile',
-    'detailing',
-    'protection céramique',
-    'restauration voiture',
-    'showroom',
-    'sousse',
-    'tunisie'
-  ],
-  openGraph: {
-    type: 'website',
-    url: 'https://tunisiancars.com.tn',
-    title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
-    description:
-      "Atelier automobile de A à Z et showroom de véhicules d'exception à Sousse, Tunisie.",
-    siteName: 'Tunisian Cars',
-    images: [
-      {
-        url: '/tunisiancars/logo_share.png',
-        width: 1200,
-        height: 630,
-        alt: 'Tunisian Cars'
-      }
-    ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Tunisian Cars | Atelier & Showroom automobile à Sousse',
-    description:
-      "Atelier automobile de A à Z et showroom de véhicules d'exception à Sousse, Tunisie.",
-    images: ['/tunisiancars/logo_share.png']
-  }
-}
-
+/**
+ * Root layout shared by BOTH sites served by this app (see `_lib/site.ts`):
+ * only what is truly common lives here - fonts, global CSS, analytics/ads tags.
+ *
+ * Everything site-specific (title, favicons, manifest, header, footer…) is in
+ * the site layouts: `(tc)/layout.tsx` for tunisiancars.com.tn and
+ * `autocentral/layout.tsx` for autocentral.tn.
+ */
 export default function RootLayout({
-  children,
-  modal
+  children
 }: Readonly<{
   children: React.ReactNode
-  modal: React.ReactNode
 }>) {
   return (
     <html lang='fr' className={`${sans.variable} ${display.variable}`}>
@@ -89,7 +47,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
         {/* End Google Tag Manager */}
 
-        <meta name='application-name' content='Tunisian Cars' />
         <meta name='theme-color' content='#000000' />
 
         {/* Refuse forced/auto dark modes (Android Chrome "Auto Dark Theme",
@@ -98,139 +55,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <meta name='supported-color-schemes' content='light' />
         <meta name='darkreader-lock' />
 
-        {/* PWA - "Ajouter à l'écran d'accueil" */}
-        <link rel='manifest' href='/manifest.webmanifest' />
-        <meta name='mobile-web-app-capable' content='yes' />
-        <meta name='apple-mobile-web-app-capable' content='yes' />
-        <meta
-          name='apple-mobile-web-app-status-bar-style'
-          content='black-translucent'
-        />
-        <meta name='apple-mobile-web-app-title' content='Tunisian Cars' />
-
-        {/* Favicons - jeu généré dans /public/favicon (cf. favicon/code.txt) */}
-        <link rel='icon' href='/favicon/favicon.ico' sizes='any' />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='57x57'
-          href='/favicon/apple-touch-icon-57x57.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='114x114'
-          href='/favicon/apple-touch-icon-114x114.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='72x72'
-          href='/favicon/apple-touch-icon-72x72.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='144x144'
-          href='/favicon/apple-touch-icon-144x144.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='60x60'
-          href='/favicon/apple-touch-icon-60x60.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='120x120'
-          href='/favicon/apple-touch-icon-120x120.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='76x76'
-          href='/favicon/apple-touch-icon-76x76.png'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          sizes='152x152'
-          href='/favicon/apple-touch-icon-152x152.png'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-196x196.png'
-          sizes='196x196'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-96x96.png'
-          sizes='96x96'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-32x32.png'
-          sizes='32x32'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-16x16.png'
-          sizes='16x16'
-        />
-        <link
-          rel='icon'
-          type='image/png'
-          href='/favicon/favicon-128.png'
-          sizes='128x128'
-        />
-        <meta name='msapplication-TileColor' content='#FFFFFF' />
-        <meta
-          name='msapplication-TileImage'
-          content='/favicon/mstile-144x144.png'
-        />
-        <meta
-          name='msapplication-square70x70logo'
-          content='/favicon/mstile-70x70.png'
-        />
-        <meta
-          name='msapplication-square150x150logo'
-          content='/favicon/mstile-150x150.png'
-        />
-        <meta
-          name='msapplication-wide310x150logo'
-          content='/favicon/mstile-310x150.png'
-        />
-        <meta
-          name='msapplication-square310x310logo'
-          content='/favicon/mstile-310x310.png'
-        />
-
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'BreadcrumbList',
-              itemListElement: [
-                {
-                  '@type': 'ListItem',
-                  position: 1,
-                  name: "Voitures d'occasion en Tunisie",
-                  item: 'https://tunisiancars.com.tn'
-                },
-                {
-                  '@type': 'ListItem',
-                  position: 1,
-                  name: 'Vendeurs voitures occasion Tunisie',
-                  item: 'https://tunisiancars.com.tn/vendeurs'
-                },
-                {
-                  '@type': 'ListItem',
-                  position: 3,
-                  name: 'Fiche technique Tunisie',
-                  item: 'https://tunisiancars.com.tn/fiche-technique'
-                }
-              ]
-            })
-          }}
-        />
         {/* Google Analytics Script */}
         <script
           async
@@ -266,10 +90,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
 
-        <Header />
-        <MainShell ad={<BottomAd />}>{children}</MainShell>
-        {modal}
-        <Footer />
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>
