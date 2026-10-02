@@ -28,8 +28,9 @@ export default async function AnnoncesSearch({
 
   return (
     <div className='min-h-screen w-full bg-white text-ink-950 pb-10'>
-      {/* Black strip under the fixed (translucent) header. */}
-      <div className='mb-6 h-16 bg-black lg:mb-10' />
+      {/* Black strip under the fixed (translucent) header; the white search
+          band (full width) follows directly. */}
+      <div className='h-14 bg-black lg:h-16' />
       <CarPostsFeed initialPosts={initialPosts} initialFilters={filters} />
     </div>
   )

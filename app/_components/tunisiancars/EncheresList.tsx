@@ -47,6 +47,13 @@ const tnd = (n: number): string => `${n.toLocaleString('fr-FR')} TND`
 const norm = (s: string): string =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
+/**
+ * Region / customs office a lot belongs to: its city (one office per city), or
+ * the organisation when the notice gives no city.
+ */
+const placeOf = (a: AuctionVehicle): string | null =>
+  a.ville || a.organisme || null
+
 /** Clean card title: make + model from the API; a short notice head otherwise. */
 const titleOf = (a: AuctionVehicle): string => {
   const make = a.make ?? ''
@@ -98,11 +105,11 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
         {/* Header band */}
         <div className='bg-ink-950 p-4 text-white'>
           <div className='flex flex-wrap items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-wider'>
-            <span className='rounded bg-brand-500 px-2 py-0.5'>
+            <span className='rounded bg-white/15 px-2 py-0.5'>
               {a.source === 'jort' ? 'JORT' : 'Douane'}
             </span>
             {left !== null && left <= 3 && (
-              <span className='rounded bg-red/80 px-2 py-0.5'>
+              <span className='rounded bg-danger px-2 py-0.5'>
                 {left <= 0 ? "Aujourd'hui" : `J-${left}`}
               </span>
             )}
@@ -122,7 +129,7 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
             <p className='text-[0.6rem] font-semibold uppercase tracking-wide text-ink-400'>
               Mise à prix
             </p>
-            <p className='mt-0.5 text-xl font-extrabold text-brand-600'>
+            <p className='mt-0.5 text-xl font-extrabold text-brand-500'>
               {a.miseAPrix && a.miseAPrix > 0
                 ? tnd(a.miseAPrix)
                 : 'Meilleure offre'}
@@ -216,7 +223,7 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
             <button
               type='button'
               onClick={() => setOpen((v) => !v)}
-              className='mt-1 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-500'
+              className='mt-1 inline-flex items-center gap-1 text-xs font-semibold text-brand-500 hover:text-brand-600'
             >
               <FontAwesomeIcon
                 icon={open ? faChevronUp : faChevronDown}
@@ -234,7 +241,7 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
               href={a.sourceUrl}
               target='_blank'
               rel='noopener noreferrer'
-              className='inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-600'
+              className='inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-500'
             >
               <FontAwesomeIcon icon={faFilePdf} className='h-3.5 w-3.5' />
               Avis officiel (PDF)
@@ -262,11 +269,14 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
 
 /**
  * Auction list with a free-text search (client-side, accent/case-insensitive,
- * every word must match) and a "back to top" arrow once the search bar has
- * scrolled out of view - same behaviour as the car search engine.
+ * every word must match), a multi-select region / customs-office filter built
+ * from the lots actually returned, and a "back to top" arrow once the search
+ * bar has scrolled out of view - same behaviour as the car search engine.
  */
 export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
   const [q, setQ] = useState('')
+  // Selected regions / offices (none = all of them).
+  const [places, setPlaces] = useState<string[]>([])
   const [showTop, setShowTop] = useState(false)
   const searchRef = useRef<HTMLDivElement | null>(null)
 
@@ -280,7 +290,8 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
     return () => obs.disconnect()
   }, [])
 
-  const filtered = useMemo(() => {
+  // Lots matching the text search (before the region / office filter).
+  const matching = useMemo(() => {
     const tokens = norm(q).split(/\s+/).filter(Boolean)
     if (tokens.length === 0) return items
     return items.filter((a) => {
@@ -310,9 +321,51 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
     })
   }, [items, q])
 
+  // Every region / office present in the data (biggest first), with the name
+  // of its organisation as a tooltip and the number of lots matching the text.
+  const placeOptions = useMemo(() => {
+    const all = new Map<string, { total: number; organisme: string | null }>()
+    for (const a of items) {
+      const place = placeOf(a)
+      if (!place) continue
+      const entry = all.get(place) ?? { total: 0, organisme: a.organisme }
+      entry.total += 1
+      all.set(place, entry)
+    }
+    const counts = new Map<string, number>()
+    for (const a of matching) {
+      const place = placeOf(a)
+      if (place) counts.set(place, (counts.get(place) ?? 0) + 1)
+    }
+    return Array.from(all.entries())
+      .sort((a, b) => b[1].total - a[1].total || a[0].localeCompare(b[0], 'fr'))
+      .map(([place, { organisme }]) => ({
+        place,
+        organisme,
+        count: counts.get(place) ?? 0
+      }))
+  }, [items, matching])
+
+  const filtered = useMemo(() => {
+    if (places.length === 0) return matching
+    return matching.filter((a) => places.includes(placeOf(a) ?? ''))
+  }, [matching, places])
+
+  const togglePlace = (place: string) =>
+    setPlaces((current) =>
+      current.includes(place)
+        ? current.filter((p) => p !== place)
+        : [...current, place]
+    )
+
+  const reset = () => {
+    setQ('')
+    setPlaces([])
+  }
+
   return (
     <>
-      {/* Search */}
+      {/* Search + filters */}
       <div ref={searchRef} className='mt-8'>
         <label className='relative block'>
           <FontAwesomeIcon
@@ -324,7 +377,7 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder='Rechercher : marque, modèle, ville, VIN, avis…'
-            className='w-full rounded-xl border border-ink-200 bg-white py-3 pl-11 pr-11 text-sm text-ink-950 outline-none transition-colors placeholder:text-ink-400 focus:border-brand-500'
+            className='w-full rounded-xl border border-ink-200 bg-white py-3 pl-11 pr-11 text-sm text-ink-950 outline-none transition-colors placeholder:text-ink-400 focus:!rounded-xl focus:border-brand-500 focus:ring-0'
           />
           {q && (
             <button
@@ -337,9 +390,60 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
             </button>
           )}
         </label>
-        <p className='mt-2 text-xs text-ink-500'>
+
+        {/* Region / customs office: multi-select among those returned. */}
+        {placeOptions.length > 1 && (
+          <div className='mt-4'>
+            <p className='flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-wider text-ink-500'>
+              <span className='inline-flex h-5 w-5 items-center justify-center rounded-md bg-brand-500/15 text-brand-500'>
+                <FontAwesomeIcon icon={faLocationDot} className='h-3 w-3' />
+              </span>
+              Région / bureau
+            </p>
+            <div className='mt-2 flex flex-wrap items-center gap-2'>
+              {placeOptions.map(({ place, organisme, count }) => {
+                const active = places.includes(place)
+                return (
+                  <button
+                    key={place}
+                    type='button'
+                    aria-pressed={active}
+                    title={organisme ?? place}
+                    onClick={() => togglePlace(place)}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      active
+                        ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/30'
+                        : 'bg-ink-100 text-ink-700 hover:bg-ink-200'
+                    }`}
+                  >
+                    {place}
+                    <span
+                      className={`font-medium ${
+                        active ? 'text-white/70' : 'text-ink-400'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                )
+              })}
+              {places.length > 0 && (
+                <button
+                  type='button'
+                  onClick={() => setPlaces([])}
+                  className='px-1 text-xs font-semibold text-brand-500 hover:text-brand-600'
+                >
+                  Tout afficher
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        <p className='mt-3 text-xs text-ink-500'>
           {filtered.length} enchère{filtered.length > 1 ? 's' : ''} en cours
           {q ? ` pour « ${q} »` : ''}
+          {places.length > 0 ? ` · ${places.join(', ')}` : ''}
         </p>
       </div>
 
@@ -348,9 +452,16 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
           Aucune enchère véhicule en cours pour le moment — revenez bientôt.
         </p>
       ) : filtered.length === 0 ? (
-        <p className='mt-8 rounded-2xl bg-ink-50 px-6 py-14 text-center text-sm text-ink-500'>
-          Aucun résultat pour « {q} ».
-        </p>
+        <div className='mt-8 rounded-2xl bg-ink-50 px-6 py-14 text-center text-sm text-ink-500'>
+          <p>Aucune enchère ne correspond à ces critères.</p>
+          <button
+            type='button'
+            onClick={reset}
+            className='mt-3 font-semibold text-brand-500 hover:text-brand-600'
+          >
+            Réinitialiser la recherche
+          </button>
+        </div>
       ) : (
         <ul className='mt-6 grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {filtered.map((a) => (
@@ -365,7 +476,7 @@ export default function EncheresList({ items }: { items: AuctionVehicle[] }) {
           type='button'
           aria-label='Remonter en haut'
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className='fixed bottom-6 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-brand-500 text-white shadow-lg shadow-brand-500/30 transition-colors hover:bg-brand-600'
+          className='fixed bottom-6 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition-colors hover:bg-brand-500'
         >
           <FontAwesomeIcon icon={faArrowUp} className='h-5 w-5' />
         </button>

@@ -9,6 +9,7 @@ import {
   faBolt,
   faGears,
   faClock,
+  faLocationDot,
   faArrowTrendDown,
   faArrowTrendUp,
   faEquals
@@ -16,13 +17,19 @@ import {
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import { dotNumber, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
+import { isFeaturedMerchant } from '../../_lib/site'
+import CallButton from '../tunisiancars/CallButton'
 import CarImage, { SoldBadge } from './CarImage'
 
 /**
  * Standard listing card - the one used on the /annonces feed: a 4:3 photo with
  * the price + market-price symbol, then a black spec panel. No admin controls,
- * no "Appeler", no region, so it is safe to reuse for "similar" blocks where the
- * ShowroomCars edit/delete overlay should NOT appear.
+ * so it is safe to reuse for "similar" blocks where the ShowroomCars
+ * edit/delete overlay should NOT appear.
+ *
+ * Listings of a featured seller (Autocentral home) also carry the seller's
+ * contact: an "Appeler" pill on the photo and the region - as the Tunisian Cars
+ * showroom cards do. Every other listing shows neither.
  *
  * Renders a grid <li>; the parent owns the <ul className='grid …'>.
  * `replaceNav` makes the link use router.replace (inside the detail modal, so ×
@@ -42,6 +49,9 @@ export default function CarPostCard({
         {value}
       </span>
     ) : null
+
+  const featured = isFeaturedMerchant(post.merchant?.id)
+  const region = featured ? post.region?.name : undefined
 
   const estim = post.estimatedPrice
   const estimIcon =
@@ -81,7 +91,7 @@ export default function CarPostCard({
               <span
                 className={`mr-4 inline-flex h-7 items-center rounded-md px-2.5 text-xs font-extrabold shadow ${
                   post.price
-                    ? 'bg-brand/50 text-white'
+                    ? 'bg-brand/50 text-white ac:bg-titan/95 ac:text-blacknotopac'
                     : 'bg-black/55 text-white backdrop-blur-sm'
                 }`}
               >
@@ -101,6 +111,13 @@ export default function CarPostCard({
                 </span>
               )}
             </div>
+
+            {featured && !post.isExpired && post.phone && (
+              <CallButton
+                phone={post.phone}
+                className='absolute bottom-2.5 right-2.5'
+              />
+            )}
           </div>
 
           <div className='flex flex-col overflow-hidden bg-blackopac3 px-3 py-1.5 text-white'>
@@ -119,10 +136,23 @@ export default function CarPostCard({
               {spec(faBolt, post.cv ? `${post.cv} cv` : null)}
               {spec(faGears, post.gearbox)}
             </div>
-            {post.publishedAtText && (
+            {(post.publishedAtText || region) && (
               <div className='mt-1.5 flex items-center gap-1 text-[0.6rem] text-white/55'>
-                <FontAwesomeIcon icon={faClock} className='h-2.5 w-2.5' />
-                Publié {post.publishedAtText}
+                {post.publishedAtText && (
+                  <>
+                    <FontAwesomeIcon icon={faClock} className='h-2.5 w-2.5' />
+                    Publié {post.publishedAtText}
+                  </>
+                )}
+                {region && (
+                  <span className='ml-auto inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap text-[0.68rem] text-white'>
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className='h-3 w-3 text-white'
+                    />
+                    {region}
+                  </span>
+                )}
               </div>
             )}
           </div>

@@ -8,8 +8,10 @@ import { breadcrumbJsonLd, faviconMetadata } from '../_lib/site-metadata'
  * every request on that domain to this `/autocentral` tree, so these pages are
  * served at clean URLs ("/", "/annonces", "/encheres"…).
  *
- * Its own identity (title, favicons, manifest), a two-entry header and - by
- * design - no footer.
+ * Its own identity (title, favicons, manifest), its own header and - by
+ * design - no footer. The `theme-autocentral` wrapper turns the shared `brand`
+ * accent into the Autocentral reds (see `_styles/globals.css`); it is
+ * `display: contents`, so the page still lays out directly in <body>.
  */
 const TITLE =
   "Voitures d'occasion en Tunisie - toutes les annonces | Autocentral"
@@ -78,13 +80,16 @@ export default function AutocentralLayout({
           __html: breadcrumbJsonLd([
             { name: "Voitures d'occasion en Tunisie", url: AC_URL },
             { name: 'Moteur de recherche', url: `${AC_URL}/annonces` },
+            { name: 'Estimer mon véhicule', url: `${AC_URL}/estimation` },
             { name: 'Enchères véhicules', url: `${AC_URL}/encheres` }
           ])
         }}
       />
-      <AcHeader />
-      <main className='flex-grow'>{children}</main>
-      {modal}
+      <div className='theme-autocentral contents'>
+        <AcHeader />
+        <main className='flex-grow'>{children}</main>
+        {modal}
+      </div>
     </>
   )
 }

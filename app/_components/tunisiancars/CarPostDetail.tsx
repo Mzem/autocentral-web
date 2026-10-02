@@ -21,10 +21,14 @@ import { CarPost } from '../../../api/services/car-posts.service'
 import { dotNumber, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
 import { Linkify } from '../../Linkify'
+import {
+  AC_URL,
+  TC_MERCHANT_ID,
+  TC_URL,
+  isFeaturedMerchant
+} from '../../_lib/site'
 import DetailGallery from './DetailGallery'
 import CarPostCard from '../car-posts/CarPostCard'
-
-const SHOWROOM_MERCHANT_ID = 'tunisian-cars'
 
 // A usable phone/whatsapp number: not blank, not a malformed "+216undefined"
 // style value, and with at least a handful of real digits.
@@ -64,10 +68,22 @@ function Content({ post }: { post: CarPost }) {
       : []
   const phones = rawPhones.filter(isValid)
 
-  const isTunisianCars = post.merchant?.id === SHOWROOM_MERCHANT_ID
-  // Only genuine Tunisian Cars sales expose the shop's contact. On-behalf and
-  // external (scraped) listings show nothing here (their contact is elsewhere).
-  const showContact = isTunisianCars && !post.isOnBehalf
+  const isTunisianCars = post.merchant?.id === TC_MERCHANT_ID
+  // Featured sellers (Autocentral home) get the same treatment as the showroom:
+  // their region and contact are shown.
+  const isFeatured = isFeaturedMerchant(post.merchant?.id)
+  // Only genuine Tunisian Cars sales and featured sellers expose the seller's
+  // contact. On-behalf and external (scraped) listings show nothing here (their
+  // contact is elsewhere).
+  const showContact = (isTunisianCars && !post.isOnBehalf) || isFeatured
+  const sellerName = isTunisianCars
+    ? 'Tunisian Cars'
+    : post.merchant?.name || 'le vendeur'
+  // A featured seller's WhatsApp is the one number flagged as such on the post
+  // (Tunisian Cars has a single number, reachable both ways).
+  const whatsappDigits = String(post.whatsapp ?? '').replace(/\D/g, '')
+  // The listing's own URL, on the site it belongs to (for the WhatsApp text).
+  const postUrl = `${isTunisianCars ? TC_URL : AC_URL}/annonces/${post.id}`
   const showSimilar =
     !isTunisianCars && !!post.similar && post.similar.length > 0
   const hasOptions = !!post.options && post.options.length > 1
@@ -81,8 +97,10 @@ function Content({ post }: { post: CarPost }) {
     }`.trim() || null
   const fuelVal = post.fuel ? fuelLabel(post.fuel) : null
   const gearboxVal = post.gearbox || null
-  // Region for Tunisian Cars listings (incl. on-behalf); hidden for external.
-  const regionVal = isTunisianCars ? post.region?.name || null : null
+  // Region for Tunisian Cars listings (incl. on-behalf) and featured sellers;
+  // hidden for external.
+  const regionVal =
+    isTunisianCars || isFeatured ? post.region?.name || null : null
 
   const eng = post.carEngine
   const consumption =
@@ -139,7 +157,7 @@ function Content({ post }: { post: CarPost }) {
     ) : null
 
   const priceNode = post.price ? (
-    <p className='text-3xl font-extrabold text-brand-600'>
+    <p className='text-3xl font-extrabold text-brand-600 ac:text-blacknotopac'>
       {dotNumber(post.price)} DT
     </p>
   ) : post.estimatedPrice?.value ? (
@@ -295,32 +313,35 @@ function Content({ post }: { post: CarPost }) {
         <div className='flex flex-col gap-4'>
           <p className='inline-flex items-center gap-2 text-sm font-bold'>
             <FontAwesomeIcon icon={faShop} className='h-4 w-4 text-brand-500' />
-            Vendu par Tunisian Cars
+            Vendu par {sellerName}
           </p>
           <div className='flex flex-col gap-2.5'>
             {phones.map((phone) => {
               const digits = phone.toString().replace(/\D/g, '')
+              const onWhatsapp = isTunisianCars || digits === whatsappDigits
               return (
                 <div key={phone} className='flex flex-wrap items-center gap-2'>
                   <a
                     href={`tel:${phone}`}
-                    className='inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
+                    className='inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 ac:bg-brand-600 ac:hover:bg-brand-500'
                   >
                     <FontAwesomeIcon icon={faPhone} className='h-3.5 w-3.5' />
                     {dotNumber(phone.toString().replace('+216', ''))}
                   </a>
-                  <a
-                    href={`https://wa.me/${digits}?text=${encodeURIComponent(
-                      `Bonjour, votre annonce ${title} m'intéresse - https://tunisiancars.com.tn/annonces/${post.id}`
-                    )}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    aria-label='WhatsApp'
-                    className='inline-flex items-center gap-1.5 rounded-lg bg-whatsapp px-3.5 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90'
-                  >
-                    <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
-                    WhatsApp
-                  </a>
+                  {onWhatsapp && (
+                    <a
+                      href={`https://wa.me/${digits}?text=${encodeURIComponent(
+                        `Bonjour, votre annonce ${title} m'intéresse - ${postUrl}`
+                      )}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      aria-label='WhatsApp'
+                      className='inline-flex items-center gap-1.5 rounded-lg bg-whatsapp px-3.5 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90'
+                    >
+                      <FontAwesomeIcon icon={faWhatsapp} className='h-4 w-4' />
+                      WhatsApp
+                    </a>
+                  )}
                 </div>
               )
             })}

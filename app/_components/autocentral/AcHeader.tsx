@@ -9,8 +9,9 @@ import { AC_NAV_LINKS } from '../../_lib/nav'
 import { visiblePath } from '../../_lib/site'
 
 /**
- * Header of autocentral.tn: the logo and two entries (search engine, auctions).
- * No location / contact buttons - those belong to the Tunisian Cars site.
+ * Header of autocentral.tn: the logo and its entries (search engine, price
+ * estimate, auctions). No location / contact buttons - those belong to the
+ * Tunisian Cars site.
  */
 export default function AcHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -41,13 +42,13 @@ export default function AcHeader() {
           <img
             src='/autocentral/logo_wordmark.svg'
             alt='Autocentral'
-            className='h-[22px] w-auto transition-opacity hover:opacity-80 sm:h-6 lg:h-7'
+            className='h-[22px] w-auto transition-opacity hover:opacity-80 sm:h-6 lg:h-7 [@media(max-width:349px)]:h-[18px]'
           />
         </Link>
 
         <nav
           aria-label='Navigation principale'
-          className='flex items-center gap-1 sm:gap-1.5'
+          className='flex items-center gap-0.5 sm:gap-1 md:gap-1.5'
         >
           {AC_NAV_LINKS.map((link) => (
             <Link
@@ -55,18 +56,16 @@ export default function AcHeader() {
               href={link.href}
               aria-label={link.label}
               aria-current={isActive(link.href) ? 'page' : undefined}
-              className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-xs font-semibold tracking-wide transition-colors md:px-3 md:text-sm ${
+              // Phones: icon above a short label (three entries fit next to the
+              // logo down to 320px). From tablets up: icon + full label inline.
+              className={`flex flex-col items-center gap-1 whitespace-nowrap rounded-lg px-1.5 py-1.5 text-[0.62rem] font-semibold leading-none tracking-wide transition-colors sm:px-2.5 md:flex-row md:gap-1.5 md:px-3 md:py-2 md:text-sm md:leading-normal ${
                 isActive(link.href)
                   ? 'bg-white/10 text-white'
                   : 'text-white/75 hover:bg-white/5 hover:text-white'
               }`}
             >
               <FontAwesomeIcon icon={link.icon} className='h-3.5 w-3.5' />
-              {/* Short label on phones, icon-only under 350px (logo + two
-                  labelled pills don't fit), full label from tablets up. */}
-              <span className='[@media(max-width:349px)]:hidden md:hidden'>
-                {link.short ?? link.label}
-              </span>
+              <span className='md:hidden'>{link.short ?? link.label}</span>
               <span className='hidden md:inline'>{link.label}</span>
             </Link>
           ))}

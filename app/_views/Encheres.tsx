@@ -35,7 +35,7 @@ export default async function Encheres() {
               href='https://encheres.tn'
               target='_blank'
               rel='noopener noreferrer'
-              className='font-semibold text-brand-600 hover:underline'
+              className='font-semibold text-brand-500 hover:underline'
             >
               encheres.tn
             </a>

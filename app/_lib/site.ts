@@ -19,6 +19,15 @@ export const AC_PREFIX = '/autocentral'
 /** Merchant id of the Tunisian Cars showroom in the API. */
 export const TC_MERCHANT_ID = 'tunisian-cars'
 
+/**
+ * Sellers showcased on the Autocentral home ("Vendeurs en vedette"). Their
+ * listings also show their contact everywhere: the region and an "Appeler"
+ * button on the cards, the phone numbers in the detail.
+ */
+export const FEATURED_MERCHANT_IDS: readonly string[] = ['best-auto']
+export const isFeaturedMerchant = (merchantId?: string | null): boolean =>
+  !!merchantId && FEATURED_MERCHANT_IDS.includes(merchantId)
+
 /** The one public Tunisian Cars number (calls + WhatsApp). */
 export const TC_PHONE = {
   display: '98 192 053',

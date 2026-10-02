@@ -1,13 +1,22 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 /**
  * Design system - dark, sober (Tunisian Cars brand direction).
  *
- * Near-black base, white text, a single restrained steel-blue accent (`brand`,
- * taken from the logo but desaturated to stay sober), thin white/10 borders.
- * `surface` holds the card backgrounds that sit on the near-black body.
- * Legacy colour keys are kept so any component still referencing them renders.
+ * Near-black base, white text, a single restrained accent (`brand`), thin
+ * white/10 borders. `surface` holds the card backgrounds that sit on the
+ * near-black body. Legacy colour keys are kept so any component still
+ * referencing them renders.
+ *
+ * The accent is themable per site: its shades are CSS variables (RGB channels,
+ * declared in `_styles/globals.css`) - the Tunisian Cars blue by default, the
+ * Autocentral reds inside `.theme-autocentral`. Shared components keep using
+ * `brand-*` and take the colour of the site they are rendered on.
  */
+const brandShade = (shade: number) =>
+  `rgb(var(--brand-${shade}) / <alpha-value>)`
+
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -15,20 +24,20 @@ const config: Config = {
       transparent: 'transparent',
       current: 'currentColor',
 
-      // ---- accent: Tunisian Cars blue -------------------------------------
+      // ---- accent: blue on Tunisian Cars, red on Autocentral (CSS vars) ----
       brand: {
-        50: '#e6f2fd',
-        100: '#cce4fb',
-        200: '#99c9f7',
-        300: '#66aef3',
-        400: '#3393ef',
-        500: '#0081E3',
-        600: '#006ec2',
-        700: '#00559a',
-        800: '#004073',
-        900: '#002c4f',
-        950: '#001a30',
-        DEFAULT: '#0081E3'
+        50: brandShade(50),
+        100: brandShade(100),
+        200: brandShade(200),
+        300: brandShade(300),
+        400: brandShade(400),
+        500: brandShade(500),
+        600: brandShade(600),
+        700: brandShade(700),
+        800: brandShade(800),
+        900: brandShade(900),
+        950: brandShade(950),
+        DEFAULT: brandShade(500)
       },
       // ---- brand grey (logo / dividers / muted labels) --------------------
       mist: {
@@ -132,7 +141,8 @@ const config: Config = {
       boxShadow: {
         card: '0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35)',
         'card-hover': '0 2px 6px rgba(0,0,0,0.5), 0 18px 48px rgba(0,0,0,0.55)',
-        featured: '0 0 0 1px rgba(0,129,227,0.25), 0 24px 60px rgba(0,0,0,0.6)',
+        featured:
+          '0 0 0 1px rgb(var(--brand-500) / 0.25), 0 24px 60px rgba(0,0,0,0.6)',
         'card-light':
           '0 1px 2px rgba(16,24,40,0.06), 0 12px 32px rgba(16,24,40,0.10)',
         'card-light-hover':
@@ -182,7 +192,12 @@ const config: Config = {
       }
     }
   },
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [
+    require('@tailwindcss/forms'),
+    // `ac:` - applies only on autocentral.tn (inside its layout wrapper), for
+    // the few spots where the red theme needs another shade than the blue one.
+    plugin(({ addVariant }) => addVariant('ac', '.theme-autocentral &'))
+  ]
 }
 
 export default config

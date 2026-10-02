@@ -7,6 +7,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
  * Dual-thumb range slider (min + max) with a filled active track. Both thumbs
  * stay draggable thanks to the `.range-thumb` CSS (pointer-events on the thumbs
  * only). The parent owns the values and maps the bounds to "no filter".
+ * `light` = drawn on a light background (default: on a dark one).
  */
 export default function RangeSlider({
   label,
@@ -18,7 +19,8 @@ export default function RangeSlider({
   valueMin,
   valueMax,
   onChange,
-  format
+  format,
+  light = false
 }: {
   label: string
   icon?: IconDefinition
@@ -30,6 +32,7 @@ export default function RangeSlider({
   valueMax: number
   onChange: (lo: number, hi: number) => void
   format?: (n: number) => string
+  light?: boolean
 }) {
   const fmt = format ?? ((n: number) => `${n}`)
   const pct = (v: number) => ((v - min) / (max - min)) * 100
@@ -46,7 +49,9 @@ export default function RangeSlider({
           )}
           {label}
         </span>
-        <span className='font-medium text-white/70'>
+        <span
+          className={`font-medium ${light ? 'text-ink-500' : 'text-white/70'}`}
+        >
           {fmt(valueMin)} – {fmt(valueMax)}
           {valueMax >= max ? '+' : ''}
           {unit ? ` ${unit}` : ''}
@@ -55,7 +60,11 @@ export default function RangeSlider({
 
       <div className='relative mt-2 h-5'>
         {/* Track */}
-        <div className='absolute top-1/2 h-1 w-full -translate-y-1/2 rounded bg-white/15' />
+        <div
+          className={`absolute top-1/2 h-1 w-full -translate-y-1/2 rounded ${
+            light ? 'bg-ink-200' : 'bg-white/15'
+          }`}
+        />
         {/* Active fill */}
         <div
           className='absolute top-1/2 h-1 -translate-y-1/2 rounded bg-brand-500'

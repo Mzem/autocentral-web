@@ -45,9 +45,58 @@
   --ink-950: #0d0f14;
   --surface: #16181e;
   --surface-sunken: #0b0c10;
-  --brand-500: #0081e3;
-  --brand-600: #006ec2;
   --gold-400: #d4af37;
+
+  /* Accent scale (`brand-*` in Tailwind) as RGB channels, so the opacity
+     modifiers keep working. Default = Tunisian Cars blue; the Autocentral
+     site overrides it just below. */
+  --brand-50: 230 242 253;
+  --brand-100: 204 228 251;
+  --brand-200: 153 201 247;
+  --brand-300: 102 174 243;
+  --brand-400: 51 147 239;
+  --brand-500: 0 129 227;
+  --brand-600: 0 110 194;
+  --brand-700: 0 85 154;
+  --brand-800: 0 64 115;
+  --brand-900: 0 44 79;
+  --brand-950: 0 26 48;
+}
+
+/* Autocentral (autocentral.tn): the reds of its logo replace the blue.
+   600 = the logo red (`red`, solid surfaces: buttons, badges, active chips);
+   500 = `vividred` (accents: icons, labels, focus, hover - never the listing
+   prices, shown in the logo black / grey instead); 300/400 are lighter
+   tints of it, legible on black. The wrapper class is set by
+   app/autocentral/layout.tsx. */
+.theme-autocentral {
+  --brand-50: 253 243 243;
+  --brand-100: 251 229 229;
+  --brand-200: 246 204 204;
+  --brand-300: 238 159 159;
+  --brand-400: 220 74 74;
+  --brand-500: 179 20 20;
+  --brand-600: 55 18 17;
+  --brand-700: 44 14 13;
+  --brand-800: 34 11 10;
+  --brand-900: 25 8 7;
+  --brand-950: 16 5 4;
+}
+/* Same palette at document level (body glow, text selection, anything rendered
+   outside the wrapper). Kept as a separate rule on purpose: a browser without
+   :has() drops this one only, not the rule above. */
+:root:has(.theme-autocentral) {
+  --brand-50: 253 243 243;
+  --brand-100: 251 229 229;
+  --brand-200: 246 204 204;
+  --brand-300: 238 159 159;
+  --brand-400: 220 74 74;
+  --brand-500: 179 20 20;
+  --brand-600: 55 18 17;
+  --brand-700: 44 14 13;
+  --brand-800: 34 11 10;
+  --brand-900: 25 8 7;
+  --brand-950: 16 5 4;
 }
 
 html {
@@ -72,12 +121,12 @@ h2 {
 
 body {
   color: var(--white);
-  /* Pure-black base with a faint Tunisian Cars blue glow at the top. */
+  /* Pure-black base with a faint glow of the site's accent at the top. */
   background-color: #000000;
   background-image: radial-gradient(
     120% 60% at 50% -10%,
-    rgba(0, 129, 227, 0.1) 0%,
-    rgba(0, 129, 227, 0) 60%
+    rgb(var(--brand-500) / 0.1) 0%,
+    rgb(var(--brand-500) / 0) 60%
   );
   background-attachment: fixed;
   /* Belt and braces with the html rule above (iOS Safari historically only
@@ -96,7 +145,7 @@ h3 {
 
 /* Refined selection colour. */
 ::selection {
-  background: rgba(0, 129, 227, 0.35);
+  background: rgb(var(--brand-500) / 0.35);
 }
 
 /* Slim dark scrollbars to match the theme. */
@@ -117,7 +166,7 @@ h3 {
 
 /* Consistent, visible keyboard focus across the whole site. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--brand-500);
+  outline: 2px solid rgb(var(--brand-500));
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -168,7 +217,7 @@ input[type='checkbox'] {
   color: var(--white);
 }
 input[type='checkbox']:checked {
-  color: var(--brand-500);
+  color: rgb(var(--brand-500));
 }
 
 /* Hide the spinner (arrows) in number input fields */

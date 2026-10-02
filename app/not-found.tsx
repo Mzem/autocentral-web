@@ -20,7 +20,7 @@ export default function NotFoundPage() {
       </p>
       <Link
         href='/'
-        className='mt-6 rounded-xl bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600'
+        className='mt-6 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-white/85'
       >
         Retour à l&apos;accueil
       </Link>

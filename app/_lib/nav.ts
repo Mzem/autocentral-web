@@ -4,6 +4,7 @@ import {
   faScrewdriverWrench,
   faCartShopping,
   faMagnifyingGlass,
+  faCalculator,
   faGavel
 } from '@fortawesome/free-solid-svg-icons'
 import { TC_MESSENGER_URL, TC_WHATSAPP_URL } from './site'
@@ -29,13 +30,22 @@ export const NAV_LINKS: NavLink[] = [
 /** Extra links shown in the header only when a merchant is logged in. */
 export const ADMIN_NAV_LINKS: NavLink[] = []
 
-/** Autocentral (autocentral.tn) navigation: the search engine and auctions. */
+/**
+ * Autocentral (autocentral.tn) navigation: the search engine, the price
+ * estimate and the auctions.
+ */
 export const AC_NAV_LINKS: NavLink[] = [
   {
     href: '/annonces',
     label: 'Moteur de recherche',
     short: 'Recherche',
     icon: faMagnifyingGlass
+  },
+  {
+    href: '/estimation',
+    label: 'Estimer mon véhicule',
+    short: 'Estimer',
+    icon: faCalculator
   },
   { href: '/encheres', label: 'Enchères', icon: faGavel }
 ]

@@ -1,7 +1,6 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
@@ -36,7 +35,6 @@ import FeedAd from '../ads/FeedAd'
 import FeedAd2 from '../ads/FeedAd2'
 import FeaturedCarPosts from './FeaturedCarPosts'
 import CarPostCard from './CarPostCard'
-import EstimateModal from './EstimateModal'
 
 // Realistic slider bounds per criterion; a value at the bound = "no filter".
 const YEAR_MIN = 1960
@@ -47,10 +45,39 @@ const CV_MIN = 2
 const CV_MAX = 60
 
 // Same centred container as the rest of the site (MainShell) so the white
-// content lines up with the other pages; the black criteria band stays
-// full-width (black spilling to the edges) with its content aligned.
+// content lines up with the other pages; the criteria band stays full-width
+// (its background spilling to the edges) with its content aligned.
 // Same width as the home showroom / moto grids so car cards match their width.
 const CONTAINER = 'mx-auto w-[92%] xl:max-w-6xl'
+
+// The criteria band is white on the /annonces search page and dark on a seller
+// page (which sits on the dark shell): one set of classes per tone.
+const TONES = {
+  light: {
+    band: 'border-b border-ink-100 bg-white text-ink-950',
+    searchIcon: 'text-ink-400',
+    input:
+      'border border-ink-200 bg-ink-50 text-ink-950 placeholder-ink-400 focus:border-brand-500 focus:bg-white',
+    // Neutral pills: reset button, unselected chips.
+    idle: 'bg-ink-100 text-ink-700 hover:bg-ink-200',
+    label: 'text-ink-500',
+    segmented: 'bg-ink-100',
+    segmentedIdle: 'text-ink-600 hover:text-ink-950',
+    sliders: 'bg-ink-50 ring-ink-100'
+  },
+  dark: {
+    band: 'bg-black text-white',
+    searchIcon: 'text-white/50',
+    input:
+      'border-none bg-white/10 text-white placeholder-white/50 focus:bg-white/15',
+    idle: 'bg-white/10 text-white/75 hover:bg-white/20',
+    label: 'text-white/55',
+    segmented: 'bg-white/10',
+    segmentedIdle: 'text-white/70 hover:text-white',
+    sliders: 'bg-white/[0.04] ring-white/10'
+  }
+} as const
+type Tone = (typeof TONES)[keyof typeof TONES]
 
 type SellerType = 'all' | 'pro' | 'private'
 type GearboxChoice = 'all' | 'Automatique' | 'Manuelle'
@@ -59,23 +86,23 @@ type GearboxChoice = 'all' | 'Automatique' | 'Manuelle'
 function Segmented<T extends string>({
   value,
   onChange,
-  options
+  options,
+  tone
 }: {
   value: T
   onChange: (v: T) => void
   options: { value: T; label: string }[]
+  tone: Tone
 }) {
   return (
-    <div className='inline-flex rounded-lg bg-white/10 p-0.5'>
+    <div className={`inline-flex rounded-lg p-0.5 ${tone.segmented}`}>
       {options.map((o) => (
         <button
           key={o.value}
           type='button'
           onClick={() => onChange(o.value)}
           className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors ${
-            value === o.value
-              ? 'bg-brand-600 text-white'
-              : 'text-white/70 hover:text-white'
+            value === o.value ? 'bg-brand-600 text-white' : tone.segmentedIdle
           }`}
         >
           {o.label}
@@ -92,13 +119,17 @@ const fuelIcon = (f: string): IconDefinition =>
 /** Section header: a brand-tinted icon chip + an uppercase label. */
 function SectionLabel({
   icon,
-  children
+  children,
+  tone
 }: {
   icon: IconDefinition
   children: React.ReactNode
+  tone: Tone
 }) {
   return (
-    <p className='mb-2 flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-wider text-white/55'>
+    <p
+      className={`mb-2 flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-wider ${tone.label}`}
+    >
       <span className='inline-flex h-5 w-5 items-center justify-center rounded-md bg-brand-500/20 text-brand-500'>
         <FontAwesomeIcon icon={icon} className='h-3 w-3' />
       </span>
@@ -130,6 +161,7 @@ export default function CarPostsFeed({
   // the centred CONTAINER on a white page → dark text.
   const contentWrap = merchantId ? 'mx-auto w-full' : CONTAINER
   const contentText = merchantId ? 'text-white' : 'text-ink-900'
+  const tone: Tone = merchantId ? TONES.dark : TONES.light
 
   const [posts, setPosts] = useState<CarPostListItem[]>(initialPosts)
   const [loadingPosts, setLoadingPosts] = useState(false)
@@ -300,28 +332,17 @@ export default function CarPostsFeed({
 
   return (
     <>
-      {!merchantId && (
-        <div
-          className={`${CONTAINER} mb-6 lg:mb-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center`}
-        >
-          <p className='text-md font-bold text-ink-900 lg:text-xl'>
-            <span className='text-brand-600'>+100 000</span> annonces
-            disponibles
-          </p>
-          <EstimateModal />
-        </div>
-      )}
       <div
         ref={searchDivRef}
-        className='w-full bg-black py-3 text-left text-white lg:py-4'
+        className={`w-full py-3 text-left lg:py-4 ${tone.band}`}
       >
         <div className={`${contentWrap} flex flex-col`}>
-          <div className='flex flex-row items-center gap-2'>
+          <div className='flex flex-row items-stretch gap-2'>
             <div className='relative flex-1'>
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 aria-hidden='true'
-                className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50'
+                className={`pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${tone.searchIcon}`}
               />
               <input
                 readOnly={!showFilters}
@@ -336,14 +357,14 @@ export default function CarPostsFeed({
                 onChange={handleSearchTextChange}
                 onKeyDown={(e) => e.key === 'Enter' && handleNewSearch()}
                 placeholder={'Rechercher une voiture...'}
-                className='w-full rounded-xl border-none bg-white/10 py-2.5 pl-10 pr-3 text-base lg:text-lg text-white placeholder-white/50 outline-none transition-colors focus:bg-white/15'
+                className={`w-full rounded-xl py-2.5 pl-10 pr-3 text-base outline-none transition-colors focus:!rounded-xl lg:text-lg ${tone.input}`}
               />
             </div>
 
             <button
               aria-label='Lancer la recherche'
               disabled={loadingPosts}
-              className='inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 font-semibold shadow-lg shadow-brand-600/25 transition-colors duration-200 hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60'
+              className='inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 font-semibold text-white shadow-lg shadow-brand-600/25 transition-colors duration-200 hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60'
               onClick={() => {
                 if (!showFilters) setShowFilters(true)
                 else handleNewSearch()
@@ -358,7 +379,7 @@ export default function CarPostsFeed({
             </button>
             <button
               aria-label='Réinitialiser les filtres'
-              className='inline-flex shrink-0 items-center justify-center rounded-xl bg-white/10 p-2.5 px-3.5 transition-colors duration-200 hover:bg-white/20'
+              className={`inline-flex shrink-0 items-center justify-center rounded-xl p-2.5 px-3.5 transition-colors duration-200 ${tone.idle}`}
               onClick={() => {
                 window.location.href = merchantId
                   ? `/${merchantId}`
@@ -377,7 +398,9 @@ export default function CarPostsFeed({
             <div className='mt-4 space-y-5 text-sm'>
               {/* Carburant - chips */}
               <div>
-                <SectionLabel icon={faGasPump}>Carburant</SectionLabel>
+                <SectionLabel icon={faGasPump} tone={tone}>
+                  Carburant
+                </SectionLabel>
                 <div className='flex flex-wrap gap-2'>
                   {(Object.values(Fuel) as Fuel[]).map((f) => {
                     const active = fuel.includes(f)
@@ -389,7 +412,7 @@ export default function CarPostsFeed({
                         className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                           active
                             ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/30'
-                            : 'bg-white/10 text-white/75 hover:bg-white/20'
+                            : tone.idle
                         }`}
                       >
                         <FontAwesomeIcon
@@ -406,8 +429,11 @@ export default function CarPostsFeed({
               {/* Boîte / Vendeur / Première main */}
               <div className='flex flex-wrap items-start gap-x-6 gap-y-4'>
                 <div>
-                  <SectionLabel icon={faGears}>Boîte</SectionLabel>
+                  <SectionLabel icon={faGears} tone={tone}>
+                    Boîte
+                  </SectionLabel>
                   <Segmented
+                    tone={tone}
                     value={gearbox}
                     onChange={setGearbox}
                     options={[
@@ -419,8 +445,11 @@ export default function CarPostsFeed({
                 </div>
                 {!merchantId && (
                   <div>
-                    <SectionLabel icon={faUserTie}>Vendeur</SectionLabel>
+                    <SectionLabel icon={faUserTie} tone={tone}>
+                      Vendeur
+                    </SectionLabel>
                     <Segmented
+                      tone={tone}
                       value={sellerType}
                       onChange={setSellerType}
                       options={[
@@ -432,14 +461,16 @@ export default function CarPostsFeed({
                   </div>
                 )}
                 <div>
-                  <SectionLabel icon={faStar}>Historique</SectionLabel>
+                  <SectionLabel icon={faStar} tone={tone}>
+                    Historique
+                  </SectionLabel>
                   <button
                     type='button'
                     onClick={() => setFirstOwner(!firstOwner)}
                     className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                       firstOwner
                         ? 'bg-gold-400 text-ink-950 shadow-sm'
-                        : 'bg-white/10 text-white/75 hover:bg-white/20'
+                        : tone.idle
                     }`}
                   >
                     <FontAwesomeIcon icon={faStar} className='h-3 w-3' />
@@ -449,8 +480,11 @@ export default function CarPostsFeed({
               </div>
 
               {/* Sliders réalistes - 1 par ligne en mobile */}
-              <div className='grid grid-cols-1 gap-x-8 gap-y-5 rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10 md:grid-cols-2'>
+              <div
+                className={`grid grid-cols-1 gap-x-8 gap-y-5 rounded-2xl p-4 ring-1 md:grid-cols-2 ${tone.sliders}`}
+              >
                 <RangeSlider
+                  light={!merchantId}
                   label='Année'
                   icon={faCalendarDays}
                   min={YEAR_MIN}
@@ -464,6 +498,7 @@ export default function CarPostsFeed({
                   }}
                 />
                 <RangeSlider
+                  light={!merchantId}
                   label='Kilométrage'
                   icon={faGaugeHigh}
                   unit='km'
@@ -479,6 +514,7 @@ export default function CarPostsFeed({
                   }}
                 />
                 <RangeSlider
+                  light={!merchantId}
                   label='Prix'
                   icon={faTag}
                   unit='DT'
@@ -494,6 +530,7 @@ export default function CarPostsFeed({
                   }}
                 />
                 <RangeSlider
+                  light={!merchantId}
                   label='Puissance'
                   icon={faBolt}
                   unit='cv'

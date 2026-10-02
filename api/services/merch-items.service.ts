@@ -6,6 +6,7 @@ import {
   apiPatchFormData
 } from 'api/apiClient'
 import { ApiError } from '../httpClient'
+import { scrubOldNumber, withTcMerchantContact } from './tc-contact'
 
 export const MERCH_CATEGORIES = [
   'Vêtements',
@@ -34,13 +35,22 @@ export interface MerchItem {
   }
 }
 
+// The shop's former number must not appear anywhere, page data included (see
+// tc-contact.ts): same read-time clean-up as for the listings.
+const withTcContact = (item: MerchItem): MerchItem => ({
+  ...item,
+  title: scrubOldNumber(item.title),
+  description: scrubOldNumber(item.description),
+  merchant: withTcMerchantContact(item.merchant)
+})
+
 export async function getMerchItems(merchantId?: string): Promise<MerchItem[]> {
   try {
     const url = merchantId
       ? `merch-items?merchantId=${encodeURIComponent(merchantId)}`
       : `merch-items`
     const { content } = await apiGet<MerchItem[]>(url)
-    return content
+    return content.map(withTcContact)
   } catch (e) {
     console.error('GET merch items error')
     throw e
@@ -50,7 +60,7 @@ export async function getMerchItems(merchantId?: string): Promise<MerchItem[]> {
 export async function getMerchItem(id: string): Promise<MerchItem | undefined> {
   try {
     const { content } = await apiGet<MerchItem>(`merch-items/${id}`)
-    return content
+    return content ? withTcContact(content) : content
   } catch (e) {
     if (e instanceof ApiError) return undefined
     console.error('GET merch item error')
