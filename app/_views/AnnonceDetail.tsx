@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { getCarPost } from '../../api/services/car-posts.service'
 import CarPostDetail from '../_components/tunisiancars/CarPostDetail'
-import { AC_URL, TC_MERCHANT_ID, TC_URL } from '../_lib/site'
+import { AC_URL, TC_URL } from '../_lib/site'
+import { dotNumber } from '../helpers'
+import { fuelLabel } from '../types'
 
 export type Site = 'tc' | 'ac'
 
@@ -25,9 +27,8 @@ const isCarPostId = (s?: string): boolean =>
 
 /**
  * Metadata of a listing page. The page exists on both sites; its canonical URL
- * is the site the listing belongs to - tunisiancars.com.tn for the showroom's
- * own cars, autocentral.tn for every other seller - so search engines index a
- * single version.
+ * is always autocentral.tn (the Tunisian Cars showroom's cars included), so
+ * search engines index a single version, on the listings site.
  */
 export async function annonceMetadata(
   id: string | undefined,
@@ -35,29 +36,45 @@ export async function annonceMetadata(
 ): Promise<Metadata> {
   const here = SITE[site]
   const post = id && isCarPostId(id) ? await getCarPost(id) : null
+  const url = id ? `${AC_URL}/annonces/${id}` : AC_URL
 
   if (!post) {
     return {
       description: `Annonce ${here.name}`,
-      alternates: {
-        canonical: id ? `${here.url}/annonces/${id}` : here.url
-      }
+      alternates: { canonical: url }
     }
   }
 
-  const home = post.merchant?.id === TC_MERCHANT_ID ? SITE.tc : SITE.ac
-  const url = `${home.url}/annonces/${id}`
+  const name =
+    post.title ||
+    [post.make, post.model, post.year].filter(Boolean).join(' ') ||
+    "Voiture d'occasion"
+  const title = `${name} | ${here.name}`
+  const description = [
+    name,
+    post.price ? `${dotNumber(post.price)} DT` : null,
+    post.km != null ? `${dotNumber(post.km)} km` : null,
+    post.fuel ? fuelLabel(post.fuel) : null,
+    post.gearbox,
+    post.region?.name,
+    "voiture d'occasion en Tunisie"
+  ]
+    .filter(Boolean)
+    .join(' · ')
+  const images = [post.images[0] || here.image]
   return {
-    title: post.title ? `${post.title} | ${here.name}` : undefined,
-    description: post.title,
+    title,
+    description,
     alternates: { canonical: url },
     openGraph: {
       type: 'website',
       url,
-      title: post.title,
-      siteName: post.title,
-      images: post.images[0] || here.image
-    }
+      title,
+      description,
+      siteName: here.name,
+      images
+    },
+    twitter: { card: 'summary_large_image', title, description, images }
   }
 }
 

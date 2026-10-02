@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
 import AcHeader from '../_components/autocentral/AcHeader'
 import { AC_URL } from '../_lib/site'
-import { breadcrumbJsonLd, faviconMetadata } from '../_lib/site-metadata'
+import {
+  acWebsiteJsonLd,
+  breadcrumbJsonLd,
+  faviconMetadata
+} from '../_lib/site-metadata'
 
 /**
  * Layout of autocentral.tn (the listings aggregator). `middleware.ts` rewrites
@@ -74,6 +78,10 @@ export default function AutocentralLayout({
 }>) {
   return (
     <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: acWebsiteJsonLd() }}
+      />
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{

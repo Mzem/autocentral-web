@@ -266,7 +266,7 @@ function Content({ post }: { post: CarPost }) {
                 onClick={() => setFicheOpen((o) => !o)}
                 className='flex w-full items-center justify-between gap-2 text-left text-sm font-semibold text-white'
               >
-                Fiche technique (données tunisiancars)
+                Fiche technique
                 <FontAwesomeIcon
                   icon={faChevronDown}
                   className={`h-3.5 w-3.5 shrink-0 text-white/70 transition-transform ${

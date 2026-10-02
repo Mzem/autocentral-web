@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AC_URL } from './site'
 
 /**
  * Favicon / touch-icon / tile metadata for one site. Both sites use an icon set
@@ -51,5 +52,64 @@ export function breadcrumbJsonLd(
       name: item.name,
       item: item.url
     }))
+  })
+}
+
+const AC_SHARE_IMAGE = '/autocentral/logo_rect.jpg'
+
+/**
+ * Metadata of an autocentral.tn page: title, description, canonical URL and
+ * the matching Open Graph / Twitter tags (without them every page would share
+ * the home's title, description and URL when posted on social networks).
+ */
+export function acPageMetadata({
+  title,
+  description,
+  path = '',
+  image
+}: {
+  title: string
+  description: string
+  /** Path on autocentral.tn ('' for the home). */
+  path?: string
+  /** Share image (defaults to the Autocentral logo). */
+  image?: string
+}): Metadata {
+  const url = `${AC_URL}${path}`
+  const images = [image ?? AC_SHARE_IMAGE]
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'website',
+      url,
+      title,
+      description,
+      siteName: 'Autocentral',
+      locale: 'fr_TN',
+      images
+    },
+    twitter: { card: 'summary_large_image', title, description, images }
+  }
+}
+
+/** schema.org WebSite of autocentral.tn, with its search box (sitelinks). */
+export function acWebsiteJsonLd(): string {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Autocentral',
+    alternateName: 'autocentral.tn',
+    url: AC_URL,
+    inLanguage: 'fr-TN',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${AC_URL}/annonces?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
   })
 }

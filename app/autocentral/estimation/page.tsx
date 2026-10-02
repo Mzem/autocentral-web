@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalculator } from '@fortawesome/free-solid-svg-icons'
 import EstimateTool from '../../_components/car-posts/EstimateTool'
-import { AC_URL } from '../../_lib/site'
+import { acPageMetadata } from '../../_lib/site-metadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = acPageMetadata({
   title: 'Estimer mon véhicule - prix du marché en Tunisie | Autocentral',
   description:
     "Estimez gratuitement le prix de votre voiture d'occasion en Tunisie : une fourchette calculée à partir du prix médian des annonces comparables du marché.",
-  alternates: { canonical: `${AC_URL}/estimation` }
-}
+  path: '/estimation'
+})
 
 /**
  * Price estimate page of autocentral.tn. Same skeleton as the auctions page: a
