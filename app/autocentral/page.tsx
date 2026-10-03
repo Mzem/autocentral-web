@@ -18,6 +18,7 @@ import {
 } from '../../api/services/car-posts.service'
 import { MerchantListItem } from '../../api/services/merchants.service'
 import CarPostCard from '../_components/car-posts/CarPostCard'
+import Shuffled from '../_components/autocentral/Shuffled'
 import { FEATURED_MERCHANT_IDS } from '../_lib/site'
 import { acPageMetadata } from '../_lib/site-metadata'
 
@@ -55,7 +56,8 @@ async function getFeaturedSellers(): Promise<FeaturedSeller[]> {
     try {
       const posts = await getCarPosts({ page: 1, merchantId }, revalidate)
       const latest = posts
-        .filter((p) => !p.isExpired && p.image)
+        // Available, with a photo, sold by the seller itself (no on-behalf).
+        .filter((p) => !p.isExpired && !p.isHidden && !p.isOnBehalf && p.image)
         // Newest first (stable: same-day listings keep the API order).
         .sort((a, b) => publishedTime(b) - publishedTime(a))
         .slice(0, FEATURED_POSTS)
@@ -137,48 +139,51 @@ export default async function AutocentralHome() {
               Les annonces en vedette arrivent très bientôt.
             </p>
           ) : (
-            sellers.map(({ merchant, posts }) => {
-              const region = posts.find((p) => p.region?.name)?.region.name
-              return (
-                <div key={merchant.id} className='mt-5'>
-                  <div className='flex items-center gap-3'>
-                    {merchant.avatar ? (
-                      <img
-                        src={merchant.avatar}
-                        alt={merchant.name}
-                        loading='lazy'
-                        className='h-12 w-12 shrink-0 rounded-xl object-cover ring-1 ring-ink-100'
-                      />
-                    ) : (
-                      <span className='flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500'>
-                        <FontAwesomeIcon icon={faStore} className='h-5 w-5' />
-                      </span>
-                    )}
-                    <div className='min-w-0'>
-                      <h3 className='truncate text-lg font-bold leading-tight'>
-                        {merchant.name}
-                      </h3>
-                      {region && (
-                        <p className='mt-0.5 flex items-center gap-1 text-xs text-ink-500'>
-                          <FontAwesomeIcon
-                            icon={faLocationDot}
-                            className='h-3 w-3'
-                          />
-                          {region}
-                        </p>
+            // Random order of the sellers, drawn again on every visit.
+            <Shuffled
+              items={sellers.map(({ merchant, posts }) => {
+                const region = posts.find((p) => p.region?.name)?.region.name
+                return (
+                  <div key={merchant.id} className='mt-5'>
+                    <div className='flex items-center gap-3'>
+                      {merchant.avatar ? (
+                        <img
+                          src={merchant.avatar}
+                          alt={merchant.name}
+                          loading='lazy'
+                          className='h-12 w-12 shrink-0 rounded-xl object-cover ring-1 ring-ink-100'
+                        />
+                      ) : (
+                        <span className='flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500'>
+                          <FontAwesomeIcon icon={faStore} className='h-5 w-5' />
+                        </span>
                       )}
+                      <div className='min-w-0'>
+                        <h3 className='truncate text-lg font-bold leading-tight'>
+                          {merchant.name}
+                        </h3>
+                        {region && (
+                          <p className='mt-0.5 flex items-center gap-1 text-xs text-ink-500'>
+                            <FontAwesomeIcon
+                              icon={faLocationDot}
+                              className='h-3 w-3'
+                            />
+                            {region}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Featured sellers' cards carry the region + "Appeler". */}
-                  <ul className='mt-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                    {posts.map((post) => (
-                      <CarPostCard key={post.id} post={post} />
-                    ))}
-                  </ul>
-                </div>
-              )
-            })
+                    {/* Featured sellers' cards carry the region + "Appeler". */}
+                    <ul className='mt-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                      {posts.map((post) => (
+                        <CarPostCard key={post.id} post={post} />
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
+            />
           )}
 
           {/* Fin de page : accès au moteur de recherche */}

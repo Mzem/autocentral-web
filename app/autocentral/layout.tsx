@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import AcFooter from '../_components/autocentral/AcFooter'
 import AcHeader from '../_components/autocentral/AcHeader'
 import { AC_URL } from '../_lib/site'
 import {
@@ -12,9 +13,8 @@ import {
  * every request on that domain to this `/autocentral` tree, so these pages are
  * served at clean URLs ("/", "/annonces", "/encheres"…).
  *
- * Its own identity (title, favicons, manifest), its own header and - by
- * design - no footer. The `theme-autocentral` wrapper turns the shared `brand`
- * accent into the Autocentral reds (see `_styles/globals.css`); it is
+ * Its own identity (title, favicons, manifest), its own header and footer.
+ * The `theme-autocentral` wrapper turns the shared `brand` accent into the Autocentral reds (see `_styles/globals.css`); it is
  * `display: contents`, so the page still lays out directly in <body>.
  */
 const TITLE =
@@ -97,6 +97,7 @@ export default function AutocentralLayout({
         <AcHeader />
         <main className='flex-grow'>{children}</main>
         {modal}
+        <AcFooter />
       </div>
     </>
   )

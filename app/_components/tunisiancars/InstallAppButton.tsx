@@ -21,8 +21,15 @@ interface BeforeInstallPromptEvent extends Event {
  *  - iOS Safari (no such event): shows the manual Share → "Sur l'écran
  *    d'accueil" steps.
  *  - Already installed / running standalone: renders nothing.
+ *
+ * `solid`: filled accent button with white text (Autocentral footer) instead of
+ * the discreet outlined pill.
  */
-export default function InstallAppButton() {
+export default function InstallAppButton({
+  solid = false
+}: {
+  solid?: boolean
+}) {
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(
     null
   )
@@ -84,11 +91,15 @@ export default function InstallAppButton() {
       <button
         type='button'
         onClick={onClick}
-        className='inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-500/10 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-500/20'
+        className={
+          solid
+            ? 'inline-flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-colors hover:bg-brand-400'
+            : 'inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-500/10 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-500/20'
+        }
       >
         <FontAwesomeIcon
           icon={faMobileScreen}
-          className='h-3.5 w-3.5 text-brand-400'
+          className={`h-3.5 w-3.5 ${solid ? 'text-white' : 'text-brand-400'}`}
         />
         Installer l&apos;application
       </button>

@@ -20,11 +20,15 @@ export const AC_PREFIX = '/autocentral'
 export const TC_MERCHANT_ID = 'tunisian-cars'
 
 /**
- * Sellers showcased on the Autocentral home ("Vendeurs en vedette"). Their
+ * Sellers showcased on the Autocentral home ("Vendeurs en vedette", shown in
+ * a random order). Their
  * listings also show their contact everywhere: the region and an "Appeler"
  * button on the cards, the phone numbers in the detail.
  */
-export const FEATURED_MERCHANT_IDS: readonly string[] = ['best-auto']
+export const FEATURED_MERCHANT_IDS: readonly string[] = [
+  'best-auto',
+  'tunisian-cars'
+]
 export const isFeaturedMerchant = (merchantId?: string | null): boolean =>
   !!merchantId && FEATURED_MERCHANT_IDS.includes(merchantId)
 

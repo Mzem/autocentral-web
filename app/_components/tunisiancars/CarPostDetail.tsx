@@ -75,7 +75,7 @@ function Content({ post }: { post: CarPost }) {
   // Only genuine Tunisian Cars sales and featured sellers expose the seller's
   // contact. On-behalf and external (scraped) listings show nothing here (their
   // contact is elsewhere).
-  const showContact = (isTunisianCars && !post.isOnBehalf) || isFeatured
+  const showContact = isTunisianCars ? !post.isOnBehalf : isFeatured
   const sellerName = isTunisianCars
     ? 'Tunisian Cars'
     : post.merchant?.name || 'le vendeur'

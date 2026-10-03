@@ -154,25 +154,19 @@ export default function DetailGallery({
           href={sourceUrl}
           target='_blank'
           rel='noopener noreferrer'
-          className='inline-flex items-center justify-center gap-2 rounded-lg border border-ink-200 bg-ink-50 px-4 py-2 text-sm font-semibold text-ink-800 transition-colors hover:border-brand-500/40 hover:bg-brand-500/5'
+          title={`Annonce d'origine${source ? ` (${source})` : ''}`}
+          // Highlighted call to action: a bright red (Autocentral) / blue
+          // (Tunisian Cars) gradient with a glow - the seller's contact is
+          // on the original listing.
+          className='inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-brand-400 to-brand-500 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-brand-500/40 ring-2 ring-brand-400/30 transition hover:brightness-110 ac:from-[#ff3b30] ac:to-[#d0141a] ac:shadow-[#ff3b30]/40 ac:ring-[#ff3b30]/30'
         >
           <FontAwesomeIcon
             icon={
               isFB ? faFacebook : isIG ? faInstagram : faArrowUpRightFromSquare
             }
-            className={`h-4 w-4 ${
-              isFB
-                ? 'text-[#1877F2]'
-                : isIG
-                ? 'text-[#d62976]'
-                : 'text-brand-500'
-            }`}
+            className='h-4 w-4'
           />
-          {isFB || isIG
-            ? `Voir coordonnées et photos sur ${
-                isFB ? 'Facebook' : 'Instagram'
-              }`
-            : `Voir coordonnées sur ${source ?? 'la source'}`}
+          Contacter / Voir plus de détails
         </a>
       )}
 
