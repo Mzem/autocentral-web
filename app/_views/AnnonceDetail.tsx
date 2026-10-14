@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { getCarPost } from '../../api/services/car-posts.service'
 import CarPostDetail from '../_components/tunisiancars/CarPostDetail'
 import { AC_URL, TC_URL } from '../_lib/site'
@@ -39,10 +40,7 @@ export async function annonceMetadata(
   const url = id ? `${AC_URL}/annonces/${id}` : AC_URL
 
   if (!post) {
-    return {
-      description: `Annonce ${here.name}`,
-      alternates: { canonical: url }
-    }
+    return { title: `Annonce introuvable | ${here.name}`, robots: 'noindex' }
   }
 
   const name =
@@ -85,15 +83,9 @@ export async function annonceMetadata(
 export default async function AnnonceDetail({ id }: { id: string }) {
   const post = isCarPostId(id) ? await getCarPost(id) : null
 
-  if (!post) {
-    return (
-      <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>
-        <div className='mx-auto w-[92%] py-24 text-center text-ink-500 xl:max-w-6xl'>
-          Annonce introuvable ou expirée.
-        </div>
-      </div>
-    )
-  }
+  // Unknown / deleted listing: a real 404 (search engines were indexing the
+  // "introuvable" page as a duplicate with its own canonical).
+  if (!post) notFound()
 
   return (
     <div className='mt-14 min-h-screen bg-white text-ink-950 lg:mt-16'>

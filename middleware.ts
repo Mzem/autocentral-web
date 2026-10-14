@@ -52,6 +52,16 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  // One hostname per site: "www." is a duplicate for search engines, so it is
+  // redirected (permanently) to the bare domain, same path and query.
+  if (production && host.startsWith('www.')) {
+    const url = req.nextUrl.clone()
+    url.host = host.slice(4)
+    url.protocol = 'https'
+    url.port = ''
+    return NextResponse.redirect(url, 308)
+  }
+
   const isAutocentral =
     isAcDomain(host) ||
     (!production &&

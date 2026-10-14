@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStore } from '@fortawesome/free-solid-svg-icons'
 import { AC_NAV_LINKS } from '../../_lib/nav'
 import InstallAppButton from '../tunisiancars/InstallAppButton'
 
@@ -44,6 +45,13 @@ export default function AcFooter() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href='/vendeurs'
+              className='inline-flex items-center gap-1.5 transition-colors hover:text-white'
+            >
+              <FontAwesomeIcon icon={faStore} className='h-3 w-3' />
+              Vendeurs
+            </Link>
           </nav>
           <p>© {new Date().getFullYear()} Autocentral · Tous droits réservés</p>
         </div>
