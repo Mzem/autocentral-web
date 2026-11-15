@@ -7,18 +7,17 @@ import {
   faChartLine,
   faCircleCheck,
   faGavel,
-  faLocationDot,
   faMagnifyingGlass,
-  faStore
+  faStar
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getAuctions } from '../../api/services/auctions.service'
 import {
   CarPostListItem,
   getCarPosts
 } from '../../api/services/car-posts.service'
-import { MerchantListItem } from '../../api/services/merchants.service'
-import CarPostCard from '../_components/car-posts/CarPostCard'
-import Shuffled from '../_components/autocentral/Shuffled'
+import FeaturedPosts from '../_components/autocentral/FeaturedPosts'
+import { newestFirst } from '../_lib/featured'
 import { FEATURED_MERCHANT_IDS } from '../_lib/site'
 import { acPageMetadata } from '../_lib/site-metadata'
 
@@ -34,45 +33,56 @@ export const metadata: Metadata = acPageMetadata({
 // Latest listings shown for each featured seller (FEATURED_MERCHANT_IDS).
 const FEATURED_POSTS = 6
 
-// What the site offers, as title-only tiles (the home has no image).
-const HIGHLIGHTS: { icon: IconDefinition; title: string }[] = [
+// What the site offers, as title-only tiles (the home has no image). The
+// auctions tile only while some auction is open (like the menu entry).
+const highlights = (
+  hasAuctions: boolean
+): { icon: IconDefinition; title: string }[] => [
   { icon: faArrowsRotate, title: 'Mise à jour en continu' },
   { icon: faChartLine, title: 'Estimations de prix' },
-  { icon: faGavel, title: 'Enchères de la douane' },
+  ...(hasAuctions ? [{ icon: faGavel, title: 'Enchères de la douane' }] : []),
   { icon: faCircleCheck, title: '100% gratuit' }
 ]
 
-type FeaturedSeller = { merchant: MerchantListItem; posts: CarPostListItem[] }
-
-// `publishedAt` is a "DD/MM/YYYY" (fr) string.
-const publishedTime = (post: CarPostListItem): number => {
-  const [d, m, y] = (post.publishedAt || '').split('/').map(Number)
-  return d && m && y ? new Date(y, m - 1, d).getTime() : 0
+/** Link to the search engine (= every other seller's listings). */
+function OtherSellersLink() {
+  return (
+    <Link
+      href='/annonces'
+      className='inline-flex max-w-full items-center gap-2 rounded-full bg-brand-600 px-5 py-3.5 text-center text-sm sm:px-7 font-semibold text-white shadow-lg shadow-brand-600/25 transition-colors hover:bg-brand-500'
+    >
+      <FontAwesomeIcon icon={faMagnifyingGlass} className='h-4 w-4' />
+      Voir les annonces des autres vendeurs
+      <FontAwesomeIcon icon={faArrowRight} className='h-3.5 w-3.5' />
+    </Link>
+  )
 }
 
-async function getFeaturedSellers(): Promise<FeaturedSeller[]> {
-  const sellers: FeaturedSeller[] = []
-  for (const merchantId of FEATURED_MERCHANT_IDS) {
-    try {
-      const posts = await getCarPosts({ page: 1, merchantId }, revalidate)
-      const latest = posts
-        // Available, with a photo, sold by the seller itself (no on-behalf).
-        .filter((p) => !p.isExpired && !p.isHidden && !p.isOnBehalf && p.image)
-        // Newest first (stable: same-day listings keep the API order).
-        .sort((a, b) => publishedTime(b) - publishedTime(a))
-        .slice(0, FEATURED_POSTS)
-      if (latest.length > 0) {
-        sellers.push({ merchant: latest[0].merchant, posts: latest })
+async function getFeaturedPosts(): Promise<CarPostListItem[]> {
+  const lists = await Promise.all(
+    FEATURED_MERCHANT_IDS.map(async (merchantId) => {
+      try {
+        const posts = await getCarPosts({ page: 1, merchantId }, revalidate)
+        return newestFirst(
+          // Available, with a photo, sold by the seller itself (no on-behalf).
+          posts.filter(
+            (p) => !p.isExpired && !p.isHidden && !p.isOnBehalf && p.image
+          )
+        ).slice(0, FEATURED_POSTS)
+      } catch {
+        // API unreachable: the home still renders, without this seller.
+        return []
       }
-    } catch {
-      // API unreachable: the home still renders, without this seller.
-    }
-  }
-  return sellers
+    })
+  )
+  return newestFirst(lists.flat())
 }
 
 export default async function AutocentralHome() {
-  const sellers = await getFeaturedSellers()
+  const [posts, auctions] = await Promise.all([
+    getFeaturedPosts(),
+    getAuctions(revalidate)
+  ])
 
   return (
     <>
@@ -110,7 +120,7 @@ export default async function AutocentralHome() {
 
           {/* 2 x 2 on phones; one row on desktop, each tile sized to its title. */}
           <ul className='mt-4 grid grid-cols-2 gap-1.5 md:gap-3 lg:mt-5 lg:flex'>
-            {HIGHLIGHTS.map((item) => (
+            {highlights(auctions.length > 0).map((item) => (
               <li
                 key={item.title}
                 className='flex list-none items-center gap-2 rounded-xl bg-white/5 px-2.5 py-2 text-xs font-semibold leading-tight text-white ring-1 ring-white/10 backdrop-blur-sm md:px-4 md:py-2.5 md:text-sm lg:flex-auto'
@@ -126,76 +136,26 @@ export default async function AutocentralHome() {
         </div>
       </section>
 
-      {/* ───────── Vendeurs en vedette (fond blanc) ───────── */}
+      {/* ───────── Annonces à la une (fond blanc) ───────── */}
       <section className='bg-white text-ink-950'>
         <div className='mx-auto w-[92%] py-6 xl:max-w-6xl lg:py-10'>
           <h2 className='inline-flex items-center gap-2 font-sans text-xs font-bold uppercase tracking-[0.2em] text-brand-500'>
-            <FontAwesomeIcon icon={faStore} className='h-4 w-4' />
-            Vendeurs en vedette
+            <FontAwesomeIcon icon={faStar} className='h-4 w-4' />
+            Annonces à la une
           </h2>
 
-          {sellers.length === 0 ? (
-            <p className='mt-6 rounded-2xl bg-ink-50 px-6 py-12 text-center text-sm text-ink-500'>
-              Les annonces en vedette arrivent très bientôt.
-            </p>
-          ) : (
-            // Random order of the sellers, drawn again on every visit.
-            <Shuffled
-              items={sellers.map(({ merchant, posts }) => {
-                const region = posts.find((p) => p.region?.name)?.region.name
-                return (
-                  <div key={merchant.id} className='mt-5'>
-                    <div className='flex items-center gap-3'>
-                      {merchant.avatar ? (
-                        <img
-                          src={merchant.avatar}
-                          alt={merchant.name}
-                          loading='lazy'
-                          className='h-12 w-12 shrink-0 rounded-xl object-cover ring-1 ring-ink-100'
-                        />
-                      ) : (
-                        <span className='flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500'>
-                          <FontAwesomeIcon icon={faStore} className='h-5 w-5' />
-                        </span>
-                      )}
-                      <div className='min-w-0'>
-                        <h3 className='truncate text-lg font-bold leading-tight'>
-                          {merchant.name}
-                        </h3>
-                        {region && (
-                          <p className='mt-0.5 flex items-center gap-1 text-xs text-ink-500'>
-                            <FontAwesomeIcon
-                              icon={faLocationDot}
-                              className='h-3 w-3'
-                            />
-                            {region}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+          {/* Accès au moteur de recherche, avant la première annonce */}
+          <div className='mt-5 flex justify-center'>
+            <OtherSellersLink />
+          </div>
 
-                    {/* Featured sellers' cards carry the region + "Appeler". */}
-                    <ul className='mt-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                      {posts.map((post) => (
-                        <CarPostCard key={post.id} post={post} />
-                      ))}
-                    </ul>
-                  </div>
-                )
-              })}
-            />
-          )}
+          {/* Region + "Appeler" / WhatsApp on each card; edit / hide / sold
+              controls for a logged-in merchant. */}
+          <FeaturedPosts initialPosts={posts} />
 
-          {/* Fin de page : accès au moteur de recherche */}
+          {/* Fin de page : même accès au moteur de recherche */}
           <div className='mt-12 flex justify-center lg:mt-16'>
-            <Link
-              href='/annonces'
-              className='inline-flex items-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition-colors hover:bg-brand-500'
-            >
-              <FontAwesomeIcon icon={faMagnifyingGlass} className='h-4 w-4' />
-              Voir le moteur de recherche
-              <FontAwesomeIcon icon={faArrowRight} className='h-3.5 w-3.5' />
-            </Link>
+            <OtherSellersLink />
           </div>
         </div>
       </section>

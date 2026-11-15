@@ -92,6 +92,14 @@ function Row({
   )
 }
 
+// encheres.tn sources: 'douane' / 'jort' (legacy), 'vente' (public sales by
+// municipalities, Domaines de l'État…) and 'immobilier' (JORT) since Nov. 2026.
+function sourceLabel(source: string | null): string {
+  if (source === 'douane') return 'Douane'
+  if (source === 'jort' || source === 'immobilier') return 'JORT'
+  return 'Vente publique'
+}
+
 function AuctionCard({ a }: { a: AuctionVehicle }) {
   const [open, setOpen] = useState(false)
   const left = daysLeft(a.dernierDelai)
@@ -106,7 +114,7 @@ function AuctionCard({ a }: { a: AuctionVehicle }) {
         <div className='bg-ink-950 p-4 text-white'>
           <div className='flex flex-wrap items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-wider'>
             <span className='rounded bg-white/15 px-2 py-0.5'>
-              {a.source === 'jort' ? 'JORT' : 'Douane'}
+              {sourceLabel(a.source)}
             </span>
             {left !== null && left <= 3 && (
               <span className='rounded bg-danger px-2 py-0.5'>

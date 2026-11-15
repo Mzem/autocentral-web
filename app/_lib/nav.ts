@@ -50,6 +50,15 @@ export const AC_NAV_LINKS: NavLink[] = [
   { href: '/encheres', label: 'Enchères', icon: faGavel }
 ]
 
+/**
+ * Autocentral entries actually shown: "Enchères" only while at least one
+ * auction is open (the page itself stays reachable, it just isn't advertised).
+ */
+export const acNavLinks = (hasAuctions: boolean): NavLink[] =>
+  hasAuctions
+    ? AC_NAV_LINKS
+    : AC_NAV_LINKS.filter((link) => link.href !== '/encheres')
+
 // Tunisian Cars contact channels (header + footer).
 export const CONTACT_URL = TC_MESSENGER_URL
 export const WHATSAPP_URL = TC_WHATSAPP_URL

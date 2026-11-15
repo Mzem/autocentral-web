@@ -21,6 +21,8 @@ export interface CarPostListItem {
   region: Region
   merchant: MerchantListItem
   phone: string
+  /** Set at read time for featured sellers (tc-contact.ts), never by the API. */
+  whatsapp?: string
   title: string
   image: string
   price: number | undefined

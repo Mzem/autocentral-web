@@ -17,8 +17,16 @@ import {
 import { CarPostListItem } from '../../../api/services/car-posts.service'
 import { dotNumber, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
-import { isFeaturedMerchant } from '../../_lib/site'
+import {
+  AC_URL,
+  isFeaturedMerchant,
+  TC_MERCHANT_ID,
+  TC_PHONE,
+  TC_URL
+} from '../../_lib/site'
+import AdminCarControls from '../tunisiancars/AdminCarControls'
 import CallButton from '../tunisiancars/CallButton'
+import WhatsAppButton from '../tunisiancars/WhatsAppButton'
 import CarImage, { SoldBadge } from './CarImage'
 
 /**
@@ -52,6 +60,16 @@ export default function CarPostCard({
 
   const featured = isFeaturedMerchant(post.merchant?.id)
   const region = featured ? post.region?.name : undefined
+  const title =
+    post.title || `${post.make ?? ''} ${post.model ?? ''}`.trim() || 'Annonce'
+  // Featured sellers are reachable on WhatsApp (Tunisian Cars: its one number).
+  const whatsapp = featured
+    ? post.whatsapp
+      ? String(post.whatsapp)
+      : post.merchant?.id === TC_MERCHANT_ID
+      ? TC_PHONE.intl
+      : undefined
+    : undefined
 
   const estim = post.estimatedPrice
   const estimIcon =
@@ -112,12 +130,23 @@ export default function CarPostCard({
               )}
             </div>
 
-            {featured && !post.isExpired && post.phone && (
-              <CallButton
-                phone={post.phone}
-                className='absolute bottom-2.5 right-2.5'
-              />
+            {featured && !post.isExpired && (post.phone || whatsapp) && (
+              <div className='absolute bottom-2.5 right-2.5 flex items-center gap-1.5'>
+                {whatsapp && (
+                  <WhatsAppButton
+                    whatsapp={whatsapp}
+                    title={title}
+                    postUrl={`${
+                      post.merchant?.id === TC_MERCHANT_ID ? TC_URL : AC_URL
+                    }/annonces/${post.id}`}
+                  />
+                )}
+                {post.phone && <CallButton phone={post.phone} />}
+              </div>
             )}
+
+            {/* Edit / hide / sold - only rendered for a logged-in merchant. */}
+            {featured && <AdminCarControls post={post} />}
           </div>
 
           <div className='flex flex-col overflow-hidden bg-blackopac3 px-3 py-1.5 text-white'>

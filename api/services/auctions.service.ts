@@ -16,7 +16,7 @@ export interface DecodedVin {
 /** Vehicle lot from a Tunisian public auction (Douane / JORT via encheres.tn). */
 export interface AuctionVehicle {
   id: string
-  source: string | null // 'douane' | 'jort'
+  source: string | null // 'douane' | 'jort' | 'vente' | 'immobilier'
   lot: string | null
   categorie: string | null
   description: string | null

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import AcFooter from '../_components/autocentral/AcFooter'
 import AcHeader from '../_components/autocentral/AcHeader'
+import { getAuctions } from '../../api/services/auctions.service'
 import { AC_URL } from '../_lib/site'
 import {
   acWebsiteJsonLd,
@@ -69,13 +70,20 @@ export const metadata: Metadata = {
   ...faviconMetadata('/autocentral/favicon')
 }
 
-export default function AutocentralLayout({
+// How long the "is any auction open?" answer (menu entry) is cached.
+const AUCTIONS_CHECK_SECONDS = 600
+
+export default async function AutocentralLayout({
   children,
   modal
 }: Readonly<{
   children: React.ReactNode
   modal: React.ReactNode
 }>) {
+  // The "Enchères" entry is shown only while some auction is open. getAuctions
+  // never throws (API down => no entry).
+  const hasAuctions = (await getAuctions(AUCTIONS_CHECK_SECONDS)).length > 0
+
   return (
     <>
       <script
@@ -89,15 +97,17 @@ export default function AutocentralLayout({
             { name: "Voitures d'occasion en Tunisie", url: AC_URL },
             { name: 'Moteur de recherche', url: `${AC_URL}/annonces` },
             { name: 'Estimer mon véhicule', url: `${AC_URL}/estimation` },
-            { name: 'Enchères véhicules', url: `${AC_URL}/encheres` }
+            ...(hasAuctions
+              ? [{ name: 'Enchères véhicules', url: `${AC_URL}/encheres` }]
+              : [])
           ])
         }}
       />
       <div className='theme-autocentral contents'>
-        <AcHeader />
+        <AcHeader hasAuctions={hasAuctions} />
         <main className='flex-grow'>{children}</main>
         {modal}
-        <AcFooter />
+        <AcFooter hasAuctions={hasAuctions} />
       </div>
     </>
   )

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../../_lib/fontawesome'
-import { AC_NAV_LINKS } from '../../_lib/nav'
+import { acNavLinks } from '../../_lib/nav'
 import { visiblePath } from '../../_lib/site'
 
 /**
@@ -13,7 +13,12 @@ import { visiblePath } from '../../_lib/site'
  * estimate, auctions). No location / contact buttons - those belong to the
  * Tunisian Cars site.
  */
-export default function AcHeader() {
+export default function AcHeader({
+  hasAuctions
+}: {
+  /** "Enchères" is listed only while some auction is open. */
+  hasAuctions: boolean
+}) {
   const [isScrolled, setIsScrolled] = useState(false)
   // Prerendered pages see the internal "/autocentral/…" path, the browser the
   // clean one: normalise so the active state hydrates identically.
@@ -50,7 +55,7 @@ export default function AcHeader() {
           aria-label='Navigation principale'
           className='flex items-center gap-0.5 sm:gap-1 md:gap-1.5'
         >
-          {AC_NAV_LINKS.map((link) => (
+          {acNavLinks(hasAuctions).map((link) => (
             <Link
               key={link.href}
               href={link.href}

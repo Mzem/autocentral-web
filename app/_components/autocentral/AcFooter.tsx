@@ -1,14 +1,19 @@
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStore } from '@fortawesome/free-solid-svg-icons'
-import { AC_NAV_LINKS } from '../../_lib/nav'
+import { acNavLinks } from '../../_lib/nav'
 import InstallAppButton from '../tunisiancars/InstallAppButton'
 
 /**
  * Footer of autocentral.tn: black, with the logo, the "install the app" (PWA)
  * button in the site red, and the site's entries.
  */
-export default function AcFooter() {
+export default function AcFooter({
+  hasAuctions
+}: {
+  /** "Enchères" is listed only while some auction is open. */
+  hasAuctions: boolean
+}) {
   return (
     <footer className='border-t border-white/10 bg-black text-white'>
       <div className='mx-auto flex w-[92%] flex-col items-center gap-6 py-10 text-center xl:max-w-6xl md:flex-row md:justify-between md:text-left'>
@@ -35,7 +40,7 @@ export default function AcFooter() {
             aria-label='Navigation secondaire'
             className='flex flex-wrap justify-center gap-x-5 gap-y-2'
           >
-            {AC_NAV_LINKS.map((link) => (
+            {acNavLinks(hasAuctions).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

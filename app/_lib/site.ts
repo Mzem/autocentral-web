@@ -20,10 +20,10 @@ export const AC_PREFIX = '/autocentral'
 export const TC_MERCHANT_ID = 'tunisian-cars'
 
 /**
- * Sellers showcased on the Autocentral home ("Vendeurs en vedette", shown in
- * a random order). Their
- * listings also show their contact everywhere: the region and an "Appeler"
- * button on the cards, the phone numbers in the detail.
+ * Sellers whose listings make the "Annonces à la une" of the Autocentral home.
+ * Their listings also show their contact everywhere: the region and the
+ * "Appeler" + WhatsApp buttons on the cards, the phone numbers in the detail.
+ * The Tunisian Cars account manages them (hide / sold) on both sites.
  */
 export const FEATURED_MERCHANT_IDS: readonly string[] = [
   'best-auto',
@@ -31,6 +31,26 @@ export const FEATURED_MERCHANT_IDS: readonly string[] = [
 ]
 export const isFeaturedMerchant = (merchantId?: string | null): boolean =>
   !!merchantId && FEATURED_MERCHANT_IDS.includes(merchantId)
+
+export type ContactNumber = { display: string; intl: string; e164: string }
+
+/** Sales line answering the featured sellers' listings (calls + WhatsApp). */
+export const LISTINGS_PHONE: ContactNumber = {
+  display: '24 660 559',
+  intl: '21624660559',
+  e164: '+21624660559'
+}
+
+/**
+ * Number shown on a featured seller's listings instead of the one stored for
+ * the post ("Appeler" + WhatsApp, on the cards and in the detail). Only the
+ * LISTINGS: the Tunisian Cars site itself (header, footer, seller page) keeps
+ * TC_PHONE.
+ */
+export const FEATURED_CONTACTS: Readonly<Record<string, ContactNumber>> = {
+  'best-auto': LISTINGS_PHONE,
+  'tunisian-cars': LISTINGS_PHONE
+}
 
 /** The one public Tunisian Cars number (calls + WhatsApp). */
 export const TC_PHONE = {
