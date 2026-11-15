@@ -5,6 +5,7 @@ import {
   apiPostFormData,
   apiPatchFormData
 } from 'api/apiClient'
+import { LISTINGS_PHONE } from '../../app/_lib/site'
 import { Region } from './regions.service'
 
 export interface MotoListItem {
@@ -28,15 +29,12 @@ export interface MotoListItem {
   publishedAtText?: string
 }
 
-// Public front default: motos with no saved number fall back to the Tunisian
-// Cars line (+216 form so tel/WhatsApp/display all work like car listings).
-// This is applied ONLY at read time on the front - nothing is persisted - and
-// NOT for the admin path (authKey), so the edit form keeps the real value.
-const DEFAULT_MOTO_PHONE = '+21698192053'
-
+// Public front: every Tunisian Cars moto is answered on the listings sales
+// line (same as the car listings, see FEATURED_CONTACTS), whatever number is
+// saved on it. Applied ONLY at read time on the front - nothing is persisted -
+// and NOT for the admin path (authKey), so the edit form keeps the real value.
 function withDefaultPhone(m: MotoListItem): MotoListItem {
-  if (m.phone || (m.phones && m.phones.length > 0)) return m
-  return { ...m, phone: DEFAULT_MOTO_PHONE, phones: [DEFAULT_MOTO_PHONE] }
+  return { ...m, phone: LISTINGS_PHONE.e164, phones: [LISTINGS_PHONE.e164] }
 }
 
 export async function getMotos(
