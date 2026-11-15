@@ -7,14 +7,12 @@ import { FEATURED_MERCHANT_IDS } from '../../_lib/site'
 import { useMerchantKey } from '../../_lib/useMerchantKey'
 import CarPostCard from '../car-posts/CarPostCard'
 
-// Admin view: how many listings per featured seller (hidden / sold included).
-const ADMIN_POSTS_PER_SELLER = 15
-
 /**
- * "Annonces à la une" grid. The public sees the server-rendered list. A
- * logged-in merchant gets the featured sellers' listings INCLUDING hidden and
- * sold ones (validated + scoped by the API), with the edit / hide / sold
- * controls on each card - so a hidden listing can be brought back.
+ * "Annonces à la une" grid: every available (not hidden, not sold) listing of
+ * the featured sellers, mixed. The public sees the server-rendered list. A
+ * logged-in merchant also gets the HIDDEN ones (validated + scoped by the API),
+ * with the edit / hide / sold controls on each card - so a hidden listing can
+ * be brought back. A listing marked sold leaves the home.
  */
 export default function FeaturedPosts({
   initialPosts
@@ -43,12 +41,15 @@ export default function FeaturedPosts({
           setPosts(initialPosts)
           return
         }
-        const perSeller = FEATURED_MERCHANT_IDS.flatMap((id) =>
+        setPosts(
           newestFirst(
-            data.filter((p) => p.merchant?.id === id && !p.isOnBehalf)
-          ).slice(0, ADMIN_POSTS_PER_SELLER)
+            data.filter(
+              (p) =>
+                !p.isExpired &&
+                FEATURED_MERCHANT_IDS.includes(p.merchant?.id ?? '')
+            )
+          )
         )
-        setPosts(newestFirst(perSeller))
       })
       .catch(() => {
         if (!cancelled) setPosts(initialPosts)

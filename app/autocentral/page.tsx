@@ -30,8 +30,10 @@ export const metadata: Metadata = acPageMetadata({
     "Autocentral regroupe les annonces de voitures d'occasion de toute la Tunisie - sites d'annonces, pages Facebook et Instagram des vendeurs - dans un seul moteur de recherche. Estimation de prix et enchères de la douane. 100% gratuit."
 })
 
-// Latest listings shown for each featured seller (FEATURED_MERCHANT_IDS).
-const FEATURED_POSTS = 6
+// The API returns up to 150 listings per page for one merchant, available
+// ones first: fetch further pages only while a page is full of available ones.
+const MERCHANT_PAGE_SIZE = 150
+const MAX_PAGES = 5
 
 // What the site offers, as title-only tiles (the home has no image). The
 // auctions tile only while some auction is open (like the menu entry).
@@ -58,22 +60,28 @@ function OtherSellersLink() {
   )
 }
 
+/** Every listing of one seller that is neither hidden nor sold. */
+async function getAvailablePosts(
+  merchantId: string
+): Promise<CarPostListItem[]> {
+  const out: CarPostListItem[] = []
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const posts = await getCarPosts({ page, merchantId }, revalidate)
+    const available = posts.filter((p) => !p.isExpired && !p.isHidden)
+    out.push(...available)
+    if (posts.length < MERCHANT_PAGE_SIZE || available.length < posts.length)
+      break
+  }
+  return out
+}
+
+/** All the featured sellers' available listings, mixed, newest first. */
 async function getFeaturedPosts(): Promise<CarPostListItem[]> {
   const lists = await Promise.all(
-    FEATURED_MERCHANT_IDS.map(async (merchantId) => {
-      try {
-        const posts = await getCarPosts({ page: 1, merchantId }, revalidate)
-        return newestFirst(
-          // Available, with a photo, sold by the seller itself (no on-behalf).
-          posts.filter(
-            (p) => !p.isExpired && !p.isHidden && !p.isOnBehalf && p.image
-          )
-        ).slice(0, FEATURED_POSTS)
-      } catch {
-        // API unreachable: the home still renders, without this seller.
-        return []
-      }
-    })
+    FEATURED_MERCHANT_IDS.map((merchantId) =>
+      // API unreachable: the home still renders, without this seller.
+      getAvailablePosts(merchantId).catch(() => [] as CarPostListItem[])
+    )
   )
   return newestFirst(lists.flat())
 }
