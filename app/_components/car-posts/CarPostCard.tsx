@@ -21,7 +21,6 @@ import {
   AC_URL,
   isFeaturedMerchant,
   TC_MERCHANT_ID,
-  TC_PHONE,
   TC_URL
 } from '../../_lib/site'
 import AdminCarControls from '../tunisiancars/AdminCarControls'
@@ -62,14 +61,10 @@ export default function CarPostCard({
   const region = featured ? post.region?.name : undefined
   const title =
     post.title || `${post.make ?? ''} ${post.model ?? ''}`.trim() || 'Annonce'
-  // Featured sellers are reachable on WhatsApp (Tunisian Cars: its one number).
-  const whatsapp = featured
-    ? post.whatsapp
-      ? String(post.whatsapp)
-      : post.merchant?.id === TC_MERCHANT_ID
-      ? TC_PHONE.intl
-      : undefined
-    : undefined
+  // Featured sellers' listings carry the WhatsApp number set at read time
+  // (tc-contact.ts). On-behalf listings have none: only the owner's "Appeler".
+  const whatsapp =
+    featured && post.whatsapp ? String(post.whatsapp) : undefined
 
   const estim = post.estimatedPrice
   const estimIcon =
