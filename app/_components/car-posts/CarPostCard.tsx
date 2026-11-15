@@ -63,8 +63,7 @@ export default function CarPostCard({
     post.title || `${post.make ?? ''} ${post.model ?? ''}`.trim() || 'Annonce'
   // Featured sellers' listings carry the WhatsApp number set at read time
   // (tc-contact.ts). On-behalf listings have none: only the owner's "Appeler".
-  const whatsapp =
-    featured && post.whatsapp ? String(post.whatsapp) : undefined
+  const whatsapp = featured && post.whatsapp ? String(post.whatsapp) : undefined
 
   const estim = post.estimatedPrice
   const estimIcon =
