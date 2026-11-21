@@ -260,6 +260,10 @@ input[type='text']:focus {
    native thumbs are INVISIBLE but still grabbable (pointer-events on the thumbs
    only). The visible circles are drawn by the component and positioned in %, so
    they always sit at the right spot (native thumbs misrender on some mobiles). */
+/* The native inputs only catch the drag: nothing of them may show. iOS Safari
+   keeps a default drop shadow on the thumb (the "blurred circle" under the red
+   one) unless it is removed explicitly, plus a tap highlight / focus ring. The
+   thumb size (22px) must match --range-thumb in RangeSlider.tsx. */
 .range-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -267,15 +271,24 @@ input[type='text']:focus {
   background: transparent;
   pointer-events: none;
   margin: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.range-thumb:focus,
+.range-thumb:focus-visible {
+  outline: none;
 }
 .range-thumb::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   pointer-events: auto;
   height: 22px;
   width: 22px;
   border-radius: 9999px;
   background: transparent;
   border: none;
+  box-shadow: none;
+  opacity: 0;
   cursor: pointer;
 }
 .range-thumb::-moz-range-thumb {
@@ -285,6 +298,8 @@ input[type='text']:focus {
   border-radius: 9999px;
   background: transparent;
   border: none;
+  box-shadow: none;
+  opacity: 0;
   cursor: pointer;
 }
 .range-thumb::-webkit-slider-runnable-track {
