@@ -109,7 +109,7 @@ export function middleware(req: NextRequest) {
   // the listings link to a relative /estimation?…, shared by both sites).
   if (pathname === '/estimation') {
     if (isTcDomain(host)) {
-      return NextResponse.redirect(AC_ORIGIN + pathname + search, 307)
+      return NextResponse.redirect(AC_ORIGIN + pathname + search, 308)
     }
     const url = req.nextUrl.clone()
     url.pathname = AC_PREFIX + pathname
@@ -123,19 +123,37 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url, 308)
   }
 
-  // The search engine and the auctions moved to autocentral.tn. Their old URLs
-  // on tunisiancars.com.tn keep working until this is switched on - which must
-  // only be done once autocentral.tn really serves this app (while it still
-  // redirects to tunisiancars.com.tn/annonces, this would loop).
-  if (
-    process.env.AUTOCENTRAL_REDIRECTS === '1' &&
-    isTcDomain(host) &&
-    (pathname === '/annonces' || pathname === '/encheres')
-  ) {
+  // tunisiancars.com.tn only keeps its own pages (home, shop, cars for sale,
+  // admin). Everything about listings and sellers lives on autocentral.tn:
+  // search engine, listing pages, sellers, seller pages, auctions, car specs.
+  // Their old URLs (indexed by Google) are redirected permanently, same path.
+  if (isTcDomain(host) && !isTcPage(pathname)) {
     return NextResponse.redirect(AC_ORIGIN + pathname + search, 308)
   }
 
   return NextResponse.next()
+}
+
+/** The pages tunisiancars.com.tn keeps (anything else goes to autocentral.tn). */
+function isTcPage(pathname: string): boolean {
+  const under = (p: string) => pathname === p || pathname.startsWith(p + '/')
+  return (
+    pathname === '/' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    under('/vente') ||
+    under('/produits') ||
+    under('/login') ||
+    // Admin forms of the showroom (cars / motos).
+    pathname === '/annonces/nouveau' ||
+    pathname === '/annonces/moto-nouveau' ||
+    // Motos are only sold by Tunisian Cars: their pages stay here.
+    under('/annonces/moto') ||
+    // A car listing: opened from /vente it stays here (modal); a direct visit
+    // is redirected to autocentral.tn by the page itself - the middleware
+    // can't tell the two apart (Next strips the RSC headers before it).
+    /^\/annonces\/[^/]+$/.test(pathname)
+  )
 }
 
 export const config = {
