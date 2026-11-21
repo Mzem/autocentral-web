@@ -105,6 +105,17 @@ export function middleware(req: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
+  // The price estimate only exists on autocentral.tn (the "Estimer" buttons of
+  // the listings link to a relative /estimation?…, shared by both sites).
+  if (pathname === '/estimation') {
+    if (isTcDomain(host)) {
+      return NextResponse.redirect(AC_ORIGIN + pathname + search, 307)
+    }
+    const url = req.nextUrl.clone()
+    url.pathname = AC_PREFIX + pathname
+    return NextResponse.rewrite(url)
+  }
+
   // The workshop page is now the home.
   if (pathname === '/atelier') {
     const url = req.nextUrl.clone()

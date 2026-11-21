@@ -18,7 +18,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState, type ReactNode } from 'react'
 import { CarPost } from '../../../api/services/car-posts.service'
-import { dotNumber, noPriceText } from '../../helpers'
+import { dotNumber, NO_PRICE_TEXT, noPriceText } from '../../helpers'
+import EstimateButton from '../car-posts/EstimateButton'
 import { fuelLabel } from '../../types'
 import { Linkify } from '../../Linkify'
 import {
@@ -160,14 +161,17 @@ function Content({ post }: { post: CarPost }) {
     <p className='text-3xl font-extrabold text-brand-600 ac:text-blacknotopac'>
       {dotNumber(post.price)} DT
     </p>
-  ) : post.estimatedPrice?.value ? (
-    <p className='inline-flex items-baseline gap-2 text-xl bg-ink-50 p-2 rounded-md font-extrabold text-ink-300'>
-      {dotNumber(post.estimatedPrice.value)} DT estimé
-    </p>
   ) : (
-    <p className='text-2xl font-bold text-ink-500'>
-      {noPriceText(post.merchant?.id)}
-    </p>
+    // No price: "Prix N.C." + a discreet "Estimer" (pre-filled estimate page);
+    // Tunisian Cars listings read "Prix sur demande", without it.
+    <div className='flex flex-wrap items-center gap-3'>
+      <p className='text-2xl font-bold text-ink-500'>
+        {noPriceText(post.merchant?.id)}
+      </p>
+      {!post.isExpired && noPriceText(post.merchant?.id) === NO_PRICE_TEXT && (
+        <EstimateButton post={post} variant='detail' />
+      )}
+    </div>
   )
 
   // Sections. Each carries a fixed background so specs & description are always

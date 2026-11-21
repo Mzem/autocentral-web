@@ -12,7 +12,8 @@ import {
   faClock
 } from '@fortawesome/free-solid-svg-icons'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
-import { dotNumber, noPriceText } from '../../helpers'
+import { dotNumber, NO_PRICE_TEXT, noPriceText } from '../../helpers'
+import EstimateButton from '../car-posts/EstimateButton'
 import { fuelLabel } from '../../types'
 import { SoldBadge } from '../car-posts/CarImage'
 import RevealCarImage from './RevealCarImage'
@@ -85,11 +86,17 @@ export default function ShowroomCars({
                 <SoldBadge className='absolute left-2.5 top-2.5' />
               )}
               {!post.isExpired && (
-                <span className='absolute bottom-2.5 left-2.5 inline-flex items-center rounded-md bg-brand/50 px-2.5 py-1 text-xs font-extrabold text-white shadow'>
-                  {post.price
-                    ? `${dotNumber(post.price)} DT`
-                    : noPriceText(post.merchant?.id)}
-                </span>
+                <div className='absolute bottom-2.5 left-2.5 flex items-center gap-1.5'>
+                  <span className='inline-flex h-7 items-center rounded-md bg-brand/50 px-2.5 text-xs font-extrabold text-white shadow'>
+                    {post.price
+                      ? `${dotNumber(post.price)} DT`
+                      : noPriceText(post.merchant?.id)}
+                  </span>
+                  {!post.price &&
+                    noPriceText(post.merchant?.id) === NO_PRICE_TEXT && (
+                      <EstimateButton post={post} variant='card' />
+                    )}
+                </div>
               )}
               {!post.isExpired && isTC && post.phone && (
                 <CallButton

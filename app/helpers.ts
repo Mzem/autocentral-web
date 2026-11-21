@@ -123,8 +123,11 @@ export function dotNumber(
  * Label for a listing without a set price: Tunisian Cars' own listings say
  * "Prix sur demande"; every other source keeps the classic "Prix N.C.".
  */
+/** Shown for a listing without a price (except Tunisian Cars ones). */
+export const NO_PRICE_TEXT = 'Prix N.C.'
+
 export function noPriceText(merchantId?: string): string {
-  return merchantId === 'tunisian-cars' ? 'Prix sur demande' : 'Prix N.C.'
+  return merchantId === 'tunisian-cars' ? 'Prix sur demande' : NO_PRICE_TEXT
 }
 
 export function fromNameToId(name?: string): string {

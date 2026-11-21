@@ -1,10 +1,12 @@
 'use client'
 
-import { useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCalculator,
   faChartLine,
+  faCheck,
+  faShareNodes,
   faSpinner
 } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -14,7 +16,23 @@ import {
 } from '../../../api/services/car-posts.service'
 import { carModels, Fuel, fuelLabel } from '../../types'
 import { dotNumber } from '../../helpers'
+import {
+  estimateCarLabel,
+  estimateQueryString,
+  estimationPath,
+  isCompleteEstimate,
+  type EstimateParams
+} from '../../_lib/estimate'
+import { AC_URL } from '../../_lib/site'
 import CarPostCard from './CarPostCard'
+
+/** A listing's make / model in the select's own spelling when it has one
+ *  (case-insensitive), else kept as is (added as an extra option). */
+function canonical(value: string | undefined, options: string[]): string {
+  const v = (value ?? '').trim()
+  if (!v) return ''
+  return options.find((o) => o.toLowerCase() === v.toLowerCase()) ?? v
+}
 
 // `focus:!rounded-lg` / `focus:ring-0`: legacy global rules square the inputs
 // on focus and the forms plugin adds its own blue ring.
@@ -28,30 +46,75 @@ const checkCls = 'flex items-center gap-2 text-sm text-ink-800'
  * estimated range - the median price of comparable listings - and a few of
  * those listings to browse. Each card opens the usual detail modal on top, the
  * estimate staying in place underneath.
+ *
+ * `initial` comes from the URL (/estimation?make=…): the "Estimer" button of a
+ * listing or a shared estimate. The form is pre-filled and, when complete, the
+ * estimate runs straight away. The URL always mirrors the last estimate, so it
+ * can be shared ("Partager mon estimation") and reopens the same result.
  */
-export default function EstimateTool() {
+export default function EstimateTool({
+  initial = {}
+}: {
+  initial?: EstimateParams
+}) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [estimate, setEstimate] = useState<CarPriceEstimate | null>(null)
   const [similar, setSimilar] = useState<CarPostListItem[]>([])
   const resultRef = useRef<HTMLDivElement | null>(null)
 
-  const [make, setMake] = useState('')
-  const [model, setModel] = useState('')
-  const [year, setYear] = useState('')
-  const [km, setKm] = useState('')
-  const [cv, setCv] = useState('')
-  const [fuel, setFuel] = useState('')
-  const [gearbox, setGearbox] = useState('')
-  const [firstOwner, setFirstOwner] = useState(false)
-  const [fullOptions, setFullOptions] = useState(false)
-  const [specialVersion, setSpecialVersion] = useState(false)
+  const initialMake = canonical(
+    initial.make,
+    carModels.map((c) => c.make)
+  )
+  const [make, setMake] = useState(initialMake)
+  const [model, setModel] = useState(
+    canonical(
+      initial.model,
+      carModels.find((c) => c.make === initialMake)?.models ?? []
+    )
+  )
+  const [year, setYear] = useState(initial.year ?? '')
+  const [km, setKm] = useState(initial.km ?? '')
+  const [cv, setCv] = useState(initial.cv ?? '')
+  const [fuel, setFuel] = useState(initial.fuel ?? '')
+  const [gearbox, setGearbox] = useState(initial.gearbox ?? '')
+  const [firstOwner, setFirstOwner] = useState(!!initial.firstOwner)
+  const [fullOptions, setFullOptions] = useState(!!initial.fullOptions)
+  const [specialVersion, setSpecialVersion] = useState(!!initial.specialVersion)
+  // The parameters of the estimate on screen (what "Partager" shares).
+  const [shown, setShown] = useState<EstimateParams | null>(null)
+  const [shared, setShared] = useState(false)
 
-  const models = carModels.find((c) => c.make === make)?.models ?? []
+  // A make / model / fuel from a listing may be missing from the lists: keep
+  // it selectable rather than silently dropping it.
+  const listedMakes = carModels.map((c) => c.make)
+  const makes =
+    make && !listedMakes.includes(make) ? [make, ...listedMakes] : listedMakes
+  const listedModels = carModels.find((c) => c.make === make)?.models ?? []
+  const models =
+    model && !listedModels.includes(model)
+      ? [model, ...listedModels]
+      : listedModels
+  const listedFuels: string[] = Object.values(Fuel)
+  const fuels =
+    fuel && !listedFuels.includes(fuel) ? [...listedFuels, fuel] : listedFuels
 
-  const run = async (e: FormEvent) => {
-    e.preventDefault()
-    if (!make || !model || !year || !km || !cv) {
+  const current = (): EstimateParams => ({
+    make,
+    model,
+    year,
+    km,
+    cv,
+    fuel,
+    gearbox,
+    firstOwner,
+    fullOptions,
+    specialVersion
+  })
+
+  const runWith = async (p: EstimateParams) => {
+    if (!isCompleteEstimate(p)) {
       setError(
         'Renseignez au moins la marque, le modèle, l’année, le kilométrage et la puissance.'
       )
@@ -61,25 +124,23 @@ export default function EstimateTool() {
     setBusy(true)
     setEstimate(null)
     setSimilar([])
+    setShared(false)
+    // The URL mirrors the estimate: shareable, and reopens the same result.
+    window.history.replaceState(null, '', estimationPath(p))
     try {
       // Go through the Next proxy route (the API key lives server-side).
-      const params = new URLSearchParams({ make, model, year, km, cv })
-      if (fuel) params.set('fuel', fuel)
-      if (gearbox) params.set('gearbox', gearbox)
-      if (firstOwner) params.set('firstOwner', 'true')
-      if (fullOptions) params.set('fullOptions', 'true')
-      if (specialVersion) params.set('specialVersion', 'true')
-      const estRes = await fetch('/api/estimate?' + params.toString())
+      const estRes = await fetch('/api/estimate?' + estimateQueryString(p))
       const est: CarPriceEstimate = await estRes.json()
       setEstimate(est)
+      setShown(p)
 
       // Comparable listings to browse. The API only filters by the text query
       // (make/model aren't standalone filters), so search "make model".
       const qp = generateCarPostsQueryParams({
         page: 1,
-        q: `${make} ${model}`,
-        minYear: Number(year) - 4,
-        maxYear: Number(year) + 4
+        q: `${p.make} ${p.model}`,
+        minYear: Number(p.year) - 4,
+        maxYear: Number(p.year) + 4
       })
       const res = await fetch('/api/car-posts/' + qp)
       const posts: CarPostListItem[] = await res.json()
@@ -97,6 +158,49 @@ export default function EstimateTool() {
           block: 'nearest'
         })
       )
+    }
+  }
+
+  const run = (e: FormEvent) => {
+    e.preventDefault()
+    runWith(current())
+  }
+
+  // Opened from a listing / a shared link: show the result straight away
+  // (incomplete listing: the form is pre-filled, the visitor completes it).
+  const autoRan = useRef(false)
+  useEffect(() => {
+    if (autoRan.current) return
+    autoRan.current = true
+    if (isCompleteEstimate(initial)) runWith(current())
+    else if (initial.make || initial.model) {
+      setError(
+        'Complétez les champs manquants (année, kilométrage, puissance…) puis lancez l’estimation.'
+      )
+    }
+    // Runs once, on mount only (later estimates come from the form).
+  }, [])
+
+  // Share the estimate's URL (it recomputes the range AND the comparable cars
+  // on opening, with a preview image): native share sheet on phones
+  // (WhatsApp, Messenger…), else copy the link.
+  const share = async () => {
+    if (!shown || !estimate) return
+    const url = `${AC_URL}${estimationPath(shown)}`
+    const text = estimate.enough
+      ? `Estimation ${estimateCarLabel(shown)} : ${dotNumber(
+          estimate.low
+        )} – ${dotNumber(estimate.high)} DT (Autocentral)`
+      : `Estimation ${estimateCarLabel(shown)} sur Autocentral`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Mon estimation', text, url })
+        return
+      }
+      await navigator.clipboard.writeText(`${text}\n${url}`)
+      setShared(true)
+    } catch {
+      // Share sheet dismissed: nothing to do.
     }
   }
 
@@ -139,9 +243,9 @@ export default function EstimateTool() {
               className={inputCls}
             >
               <option value=''>- Choisir -</option>
-              {carModels.map((c) => (
-                <option key={c.make} value={c.make}>
-                  {c.make}
+              {makes.map((m) => (
+                <option key={m} value={m}>
+                  {m}
                 </option>
               ))}
             </select>
@@ -173,7 +277,7 @@ export default function EstimateTool() {
               className={inputCls}
             >
               <option value=''>Indifférent</option>
-              {Object.values(Fuel).map((f) => (
+              {fuels.map((f) => (
                 <option key={f} value={f}>
                   {fuelLabel(f)}
                 </option>
@@ -259,6 +363,22 @@ export default function EstimateTool() {
                   Valeur médiane : {dotNumber(estimate.mid)} DT · basé sur{' '}
                   {estimate.sampleSize} annonces comparables
                 </p>
+                {shown && (
+                  <p className='mt-1 text-xs text-ink-400'>
+                    {estimateCarLabel(shown)}
+                  </p>
+                )}
+                <button
+                  type='button'
+                  onClick={share}
+                  className='mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-ink-900 shadow ring-1 ring-ink-200 transition-colors hover:bg-ink-50'
+                >
+                  <FontAwesomeIcon
+                    icon={shared ? faCheck : faShareNodes}
+                    className='h-4 w-4 text-brand-500'
+                  />
+                  {shared ? 'Lien copié !' : 'Partager mon estimation'}
+                </button>
               </div>
             ) : (
               <p className='rounded-2xl bg-ink-50 p-5 text-center text-sm text-ink-600 lg:p-8'>

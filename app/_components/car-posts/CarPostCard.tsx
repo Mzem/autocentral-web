@@ -15,7 +15,7 @@ import {
   faEquals
 } from '@fortawesome/free-solid-svg-icons'
 import { CarPostListItem } from '../../../api/services/car-posts.service'
-import { dotNumber, noPriceText } from '../../helpers'
+import { dotNumber, NO_PRICE_TEXT, noPriceText } from '../../helpers'
 import { fuelLabel } from '../../types'
 import {
   AC_URL,
@@ -27,6 +27,7 @@ import AdminCarControls from '../tunisiancars/AdminCarControls'
 import CallButton from '../tunisiancars/CallButton'
 import WhatsAppButton from '../tunisiancars/WhatsAppButton'
 import CarImage, { SoldBadge } from './CarImage'
+import EstimateButton from './EstimateButton'
 
 /**
  * Standard listing card - the one used on the /annonces feed: a 4:3 photo with
@@ -65,6 +66,12 @@ export default function CarPostCard({
   // (tc-contact.ts). On-behalf listings have none: only the owner's "Appeler".
   const whatsapp = featured && post.whatsapp ? String(post.whatsapp) : undefined
 
+  // No price: "Prix N.C." (or "Prix sur demande" for Tunisian Cars). Every
+  // "Prix N.C." listing still on sale gets the "Estimer" button.
+  const noPrice = noPriceText(post.merchant?.id)
+  const canEstimate =
+    !post.price && !post.isExpired && noPrice === NO_PRICE_TEXT
+
   const estim = post.estimatedPrice
   const estimIcon =
     estim?.color === 'GREEN'
@@ -98,21 +105,20 @@ export default function CarPostCard({
               <SoldBadge className='absolute left-2.5 top-2.5' />
             )}
 
-            {/* Price pill + market-price symbol, together at bottom-left. */}
+            {/* Price pill + market-price symbol (or, without a price, the
+                discreet "Estimer" button), together at bottom-left. */}
             <div className='absolute bottom-2.5 left-2.5 flex items-center'>
               <span
-                className={`mr-4 inline-flex h-7 items-center rounded-md px-2.5 text-xs font-extrabold shadow ${
+                className={`inline-flex h-7 items-center rounded-md px-2.5 text-xs font-extrabold shadow ${
                   post.price
-                    ? 'bg-brand/50 text-white ac:bg-titan/95 ac:text-blacknotopac'
-                    : 'bg-black/55 text-white backdrop-blur-sm'
+                    ? 'mr-4 bg-brand/50 text-white ac:bg-titan/95 ac:text-blacknotopac'
+                    : 'mr-1.5 bg-black/55 text-white backdrop-blur-sm'
                 }`}
               >
-                {post.price
-                  ? `${dotNumber(post.price)} DT`
-                  : estim
-                  ? `${dotNumber(estim.value)} DT estimé`
-                  : noPriceText(post.merchant?.id)}
+                {post.price ? `${dotNumber(post.price)} DT` : noPrice}
               </span>
+
+              {canEstimate && <EstimateButton post={post} variant='card' />}
 
               {post.price && estim && (
                 <span
