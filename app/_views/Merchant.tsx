@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
+import { cache } from 'react'
 import {
   CarPostListItem,
   getCarPosts
 } from '../../api/services/car-posts.service'
-import { getMerchant } from '../../api/services/merchants.service'
+import { getMerchant as fetchMerchant } from '../../api/services/merchants.service'
 import CarPostsFeed from '../_components/car-posts/CarPosts'
 import MerchantHeader from '../_components/MerchantHeader'
 import { fromQueryParamsToGetCarPostsFilters } from '../helpers'
@@ -16,6 +17,10 @@ import { AC_URL } from '../_lib/site'
 const isMerchantSlug = (s?: string): boolean =>
   !!s && /^[a-z0-9-]{1,60}$/.test(s)
 
+// One call per request, shared by generateMetadata and the page: when the API
+// is down, the visitor waits for a single timeout instead of two.
+const getMerchant = cache(fetchMerchant)
+
 /**
  * Metadata of a seller page (`/[merchantId]`), served on both sites. Its
  * canonical URL is always autocentral.tn (the listings site), so search
@@ -24,11 +29,17 @@ const isMerchantSlug = (s?: string): boolean =>
 export async function merchantMetadata(
   merchantId: string | undefined
 ): Promise<Metadata> {
-  const merchant =
-    merchantId && isMerchantSlug(merchantId)
-      ? await getMerchant(merchantId)
-      : null
   const url = merchantId ? `${AC_URL}/${merchantId}` : AC_URL
+  let merchant
+  try {
+    merchant =
+      merchantId && isMerchantSlug(merchantId)
+        ? await getMerchant(merchantId)
+        : null
+  } catch {
+    // API unreachable: fall back to the generic metadata below.
+    merchant = null
+  }
 
   if (!merchant) {
     return {
@@ -75,7 +86,12 @@ export default async function MerchantView({
   if (merchant) {
     filters = fromQueryParamsToGetCarPostsFilters(searchParams)
     filters.merchantId = merchant.id
-    posts = await getCarPosts(filters)
+    try {
+      posts = await getCarPosts(filters)
+    } catch {
+      // API hiccup on the listings only: keep the seller's page up.
+      posts = []
+    }
     // Only the last 30 days on the seller's page (the rest stays browsable in
     // the global search engine). publishedAt is the "DD/MM/YYYY" (fr) string.
     const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000

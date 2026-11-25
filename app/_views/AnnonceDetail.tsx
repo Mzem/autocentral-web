@@ -1,10 +1,15 @@
 import type { Metadata } from 'next'
+import { cache } from 'react'
 import { notFound } from 'next/navigation'
-import { getCarPost } from '../../api/services/car-posts.service'
+import { getCarPost as fetchCarPost } from '../../api/services/car-posts.service'
 import CarPostDetail from '../_components/tunisiancars/CarPostDetail'
 import { AC_URL, TC_URL } from '../_lib/site'
 import { dotNumber } from '../helpers'
 import { fuelLabel } from '../types'
+
+// One call per request, shared by generateMetadata and the page: when the API
+// is down, the visitor waits for a single timeout instead of two.
+const getCarPost = cache(fetchCarPost)
 
 export type Site = 'tc' | 'ac'
 
@@ -36,8 +41,15 @@ export async function annonceMetadata(
   site: Site
 ): Promise<Metadata> {
   const here = SITE[site]
-  const post = id && isCarPostId(id) ? await getCarPost(id) : null
   const url = id ? `${AC_URL}/annonces/${id}` : AC_URL
+  let post
+  try {
+    post = id && isCarPostId(id) ? await getCarPost(id) : null
+  } catch {
+    // API unreachable: transient, so no "introuvable"/noindex. The page body
+    // hits the same error and shows the error boundary.
+    return { title: here.name, alternates: { canonical: url } }
+  }
 
   if (!post) {
     return { title: `Annonce introuvable | ${here.name}`, robots: 'noindex' }

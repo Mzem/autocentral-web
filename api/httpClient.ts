@@ -20,18 +20,39 @@ export async function fetchNoContent(
   await callFetch(reqInfo, reqInit)
 }
 
+// Reads must fail fast when the API is unreachable: without a bound, undici
+// waits ~10 s per connect attempt and a page awaiting several calls hangs past
+// the router timeout. Normal reads answer in < 5 s. Writes (uploads included)
+// are left unbounded on purpose.
+const GET_TIMEOUT_MS = Number(process.env.API_TIMEOUT_MS) || 8000
+
+function withReadTimeout(reqInit?: RequestInit): RequestInit | undefined {
+  const method = (reqInit?.method || 'GET').toUpperCase()
+  if (reqInit?.signal || method !== 'GET') return reqInit
+  return { ...reqInit, signal: AbortSignal.timeout(GET_TIMEOUT_MS) }
+}
+
+/** URL without its query string (it may carry an authKey), for logs. */
+function logPath(reqInfo: RequestInfo): string {
+  const url = typeof reqInfo === 'string' ? reqInfo : reqInfo.url
+  return url.split('?')[0]
+}
+
 async function callFetch(
   reqInfo: RequestInfo,
   reqInit?: RequestInit
 ): Promise<Response> {
   let reponse: Response
   try {
-    reponse = await fetch(reqInfo, reqInit)
+    reponse = await fetch(reqInfo, withReadTimeout(reqInit))
   } catch (e) {
-    const error: UnexpectedError = new UnexpectedError(
-      (e as Error).message || 'Unexpected error'
-    )
-    console.error('fetchJson exception', error)
+    const err = e as Error
+    const message =
+      err.name === 'TimeoutError'
+        ? `API timeout after ${GET_TIMEOUT_MS}ms`
+        : err.message || 'Unexpected error'
+    const error: UnexpectedError = new UnexpectedError(message)
+    console.error('fetchJson exception', { ...error, path: logPath(reqInfo) })
     throw error
   }
 
